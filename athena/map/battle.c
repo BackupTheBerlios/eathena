@@ -3458,7 +3458,7 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 			}
 		}
 		if(flag&0x8000) {
-			if(src->type == BL_PC)
+			if(src->type == BL_PC && battle_config.pc_attack_direction_change)
 				sd->dir = sd->head_dir = map_calc_dir(src, target->x,target->y );
 			else if(src->type == BL_MOB && battle_config.monster_attack_direction_change)
 				((struct mob_data *)src)->dir = map_calc_dir(src, target->x,target->y );
@@ -3923,6 +3923,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.gvg_misc_damage_rate = 100;
 	battle_config.gvg_eliminate_time = 7000;
 	battle_config.mob_changetarget_byskill = 0;
+	battle_config.pc_attack_direction_change = 1;
 	battle_config.monster_attack_direction_change = 1;
 	battle_config.item_rate_common = 100;
 	battle_config.item_rate_equip = 100;
@@ -4058,6 +4059,7 @@ int battle_config_read(const char *cfgName)
 			{ "gvg_misc_attack_damage_rate" ,&battle_config.gvg_misc_damage_rate },
 			{ "gvg_eliminate_time" ,&battle_config.gvg_eliminate_time },
 			{ "mob_changetarget_byskill" ,&battle_config.mob_changetarget_byskill },
+			{ "player_attack_direction_change" ,&battle_config.pc_attack_direction_change },
 			{ "monster_attack_direction_change" ,&battle_config.monster_attack_direction_change },			
 		{ "item_rate_common",	&battle_config.item_rate_common	},	// Added by RoVeRT
 		{ "item_rate_equip",	&battle_config.item_rate_equip	},

@@ -226,6 +226,7 @@ extern struct Battle_Config {
 	int gvg_misc_damage_rate;
 	int gvg_eliminate_time;
 	int mob_changetarget_byskill;
+	int pc_attack_direction_change;
 	int monster_attack_direction_change;
 	int item_rate_common,item_rate_card,item_rate_equip;	// Added by RoVeRT
 	int item_drop_common_min,item_drop_common_max;	// Added by TyrNemesis^

@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.54 2004/03/03 02:38:33 sara-chan Exp $
+// $Id: mob.c,v 1.55 2004/03/03 23:55:27 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -2394,6 +2394,7 @@ int mobskill_castend_id( int tid, unsigned int tick, int id,int data )
 		md->sc_data[SC_STEELBODY].timer != -1)
 		return 0;
 	if(md->sc_data[SC_AUTOCOUNTER].timer != -1 && md->skillid != KN_AUTOCOUNTER) return 0;
+	if(md->skillid != NPC_EMOTION)
 	md->last_thinktime=tick + battle_get_adelay(&md->bl);
 
 	bl=map_id2bl(md->skilltarget);
@@ -2418,6 +2419,10 @@ int mobskill_castend_id( int tid, unsigned int tick, int id,int data )
 		range = battle_get_range(&md->bl) - (range + 1);
 	if(range + battle_config.mob_skill_add_range < distance(md->bl.x,md->bl.y,bl->x,bl->y))
 		return 0;
+	if( ( (skill_get_inf(md->skillid)&1) || (skill_get_inf2(md->skillid)&4) ) &&	// 彼我敵対関係チェック
+		battle_check_target(&md->bl,bl, BCT_ENEMY)<=0 )
+		return 0;
+
 	md->skilldelay[md->skillidx]=tick;
 
 	if(battle_config.mob_skill_log)
@@ -2574,6 +2579,9 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 		skill_id == WZ_ICEWALL || skill_id == TF_BACKSLIDING))
 		return 0;
 
+	if(skill_get_inf2(skill_id)&0x200 && md->bl.id == target->id)
+		return 0;
+
 	// 射程と障害物チェック
 	range = skill_get_range(skill_id,skill_lv);
 	if(range < 0)
@@ -2591,17 +2599,17 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 		printf("MOB skill use target_id=%d skill=%d lv=%d cast=%d, class = %d\n",target->id,skill_id,skill_lv,casttime,md->class);
 
 	if( casttime>0 ){ 	// 詠唱が必要
-		struct mob_data *md2;
+//		struct mob_data *md2;
 		clif_skillcasting( &md->bl,
 			md->bl.id, target->id, 0,0, skill_id,casttime);
 	
 		// 詠唱反応モンスター
-		if( target->type==BL_MOB && mob_db[(md2=(struct mob_data *)target)->class].mode&0x10 &&
+/*		if( target->type==BL_MOB && mob_db[(md2=(struct mob_data *)target)->class].mode&0x10 &&
 			md2->state.state!=MS_ATTACK){
 				md2->target_id=md->bl.id;
 				md->state.targettype = ATTACKABLE;
 				md2->min_chase=13;
-		}
+		}*/
 	}
 
 	if( casttime<=0 )	// 詠唱の無いものはキャンセルされない
@@ -2700,6 +2708,70 @@ int mobskill_use_pos( struct mob_data *md,
 	return 1;
 }
 
+
+/*==========================================
+ * 近くのMOBでHPの減っているものを探す
+ *------------------------------------------
+ */
+int mob_getfriendhpltmaxrate_sub(struct block_list *bl,va_list ap)
+{
+	int rate;
+	struct mob_data **fr, *md=(struct mob_data *)bl, *mmd;
+	mmd=va_arg(ap,struct mob_data *);
+	if( mmd->bl.id == bl->id )
+		return 0;
+	rate=va_arg(ap,int);
+	fr=va_arg(ap,struct mob_data **);
+	if( md->hp < mob_db[md->class].max_hp*rate/100 )
+		(*fr)=md;
+	return 0;
+}
+struct mob_data *mob_getfriendhpltmaxrate(struct mob_data *md,int rate)
+{
+	struct mob_data *fr=NULL;
+	const int r=8;
+	map_foreachinarea(mob_getfriendhpltmaxrate_sub, md->bl.m,
+		md->bl.x-r ,md->bl.y-r, md->bl.x+r, md->bl.y+r,
+		BL_MOB,md,rate,&fr);
+	return fr;
+}
+/*==========================================
+ * 近くのMOBでステータス状態が合うものを探す
+ *------------------------------------------
+ */
+int mob_getfriendstatus_sub(struct block_list *bl,va_list ap)
+{
+	int cond1,cond2;
+	struct mob_data **fr, *md=(struct mob_data *)bl, *mmd;
+	mmd=va_arg(ap,struct mob_data *);
+	if( mmd->bl.id == bl->id )
+		return 0;
+	cond1=va_arg(ap,int);
+	cond2=va_arg(ap,int);
+	fr=va_arg(ap,struct mob_data **);
+	int flag=0;
+	if( cond2==-1 ){
+		int j;
+		for(j=SC_STONE;j<=SC_BLIND && !flag;j++){
+			flag=(md->sc_data[j].timer!=-1 );
+		}
+	}else
+		flag=( md->sc_data[cond2].timer!=-1 );
+	if( flag^( cond1==MSC_FRIENDSTATUSOFF ) )
+		(*fr)=md;
+		
+	return 0;
+}
+struct mob_data *mob_getfriendstatus(struct mob_data *md,int cond1,int cond2)
+{
+	struct mob_data *fr=NULL;
+	const int r=8;
+	map_foreachinarea(mob_getfriendstatus_sub, md->bl.m,
+		md->bl.x-r ,md->bl.y-r, md->bl.x+r, md->bl.y+r,
+		BL_MOB,md,cond1,cond2,&fr);
+	return fr;
+}
+
 /*==========================================
  * スキル使用判定
  *------------------------------------------
@@ -2715,6 +2787,7 @@ int mobskill_use(struct mob_data *md,unsigned int tick,int event)
 
 	for(i=0;i<mob_db[md->class].maxskill;i++){
 		int c2=ms[i].cond2,flag=0;
+		struct mob_data *fmd=NULL;
 
 		// ディレイ中
 		if( DIFF_TICK(tick,md->skilldelay[i])<ms[i].delay )
@@ -2732,12 +2805,21 @@ int mobskill_use(struct mob_data *md,unsigned int tick,int event)
 				flag=1; break;
 			case MSC_MYHPLTMAXRATE:		// HP< maxhp%
 				flag=( md->hp < max_hp*c2/100 ); break;
-			case MSC_FRIENDHPLTMAXRATE:
-				flag=( mob_checkslavehp(md, c2) > 0 ); break;	// any slave HP< maxhp%
-			case MSC_MYSTATUSEQ:
-				flag=( md->opt2 == c2 ); break;	// opt2 = num
-			case MSC_FRIENDSTATUSEQ:
-				flag=( mob_checkslaveoption(md, c2) > 0 ); break;	// any slave opt2 = num			
+			case MSC_MYSTATUSON:		// status[num] on
+			case MSC_MYSTATUSOFF:		// status[num] off
+				if( ms[i].cond2==-1 ){
+					int j;
+					for(j=SC_STONE;j<=SC_BLIND && !flag;j++){
+						flag=(md->sc_data[j].timer!=-1 );
+					}
+				}else
+					flag=( md->sc_data[ms[i].cond2].timer!=-1 );
+				flag^=( ms[i].cond1==MSC_MYSTATUSOFF ); break;
+			case MSC_FRIENDHPLTMAXRATE:	// friend HP < maxhp%
+				flag=(( fmd=mob_getfriendhpltmaxrate(md,ms[i].cond2) )!=NULL ); break;
+			case MSC_FRIENDSTATUSON:	// friend status[num] on
+			case MSC_FRIENDSTATUSOFF:	// friend status[num] off
+				flag=(( fmd=mob_getfriendstatus(md,ms[i].cond1,ms[i].cond2) )!=NULL ); break;
 			case MSC_SLAVELT:		// slave < num
 				flag=( mob_countslave(md) < c2 ); break;
 			case MSC_ATTACKPCGT:	// attack pc > num
@@ -2756,25 +2838,42 @@ int mobskill_use(struct mob_data *md,unsigned int tick,int event)
 
 			if( skill_get_inf(ms[i].skill_id)&2 ){
 				// 場所指定
-				struct block_list *bl;
+				struct block_list *bl = NULL;
 				int x=0,y=0;
-				if( ms[i].target<2 ){
-					bl=((ms[i].target==MST_TARGET)?map_id2bl(md->target_id):&md->bl);
+				if( ms[i].target<=MST_AROUND ){
+					bl= ((ms[i].target==MST_TARGET)? map_id2bl(md->target_id):
+						 (ms[i].target==MST_FRIEND)? &fmd->bl : &md->bl);
 					if(bl!=NULL){
 						x=bl->x; y=bl->y;
 					}
 				}
 				if( x<=0 || y<=0 )
 					continue;
+				// 自分の周囲
+				if( ms[i].target>=MST_AROUND1 ){
+					int bx=x, by=y, i=0, c, m=bl->m, r=ms[i].target-MST_AROUND1;
+					do{
+						bx=x + rand()%(r*2+3) - r;
+						by=y + rand()%(r*2+3) - r;
+					}while( ( bx<=0 || by<=0 || bx>=map[m].xs || by>=map[m].ys ||
+						((c=read_gat(m,bx,by))==1 || c==5) ) && (i++)<1000);
+					if(i<1000){
+						x=bx; y=by;
+					}
+				}
 
 				if(!mobskill_use_pos(md,x,y,i))
 					return 0;
 
 			}else{
 				// ID指定
-				if( ms[i].target<2 )
-					if(!mobskill_use_id(md,((ms[i].target==MST_TARGET)?NULL:&md->bl),i))
+				if( ms[i].target<=MST_FRIEND ){
+					struct block_list *bl = NULL;
+					bl= ((ms[i].target==MST_TARGET)? map_id2bl(md->target_id):
+						 (ms[i].target==MST_FRIEND)? &fmd->bl : &md->bl);
+					if(!mobskill_use_id(md,bl,i))
 						return 0;
+			}
 			}
 			return 1;
 		}
@@ -3113,17 +3212,17 @@ static int mob_readskilldb(void)
 	char line[1024];
 	int i;
 
-	static struct {
+	const struct {
 		char str[32];
 		int id;
 	} cond1[] = {
 		{	"always",			MSC_ALWAYS				},
 		{	"myhpltmaxrate",	MSC_MYHPLTMAXRATE		},
 		{	"friendhpltmaxrate",MSC_FRIENDHPLTMAXRATE	},
-		{	"mystatuseq",		MSC_MYSTATUSEQ			},
-		{	"mystatusne",		MSC_MYSTATUSNE			},
-		{	"friendstatuseq",	MSC_FRIENDSTATUSEQ		},
-		{	"friendstatusne",	MSC_FRIENDSTATUSNE		},
+		{	"mystatuson",		MSC_MYSTATUSON			},
+		{	"mystatusoff",		MSC_MYSTATUSOFF			},
+		{	"friendstatuson",	MSC_FRIENDSTATUSON		},
+		{	"friendstatusoff",	MSC_FRIENDSTATUSOFF		},
 		{	"attackpcgt",		MSC_ATTACKPCGT			},
 		{	"attackpcge",		MSC_ATTACKPCGE			},
 		{	"slavelt",			MSC_SLAVELT				},
@@ -3132,7 +3231,38 @@ static int mob_readskilldb(void)
 		{	"longrangeattacked",MSC_LONGRANGEATTACKED	},
 		{	"skillused",		MSC_SKILLUSED			},
 		{	"casttargeted",		MSC_CASTTARGETED		},
+	}, cond2[] ={
+		{	"anybad",		-1				},
+		{	"stone",		SC_STONE		},
+		{	"freeze",		SC_FREEZE		},
+		{	"stan",			SC_STAN			},
+		{	"sleep",		SC_SLEEP		},
+		{	"poison",		SC_POISON		},
+		{	"curse",		SC_CURSE		},
+		{	"silence",		SC_SILENCE		},
+		{	"confusion",	SC_CONFUSION	},
+		{	"blind",		SC_BLIND		},
+		{	"hiding",		SC_HIDING		},
+		{	"sight",		SC_SIGHT		},
+	}, state[] = {
+		{	"any",		-1			},
+		{	"idle",		MSS_IDLE	},
+		{	"walk",		MSS_WALK	},
+		{	"attack",	MSS_ATTACK	},
+		{	"dead",		MSS_DEAD	},
+		{	"loot",		MSS_LOOT	},
+		{	"chase",	MSS_CHASE	},
+	}, target[] = {
+		{	"target",	MST_TARGET	},
+		{	"self",		MST_SELF	},
+		{	"friend",	MST_FRIEND	},
+		{	"around1",	MST_AROUND1	},
+		{	"around2",	MST_AROUND2	},
+		{	"around3",	MST_AROUND3	},
+		{	"around4",	MST_AROUND4	},
+		{	"around",	MST_AROUND	},
 	};
+	
 	int x;
 	char *filename[]={ "db/mob_skill_db.txt","db/mob_skill_db2.txt" };
 
@@ -3178,13 +3308,10 @@ static int mob_readskilldb(void)
 			}
 		
 			ms->state=atoi(sp[2]);
-			if( strcmp(sp[2],"any")==0 ) ms->state=-1;
-			if( strcmp(sp[2],"idle")==0 ) ms->state=MSS_IDLE;
-			if( strcmp(sp[2],"walk")==0 ) ms->state=MSS_WALK;
-			if( strcmp(sp[2],"attack")==0 ) ms->state=MSS_ATTACK;
-			if( strcmp(sp[2],"dead")==0 ) ms->state=MSS_DEAD;
-			if( strcmp(sp[2],"loot")==0 ) ms->state=MSS_LOOT;
-			if( strcmp(sp[2],"chase")==0 ) ms->state=MSS_CHASE;
+			for(j=0;j<sizeof(state)/sizeof(state[0]);j++){
+				if( strcmp(sp[2],state[j].str)==0)
+					ms->state=state[j].id;
+			}
 			ms->skill_id=atoi(sp[3]);
 			ms->skill_lv=atoi(sp[4]);
 			ms->permillage=atoi(sp[5]);
@@ -3193,14 +3320,20 @@ static int mob_readskilldb(void)
 			ms->cancel=atoi(sp[8]);
 			if( strcmp(sp[8],"yes")==0 ) ms->cancel=1;
 			ms->target=atoi(sp[9]);
-			if( strcmp(sp[9],"self")==0 )ms->target=MST_SELF;
-			if( strcmp(sp[9],"target")==0 )ms->target=MST_TARGET;
+			for(j=0;j<sizeof(target)/sizeof(target[0]);j++){
+				if( strcmp(sp[9],target[j].str)==0)
+					ms->target=target[j].id;
+			}
 			ms->cond1=-1;
 			for(j=0;j<sizeof(cond1)/sizeof(cond1[0]);j++){
 				if( strcmp(sp[10],cond1[j].str)==0)
 					ms->cond1=cond1[j].id;
 			}
 			ms->cond2=atoi(sp[11]);
+			for(j=0;j<sizeof(cond2)/sizeof(cond2[0]);j++){
+				if( strcmp(sp[11],cond2[j].str)==0)
+					ms->cond2=cond2[j].id;
+			}
 			ms->val[0]=atoi(sp[12]);
 			ms->val[1]=atoi(sp[13]);
 			ms->val[2]=atoi(sp[14]);

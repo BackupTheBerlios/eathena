@@ -837,7 +837,7 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 
 //FIX change Ugly Dance to sp from hp somewhere
 	map_freeblock_lock();
-	/* 実際に?メ?ジ処理を行う */
+	/* 実際にダメージ処理を行う */
 	if(skillid != KN_BOWLINGBASH || flag)
 		battle_damage(src,bl,damage);
 	if(skillid == RG_INTIMIDATE && damage > 0 && !(battle_get_mode(bl)&0x20) && !map[src->m].flag.gvg ) {
@@ -1659,7 +1659,12 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 			int heal;
 			heal = skill_attack((skillid==NPC_BLOODDRAIN)?BF_WEAPON:BF_MAGIC,src,src,bl,skillid,skilllv,tick,flag);
 			if( heal > 0 ){
-				clif_skill_nodamage(src,src,AL_HEAL,heal,1);
+				struct block_list tbl;
+				tbl.id = 0;
+				tbl.m = src->m;
+				tbl.x = src->x;
+				tbl.y = src->y;
+				clif_skill_nodamage(&tbl,src,AL_HEAL,heal,1);
 				battle_heal(NULL,src,heal,0);
 			}
 		}
@@ -1873,7 +1878,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case SA_FROSTWEAPON:	/* フロストウェポン */
 	case SA_LIGHTNINGLOADER:/* ライトニングローダー */
 	case SA_SEISMICWEAPON:	/* サイズミックウェポン */
-		clif_skill_nodamage( (skillid==PR_KYRIE)?bl:src,bl,skillid,skilllv,1);
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		if( bl->type==BL_PC && ((struct map_session_data *)bl)->special_state.no_magic_damage )
 			break;
 		skill_status_change_start(bl,SkillStatusChangeTable[skillid],skilllv,0,0,0,skill_get_time(skillid,skilllv),0 );
@@ -4636,7 +4641,7 @@ int skill_use_pos( struct map_session_data *sd,
 	bl.y = skill_y;
 	range = skill_get_range(skill_num,skill_lv);
 	if(range < 0)
-		range = battle_get_range(&sd->bl) - (range - 1);
+		range = battle_get_range(&sd->bl) - (range + 1);
 	if(!battle_check_range(&sd->bl,&bl,range) )
 		return 0;
 
