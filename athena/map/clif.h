@@ -129,6 +129,8 @@ int clif_produceeffect(struct map_session_data *sd,int flag,int nameid);
 int clif_skill_setunit(struct skill_unit *unit);
 int clif_skill_delunit(struct skill_unit *unit);
 
+int clif_01ac(struct block_list *bl);
+
 int clif_spiritball(struct map_session_data *sd);
 int clif_combo_delay(struct block_list *src,int wait);
 int clif_changemapcell(int m,int x,int y,int cell_type,int type);
@@ -181,8 +183,6 @@ int clif_party_message(struct party *p,int account_id,char *mes,int len);
 int clif_party_move(struct party *p,struct map_session_data *sd,int online);
 int clif_party_xy(struct party *p,struct map_session_data *sd);
 int clif_party_hp(struct party *p,struct map_session_data *sd);
-
-int clif_mob_hp(struct mob_data *md,unsigned char *buf);
 
 // guild
 int clif_guild_created(struct map_session_data *sd,int flag);
