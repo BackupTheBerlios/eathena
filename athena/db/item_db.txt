@@ -1310,4 +1310,44 @@
 10017,Bark_Shorts,Bark Shorts,8,20,,0,,,,,,,,,,,{},{}
 10018,Monkey_Circlet,Monkey Circlet,8,20,,0,,,,,,,,,,,{},{}
 10019,Red_Muffler,Red Muffler,8,20,,0,,,,,,,,,,,{},{}
-10020,Sword_of_grave_keeper,Sword of Chinese Exorcist,8,20,,0,,,,,,,,,,,{},{}
+10020,Sword_of_Grave_Keeper,Sword of Chinese Exorcist,8,20,,0,,,,,,,,,,,{},{}
+
+//Ep6 items by Akaru - Working like official servers
+664,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+665,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+666,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+667,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+668,Angpow,Angpow,0,1,,2,,,,,10477567,2,,,,,{ set Zeny,Zeny+rand(100,10000); },{}
+
+//Not sure of functions in official servers
+2634,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,0,136,,,0,{},{,},
+2635,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,1,136,,,0,{},{,},
+2636,Gold Christmas Ring,Gold Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{,},
+2637,Silver Christmas Ring,Silver Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{,},
+552,Ketupat,Ketupat,0,50,,10,,,,,10477567,2,,,,,{ itemheal rand(100,200),0; },{}
+553,Dumpling,Dumpling,0,50,,50,,,,,10477567,2,,,,,{ itemheal rand(100,200),0; },{}
+554,Mochi,Mochi,0,50,,80,,,,,10477567,2,,,,,{ itemheal rand(100,200),0; },{}
+555,∂±,∂±,3,,,10,,,,,,,,,,,{},{},,
+556,∞°∑°∂±,∞°∑°∂±,3,,,10,,,,,,,,,,,{},{},,
+557,øπª⁄∞‘_Ω‰∏∞_∞°∑°∂±,øπª⁄∞‘_Ω‰∏∞_∞°∑°∂±,3,,,10,,,,,,,,,,,{},{},,
+669,∏¿¿÷∞‘_∫∏¿Ã¥¬_∂±±π,∏¿¿÷∞‘_∫∏¿Ã¥¬_∂±±π,3,,,10,,,,,,,,,,,{},{}
+7161,Skin of the Black Bear,Skin of the Black Bear,3,,,10,,,,,,,,,,,{},{},,
+7162,Piece of Cloud,Piece of Cloud,3,,,10,,,,,,,,,,,{},{}
+7163,Hard Antennae,Hard Antennae,3,,,10,,,,,,,,,,,{},{}
+7164,Very Hard Peach,Very Hard Peach,3,,,10,,,,,,,,,,,{},{}
+7165,Etherial Winged Clothing,Etherial Winged Clothing,3,,,10,,,,,,,,,,,{},{}
+7166,Soft Silk Fabric,Soft Silk Fabric,3,,,10,,,,,,,,,,,{},{}
+7167,Strange Piece of Iron,Strange Piece of Iron,3,,,10,,,,,,,,,,,{},{}
+7168,Big Wing of Butterfly,Big Wing of Butterfly,3,,,10,,,,,,,,,,,{},{}
+7169,Tae Guk Tablet,Tae Guk Tablet,3,,,10,,,,,,,,,,,{},{}
+7171,Skin of Panther,Skin of Panther,3,,,10,,,,,,,,,,,{},{}
+7172,Claw of Panther,Claw of Panther,3,,,10,,,,,,,,,,,{},{}
+7173,Bun Buster Bag,Bun Buster Bag,3,,,10,,,,,,,,,,,{},{}
+7174,Wrapping Thread,Wrapping Thread,3,,,10,,,,,,,,,,,{},{}
+7175,Wrapper,Wrapper,3,,,10,,,,,,,,,,,{},{}
+7176,King's Proof Document,King's Proof Document,3,,,10,,,,,,,,,,,{},{}
+7177,∫∞∫˚¿«_»Â¥¿≥¶_¡∂∞¢,∫∞∫˚¿«_»Â¥¿≥¶_¡∂∞¢,3,,,10,,,,,,,,,,,{},{}
+7178,∫∞∫˚¿«_»Â¥¿≥¶,∫∞∫˚¿«_»Â¥¿≥¶,3,,,10,,,,,,,,,,,{},{}
+7179,º∫±›_±‚∫Œ¡ı∏Ìº≠,º∫±›_±‚∫Œ¡ı∏Ìº≠,3,,,10,,,,,,,,,,,{},{}
+7180,«—ºÆ∫¿¿«_º“∞≥¿Â,«—ºÆ∫¿¿«_º“∞≥¿Â,3,,,100,,,,,,,,,,,{},{}
+7181,π∞«∞_ºˆ∑…_øµºˆ¡ı,π∞«∞_ºˆ∑…_øµºˆ¡ı,3,,,0,,,,,,,,,,,{},{}
