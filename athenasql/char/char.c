@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.1 2004/02/15 19:23:45 rovert Exp $
+// $Id: char.c,v 1.2 2004/02/17 04:48:07 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 //
 // original code from athena
@@ -466,7 +466,7 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 	for(i=1;i<dbnoteqcount;i++){
 		//printf("dbitem.notequip[i].flag = %d , dbitem.notequip[i].id = %d\n",dbitem.notequip[i].flag,dbitem.notequip[i].id);
 		if(!(dbitem.notequip[i].flag==1)){
-			sprintf(tmp_sql,"DELETE from `%s` where `id`='%d' ;\n", tablename, dbitem.notequip[i].id);
+			sprintf(tmp_sql,"DELETE from `%s` where `id`='%d'", tablename, dbitem.notequip[i].id);
 			//printf("%s", tmp_sql);
 			if(mysql_query(&cmysql_handle, tmp_sql) )
 				printf("DB server Error (DELETE `notequ %s`)- %s\n", tablename ,mysql_error(&cmysql_handle) );

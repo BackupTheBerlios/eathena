@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.1 2004/02/15 19:23:45 rovert Exp $
+// $Id: itemdb.c,v 1.2 2004/02/17 04:48:07 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
