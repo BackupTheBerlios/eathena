@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.6 2004/02/13 21:45:31 rovert Exp $
+// $Id: login.c,v 1.7 2004/02/15 13:33:04 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -58,7 +58,6 @@ int access_allownum=0;
 int access_denynum=0;
 char *access_allow=NULL;
 char *access_deny=NULL;
-
 
 #define AUTH_FIFO_SIZE 256
 struct {
@@ -158,7 +157,7 @@ int check_ip(unsigned int ip)
 	//   ‘Î‰‚µ‚½‚Ù‚¤‚ª‚¢‚¢‚Æv‚í‚ê‚éB
 	// + .ne.jp‚È‚Ç‚ÌDNSŒã•ûˆê’v‚ÍƒzƒXƒg–¼‹tˆø‚«‚ÌƒRƒXƒg‚ğl‚¦‚é‚Æ
 	//   ‘Î‰‚µ‚È‚¢‚Ù‚¤‚ª‚¢‚¢‚Æv‚í‚ê‚éB(’Z‚¢ŠÔ‚ÅDNS‚ªˆø‚¯‚é•Ûá‚Í‚È‚¢‚µA
-	//   ÀÛ‚Éƒ^ƒCƒ€ƒAƒEƒg‚Ü‚Å1•ª‹ß‚­‘Ò‚½‚³‚ê‚éƒP[ƒX‚ª‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚¢‚é)
+	//   ÀÛ‚Éƒ^ƒCƒ€ƒAƒEƒg‚Ü‚Å1•ª‹ß‚­‘Ò‚½‚³‚ê‚éƒP[ƒX‚ª‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚¢‚é)
 	//   ‘Î‰‚³‚¹‚é‚È‚ç”ñ“¯Šú‚ÉDNS‚ğˆø‚­‚©A‹É’Z‚¢ŠÔ‚Åƒ^ƒCƒ€ƒAƒEƒg‚ğ‚Æ‚é‚×‚«.
 	sprintf(buf,"%d.%d.%d.%d",p[0],p[1],p[2],p[3]);
 	
@@ -167,7 +166,7 @@ int check_ip(unsigned int ip)
 			strlen(access_allow+i*ACO_STRSIZE))==0){
 			flag=ACF_ALLOW;
 			if( access_order==ACO_DENY_ALLOW )
-				return 1;	// deny,allow ‚È‚çallow‚É‚ ‚Á‚½“_‚Å‹–‰Â
+				return 1;	// deny,allow ‚È‚çallow‚É‚ ‚Á‚½“_‚Å‹–‰Â
 			break;
 		}
 	}
@@ -175,7 +174,7 @@ int check_ip(unsigned int ip)
 		if( memcmp(access_deny+i*ACO_STRSIZE,buf,
 			strlen(access_deny+i*ACO_STRSIZE))==0){
 			flag=ACF_DENY;
-			return 0;		// deny‚É‚ ‚é‚Æ•s‹–‰Â
+			return 0;		// deny‚É‚ ‚é‚Æ•s‹–‰Â
 			break;
 		}
 	}
@@ -466,7 +465,7 @@ int parse_fromchar(int fd)
       break;
 	
 	case 0x2720:	// GM
-	  {
+/*	  {
 	  	int newacc=0,oldacc,i=0,j;
 		if(RFIFOREST(fd)<4)
 			return 0;
@@ -500,7 +499,7 @@ int parse_fromchar(int fd)
 		WFIFOL(fd,2)=oldacc;
 		WFIFOL(fd,6)=newacc;
 		WFIFOSET(fd,10);
-	  }
+	  }*/
 	  return 0;
 
 	case 0x2722:	// changesex
@@ -686,7 +685,6 @@ int parse_login(int fd)
   }
   if(RFIFOW(fd,0)<30000)
 	  printf("parse_login : %d %d %d %s\n",fd,RFIFOREST(fd),RFIFOW(fd,0),RFIFOP(fd,6));
-
   while(RFIFOREST(fd)>=2){
 	switch(RFIFOW(fd,0)){
 	case 0x64:		// ƒNƒ‰ƒCƒAƒ“ƒgƒƒOƒCƒ“—v‹
@@ -995,5 +993,6 @@ int do_init(int argc,char **argv)
 	read_gm_account();
   set_termfunc(mmo_auth_sync);
   set_defaultparse(parse_login);
+
   return 0;
 }
