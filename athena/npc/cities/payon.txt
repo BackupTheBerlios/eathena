@@ -391,7 +391,7 @@ payon_in01.gat,164,165,2	script	Monster Scholar	98,{
 }
 
 payon_in01.gat,174,113,2	script	Marx Hansen	86,{
-	if(marx_hansen==1) goto FJL0;
+	if( mother_marienu==2) goto FJL0;
 	mes "[Merchant Marx Hansen]";
 	mes "Welcome to my shop. What brings you here?";
 	next;
@@ -407,8 +407,6 @@ payon_in01.gat,174,113,2	script	Marx Hansen	86,{
 		mes "Nowadays as everything is getting flooded enough in the world, young people doesn't seem to enjoy fruits like the past.";
 		mes "So I wanted to let them realise how much fruits are good for thier health";
 		mes "And I figured out when we grind fruits to make them into liquid ones, they become more digestive and more tasty.";
-		mes "If you come again you can buy some of the juices i made";
-		set marx_hansen,1;
 		close;
 	L1:
 		mes "[Merchant Marx Hansen]";
