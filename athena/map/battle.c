@@ -857,7 +857,6 @@ int battle_calc_damage(struct block_list *bl,int damage,int skill_num,int skill_
 					((struct mob_data *)bl)->canmove_tick = gettick() + 300;
 			}
 		}
-
 	}
 
 	if(	damage>0 && sc_data!=NULL && (
@@ -1297,6 +1296,9 @@ static struct Damage battle_calc_pet_weapon_attack(
 
 	if(skill_num != CR_GRANDCROSS)
 		damage=battle_calc_damage(target,damage,skill_num,skill_lv,flag);
+
+	if(target->type==BL_MOB && tmd->class == 1288)
+		damage=0;
 
 	wd.damage=damage;
 	wd.damage2=0;
@@ -2347,6 +2349,9 @@ static struct Damage battle_calc_pc_weapon_attack(
 		}
 	}
 
+	if(target->type==BL_MOB && tmd->class == 1288 && pc_checkskill(sd,GD_APPROVAL)<=0)
+		damage=0;
+
 	wd.damage=damage;
 	wd.damage2=damage2;
 	wd.type=type;
@@ -2606,6 +2611,9 @@ struct Damage battle_calc_magic_attack(
 
 	damage=battle_calc_damage(target,damage,skill_num,skill_lv,aflag);	// 最終修正
 
+	if(target->type==BL_MOB && tmd->class == 1288 && pc_checkskill(sd,GD_APPROVAL)<=0)
+		damage=0;
+
 	md.damage=damage;
 	md.div_=div_;
 	md.amotion=battle_get_amotion(bl);
@@ -2715,6 +2723,9 @@ struct Damage  battle_calc_misc_attack(
 	}
 
 	damage=battle_calc_damage(target,damage,skill_num,skill_lv,aflag);	// 最終修正
+
+	if(target->type==BL_MOB && ((struct mob_data*)target)->class == 1288)
+		damage=0;
 
 	md.damage=damage;
 	md.div_=div_;
@@ -2849,7 +2860,7 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 		else
 			return -1;
 	}
-	
+
 //	if( target->type==BL_SKILL )	// 対 象がスキルユニットなら無条件肯定
 //		return 0;
 

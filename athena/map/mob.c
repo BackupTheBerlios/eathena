@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.7 2004/01/15 23:11:42 rovert Exp $
+// $Id: mob.c,v 1.8 2004/01/17 05:35:59 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1726,6 +1726,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 		party_exp_share(pt[i].p,md->bl.m,pt[i].base_exp,pt[i].job_exp);
 
 	// item drop
+    if(src)
 	for(i=0;i<8;i++){
 		struct delay_item_drop *ditem;
 		int drop_rate;
