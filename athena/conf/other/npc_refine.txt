@@ -24,7 +24,7 @@ input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -66,7 +66,7 @@ input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -108,7 +108,7 @@ input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -150,7 +150,7 @@ input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -195,7 +195,7 @@ input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
