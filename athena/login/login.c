@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.10 2004/02/22 06:04:38 rovert Exp $
+// $Id: login.c,v 1.11 2004/02/25 16:32:54 sara-chan Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -45,13 +45,6 @@ char GM_account_filename[1024] = "conf/GM_account.txt";
 
 struct mmo_char_server server[MAX_SERVERS];
 int server_fd[MAX_SERVERS];
-
-//Added for Mugendai's I'm Alive mod
-int imalive_on=0;
-int imalive_time=60;
-//Added by Mugendai for GUI
-int flush_on=0;
-int flush_time=100;
 
 enum {
 	ACO_DENY_ALLOW=0,
@@ -159,13 +152,13 @@ int check_ip(unsigned int ip)
 	if( access_allownum==0 && access_denynum==0 )
 		return 1;		// 制限を使わない場合は常に許可
 
-	// + 現在は 012.345. 形式の前方一致と all のみ対応。
-	// + 012.345.678.901/24 形式のネットマスク付き表記は対応してないが、
+	// + 現在は 012.345. ?式の前方一致と all のみ対応。
+	// + 012.345.678.901/24 ?式のネット?スク付き?記は対応してないが、
 	//   対応したほうがいいと思われる。
 	// + .ne.jpなどのDNS後方一致はホスト名逆引きのコストを考えると
 	//   対応しないほうがいいと思われる。(短い時間でDNSが引ける保障はないし、
-	//   実際にタイムアウトまで1分近く待たされるケースがあることを確認している)
-	//   対応させるなら非同期にDNSを引くか、極短い時間でタイムアウトをとるべき.
+	//   実際に?イ?アウトまで1分近く待たされるケ?スがあることを確認している)
+	//   対応させるなら非同期にDNSを引くか、極短い時間で?イ?アウトをとるべき.
 	sprintf(buf,"%d.%d.%d.%d",p[0],p[1],p[2],p[3]);
 	
 	for(i=0;i<access_allownum;i++){
@@ -173,7 +166,7 @@ int check_ip(unsigned int ip)
 			strlen(access_allow+i*ACO_STRSIZE))==0){
 			flag=ACF_ALLOW;
 			if( access_order==ACO_DENY_ALLOW )
-				return 1;	// deny,allow ならallowにあった時点で許可
+				return 1;	// deny,allow ならallowにあった時?で許可
 			break;
 		}
 	}
@@ -191,7 +184,7 @@ int check_ip(unsigned int ip)
 }
 
 
-// アカウントデータベースの読み込み
+// アカウントデ??ベ?スの読み込み
 int mmo_auth_init(void)
 {
 	FILE *fp;
@@ -216,7 +209,7 @@ int mmo_auth_init(void)
 			strncpy(auth_dat[auth_num].lastlogin,lastlogin,24);
 			auth_dat[auth_num].sex = sex == 'S' ? 2 : sex=='M';
 
-//データが足りないときの補完
+//デ??が足りないときの補完
 			if(i>=6)
 				auth_dat[auth_num].logincount=logincount;
 			else
@@ -237,7 +230,7 @@ int mmo_auth_init(void)
 	return 0;
 }
 
-// アカウントデータベースの書き込み
+// アカウントデ??ベ?スの書き込み
 void mmo_auth_sync(void)
 {
 	FILE *fp;
@@ -291,17 +284,16 @@ int mmo_auth( struct mmo_account* account )
 	char md5str[md5keylen+32],md5bin[32];
 
 	len=strlen(account->userid)-2;
-	if(account->passwdenc==0 && account->userid[len]=='_' &&
-		(account->userid[len+1]=='F' || account->userid[len+1]=='M') &&
-		new_account_flag == 1 && account_id_count < END_ACCOUNT_NUM){
-
-    
-	//Enables _M _F account creation, added by Mugendai via AjSS15822's instructions
-	newaccount=1;
-	account->userid[len]=0;
-	//Enables _M _F account creation, added by Mugendai via AjSS15822's instructions
-
-	/*char *adm_pass=strchr(account->passwd,'@');
+	// Re-added _M _F account creation - Sara
+	if(account->passwdenc==0 && account->userid[len]=='_' && (strncmp(account->userid,"\n",1) != 0) && (account->userid[len+1]=='F' || account->userid[len+1]=='M') && new_account_flag == 1 && account_id_count < END_ACCOUNT_NUM){
+		if(new_account_flag == 1){
+	  		newaccount=1;
+		} else {
+			newaccount=0;
+		}
+		account->userid[len]=0;
+	}
+    char *adm_pass=strchr(account->passwd,'@');
 	if(adm_pass==NULL)
 		adm_pass="";
 	else
@@ -310,12 +302,12 @@ int mmo_auth( struct mmo_account* account )
 	if(strcmp(adm_pass,admin_pass)==0){
 		if(adm_pass[0])
 			*(adm_pass-1)=0;
-		
+/*		
 		newaccount=1;
 	    account->userid[len]=0;
 	}else
-		account->userid[0]=0;*/
-
+		account->userid[0]=0;
+*/
 	}
 	gettimeofday(&tv,NULL);
 	strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
@@ -613,7 +605,7 @@ int parse_admin(int fd)
 			WFIFOSET(fd,28);
 			RFIFOSKIP(fd,RFIFOW(fd,2));
 			break;
-		case 0x7934:	// パスワード変更
+		case 0x7934:	// パスワ?ド変更
 			WFIFOW(fd,0)=0x7935;
 			WFIFOW(fd,2)=1;
 			memcpy(WFIFOP(fd,4),RFIFOP(fd,4),24);
@@ -706,7 +698,7 @@ int parse_login(int fd)
 		}
 
 		if( !check_ip(session[fd]->client_addr.sin_addr.s_addr) ){
-			struct timeval tv;
+		  struct timeval tv;
 			char tmpstr[256];
 			gettimeofday(&tv,NULL);
 			strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
@@ -774,7 +766,7 @@ int parse_login(int fd)
 		WFIFOSET(fd,WFIFOW(fd,2));
 		break;
 		
-	case 0x2710:	// Charサーバー接続要求
+	case 0x2710:	// Charサ?バ?接続要求
 		if(RFIFOREST(fd)<76)
 			return 0;
 		{
@@ -827,7 +819,7 @@ int parse_login(int fd)
 		session[fd]->eof=1;
 		return 0;
 	
-	case 0x7918:	// 管理モードログイン
+	case 0x7918:	// 管理モ?ドログイン
 		if(RFIFOREST(fd)<4 || RFIFOREST(fd)<RFIFOW(fd,2))
 			return 0;
 		WFIFOW(fd,0)=0x7919;
@@ -970,38 +962,10 @@ int login_config_read(const char *cfgName)
 				access_deny[(access_denynum++)*ACO_STRSIZE]=0;
 			else if(w2[0])
 				strcpy( access_deny+(access_denynum++)*ACO_STRSIZE,w2 );
-		} else if(strcmpi(w1,"imalive_on")==0){		//Added by Mugendai for I'm Alive mod
-			imalive_on = atoi(w2);					//Added by Mugendai for I'm Alive mod
-		} else if(strcmpi(w1,"imalive_time")==0){	//Added by Mugendai for I'm Alive mod
-			imalive_time = atoi(w2);				//Added by Mugendai for I'm Alive mod
-		} else if(strcmpi(w1,"flush_on")==0){		//Added by Mugendai for GUI
-			flush_on = atoi(w2);					//Added by Mugendai for GUI
-		} else if(strcmpi(w1,"flush_time")==0){		//Added by Mugendai for GUI
-			flush_time = atoi(w2);					//Added by Mugendai for GUI
 		}
 	}
 	fclose(fp);
 
-	return 0;
-}
-
-//-----------------------------------------------------
-//I'm Alive Alert
-//Used to output 'I'm Alive' every few seconds
-//Intended to let frontends know if the app froze
-//-----------------------------------------------------
-int imalive_timer(int tid, unsigned int tick, int id, int data){
-	printf("I'm Alive\n");
-
-	return 0;
-}
-
-//-----------------------------------------------------
-//Flush stdout
-//stdout buffer needs flushed to be seen in GUI
-//-----------------------------------------------------
-int flush_timer(int tid, unsigned int tick, int id, int data){
-	fflush(stdout);
 	return 0;
 }
 
@@ -1029,18 +993,4 @@ int do_init(int argc,char **argv)
   mmo_auth_init();
 	read_gm_account();
   set_termfunc(mmo_auth_sync);
-  set_defaultparse(parse_login);
-
-	//Added for Mugendais I'm Alive mod
-	if (imalive_on)
-	{
-		add_timer_interval(gettick()+10, imalive_timer,0,0,imalive_time*1000);
-	}
-	//Added by Mugendai for GUI support
-	if (imalive_on)
-	{
-		add_timer_interval(gettick()+10, flush_timer,0,0,flush_time);
-	}
-
-  return 0;
-}
+  set_defaultp
