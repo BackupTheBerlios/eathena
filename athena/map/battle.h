@@ -1,6 +1,6 @@
 #ifndef _BATTLE_H_
 #define _BATTLE_H_
-
+//.
 // ƒ_ƒ[ƒW
 struct Damage {
 	int damage,damage2;

@@ -1,13 +1,13 @@
 #ifndef _SKILL_H_
 #define _SKILL_H_
-
+//.
 #include "map.h"
 
 #define MAX_SKILL_DB			350
 #define MAX_SKILL_PRODUCE_DB	 150
 #define MAX_SKILL_ARROW_DB	 150
 
-// スキルデータベース
+// スキルデ??ベ?ス
 struct skill_db {
 	int range[MAX_SKILL_LEVEL],hit,inf,pl,nk,max;
 	int num[MAX_SKILL_LEVEL];
@@ -22,7 +22,7 @@ struct skill_db {
 };
 extern struct skill_db skill_db[MAX_SKILL_DB];
 
-// アイテム作成データベース
+// アイテ?作成デ??ベ?ス
 struct skill_produce_db {
 	int nameid, trigger;
 	int req_skill,itemlv;
@@ -30,7 +30,7 @@ struct skill_produce_db {
 };
 extern struct skill_produce_db skill_produce_db[MAX_SKILL_PRODUCE_DB];
 
-// 矢作成データベース
+// 矢作成デ??ベ?ス
 struct skill_arrow_db {
 	int nameid, trigger;
 	int cre_id[5],cre_amount[5];
@@ -44,7 +44,7 @@ struct skill_unit_group;
 
 int do_init_skill(void);
 
-// スキルデータベースへのアクセサ
+// スキルデ??ベ?スへのアクセサ
 int	skill_get_hit( int id );
 int	skill_get_inf( int id );
 int	skill_get_pl( int id );
@@ -120,7 +120,7 @@ void skill_devotion_end(struct map_session_data *md,struct map_session_data *sd,
 // その他
 int skill_check_cloaking(struct block_list *bl);
 
-// ステータス異常
+// ステ??ス異常
 int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,int val3,int val4,int tick,int flag);
 int skill_status_change_timer(int tid, unsigned int tick, int id, int data);
 int skill_encchant_eremental_end(struct block_list *bl, int type);
@@ -128,7 +128,7 @@ int skill_status_change_end( struct block_list* bl , int type,int tid );
 int skill_status_change_clear(struct block_list *bl);
 
 
-// アイテム作成
+// アイテ?作成
 int skill_can_produce_mix( struct map_session_data *sd, int nameid, int trigger );
 int skill_produce_mix( struct map_session_data *sd,
 	int nameid, int slot1, int slot2, int slot3 );
@@ -149,7 +149,7 @@ enum {
 	ST_RECOV_WEIGHT_RATE,ST_MOVE_ENABLE,ST_WATER,
 };
 
-enum {	// struct map_session_data の status_changeの番号テーブル
+enum {	// struct map_session_data の status_changeの番号テ?ブル
 // SC_SENDMAX未満はクライアントへの通知あり。
 // 2-2次職の値はなんかめちゃくちゃっぽいので暫定。たぶん変更されます。
 	SC_SENDMAX				=128,

@@ -1,6 +1,6 @@
 #ifndef _CLIF_H_
 #define _CLIF_H_
-
+//.
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
