@@ -3596,6 +3596,20 @@ int pc_readparam(struct map_session_data *sd,int type)
 	case SP_MAXWEIGHT:
 		val= sd->max_weight;
 		break;
+		
+	case SP_BASEEXP:
+		val= sd->status.base_exp;
+		break;
+	case SP_JOBEXP:
+		val= sd->status.job_exp;
+		break;
+	case SP_NEXTBASEEXP:
+		val= pc_nextbaseexp(sd);
+		break;
+	case SP_NEXTJOBEXP:
+		val= pc_nextjobexp(sd);
+		break;
+
 	}
 
 	return val;
@@ -3617,6 +3631,25 @@ int pc_setparam(struct map_session_data *sd,int type,int val)
 		break;
 	case SP_ZENY:
 		sd->status.zeny = val;
+		break;
+
+	case SP_BASEEXP:
+		if(pc_nextbaseexp(sd) != 0)
+		{
+			sd->status.base_exp = val;
+			if(sd->status.base_exp < 0)
+				sd->status.base_exp=0;
+			pc_checkbaselevelup(sd);
+		}
+		break;
+	case SP_JOBEXP:
+		if(pc_nextjobexp(sd) != 0)
+		{
+			sd->status.job_exp = val;
+			if(sd->status.job_exp < 0)
+				sd->status.job_exp=0;
+			pc_checkjoblevelup(sd);
+		}
 		break;
 
 	}

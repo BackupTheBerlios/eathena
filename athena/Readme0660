@@ -1,4 +1,17 @@
 --------------
+//0702 by ぽぽぽ
+
+・ファーマシーのエフェクトを本来のものに変更
+・スクリプトでの埋め込み変数にBaseExp,JobExp,NextBaseExp,NextJobExp追加
+	(map/)
+	skill.c
+		skill_produce_mix() 修正。
+	pc.c
+		pc_readparam()、pc_setparam() 修正。
+	(db/)
+		const.txt 修正。
+
+--------------
 //0701 by ぴざまん
 
 ・ステータス異常判別式導入。各ステータス異常の発動率がVIT/INT/MDEFに影響するようになります。持続時間短縮はまた今度で_|￣|○

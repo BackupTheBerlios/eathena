@@ -5734,17 +5734,32 @@ int skill_produce_mix( struct map_session_data *sd,
 			tmp_item.card[1]=((sc*5)<<8)+ele;	/* 属性とつよさ */
 			*((unsigned long *)(&tmp_item.card[2]))=sd->char_id;	/* キャラID */
 		}
-		clif_produceeffect(sd,0,nameid);/* 製造エフェクトパケット */
+
+		if(equip)
+		{	//武器製造の場合
+			clif_produceeffect(sd,0,nameid);/* 武器製造エフェクトパケット */
 		clif_misceffect(&sd->bl,3); /* 他人にも成功を通知（精錬成功エフェクトと同じでいいの？） */
+		}else
+		{	//ファーマシーの場合
+			clif_produceeffect(sd,2,nameid);/* 製薬エフェクトパケット */
+			clif_misceffect(&sd->bl,5); /* 他人にも失敗を通知*/
+		}
+		
 		if((flag = pc_additem(sd,&tmp_item,1))) {
 			clif_additem(sd,0,0,flag);
 			map_addflooritem(&tmp_item,1,sd->bl.m,sd->bl.x,sd->bl.y);
 		}
 	}
 	else {
-		/* 失敗 */
-		clif_produceeffect(sd,1,nameid);/* 製造エフェクトパケット */
+		if(equip)
+		{	//武器製造の場合
+			clif_produceeffect(sd,1,nameid);/* 武器製造失敗エフェクトパケット */
 		clif_misceffect(&sd->bl,2); /* 他人にも失敗を通知 */
+		}else
+		{	//ファーマシーの場合
+			clif_produceeffect(sd,3,nameid);/* 製薬失敗エフェクトパケット */
+			clif_misceffect(&sd->bl,6); /* 他人にも失敗を通知*/
+		}
 	}
 	return 0;
 }
