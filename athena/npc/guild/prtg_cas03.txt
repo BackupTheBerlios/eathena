@@ -20,7 +20,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -49,7 +48,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -78,7 +76,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -107,7 +104,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -136,7 +132,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -165,7 +160,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -194,7 +188,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -223,7 +216,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -252,7 +244,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -281,7 +272,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -310,7 +300,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -339,7 +328,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -368,7 +356,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -397,7 +384,6 @@ LStartg:
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
-		mes "    this guild base isn't taken by";
 		mes "    ^ff0000" + GetGuildName(@GIDp3) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
