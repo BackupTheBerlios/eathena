@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.43 2004/02/13 21:42:03 rovert Exp $
+// $Id: mob.c,v 1.44 2004/02/16 19:48:53 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1844,11 +1844,11 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 
 	// mvp処理
 	if(mvp_sd && mob_db[md->class].mexp > 0 ){
+		int j;
 		int mexp = mob_db[md->class].mexp*(9+count)/10;
 		clif_mvp_effect(mvp_sd);					// エフェクト
-		clif_mvp_exp(mvp_sd,mexp);	// 無条件で経験値
-		pc_gainexp(mvp_sd,mexp,0);
-		for(i=0;i<3;i++){
+		for(j=0;j<3;j++){
+			i = rand() % 3;
 			struct item item;
 			int ret;
 			int drop_rate;
@@ -1865,7 +1865,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 				continue;
 			memset(&item,0,sizeof(item));
 			item.nameid=mob_db[md->class].mvpitem[i].nameid;
-			item.identify=1;
+			item.identify=!itemdb_isequip(item.nameid);
 			clif_mvp_item(mvp_sd,item.nameid);
 			if(mvp_sd->weight*2 > mvp_sd->max_weight)
 				map_addflooritem(&item,1,mvp_sd->bl.m,mvp_sd->bl.x,mvp_sd->bl.y,mvp_sd,second_sd,third_sd,1);
@@ -1875,6 +1875,10 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			}
 			break;
 		}
+		if(j == 3){
+			clif_mvp_exp(mvp_sd,mexp);	// アイテムが貰えなかった場合は経験値
+			pc_gainexp(mvp_sd,mexp,0);
+		}
 	}
 
 	// <Agit> NPC Event [OnAgitBreak]
@@ -1883,7 +1887,6 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 		if (agit_flag == 1) //Call to Run NPC_Event[OnAgitBreak]
 			guild_agit_break(md);
 	}
-
 
 	if(md->npc_event[0]){	// SCRIPT実行
 //		if(battle_config.battle_log)
@@ -2035,7 +2038,7 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	if( md==NULL || md->bl.prev==NULL )
 		return 0;
 
-	if(type>0) {
+	if(type >= 0) {
 		if(map[md->bl.m].flag.noteleport)
 			return 0;
 		clif_clearchar_area(&md->bl,type);
