@@ -5,13 +5,13 @@
 // クライアント側で未実装のものを書くとクライアントが重力エラー
 // そしてその敵がキャラクターの付近にいる間ログインできないので注意。
 
-0,PORING,Poring,1002
-1002,PORING,Poring,700000
-1062,SANTA_PORING,Santa Poring,200000
-1113,DROPS,Drops,500000
-1031,POPORING,Poporing,400000
-1242,MARIN,Marin,300000
-1090,MASTERING,Mastering,100000
-1120,GHOSTRING,Ghostring,50000
-1096,ANGELING,Angeling,50000
-1388,ARCHANGELING,Archangeling,10000
+0,Poring,1002
+1002,Poring,700000
+1062,Santa Poring,200000
+1113,Drops,500000
+1031,Poporing,400000
+1242,Marin,300000
+1090,Mastering,100000
+1120,Ghostring,50000
+1096,Angeling,50000
+1388,Archangeling,10000
