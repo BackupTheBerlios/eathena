@@ -1280,7 +1280,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 	// スキルやステータス異常による残りのパラメータ補正
 	if(sd->sc_count){
 		// ATK/DEF変化形
-		if(sd->sc_data[SC_VOLCANO].timer!=-1)	// エ?ジェ?ス
+		if(sd->sc_data[SC_VOLCANO].timer!=-1 && sd->def_ele == 3)	// エ?ジェ?ス
 			sd->watk += (sd->sc_data[SC_VOLCANO].val1 * 10);
 		if(sd->sc_data[SC_ANGELUS].timer!=-1)	// エンジェラス
 			sd->def2 = sd->def2*(110+5*sd->sc_data[SC_ANGELUS].val1)/100;
