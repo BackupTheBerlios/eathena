@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.18 2004/01/26 19:16:04 rovert Exp $
+// $Id: mob.c,v 1.19 2004/01/26 20:06:48 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -953,7 +953,7 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 
 	// 直前まで主が近くにいたのでテレポートして追いかける
 	if( old_dist<10 && md->master_dist>18){
-		mob_warp(md,mmd->bl.x,mmd->bl.y,3);
+		mob_warp(md,md->bl.x,md->bl.y,3);
 		md->state.master_check = 1;
 		return 0;
 	}
@@ -1905,9 +1905,8 @@ int mob_warpslave_sub(struct block_list *bl,va_list ap)
 	x=va_arg(ap,int);
 	y=va_arg(ap,int);
 	if( md->master_id==id ) {
-		mob_warp(md,x,y,3);
-printf("warp: %d %d %d\n",md->bl.id,x,y);
-}
+		mob_warp(md,x,y,2);
+	}
 	return 0;
 }
 
@@ -1915,12 +1914,11 @@ printf("warp: %d %d %d\n",md->bl.id,x,y);
  * Added by RoVeRT
  *------------------------------------------
  */
-int mob_warpslave(struct mob_data *md)
+int mob_warpslave(struct mob_data *md,int x, int y)
 {
-printf("warp start: %d %d %d\n",md->bl.id,md->bl.x,md->bl.y);
 	map_foreachinarea(mob_warpslave_sub, md->bl.m,
-		md->bl.x-AREA_SIZE,md->bl.y-AREA_SIZE,
-		md->bl.x+AREA_SIZE,md->bl.y+AREA_SIZE,BL_MOB,
+		x-AREA_SIZE,y-AREA_SIZE,
+		x+AREA_SIZE,y+AREA_SIZE,BL_MOB,
 		md->bl.id, md->bl.x, md->bl.y );
 	return 0;
 }
@@ -1931,7 +1929,7 @@ printf("warp start: %d %d %d\n",md->bl.id,md->bl.x,md->bl.y);
  */
 int mob_warp(struct mob_data *md,int x,int y,int type)
 {
-	int m,i=0,c,xs=0,ys=0,bx=x,by=y;
+	int m,i=0,c,xs=0,ys=0,bx=x,by=y,lx=x,ly=y;
 	if( md==NULL || md->bl.prev==NULL )
 		return 0;
 
@@ -1959,6 +1957,8 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	}
 	md->dir=0;
 	if(i<1000){
+		lx=md->bl.x;
+		ly=md->bl.y;
 		md->bl.x=x;
 		md->bl.y=y;
 	}else {
@@ -1981,7 +1981,7 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	if(type>0)
 		clif_spawnmob(md);
 
-	mob_warpslave(md);
+	mob_warpslave(md,lx,ly);
 
 	return 0;
 }
