@@ -1,4 +1,29 @@
 --------------
+//0712 by 死神
+
+・シールドチャージ、シールドブーメラン実装。
+・オートガードはとりあえずエフェクト出るように変更しました。
+・0708で書き忘れ。ディフェンダーを使った時ASPDと移動速度は20%低下します。
+本鯖で低下するのは確かのようですがどれぐらい下がるのかはさっぱりわかりまんので...
+・その他細かい修正。
+	(db/)
+	cast_db.txt 修正。
+	skill_db.txt 修正。
+	(map/)
+	battle.h 修正。
+	battle.c
+		battle_calc_damage()、battle_calc_pet_weapon_attack() 修正。
+		battle_calc_mob_weapon_attack()、battle_calc_pc_weapon_attack() 修正。
+		battle_calc_magic_attack()、battle_calc_misc_attack() 修正。
+	skill.c
+		skill_additional_effect()、skill_attack()、skill_castend_nodamage_id() 修正。
+		skill_check_condition()、skill_status_change_start() 修正。
+		skill_castend_damage_id() 修正。
+	pc.h 修正。
+	pc.c
+		pc_calcstatus()、pc_checkallowskill()、pc_unequipitem() 修正。
+
+--------------
 //0711 by npc
 
 ・鉱石製造エフェクトの修正

@@ -325,7 +325,7 @@ int pc_setnewpc(struct map_session_data *sd,int account_id,int char_id,int login
 	sd->state.auth   = 0;
 	sd->bl.type      = BL_PC;
 	sd->canact_tick = sd->canmove_tick = gettick();
-	sd->canlog_tick = gettick() +10000;
+	sd->canlog_tick = gettick();
 	sd->state.waitingdisconnect=0;
 	memset(sd->ignore,-1,sizeof(sd->ignore));
 
@@ -1012,11 +1012,11 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 
 	// ステータス変化による基本パラメータ補正
 	if(sd->sc_count){
-		if(sd->sc_data[SC_CONCENTRATE].timer!=-1){	// 集中力向上
+		if(sd->sc_data[SC_CONCENTRATE].timer!=-1 && sd->sc_data[SC_QUAGMIRE].timer == -1){	// 集中力向上
 			sd->paramb[1]+= (sd->status.agi+sd->paramb[1]+sd->parame[1]-sd->paramcard[1])*(2+sd->sc_data[SC_CONCENTRATE].val1)/100;
 			sd->paramb[4]+= (sd->status.dex+sd->paramb[4]+sd->parame[4]-sd->paramcard[4])*(2+sd->sc_data[SC_CONCENTRATE].val1)/100;
 		}
-		if(sd->sc_data[SC_INCREASEAGI].timer!=-1){	// 速度増加
+		if(sd->sc_data[SC_INCREASEAGI].timer!=-1 && sd->sc_data[SC_QUAGMIRE].timer == -1){	// 速度増加
 			sd->paramb[1]+= 2+sd->sc_data[SC_INCREASEAGI].val1;
 			sd->speed -= sd->speed *25/100;
 		}
@@ -1029,13 +1029,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		}
 		if(sd->sc_data[SC_GLORIA].timer!=-1)	// グロリア
 			sd->paramb[5]+= 30;
-		if(sd->sc_data[SC_LOUD].timer!=-1)	// ラウドボイス
+		if(sd->sc_data[SC_LOUD].timer!=-1 && sd->sc_data[SC_QUAGMIRE].timer == -1)	// ラウドボイス
 			sd->paramb[0]+= 4;
-
-		if(sd->sc_data[SC_CONCENTRATE].timer!=-1){	// 集中力向上
-			sd->paramb[1]+= (sd->status.agi+sd->paramb[1]+sd->parame[1]-sd->paramcard[1])*(2+sd->sc_data[SC_CONCENTRATE].val1)/100;
-			sd->paramb[4]+= (sd->status.dex+sd->paramb[4]+sd->parame[4]-sd->paramcard[4])*(2+sd->sc_data[SC_CONCENTRATE].val1)/100;
-		}
 		if(sd->sc_data[SC_QUAGMIRE].timer!=-1)	// クァグマイア(AGI/DEXはbattle.cで)
 			sd->speed = sd->speed*3/2;
 	}
@@ -1131,9 +1126,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		sd->status.max_hp += skill*200;
 		sd->subele[6] += skill*5;
 	}
-	if((skill=pc_checkskill(sd,BS_SKINTEMPER))>0) { // フェイス
+	if((skill=pc_checkskill(sd,BS_SKINTEMPER))>0)
 		sd->subele[3] += skill*5;
-	}
 
 	bl=sd->status.base_level;
 
@@ -1209,11 +1203,13 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->def=0;
 
 		// ASPD/移動速度変化系
-		if(sd->sc_data[SC_TWOHANDQUICKEN].timer!=-1)	// 2HQ
+		if(sd->sc_data[SC_TWOHANDQUICKEN].timer != -1 && sd->sc_data[SC_QUAGMIRE].timer == -1)	// 2HQ
 			aspd_rate -= 30;
-		if(sd->sc_data[SC_ADRENALINE].timer!=-1)	// アドレナリンラッシュ
+		if(sd->sc_data[SC_ADRENALINE].timer != -1 && sd->sc_data[SC_TWOHANDQUICKEN].timer == -1 &&
+			sd->sc_data[SC_QUAGMIRE].timer == -1)	// アドレナリンラッシュ
 			aspd_rate -= 30;
-		if(sd->sc_data[SC_SPEARSQUICKEN].timer!=-1)	// スピアクィッケン
+		if(sd->sc_data[SC_SPEARSQUICKEN].timer != -1 && sd->sc_data[SC_ADRENALINE].timer == -1 &&
+			sd->sc_data[SC_TWOHANDQUICKEN].timer == -1 && sd->sc_data[SC_QUAGMIRE].timer == -1)	// スピアクィッケン
 			aspd_rate -= sd->sc_data[SC_SPEARSQUICKEN].val2;
 		if(sd->sc_data[SC_ASSNCROS].timer!=-1 && // 夕陽のアサシンクロス
 			sd->sc_data[SC_TWOHANDQUICKEN].timer==-1 && sd->sc_data[SC_ADRENALINE].timer==-1 && sd->sc_data[SC_SPEARSQUICKEN].timer==-1)
@@ -2931,35 +2927,31 @@ int pc_checkskill(struct map_session_data *sd,int skill_id)
  *   -1		スキルを解除
  *------------------------------------------
  */
-int pc_checkallowskill(struct map_session_data *sd,int n)
+int pc_checkallowskill(struct map_session_data *sd)
 {
-	if(sd->inventory_data[n]) {
-		int weapon=sd->inventory_data[n]->look;
-
-		if(weapon!=3 && sd->sc_data[SC_TWOHANDQUICKEN].timer!=-1){	// 2HQ
-			skill_status_change_end(&sd->bl,SC_TWOHANDQUICKEN,-1);	// 2HQを解除
-			return -1;
-		}
-		if(weapon!=4 && weapon!=5 && sd->sc_data[SC_SPEARSQUICKEN].timer!=-1){	// スピアクィッケン
-			skill_status_change_end(&sd->bl,SC_SPEARSQUICKEN,-1);	// スピアクイッケンを解除
-			return -1;
-		}
-/*
-		if(sd->sc_data[SC_AUTOGUARD].timer!=-1){	// オートガード
-			skill_status_change_end(&sd->bl,SC_AUTOGUARD,-1);
-			return -1;
-		}
-*/
-		if(weapon!=6 && weapon!=7 && weapon!=8 && sd->sc_data[SC_ADRENALINE].timer!=-1){	// アドレナリンラッシュ
-			skill_status_change_end(&sd->bl,SC_ADRENALINE,-1);	// アドレナリンラッシュを解除
-			return -1;
-		}
-
-		skill_encchant_eremental_end(&sd->bl,-1);  //武器持ち誓えは無条件で属性付与解除
-		return 0;
+	if(sd->status.weapon!=3 && sd->sc_data[SC_TWOHANDQUICKEN].timer!=-1) {	// 2HQ
+		skill_status_change_end(&sd->bl,SC_TWOHANDQUICKEN,-1);	// 2HQを解除
+		return -1;
+	}
+	if(sd->status.weapon!=4 && sd->status.weapon!=5 && sd->sc_data[SC_SPEARSQUICKEN].timer!=-1){	// スピアクィッケン
+		skill_status_change_end(&sd->bl,SC_SPEARSQUICKEN,-1);	// スピアクイッケンを解除
+		return -1;
+	}
+	if((sd->status.weapon < 6 || sd->status.weapon > 9) && sd->sc_data[SC_ADRENALINE].timer!=-1){	// アドレナリンラッシュ
+		skill_status_change_end(&sd->bl,SC_ADRENALINE,-1);	// アドレナリンラッシュを解除
+		return -1;
 	}
 
-	return -1;
+	if(sd->status.shield <= 0 && sd->sc_data[SC_AUTOGUARD].timer!=-1){	// オートガード
+		skill_status_change_end(&sd->bl,SC_AUTOGUARD,-1);
+		return -1;
+	}
+	if(sd->status.shield <= 0 && sd->sc_data[SC_DEFENDER].timer!=-1){	// オートガード
+		skill_status_change_end(&sd->bl,SC_DEFENDER,-1);
+		return -1;
+	}
+
+	return 0;
 }
 
 
@@ -4312,7 +4304,7 @@ int pc_equipitem(struct map_session_data *sd,int n,int pos)
 	if(sd->status.inventory[n].equip & 0x0040)
 		clif_changelook(&sd->bl,LOOK_SHOES,0);
 
-	pc_checkallowskill(sd,n);	// 装備品でスキルか解除されるかチェック
+	pc_checkallowskill(sd);	// 装備品でスキルか解除されるかチェック
 	if (itemdb_look(sd->status.inventory[n].nameid) == 11 && arrow){	// Added by RoVeRT
 		clif_arrowequip(sd,arrow);
 		sd->status.inventory[arrow].equip=32768;
@@ -4373,7 +4365,9 @@ int pc_unequipitem(struct map_session_data *sd,int n,int type)
 		clif_unequipitemack(sd,n,sd->status.inventory[n].equip,1);
 		sd->status.inventory[n].equip=0;
 		if(!type)
-			pc_checkallowskill(sd,n);
+			pc_checkallowskill(sd);
+		if(sd->weapontype1 == 0 && sd->weapontype2 == 0)
+			skill_encchant_eremental_end(&sd->bl,-1);  //武器持ち誓えは無条件で属性付与解除
 	} else {
 		clif_unequipitemack(sd,n,0,0);
 	}

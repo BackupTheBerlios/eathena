@@ -71,7 +71,7 @@ int SkillStatusChangeTable[]={	/* skill.hのenumのSC_***とあわせること */
 	-1,
 	SC_SIGHTTRASHER,
 	-1,
-	SC_METEOSTORM,
+	-1,		//SC_METEOSTORM,
 	-1,-1,-1,-1,-1,-1,
 /* 90- */
 	-1,-1,
@@ -151,10 +151,10 @@ int SkillStatusChangeTable[]={	/* skill.hのenumのSC_***とあわせること */
 /* 270- */
 	SC_EXPLOSIONSPIRITS,
 	-1,-1,-1,-1,
-	SC_CASTCANCEL,
+	-1,	//SC_CASTCANCEL,
 	-1,
 	SC_SPELLBREAKER,
-	SC_FREECAST,
+	-1,	//SC_FREECAST,
 	SC_AUTOSPELL,
 /* 280- */
 	SC_FLAMELAUNCHER,
@@ -278,7 +278,7 @@ int skill_get_unit_id(int id,int flag)
 	case BD_LULLABY:		return 0x9e;				/* 子守歌 */
 	case BD_RICHMANKIM:		return 0x9f;				/* ニヨルドの宴 */
 	case BD_ETERNALCHAOS:	return 0xa0;				/* 永遠の混沌 */
-	case BD_DRUMBATTLEFIELD:return 0xa1;				/* 戦太鼓の響き */
+	case BD_DRUMBATTLEFIELD:return 0xa1;					/* 戦太鼓の響き */
 	case BD_RINGNIBELUNGEN:	return 0xa2;				/* ニーベルングの指輪 */
 	case BD_ROKISWEIL:		return 0xa3;				/* ロキの叫び */
 	case BD_INTOABYSS:		return 0xa4;				/* 深淵の中に */
@@ -318,7 +318,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 	struct map_session_data *sd2=NULL;
 	struct mob_data *md=NULL;
 
-	int skill=0,skill2;
+	int skill,skill2;
 	int rate;
 
 	int sc_def_mdef=100;
@@ -502,6 +502,11 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 	case CR_GRANDCROSS:		/* グランドクロス */
 		if( (battle_get_elem_type(bl) == 9 || battle_get_race(bl) == 6) && rand()%100 < sc_def_int)
 			skill_status_change_start(bl,SC_BLIND,1,0);
+		break;
+
+	case CR_SHIELDCHARGE:		/* グランドクロス */
+		if( rand()%100 < (15 + skilllv*5)*sc_def_vit/100 )
+			skill_status_change_start(bl,SC_STAN,skilllv,5000);
 		break;
 
 	case RG_RAID:		/* サプライズアタック */
@@ -759,9 +764,8 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 
 	clif_skill_damage(dsrc,bl,tick,dmg.amotion,dmg.dmotion,
 		damage, dmg.div_, skillid, (lv!=0)?lv:skilllv, type );
-	if( dmg.blewcount > 0) {	/* 吹き飛ばし処理とそのパケット */
+	if(dmg.blewcount > 0) {	/* 吹き飛ばし処理とそのパケット */
 		skill_blown(dsrc,bl,dmg.blewcount);
-		clif_fixpos(bl);
 	}
 
 //FIX change Ugly Dance to sp from hp somewhere
@@ -775,11 +779,13 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 	if(bl->type==BL_MOB && src!=bl)	/* スキル使用条件のMOBスキル */
 		mobskill_use((struct mob_data *)bl,tick,MSC_SKILLUSED|(skillid<<16));
 
+	if(dmg.blewcount > 0)
+		clif_fixpos(bl);
+
 	map_freeblock_unlock();
 
 	return (dmg.damage+dmg.damage2);	/* 与ダメを返す */
 }
-
 
 /*==========================================
  * スキル範囲攻撃用(map_foreachinareaから呼ばれる)
@@ -1013,15 +1019,13 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	case KN_SPEARSTAB:		/* スピアスタブ */
 //	case RG_RAID:		/* サプライズアタック */
 	case RG_INTIMIDATE:		/* インティミデイト */
-	/* Shield Test */
-	case CR_SHIELDCHARGE:
-	case CR_SHIELDBOOMERANG:
-	/* Testing */
 	case BA_MUSICALSTRIKE:	/* ミュージカルストライク */
 	case DC_THROWARROW:		/* 矢撃ち */
 	case BA_DISSONANCE:		/* 不協和音 */
 	case MO_INVESTIGATE:	/* 発勁 */
 	case CR_HOLYCROSS:		/* ホーリークロス */
+	case CR_SHIELDCHARGE:
+	case CR_SHIELDBOOMERANG:
 	/* 以下MOB専用 */
 	/* 単体攻撃、SP減少攻撃、遠距離攻撃、防御無視攻撃、多段攻撃 */
 	case NPC_PIERCINGATT:
@@ -1334,13 +1338,6 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		}
 		break;
 
-	case AC_MAKINGARROW:			// 矢作成 
-		if(sd!=NULL) {
-			clif_skill_nodamage(src,bl,skillid,5,1);
-			clif_arrow_create_list(sd);
-		}
-		break;
-
 	/* HP吸収/HP吸収魔法 */
 	case NPC_BLOODDRAIN:
 	case NPC_ENERGYDRAIN:
@@ -1520,9 +1517,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case MO_EXPLOSIONSPIRITS:	// 爆裂波動
 	case MO_STEELBODY:		// 金剛
 #if 0
-	case CR_AUTOGUARD:		/* オートガード */
-	case CR_DEFENDER:		/* ディフェンダー */
-	case SA_CASTCANCEL:		/* キャストキャンセル */
 	case SA_VOLCANO:		/* ボルケーノ */
 	case SA_DELUGE:			/* デリュージ */
 	case SA_VIOLENTGALE:	/* バイオレントゲイル */
@@ -3530,6 +3524,13 @@ int skill_check_condition( struct map_session_data *sd )
 			item_amount[1]+=1;
 			break;
 
+		case SA_CASTCANCEL:
+			if(sd->skilltimer == -1) {
+				clif_skill_fail(sd,sd->skillid,0,0);
+				return 0;
+			}
+			break;
+
 		case MG_STONECURSE:		// ストーンカース
 		case AS_VENOMDUST:		// ベナムダスト
 			item_id[0]=716;		//	red_gem = 716;
@@ -3660,7 +3661,7 @@ int skill_check_condition( struct map_session_data *sd )
 			break;
 		case BS_ADRENALINE:		// アドレナリンラッシュ
 		case BS_HAMMERFALL:		// ハンマーフォール
-			if( sd->status.weapon != 6 && sd->status.weapon != 7 && sd->status.weapon != 8) {
+			if( sd->status.weapon < 6 || sd->status.weapon > 9) {
 				clif_skill_fail(sd,sd->skillid,6,0);	// 斧・でメイス
 				return 0;
 			}
@@ -3671,7 +3672,7 @@ int skill_check_condition( struct map_session_data *sd )
 		case TF_HIDING:			/* ハイディング */
 		case AS_CLOAKING:		/* クローキング */
 			if(sd->sc_data[SkillStatusChangeTable[sd->skillid]].timer!=-1)
-				sp=0;			/* 解除する場合はSP消費しない */
+				return 1;			/* 解除する場合はSP消費しない */
 			break;
 
 		case HT_BLITZBEAT:		/* ブリッツビート */
@@ -3690,6 +3691,17 @@ int skill_check_condition( struct map_session_data *sd )
 				clif_skill_fail(sd,sd->skillid,6,0);    	// カタール消費
 				return 0; 
 			}
+			break;
+
+		case CR_SPEARQUICKEN:	// スピアクイッケン
+			if( sd->status.weapon != 4 && sd->status.weapon != 5) {
+				clif_skill_fail(sd,sd->skillid,6,0);	// 両手槍
+				return 0;
+			}
+			break;
+
+		case CR_GRANDCROSS:
+			hp = sd->status.hp/5;
 			break;
 
 		case AS_SONICBLOW:	/* SONICBLOW */
@@ -3723,25 +3735,22 @@ int skill_check_condition( struct map_session_data *sd )
 			item_amount[0]+=1;
 			break;
 
-		case CR_AUTOGUARD:	/* スピアクイッケン */
 		case CR_SHIELDCHARGE:
 		case CR_SHIELDBOOMERANG:
 		case CR_REFLECTSHIELD:
-			if(!sd->status.shield) {
-				clif_skill_fail(sd,sd->skillid,0,0);	/* 両手槍 */
+			if(sd->status.shield <= 0) {
+				clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
 			}
 			break;
-
-		case CR_SPEARQUICKEN:	// スピアクイッケン
-			if( sd->status.weapon != 4 && sd->status.weapon != 5) {
-				clif_skill_fail(sd,sd->skillid,6,0);	// 両手槍
+		case CR_AUTOGUARD:
+		case CR_DEFENDER:
+			if(sd->sc_data[SkillStatusChangeTable[sd->skillid]].timer!=-1)
+				return 1;			/* 解除する場合はSP消費しない */
+			if(sd->status.shield <= 0) {
+				clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
 			}
-			break;
-
-		case CR_GRANDCROSS:
-			hp = sd->status.hp/5;
 			break;
 
 		case MO_CALLSPIRITS:
@@ -3805,15 +3814,6 @@ int skill_check_condition( struct map_session_data *sd )
 				clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
 			}
-			break;
-
-		case SA_CASTCANCEL:
-			sp=skill_get_sp(sd->cast_skillid, sd->cast_skilllv) / 2;	/* 消費SP */
-			if(sd->dsprate!=100)
-				sp=sp*sd->dsprate/100;	/* 消費SP修正 */
-
-			sd->cast_skillid = -1;
-			sd->cast_skilllv = -1;
 			break;
 
 		case BA_MUSICALSTRIKE:
@@ -3924,10 +3924,6 @@ int skill_check_condition( struct map_session_data *sd )
 		if (sd->skillid != BD_ENCORE) {
 			sd->last_skillid= sd->skillid;
 			sd->last_skilllv= sd->skilllv;
-		}
-		if (sd->cast_skillid) {
-			sd->cast_skillid = -1;
-			sd->cast_skilllv = -1;
 		}
 	}
 	return 1;
@@ -4113,8 +4109,6 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 				md->state.targettype = ATTACKABLE;
 				md->min_chase=13;
 		}
-//		sd->cast_skillid = skill_num;
-//		sd->cast_skilllv = skill_lv;
 	}
 
 	if( casttime<=0 )	/* 詠唱の無いものはキャンセルされない */
@@ -4750,10 +4744,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			tick = 1000 * 180;
 			val2=val1*5;
 			break;
-		case SC_DEFENDER:			/* ディフェンダー */
-			tick = 1000 * 180;
-			val2=val1*15+5;
-			break;
 		case SC_SPEARSQUICKEN:		/* スピアクイッケン */
 			tick = 1000 * 300;
 			val2 = 20+val1;
@@ -4893,13 +4883,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			if(val1 == 5)
 				tick = 2000;
 			break;
-		case SC_AUTOGUARD:
-			tick = 500 * val1;
-			if(val1 == 4)
-				tick = 1500;
-			if(val1 == 5)
-				tick = 2000;
-			break;
+
 		case SC_REFLECTSHIELD:
 			tick = 1000 * val1;
 			if(val1 == 4)
@@ -4986,11 +4970,26 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			tick = 10 * val1 * 2 * 1000;
 			break;
 
+		case SC_AUTOGUARD:
+			{
+				int i,t;
+				tick = 300*1000;
+				for(i=val2=0;i<val1;i++) {
+					t = 5-(i>>1);
+					val2 += (t < 0)? 0:t;
+				}
+			}
+			break;
+
+		case SC_DEFENDER:
+			tick = 180*1000;
+			val2=val1*15+5;
+			break;
+
 		case SC_AUTOSPELL:
 			tick = 1000 * (90 + 30 * val1); /* SC_AUTOSPELL); */
 			val1 = (5 + 2 * val1) * 10;
 			break;
-
 		default:
 			printf("UnknownStatusChange [%d]\n", type);
 			return 0;

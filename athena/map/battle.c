@@ -768,7 +768,7 @@ int battle_attr_fix(int damage,int atk_elem,int def_elem)
  * ダメージ最終計算
  *------------------------------------------
  */
-int battle_calc_damage(struct block_list *bl,int damage,int flag)
+int battle_calc_damage(struct block_list *bl,int damage,int skill_num,int skill_lv,int flag)
 {
 	struct map_session_data *sd=NULL;
 	struct mob_data *md=NULL;
@@ -777,7 +777,7 @@ int battle_calc_damage(struct block_list *bl,int damage,int flag)
 	int i;
 
 	if(bl->type==BL_MOB) md=(struct mob_data *)bl;
-	else				 sd=(struct map_session_data *)bl;
+	else sd=(struct map_session_data *)bl;
 	
 	sc_data=battle_get_sc_data(bl);
 	sc_count=battle_get_sc_count(bl);
@@ -836,20 +836,21 @@ int battle_calc_damage(struct block_list *bl,int damage,int flag)
 			}
 		}
 
-		if(sc_data[SC_KYRIE].timer!=-1){	// キリエエレイソン
+		if(sc_data[SC_KYRIE].timer!=-1 && damage > 0){	// キリエエレイソン
 			sc=&sc_data[SC_KYRIE];
 			sc->val2-=damage;
 			if(flag&BF_WEAPON){
 				if(sc->val2>=0)	damage=0;
-				else			damage=-sc->val2;
+				else damage=-sc->val2;
 			}
-			if((--sc->val1)<=0 || (sc->val2<=0))
+			if((--sc->val1)<=0 || (sc->val2<=0) || skill_num == AL_HOLYLIGHT)
 				skill_status_change_end(bl, SC_KYRIE, -1);
 		}
 
 		if(sc_data[SC_AUTOGUARD].timer != -1 && damage > 0 && flag&BF_WEAPON) {
 			if(rand()%100 < sc_data[SC_AUTOGUARD].val2) {
 				damage = 0;
+				clif_skill_nodamage(bl,bl,CR_AUTOGUARD,sc_data[SC_AUTOGUARD].val1,1);
 				if(bl->type == BL_PC)
 					((struct map_session_data *)bl)->canmove_tick = gettick() + 300;
 				else if(bl->type == BL_MOB)
@@ -1019,7 +1020,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 	int hitrate,cri = 0,atkmin,atkmax;
 	int str,luk;
 	int def1 = battle_get_def(target);
-	int def2 = battle_get_def2(target)*8/10;
+	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
 	struct Damage wd;
 	int damage,type,div_,blewcount=0;
@@ -1186,9 +1187,13 @@ static struct Damage battle_calc_pet_weapon_attack(
 			case CR_SHIELDCHARGE:	// シールドチャージ
 				damage = damage*(100+ 20*skill_lv)/100;
 				blewcount=4+skill_lv;
+				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
+				s_ele = 0;
 				break;
 			case CR_SHIELDBOOMERANG:	// シールドブーメラン
 				damage = damage*(100+ 30*skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				s_ele = 0;
 				break;
 			case CR_HOLYCROSS:	// ホーリークロス
 				damage = damage*(100+ 35*skill_lv)/100;
@@ -1235,9 +1240,10 @@ static struct Damage battle_calc_pet_weapon_attack(
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
 			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST) {	//DEF, VIT無視
+				int t_def = def2*8/10;
 				vitbonusmax = (t_vit/20)*(t_vit/20)-1;
 				damage = damage * (100 - def1) /100
-					- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+					- t_def - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 			}
 		}
 	}
@@ -1290,7 +1296,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 	}
 
 	if(skill_num != CR_GRANDCROSS)
-		damage=battle_calc_damage(target,damage,flag);
+		damage=battle_calc_damage(target,damage,skill_num,skill_lv,flag);
 
 	wd.damage=damage;
 	wd.damage2=0;
@@ -1311,7 +1317,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 	int hitrate,cri = 0,atkmin,atkmax;
 	int str,luk;
 	int def1 = battle_get_def(target);
-	int def2 = battle_get_def2(target)*8/10;
+	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
 	struct Damage wd;
 	int damage,type,div_,blewcount=0;
@@ -1497,9 +1503,13 @@ static struct Damage battle_calc_mob_weapon_attack(
 			case CR_SHIELDCHARGE:	// シールドチャージ
 				damage = damage*(100+ 20*skill_lv)/100;
 				blewcount=4+skill_lv;
+				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
+				s_ele = 0;
 				break;
 			case CR_SHIELDBOOMERANG:	// シールドブーメラン
 				damage = damage*(100+ 30*skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				s_ele = 0;
 				break;
 			case CR_HOLYCROSS:	// ホーリークロス
 				damage = damage*(100+ 35*skill_lv)/100;
@@ -1546,13 +1556,14 @@ static struct Damage battle_calc_mob_weapon_attack(
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
 			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST) {	//DEF, VIT無視
+				int t_def = def2*8/10;
 				if(s_race==1 || s_race==6)
 					if(target->type==BL_PC && (skill=pc_checkskill(tsd,AL_DP)) > 0 )
-						def2 += skill*3;
+						t_def += skill*3;
 
 				vitbonusmax = (t_vit/20)*(t_vit/20)-1;
 				damage = damage * (100 - def1) /100
-					- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+					- t_def - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 			}
 		}
 	}
@@ -1591,7 +1602,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		}
 		damage=damage*cardfix/100;
 	}
-	if(damage < 0) damage =0;
+	if(damage < 0) damage = 0;
 
 	// 属 性の適用
 	damage=battle_attr_fix(damage, s_ele, battle_get_element(target) );
@@ -1635,7 +1646,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		damage = 0;
 
 	if(skill_num != CR_GRANDCROSS)
-		damage=battle_calc_damage(target,damage,flag);
+		damage=battle_calc_damage(target,damage,skill_num,skill_lv,flag);
 
 	wd.damage=damage;
 	wd.damage2=0;
@@ -1656,7 +1667,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 	int hitrate,cri = 0,atkmin,atkmax;
 	int str,dex,luk;
 	int def1 = battle_get_def(target);
-	int def2 = battle_get_def2(target)*8/10;
+	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
 	struct Damage wd;
 	int damage,damage2,type,div_,blewcount=0;
@@ -2023,9 +2034,13 @@ static struct Damage battle_calc_pc_weapon_attack(
 			case CR_SHIELDCHARGE:	// シールドチャージ
 				damage = damage*(100+ 20*skill_lv)/100;
 				blewcount=4+skill_lv;
+				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
+				s_ele = 0;
 				break;
 			case CR_SHIELDBOOMERANG:	// シールドブーメラン
 				damage = damage*(100+ 30*skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				s_ele = 0;
 				break;
 			case CR_HOLYCROSS:	// ホーリークロス
 				damage = damage*(100+ 35*skill_lv)/100;
@@ -2099,6 +2114,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
 			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST) {	//DEF, VIT無視
+				int t_def = def2*8/10;
 				vitbonusmax = (t_vit/20)*(t_vit/20)-1;
 				if(sd->ignore_def_ele & (1<<t_ele) || sd->ignore_def_race & (1<<t_race))
 					idef_flag = 1;
@@ -2119,10 +2135,10 @@ static struct Damage battle_calc_pc_weapon_attack(
 
 				if(!idef_flag)
 					damage = damage * (100 - def1) /100
-						- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+						- t_def - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 				if(!idef_flag_)
 					damage2 = damage2 * (100 - def1) /100
-						- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+						- t_def - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 			}
 		}
 	}
@@ -2317,14 +2333,14 @@ static struct Damage battle_calc_pc_weapon_attack(
 	if( tsd && tsd->special_state.no_weapon_damage && skill_num != CR_GRANDCROSS)
 		damage = damage2 = 0;
 
-	if(skill_num != CR_GRANDCROSS) {
+	if(skill_num != CR_GRANDCROSS && (damage > 0 || damage2 > 0) ) {
 		if(damage2<1)		// ダメージ最終修正
-			damage=battle_calc_damage(target,damage,flag);
+			damage=battle_calc_damage(target,damage,skill_num,skill_lv,flag);
 		else if(damage<1)	// 右手がミス？
-			damage2=battle_calc_damage(target,damage2,flag);
+			damage2=battle_calc_damage(target,damage2,skill_num,skill_lv,flag);
 		else {	// 両 手/カタールの場合はちょっと計算ややこしい
 			int d1=damage+damage2,d2=damage2;
-			damage=battle_calc_damage(target,damage+damage2,flag);
+			damage=battle_calc_damage(target,damage+damage2,skill_num,skill_lv,flag);
 			damage2=(d2*100/d1)*damage/100;
 			if(damage2<1) damage2=1;
 			damage-=damage2;
@@ -2528,8 +2544,6 @@ struct Damage battle_calc_magic_attack(
 			damage=1;
 	}
 
-	damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// 属 性修正
-
 	if(sd) {
 		cardfix=100;
 		cardfix=cardfix*(100+sd->magic_addrace[t_race])/100;
@@ -2564,6 +2578,9 @@ struct Damage battle_calc_magic_attack(
 			}
 		}
 	}
+	if(damage < 0) damage = 0;
+
+	damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// 属 性修正
 
 	if(skill_num == CR_GRANDCROSS) {	// グランドクロス
 		struct Damage wd;
@@ -2587,7 +2604,7 @@ struct Damage battle_calc_magic_attack(
 	if( target->type==BL_PC && ((struct map_session_data *)target)->special_state.no_magic_damage)
 		damage=0;	// 黄 金蟲カード（魔法ダメージ０）
 
-	damage=battle_calc_damage(target,damage,aflag);	// 最終修正
+	damage=battle_calc_damage(target,damage,skill_num,skill_lv,aflag);	// 最終修正
 
 	md.damage=damage;
 	md.div_=div_;
@@ -2679,13 +2696,14 @@ struct Damage  battle_calc_misc_attack(
 		if(damage<1)
 			damage=1;
 
-		damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// 属 性修正
 		if( target->type==BL_PC ){
 			cardfix=100;
 			cardfix=cardfix*(100-tsd->subele[ele])/100;	// 属 性によるダメージ耐性
 			cardfix=cardfix*(100-tsd->misc_def_rate)/100;
 			damage=damage*cardfix/100;
 		}
+		if(damage < 0) damage = 0;
+		damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// 属 性修正
 	}
 
 	div_=skill_get_num( skill_num,skill_lv );
@@ -2696,13 +2714,7 @@ struct Damage  battle_calc_misc_attack(
 		damage = div_;
 	}
 
-	damage=battle_calc_damage(target,damage,aflag);	// 最終修正
-
-	if (target->type == BL_MOB) {
-		struct mob_data* tmd=(struct mob_data *)target;
-		if (tmd->class == 1288)
-			damage = 0;
-	}
+	damage=battle_calc_damage(target,damage,skill_num,skill_lv,aflag);	// 最終修正
 
 	md.damage=damage;
 	md.div_=div_;

@@ -247,7 +247,6 @@ struct map_session_data {
 	int eventtimer[MAX_EVENTTIMER];
 
 	int last_skillid,last_skilllv;		// Added by RoVeRT
-	int cast_skillid,cast_skilllv;
 	int skill_limit[350];
 	struct{
 		char name[24];

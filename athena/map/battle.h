@@ -31,7 +31,7 @@ struct Damage  battle_calc_misc_attack(
 int battle_attr_fix(int damage,int atk_elem,int def_elem);
 
 // ダメージ最終計算
-int battle_calc_damage(struct block_list *bl,int damage,int flag);
+int battle_calc_damage(struct block_list *bl,int damage,int skillnum,int skilllv,int flag);
 enum {	// 最終計算のフラグ
 	BF_WEAPON	= 0x0001,
 	BF_MAGIC	= 0x0002,
