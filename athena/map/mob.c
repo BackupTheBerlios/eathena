@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.13 2004/01/20 16:25:56 rovert Exp $
+// $Id: mob.c,v 1.14 2004/01/21 04:55:57 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -47,7 +47,8 @@ int mobdb_searchname(const char *str)
 {
 	int i;
 	for(i=0;i<sizeof(mob_db)/sizeof(mob_db[0]);i++){
-		if(strcmpi(mob_db[i].name,str)==0 || strcmp(mob_db[i].jname,str)==0)
+		if( strcmpi(mob_db[i].name,str)==0 || strcmp(mob_db[i].jname,str)==0 ||
+			memcmp(mob_db[i].name,str,24)==0 || memcmp(mob_db[i].jname,str,24)==0)
 			return i;
 	}
 	return 0;
@@ -1881,6 +1882,38 @@ int mob_heal(struct mob_data *md,int heal)
 }
 
 /*==========================================
+ * Added by RoVeRT
+ *------------------------------------------
+ */
+int mob_warpslave_sub(struct block_list *bl,va_list ap)
+{
+	struct mob_data *md=(struct mob_data *)bl;
+	int id,x,y;
+	id=va_arg(ap,int);
+	x=va_arg(ap,int);
+	y=va_arg(ap,int);
+	if( md->master_id==id ) {
+		mob_warp(md,x,y,3);
+printf("warp: %d %d %d\n",md->bl.id,x,y);
+}
+	return 0;
+}
+
+/*==========================================
+ * Added by RoVeRT
+ *------------------------------------------
+ */
+int mob_warpslave(struct mob_data *md)
+{
+printf("warp start: %d %d %d\n",md->bl.id,md->bl.x,md->bl.y);
+	map_foreachinarea(mob_warpslave_sub, md->bl.m,
+		md->bl.x-AREA_SIZE,md->bl.y-AREA_SIZE,
+		md->bl.x+AREA_SIZE,md->bl.y+AREA_SIZE,BL_MOB,
+		md->bl.id, md->bl.x, md->bl.y );
+	return 0;
+}
+
+/*==========================================
  * mobƒ[ƒv
  *------------------------------------------
  */
@@ -1890,7 +1923,7 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	if( md==NULL || md->bl.prev==NULL )
 		return 0;
 
-	if(map[md->bl.m].flag.noteleport)	// Added by RoVeRT
+	if(type >= 0 && map[md->bl.m].flag.noteleport)	// Added by RoVeRT
 		return 0;
 
 	skill_unit_out_all(&md->bl,gettick(),1);
@@ -1935,6 +1968,9 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	map_addblock(&md->bl);
 	if(type>0)
 		clif_spawnmob(md);
+
+	mob_warpslave(md);
+
 	return 0;
 }
 
@@ -2659,67 +2695,80 @@ static int mob_readskilldb(void)
 		{	"skillused",		MSC_SKILLUSED			},
 		{	"casttargeted",		MSC_CASTTARGETED		},
 	};
+	int x;
+	char *filename[]={ "db/mob_skill_db.txt","db/mob_skill_db2.txt" };
 
-	fp=fopen("db/mob_skill_db.txt","r");
-	if(fp==NULL){
-		printf("can't read db/mob_skill_db.txt\n");
-		return 0;
-	}
-	while(fgets(line,1020,fp)){
-		char *sp[16],*p;
-		int mob_id;
-		struct mob_skill *ms;
-
-		if(line[0] == '/' && line[1] == '/')
-			continue;
-
-		memset(sp,0,sizeof(sp));
-		for(i=0,p=line;i<13 && p;i++){
-			sp[i]=p;
-			if((p=strchr(p,','))!=NULL)
-				*p++=0;
-		}
-		if( (mob_id=atoi(sp[0]))<=0 )
-			continue;
+	for(x=0;x<2;x++){
 	
-		for(i=0;i<MAX_MOBSKILL;i++)
-			if( (ms=&mob_db[mob_id].skill[i])->skill_id == 0)
-				break;
-		if(i==MAX_MOBSKILL){
-			printf("mob_skill: readdb: too many skill ! [%s] in %d[%s]\n",
-				sp[1],mob_id,mob_db[mob_id].jname);
+		fp=fopen(filename[x],"r");
+		if(fp==NULL){
+			if(x==0)
+				printf("can't read %s\n",filename[x]);
 			continue;
 		}
+		while(fgets(line,1020,fp)){
+			char *sp[16],*p;
+			int mob_id;
+			struct mob_skill *ms;
+			int j=0;
 	
-		ms->state=atoi(sp[2]);
-		if( strcmp(sp[2],"any")==0 ) ms->state=-1;
-		if( strcmp(sp[2],"idle")==0 ) ms->state=MSS_IDLE;
-		if( strcmp(sp[2],"walk")==0 ) ms->state=MSS_WALK;
-		if( strcmp(sp[2],"attack")==0 ) ms->state=MSS_ATTACK;
-		if( strcmp(sp[2],"dead")==0 ) ms->state=MSS_DEAD;
-		if( strcmp(sp[2],"loot")==0 ) ms->state=MSS_LOOT;
-		if( strcmp(sp[2],"chase")==0 ) ms->state=MSS_CHASE;
-		ms->skill_id=atoi(sp[3]);
-		ms->skill_lv=atoi(sp[4]);
-		ms->permillage=atoi(sp[5]);
-		ms->casttime=atoi(sp[6]);
-		ms->delay=atoi(sp[7]);
-		ms->cancel=atoi(sp[8]);
-		if( strcmp(sp[8],"yes")==0 ) ms->cancel=1;
-		ms->target=atoi(sp[9]);
-		if( strcmp(sp[9],"self")==0 )ms->target=MST_SELF;
-		if( strcmp(sp[9],"target")==0 )ms->target=MST_TARGET;
-		ms->cond1=-1;
-		for(i=0;i<sizeof(cond1)/sizeof(cond1[0]);i++){
-			if( strcmp(sp[10],cond1[i].str)==0)
-				ms->cond1=cond1[i].id;
+			if(line[0] == '/' && line[1] == '/')
+				continue;
+	
+			memset(sp,0,sizeof(sp));
+			for(i=0,p=line;i<13 && p;i++){
+				sp[i]=p;
+				if((p=strchr(p,','))!=NULL)
+					*p++=0;
+			}
+			if( (mob_id=atoi(sp[0]))<=0 )
+				continue;
+			
+			if( strcmp(sp[1],"clear")==0 ){
+				memset(mob_db[mob_id].skill,0,sizeof(mob_db[mob_id].skill));
+				mob_db[mob_id].maxskill=0;
+				continue;
+			}
+		
+			for(i=0;i<MAX_MOBSKILL;i++)
+				if( (ms=&mob_db[mob_id].skill[i])->skill_id == 0)
+					break;
+			if(i==MAX_MOBSKILL){
+				printf("mob_skill: readdb: too many skill ! [%s] in %d[%s]\n",
+					sp[1],mob_id,mob_db[mob_id].jname);
+				continue;
+			}
+		
+			ms->state=atoi(sp[2]);
+			if( strcmp(sp[2],"any")==0 ) ms->state=-1;
+			if( strcmp(sp[2],"idle")==0 ) ms->state=MSS_IDLE;
+			if( strcmp(sp[2],"walk")==0 ) ms->state=MSS_WALK;
+			if( strcmp(sp[2],"attack")==0 ) ms->state=MSS_ATTACK;
+			if( strcmp(sp[2],"dead")==0 ) ms->state=MSS_DEAD;
+			if( strcmp(sp[2],"loot")==0 ) ms->state=MSS_LOOT;
+			if( strcmp(sp[2],"chase")==0 ) ms->state=MSS_CHASE;
+			ms->skill_id=atoi(sp[3]);
+			ms->skill_lv=atoi(sp[4]);
+			ms->permillage=atoi(sp[5]);
+			ms->casttime=atoi(sp[6]);
+			ms->delay=atoi(sp[7]);
+			ms->cancel=atoi(sp[8]);
+			if( strcmp(sp[8],"yes")==0 ) ms->cancel=1;
+			ms->target=atoi(sp[9]);
+			if( strcmp(sp[9],"self")==0 )ms->target=MST_SELF;
+			if( strcmp(sp[9],"target")==0 )ms->target=MST_TARGET;
+			ms->cond1=-1;
+			for(j=0;j<sizeof(cond1)/sizeof(cond1[0]);j++){
+				if( strcmp(sp[10],cond1[j].str)==0)
+					ms->cond1=cond1[j].id;
+			}
+			ms->cond2=atoi(sp[11]);
+			ms->val1=atoi(sp[12]);
+			mob_db[mob_id].maxskill=i+1;
 		}
-		ms->cond2=atoi(sp[11]);
-		ms->val1=atoi(sp[12]);
-		mob_db[mob_id].maxskill=i+1;
+		fclose(fp);
+		printf("read %s done\n",filename[x]);
 	}
-	fclose(fp);
-	printf("read db/mob_skill_db.txt done\n");
 	return 0;
 }
 /*==========================================

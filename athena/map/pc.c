@@ -4129,6 +4129,14 @@ int pc_percentrefinery(struct map_session_data *sd,struct item *item)
 	int percent=percentrefinery[itemdb_wlv(item->nameid)][(int)item->refine];
 	percent += pc_checkskill(sd,BS_WEAPONRESEARCH);	// 武器研究スキル所持
 
+	// 確率の有効範囲チェック
+	if( percent > 100 ){
+		percent = 100;
+	}
+	if( percent < 0 ){
+		percent = 0;
+	}
+
 	return percent;
 }
 

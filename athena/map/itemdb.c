@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.7 2004/01/19 17:47:48 rovert Exp $
+// $Id: itemdb.c,v 1.8 2004/01/21 04:55:57 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +37,8 @@ int itemdb_searchname_sub(void *key,void *data,va_list ap)
 	char *str;
 	str=va_arg(ap,char *);
 	dst=va_arg(ap,struct item_data **);
-	if(strcmpi(item->name,str)==0 || strcmp(item->jname,str)==0)
+	if( strcmpi(item->name,str)==0 || strcmp(item->jname,str)==0 ||
+		memcmp(item->name,str,24)==0 || memcmp(item->jname,str,24)==0 )
 		*dst=item;
 	return 0;
 }

@@ -1,4 +1,56 @@
 --------------
+//0727 by 聖
+
+・武器研究スキルによってホルグレンなどの精錬NPCが
+　正常に動作しない問題を修正。
+
+	(map/)
+	pc.c
+		pc_percentrefinery() 修正。
+
+--------------
+//0726 by 胡蝶蘭
+
+・mob_skill_db2.txtがあればmob_skill_db.txtをオーバーライドするように修正
+	オリジナルのMOB使用時や、現行MOBの使用スキルを変更したい場合に。
+
+・mob_skill_db.txtでmob_idの次のダミー文字列が"clear"だった場合、
+  そのMOBのスキルを初期化する機能追加。
+  	・mob_skill_db2.txtであるMOBのスキルを完全に書き換えるときに使用して
+	  ください。
+	・clearしなかった場合はmob_skill_db.txtのものに追加されます。
+  
+	mob.c
+		mob_readskilldb()修正
+
+
+・アイテム名/MOB名が全角12文字（24バイト）あるアイテム/MOBが、
+  @コマンドで取り寄せ/召喚できない問題修正。
+  	mob.c
+		mobdb_searchname()修正
+	itemdb.c
+		itemdb_searchname_sub()修正
+
+・現在時刻でイベントを起こす「時計イベント」機能を追加
+	・OnInitと同じようにそれぞれのNPCで、On～で始まるラベルを定義します。
+		OnMinute??	：毎時、??分にイベントを起こします。(0-59)
+		OnHour??	：毎日、??時にイベントを起こします。(0-23)
+		OnClock????	：毎日、??時??分にイベントを起こします。
+		OnDate????	：毎年、??月??日にイベントを起こします。
+	・詳しくは npc_test_ev.txt を参照
+	
+	(conf/)
+	npc_test_ev.txt
+		内容追加
+	(map/)
+	npc.c
+		色々修正
+
+・その他
+	clif.c
+		コンパイル警告が出ないように修正
+
+--------------
 //0725 by 死神
 
 ・鯖落ちバグ修正。
