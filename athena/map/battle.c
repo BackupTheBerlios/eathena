@@ -3520,18 +3520,24 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 				if(!f) pc_heal(sd,0,-sp);
 			}
 		}
-			if(wd.flag&BF_WEAPON && src != target && (wd.damage > 0 || wd.damage2 > 0)) {
+		if(wd.flag&BF_WEAPON && src != target && (wd.damage > 0 || wd.damage2 > 0)) {
 			int hp = 0,sp = 0;
-				if(sd->hp_drain_rate > 0 && sd->hp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->hp_drain_rate)
-					hp += (wd.damage * sd->hp_drain_per)/100;
-				if(sd->hp_drain_rate_ > 0 && sd->hp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->hp_drain_rate_)
-					hp += (wd.damage2 * sd->hp_drain_per_)/100;
+			if(sd->hp_drain_rate > 0 && sd->hp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->hp_drain_rate) {
+				hp += (wd.damage * sd->hp_drain_per)/100;
 				if(hp < 1) hp = 1;
-				if(sd->sp_drain_rate > 0 && sd->sp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->sp_drain_rate)
-					sp += (wd.damage * sd->sp_drain_per)/100;
-				if(sd->sp_drain_rate_ > 0 && sd->sp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->sp_drain_rate_)
-					sp += (wd.damage2 * sd->sp_drain_per_)/100;
+			}
+			if(sd->hp_drain_rate_ > 0 && sd->hp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->hp_drain_rate_) {
+				hp += (wd.damage2 * sd->hp_drain_per_)/100;
+				if(hp < 1) hp = 1;
+			}
+			if(sd->sp_drain_rate > 0 && sd->sp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->sp_drain_rate) {
+				sp += (wd.damage * sd->sp_drain_per)/100;
 				if(sp < 1) sp = 1;
+			}
+			if(sd->sp_drain_rate_ > 0 && sd->sp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->sp_drain_rate_) {
+				sp += (wd.damage2 * sd->sp_drain_per_)/100;
+				if(sp < 1) sp = 1;
+			}
 			if(hp > 0 || sp > 0) pc_heal(sd,hp,sp);
 		}
 		}
