@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.24 2004/02/10 21:35:27 rovert Exp $
+// $Id: mob.c,v 1.25 2004/02/11 15:54:47 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>

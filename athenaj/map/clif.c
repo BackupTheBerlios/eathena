@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.19 2004/02/09 14:11:07 rovert Exp $
+// $Id: clif.c,v 1.20 2004/02/11 15:54:47 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 

@@ -1,4 +1,4 @@
-// $Id: chrif.c,v 1.3 2004/02/01 18:16:56 rovert Exp $
+// $Id: chrif.c,v 1.4 2004/02/11 15:54:47 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
