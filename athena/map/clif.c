@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.42 2004/02/28 03:36:33 sara-chan Exp $
+// $Id: clif.c,v 1.43 2004/02/29 08:06:59 sara-chan Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -485,6 +485,27 @@ int clif_clearchar(struct block_list *bl,int type)
 	WBUFB(buf,6) = type;
 	clif_send(buf,packet_len_table[0x80],bl,type==1 ? AREA : AREA_WOS);
 
+	return 0;
+}
+
+static int clif_clearchar_delay_sub(int tid,unsigned int tick,int id,int data)
+{
+	struct block_list *bl = (struct block_list *)id;
+
+	clif_clearchar(bl,data);
+	map_freeblock(bl);
+
+	return 0;
+}
+int clif_clearchar_delay(unsigned int tick,struct block_list *bl,int type)
+{
+	struct block_list *tmpbl=malloc(sizeof(struct block_list));
+	if(tmpbl == NULL) {
+		printf("clif_clearchar_delay: out of memory !\n");
+		exit(1);
+	}
+	memcpy(tmpbl,bl,sizeof(struct block_list));
+	add_timer(tick,clif_clearchar_delay_sub,(int)tmpbl,type);
 	return 0;
 }
 
@@ -3944,7 +3965,7 @@ int clif_vendinglist(struct map_session_data *sd,int id,struct vending *vending)
 		WBUFL(buf,8+n*22)=vending[i].value;
 		WBUFW(buf,12+n*22)=vending[i].amount;
 		WBUFW(buf,14+n*22)=(index=vending[i].index)+2;
-		if(sd->status.cart[index].nameid <= 0 || sd->status.cart[index].amount <= 0)
+		if(vsd->status.cart[index].nameid <= 0 || vsd->status.cart[index].amount <= 0)
 			continue;
 		data = itemdb_search(vsd->status.cart[index].nameid);
 		WBUFB(buf,16+n*22)=data->type;
@@ -3981,7 +4002,7 @@ int clif_vendinglist(struct map_session_data *sd,int id,struct vending *vending)
 		}
 		n++;
 	}
-	if(n){
+	if(n > 0){
 		WBUFW(buf,2)=8+n*22;
 		WFIFOSET(fd,WFIFOW(fd,2));
 	}
@@ -4019,8 +4040,6 @@ int clif_openvending(struct map_session_data *sd,int id,struct vending *vending)
 	WBUFW(buf,0)=0x136;
 	WBUFL(buf,4)=id;
 	for(i=0,n=0;i<sd->vend_num;i++){
-		if(vending[i].amount<=0)
-			continue;
 		WBUFL(buf,8+n*22)=vending[i].value;
 		WBUFW(buf,12+n*22)=(index=vending[i].index)+2;
 		WBUFW(buf,14+n*22)=vending[i].amount;
@@ -4061,12 +4080,12 @@ int clif_openvending(struct map_session_data *sd,int id,struct vending *vending)
 		}
 		n++;
 	}
-	if(n){
+	if(n > 0){
 		WBUFW(buf,2)=8+n*22;
 		WFIFOSET(fd,WFIFOW(fd,2));
 	}
 
-	return 0;
+	return n;
 }
 
 /*==========================================
@@ -7200,6 +7219,7 @@ int do_init_clif(void)
 		exit(1);
 	}
 	add_timer_func_list(clif_waitclose,"clif_waitclose");
+	add_timer_func_list(clif_clearchar_delay_sub,"clif_clearchar_delay_sub");
 
 	return 0;
 }

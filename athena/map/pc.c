@@ -670,7 +670,7 @@ static int pc_calc_skillpoint(struct map_session_data* sd)
 	int  i,skill,skill_point=0;
 	for(i=1;i<MAX_SKILL;i++){
 		if( (skill = pc_checkskill(sd,i)) > 0) {
-			if(!(skill_get_inf2(i)&0x01) || battle_config.quest_skill_learn == 1) {
+			if(!(skill_get_inf2(i)&0x01) || battle_config.quest_skill_learn) {
 				if(!sd->status.skill[i].flag)
 					skill_point += skill;
 				else if(sd->status.skill[i].flag > 2) {
@@ -3777,7 +3777,7 @@ int pc_resetskill(struct map_session_data* sd)
 	int  i,skill;
 	for(i=1;i<MAX_SKILL;i++){
 		if( (skill = pc_checkskill(sd,i)) > 0) {
-			if(!(skill_get_inf2(i)&0x01) || battle_config.quest_skill_learn == 1) {
+			if(!(skill_get_inf2(i)&0x01) || battle_config.quest_skill_learn) {
 				if(!sd->status.skill[i].flag)
 					sd->status.skill_point += skill;
 				else if(sd->status.skill[i].flag > 2) {
@@ -3785,7 +3785,7 @@ int pc_resetskill(struct map_session_data* sd)
 				}
 				sd->status.skill[i].lv = 0;
 			}
-			else if(battle_config.quest_skill_reset == 1)
+			else if(battle_config.quest_skill_reset)
 				sd->status.skill[i].lv = 0;
 			sd->status.skill[i].flag = 0;
 		}

@@ -1,8 +1,54 @@
 --------------------
+//0847 by 死神
+
+・露店バグ修正。
+	(map/)
+	clif.c
+		clif_vendinglist()、clif_openvending() 修正。
+	vending.c
+		vending_openvending() 修正。
+	skill.c
+		skill_castend_nodamage_id() 修正。
+
+--------------------
+//0846 by 死神
+
+・バグ修正と細かい修正。
+・battle_athena.confのenemy_strがペットにも適用するように変更。
+・bHPDrainRateとbSPDrainRateでxがマイナスでも作動するように変更。
+・PCやNPCの姿をしたモンスターも死ぬと5秒後マップから消えるように変更。
+	(map/)
+	battle.c
+		battle_calc_pet_weapon_attack()、battle_weapon_attack() 修正。
+	skill.c
+		skill_attack()、skill_castend_damage_id() 修正。
+	pc.c
+		pc_allskillup() 修正。
+	clif.h 修正。
+	clif.c
+		clif_openvending()、do_init_clif() 修正。
+		clif_clearchar_delay()、clif_clearchar_delay_sub() 追加。
+	mob.c
+		mob_damage() 修正。
+
+--------------------
+//0845 by ぽぽぽ
+
+・mob_avail.txtでPCグラフィック(0～23)を指定したペットが出現したときクライアントエラーがでるのを暫定修正。
+・mob_avail.txtでペットにもPCキャラの性別・髪型&色・武器・盾・頭装備を指定できるようにしました。
+・MOBのATK計算にSTRを適用するかどうか設定可能にした。
+	(map/)
+	clif.c
+		clif_pet0078()、clif_pet007b()、clif_spawnpet()修正。
+	battle.h修正。
+	battle.c
+		battle_config_read()、battle_calc_mob_weapon_attack()修正。
+
+--------------------
 //0844 by ぽぽぽ
 
 ・mob_avail.txtでPCグラフィック(0～23)を指定したMOBが出現したときクライアントエラーがでるのを暫定修正。
-・mob_avail.txtでPCキャラの性別･髪型&色･武器･盾･頭装備を指定できるようにしました。
+・mob_avail.txtでPCキャラの性別・髪型&色・武器・盾・頭装備を指定できるようにしました。
 　グラフィックすり替え先IDが0～23の時だけ有効で、指定方法は
 	MOB-ID,グラフィックすり替え先ID,性別(0=female,1=male),髪型,髪色,武器,盾,上段頭装備,中段頭装備,下段頭装備
 　となります。装備はitem_dbのView欄参照のこと。
