@@ -7,10 +7,10 @@ OnAgitStart:
 	GvgOn "prtg_cas01.gat";
 	End;
 OnAgitBreak:
-	set @GID,getcharid(2);
-	if (@GID <= 0) end;
-	SetCastleData "prtg_cas01.gat",1,@GID;
-	Announce "Guild Base [" + GetCastleName("prtg_cas01.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild."
+	set @GIDp1,getcharid(2);
+	if (@GIDp1 <= 0) end;
+	SetCastleData "prtg_cas01.gat",1,@GIDp1;
+	Announce "Guild Base [" + GetCastleName("prtg_cas01.gat") + "] has been taken by [" + GetGuildName(@GIDp1) + "] guild.",0;
 	MapAnnounce "prtg_cas01.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
@@ -32,10 +32,10 @@ OnAgitStart:
 	GvgOn "prtg_cas02.gat";
 	End;
 OnAgitBreak:
-	set @GID,getcharid(2);
-	if (@GID <= 0) end;
-	SetCastleData "prtg_cas02.gat",1,@GID;
-	Announce "Guild Base [" + GetCastleName("prtg_cas02.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
+	set @GIDp2,getcharid(2);
+	if (@GIDp2 <= 0) end;
+	SetCastleData "prtg_cas02.gat",1,@GIDp2;
+	Announce "Guild Base [" + GetCastleName("prtg_cas02.gat") + "] has been taken by [" + GetGuildName(@GIDp2) + "] guild.",0;
 	MapAnnounce "prtg_cas02.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
@@ -57,10 +57,10 @@ OnAgitStart:
 	GvgOn "prtg_cas03.gat";
 	End;
 OnAgitBreak:
-	set @GID,getcharid(2);
-	if (@GID <= 0) end;
-	SetCastleData "prtg_cas03.gat",1,@GID;
-	Announce "Guild Base [" + GetCastleName("prtg_cas03.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
+	set @GIDp3,getcharid(2);
+	if (@GIDp3 <= 0) end;
+	SetCastleData "prtg_cas03.gat",1,@GIDp3;
+	Announce "Guild Base [" + GetCastleName("prtg_cas03.gat") + "] has been taken by [" + GetGuildName(@GIDp3) + "] guild.",0;
 	MapAnnounce "prtg_cas03.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
@@ -82,10 +82,10 @@ OnAgitStart:
 	GvgOn "prtg_cas04.gat";
 	End;
 OnAgitBreak:
-	set @GID,getcharid(2);
-	if (@GID <= 0) end;
-	SetCastleData "prtg_cas04.gat",1,@GID;
-	Announce "Guild Base [" + GetCastleName("prtg_cas04.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
+	set @GIDp4,getcharid(2);
+	if (@GIDp4 <= 0) end;
+	SetCastleData "prtg_cas04.gat",1,@GIDp4;
+	Announce "Guild Base [" + GetCastleName("prtg_cas04.gat") + "] has been taken by [" + GetGuildName(@GIDp4) + "] guild.",0;
 	MapAnnounce "prtg_cas04.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
@@ -107,10 +107,10 @@ OnAgitStart:
 	GvgOn "prtg_cas05.gat";
 	End;
 OnAgitBreak:
-	set @GID,getcharid(2);
-	if (@GID <= 0) end;
-	SetCastleData "prtg_cas05.gat",1,@GID;
-	Announce "Guild Base [" + GetCastleName("prtg_cas05.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
+	set @GIDp5,getcharid(2);
+	if (@GIDp5 <= 0) end;
+	SetCastleData "prtg_cas05.gat",1,@GIDp5;
+	Announce "Guild Base [" + GetCastleName("prtg_cas05.gat") + "] has been taken by [" + GetGuildName(@GIDp5) + "] guild.",0;
 	MapAnnounce "prtg_cas05.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:

@@ -2,8 +2,8 @@
 //gefg_cas01         by kalen
 //===================================================================
 gef_fild13.gat,148,51,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -21,18 +21,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gef_fild13.gat,155,54,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -50,18 +50,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gef_fild13.gat,212,79,6	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -79,18 +79,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gef_fild13.gat,211,71,6	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -108,18 +108,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gefg_cas01.gat,28,157,4	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -137,18 +137,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gefg_cas01.gat,22,156,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -166,18 +166,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gefg_cas01.gat,68,185,3	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -195,18 +195,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gefg_cas01.gat,17,171,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -224,18 +224,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gefg_cas01.gat,59,16,4	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -253,18 +253,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 gefg_cas01.gat,64,16,4	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
 		mes "1. As Law of Geffen";
@@ -282,11 +282,11 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Geffen";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDg1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDg1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDg1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
@@ -294,14 +294,14 @@ LStartg:
 //------------------------------カプラ--------------------------------
 gefg_cas01.gat,83,47,3	script	Kafra Service	117,{
 	cutin "kafra_01",2;
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (getcharid(2) == @GID) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (getcharid(2) == @GIDg1) goto LStartg;
 	mes "[Kafra Service]";
-	mes "I am here to help only ^ff0000" + " + GetGuildName(@GID) + " + "^000000 members, please use different Kafra Service. thank you.";
+	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDg1) + " + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
 	mes "[Kafra Service]";
-	mes "Welcome. ^ff0000" + GetGuildName(@GID) + "^000000 members";
+	mes "Welcome. ^ff0000" + GetGuildName(@GIDg1) + "^000000 members";
 	mes "Kafra Service is always with you guys";
 	next;
 	menu "Open Storage",L2,"Teleport Service",L3,"Use Cart Service",L4,"Cancel",L7;
@@ -328,9 +328,9 @@ L3:
 			if (Zeny < 200) goto Lerror3;
 			set Zeny,Zeny-200;set KF_PIT,KF_PIT+20;warp "geffen.gat",120,39;end;
 		L3_2:
-//				mes "[Kafra Service]";
-//				mes "ありがとうございました。";
-//				mes "またご利用くださいませ。";
+				mes "[Kafra Service]";
+				mes "ありがとうございました。";
+				mes "またご利用くださいませ。";
 				goto L_EXIT;
 		Lerror3:
 				mes "[Kafra Service]";
@@ -343,9 +343,9 @@ L4:
 	mes "Would you like to rental?";
 	next;
 	menu "Rent Cart",L4_1,"Cancle",-;
-//		mes "[Kafra Service]";
-//		mes "ありがとうございました。";
-//		mes "またご利用くださいませ。";
+		mes "[Kafra Service]";
+		mes "ありがとうございました。";
+		mes "またご利用くださいませ。";
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 800) goto Lerror4_2;
@@ -376,10 +376,13 @@ L_EXIT:
 }
 //-------------------------------執事---------------------------------
 gefg_cas01.gat,40,48,5	script	Gnahucher	55,{
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (getcharid(2) == @GID) goto LStartg;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (getcharid(2) == @GIDg1) goto LStartg;
+	mes "NO MSG";
+	close;
+LStartgm:
 	mes "[ Gnahucher ]";
-	mes "I am here to follow ^ff0000GUILDMASTER^000000 's command! Where are you guardians! Destroy these bastards!";
+	mes "I am here to follow ^ff0000" + GetGuildMaster(@GIDg1) + "^000000 's command! Where are you guardians! Destroy these bastards!";
 	close;
 LStartg:
 	mes "Function not yet coded";
@@ -405,8 +408,8 @@ gefg_cas01.gat,78,84,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	getcastledata "gefg_cas01.gat",1,@GID;
-	if (getcharid(2) != @GID) goto L1n;
+	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	if (getcharid(2) != @GIDg1) goto L1n;
 	warp "gld_dun04",39,258;
 	end;
 L1n:

@@ -2,8 +2,8 @@
 //prtg_cas02         by kalen
 //===================================================================
 prt_gld.gat,244,126,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -21,18 +21,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prt_gld.gat,244,128,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -50,18 +50,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prt_gld.gat,236,126,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -79,18 +79,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prt_gld.gat,236,128,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -108,18 +108,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,40,227,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -137,18 +137,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,46,227,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -166,18 +166,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,11,219,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -195,18 +195,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,11,214,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -224,18 +224,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,20,219,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -253,18 +253,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,20,214,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -282,18 +282,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,79,227,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -311,18 +311,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,70,227,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -340,18 +340,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,38,189,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -369,18 +369,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,34,189,8	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -398,18 +398,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,153,161,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -427,18 +427,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 prtg_cas02.gat,162,161,4	script	Flag	722,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
 		mes "1. As Law of Prontera";
@@ -456,11 +456,11 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Prontera";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDp2) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDp2) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDp2) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
@@ -468,14 +468,14 @@ LStartg:
 //------------------------------カプラ--------------------------------
 prtg_cas02.gat,71,36,4	script	Kafra Service#prt2	117,{
 	cutin "kafra_01",2;
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (getcharid(2) == @GID) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (getcharid(2) == @GIDp2) goto LStartg;
 	mes "[Kafra Service]";
-	mes "I am here to help only ^ff0000" + " + GetGuildName(@GID) + " + "^000000 members, please use different Kafra Service. thank you.";
+	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDp2) + " + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
 	mes "[Kafra Service]";
-	mes "Welcome. ^ff0000" + GetGuildName(@GID) + "^000000 members";
+	mes "Welcome. ^ff0000" + GetGuildName(@GIDp2) + "^000000 members";
 	mes "Kafra Service is always with you guys";
 	next;
 	menu "Open Storage",L2,"Teleport Service",L3,"Use Cart Service",L4,"Cancel",L7;
@@ -502,9 +502,9 @@ L3:
 			if (Zeny < 200) goto Lerror3;
 			set Zeny,Zeny-200;set KF_PIT,KF_PIT+20;warp "prontera.gat",278,211;end;
 		L3_2:
-//				mes "[Kafra Service]";
-//				mes "ありがとうございました。";
-//				mes "またご利用くださいませ。";
+				mes "[Kafra Service]";
+				mes "ありがとうございました。";
+				mes "またご利用くださいませ。";
 				goto L_EXIT;
 		Lerror3:
 				mes "[Kafra Service]";
@@ -517,9 +517,9 @@ L4:
 	mes "Would you like to rental?";
 	next;
 	menu "Rent Cart",L4_1,"Cancle",-;
-//		mes "[Kafra Service]";
-//		mes "ありがとうございました。";
-//		mes "またご利用くださいませ。";
+		mes "[Kafra Service]";
+		mes "ありがとうございました。";
+		mes "またご利用くださいませ。";
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 800) goto Lerror4_2;
@@ -550,13 +550,13 @@ L_EXIT:
 }
 //-------------------------------執事---------------------------------
 prtg_cas02.gat,94,61,4	script	Rhay	55,{
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (getcharid(2) == @GID) goto LStartg;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (getcharid(2) == @GIDp2) goto LStartg;
 	mes "NO MSG";
 	close;
 LStartgm:
 	mes "[ Rhay ]";
-	mes "I am here to follow ^ff0000GUILDMASTER^000000 's command! Where are you guardians! Destroy these bastards!";
+	mes "I am here to follow ^ff0000" + GetGuildMaster(@GIDp2) + "^000000 's command! Where are you guardians! Destroy these bastards!";
 	close;
 LStartg:
 	mes "Function not yet coded";
@@ -582,8 +582,8 @@ prtg_cas02.gat,84,72,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	getcastledata "prtg_cas02.gat",1,@GID;
-	if (getcharid(2) != @GID) goto L1n;
+	getcastledata "prtg_cas02.gat",1,@GIDp2;
+	if (getcharid(2) != @GIDp2) goto L1n;
 	warp "gld_dun03",164,268;
 	end;
 L1n:

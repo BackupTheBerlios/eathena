@@ -2,8 +2,8 @@
 //pay_gld01         by kalen
 //===================================================================
 pay_gld.gat,125,236,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -21,18 +21,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 pay_gld.gat,110,233,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -50,18 +50,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 pay_gld.gat,116,233,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -79,18 +79,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 pay_gld.gat,91,239,2	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -108,18 +108,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 payg_cas01.gat,238,67,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -137,18 +137,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 payg_cas01.gat,233,67,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -166,18 +166,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 payg_cas01.gat,221,123,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -195,18 +195,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 payg_cas01.gat,221,116,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -224,18 +224,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 payg_cas01.gat,206,108,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -253,18 +253,18 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 payg_cas01.gat,212,108,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
 		mes "1. As Law of Payon";
@@ -282,11 +282,11 @@ LStartg:
 		mes " ";
 		mes "1. As Law of Payon";
 		mes "    this guild base isn't taken by";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDf1) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDf1) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDf1) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
@@ -294,14 +294,14 @@ LStartg:
 //------------------------------カプラ--------------------------------
 payg_cas01.gat,128,58,3	script	Kafra Service	117,{
 	cutin "kafra_01",2;
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (getcharid(2) == @GID) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (getcharid(2) == @GIDf1) goto LStartg;
 	mes "[Kafra Service]";
-	mes "I am here to help only ^ff0000" + " + GetGuildName(@GID) + " + "^000000 members, please use different Kafra Service. thank you.";
+	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDf1) + " + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
 	mes "[Kafra Service]";
-	mes "Welcome. ^ff0000" + GetGuildName(@GID) + "^000000 members";
+	mes "Welcome. ^ff0000" + GetGuildName(@GIDf1) + "^000000 members";
 	mes "Kafra Service is always with you guys";
 	next;
 	menu "Open Storage",L2,"Teleport Service",L3,"Use Cart Service",L4,"Cancel",L7;
@@ -328,9 +328,9 @@ L3:
 			if (Zeny < 200) goto Lerror3;
 			set Zeny,Zeny-200;set KF_PIT,KF_PIT+20;warp "payon.gat",82,128;end;
 		L3_2:
-//				mes "[Kafra Service]";
-//				mes "ありがとうございました。";
-//				mes "またご利用くださいませ。";
+				mes "[Kafra Service]";
+				mes "ありがとうございました。";
+				mes "またご利用くださいませ。";
 				goto L_EXIT;
 		Lerror3:
 				mes "[Kafra Service]";
@@ -343,9 +343,9 @@ L4:
 	mes "Would you like to rental?";
 	next;
 	menu "Rent Cart",L4_1,"Cancle",-;
-//		mes "[Kafra Service]";
-//		mes "ありがとうございました。";
-//		mes "またご利用くださいませ。";
+		mes "[Kafra Service]";
+		mes "ありがとうございました。";
+		mes "またご利用くださいませ。";
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 800) goto Lerror4_2;
@@ -376,10 +376,13 @@ L_EXIT:
 }
 //-------------------------------執事---------------------------------
 payg_cas01.gat,120,58,4	script	Grunnady	55,{
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (getcharid(2) == @GID) goto LStartg;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (getcharid(2) == @GIDf1) goto LStartg;
+	mes "NO MSG";
+	close;
+LStartgm:
 	mes "[ Grunnady ]";
-	mes "I am here to follow ^ff0000GUILDMASTER^000000 's command! Where are you guardians! Destroy these bastards!";
+	mes "I am here to follow ^ff0000" + GetGuildMaster(@GIDf1) + "^000000 's command! Where are you guardians! Destroy these bastards!";
 	close;
 LStartg:
 	mes "Function not yet coded";
@@ -405,8 +408,8 @@ payg_cas01.gat,101,25,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	getcastledata "payg_cas01.gat",1,@GID;
-	if (getcharid(2) != @GID) goto L1n;
+	getcastledata "payg_cas01.gat",1,@GIDf1;
+	if (getcharid(2) != @GIDf1) goto L1n;
 	warp "gld_dun01",186,165;
 	end;
 L1n:

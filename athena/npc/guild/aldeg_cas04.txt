@@ -2,8 +2,8 @@
 //aldeg_cas04         by kalen
 //===================================================================
 aldeg_cas04.gat,167,61,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -19,18 +19,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,164,90,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -46,18 +46,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,143,209,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -73,18 +73,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,129,193,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -100,18 +100,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,112,206,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -127,18 +127,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,113,212,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -154,18 +154,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,77,117,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -181,18 +181,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,186,42,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -208,18 +208,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,30,69,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -235,18 +235,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,55,97,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -262,18 +262,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,45,98,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -289,18 +289,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,33,116,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -316,18 +316,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,130,180,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -343,18 +343,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,129,193,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -370,18 +370,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,142,209,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -397,18 +397,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,33,107,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -424,18 +424,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,133,220,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -451,18 +451,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,169,22,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -478,18 +478,18 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
 }
 aldeg_cas04.gat,169,15,2	script	Flag	722,{
-	getcastledata "aldeg_cas04.gat",1,@GID;
-	if (@GID != 0) goto LStartg;
+	getcastledata "aldeg_cas04.gat",1,@GIDa4;
+	if (@GIDa4 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
@@ -505,11 +505,11 @@ L2:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1. As law of Albedaran this base is now";
-		mes "    ^ff0000" + GetGuildName(@GID) + "^000000 guild's guild";
+		mes "    ^ff0000" + GetGuildName(@GIDa4) + "^000000 guild's guild";
 		mes "    base.";
 		mes " ";
-		mes "2. ^ff0000" + GetGuildName(@GID) + "^000000 Guild master is";
-		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "2. ^ff0000" + GetGuildName(@GIDa4) + "^000000 Guild master is";
+		mes "    ^ff0000" + GetGuildMaster(@GIDa4) + "^000000, and if any of you";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;
@@ -517,14 +517,14 @@ L2:
 //------------------------------カプラ--------------------------------
 aldeg_cas04.gat,45,88,0	script	Kafra Service	117,{
 	cutin "kafra_01",2;
-	getcastledata "aldeg_cas04.gat",1,@GID; 
-	if (getcharid(2) == @GID) goto LStartg; 
+	getcastledata "aldeg_cas04.gat",1,@GIDa4; 
+	if (getcharid(2) == @GIDa4) goto LStartg; 
 	mes "[Kafra Service]";
-	mes "I am here to help only ^ff0000" + " + GetGuildName(@GID) + " + "^000000 members, please use different Kafra Service. thank you.";
+	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDa4) + " + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
 	mes "[Kafra Service]";
-	mes "Welcome. ^ff0000" + GetGuildName(@GID) + "^000000 members";
+	mes "Welcome. ^ff0000" + GetGuildName(@GIDa4) + "^000000 members";
 	mes "Kafra Service is always with you guys";
 	next;
 	menu "Open Storage",L2,"Teleport Service",L3,"Use Cart Service",L4,"Cancel",L7;
@@ -551,9 +551,9 @@ L3:
 			if (Zeny < 200) goto Lerror3;
 			set Zeny,Zeny-200;set KF_PIT,KF_PIT+20;warp "aldebaran.gat",132,103;end;
 		L3_2:
-//				mes "[Kafra Service]";
-//				mes "ありがとうございました。";
-//				mes "またご利用くださいませ。";
+				mes "[Kafra Service]";
+				mes "ありがとうございました。";
+				mes "またご利用くださいませ。";
 				goto L_EXIT;
 		Lerror3:
 				mes "[Kafra Service]";
@@ -566,9 +566,9 @@ L4:
 	mes "Would you like to rental?";
 	next;
 	menu "Rent Cart",L4_1,"Cancle",-;
-//		mes "[Kafra Service]";
-//		mes "ありがとうございました。";
-//		mes "またご利用くださいませ。";
+		mes "[Kafra Service]";
+		mes "ありがとうございました。";
+		mes "またご利用くださいませ。";
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 800) goto Lerror4_2;
@@ -599,10 +599,13 @@ L_EXIT:
 }
 //-------------------------------執事---------------------------------
 aldeg_cas04.gat,67,116,0	script	Brimhemsen	55,{
-	getcastledata "aldeg_cas04.gat",1,@GID; 
-	if (getcharid(2) == @GID) goto LStartg; 
+	getcastledata "aldeg_cas04.gat",1,@GIDa4; 
+	if (getcharid(2) == @GIDa4) goto LStartg; 
+	mes "NO MSG";
+	close;
+LStartgm:
 	mes "[ Brimhemsen ]";
-	mes "I am here to follow ^ff0000GUILDMASTER^000000 's command! Where are you guardians! Destroy these bastards!";
+	mes "I am here to follow ^ff0000" + GetGuildMaster(@GIDa4) + "^000000 's command! Where are you guardians! Destroy these bastards!";
 	close;
 LStartg:
 	mes "Function not yet coded";
@@ -628,8 +631,8 @@ aldeg_cas04.gat,76,64,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
- 	getcastledata "aldeg_cas04.gat",1,@GID; 
-	if (getcharid(2) != @GID) goto L1n; 
+ 	getcastledata "aldeg_cas04.gat",1,@GIDa4; 
+	if (getcharid(2) != @GIDa4) goto L1n; 
 	warp "gld_dun02",160,148;
 	end;
 L1n:
