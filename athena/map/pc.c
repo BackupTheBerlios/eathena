@@ -566,6 +566,27 @@ int pc_authok(int id,struct mmo_charstatus *st)
 	// ステータス初期計算など
 	pc_calcstatus(sd,1);
 
+	// Message of the Dayの送信
+	{
+		char buf[256];
+		FILE *fp;
+		if(	(fp = fopen("motd.txt", "r"))!=NULL){
+			clif_displaymessage(sd->fd,"< Message of the Day >");
+			while (fgets(buf, 250, fp) != NULL){
+				int i;
+				for( i=0; buf[i]; i++){
+					if( buf[i]=='\r' || buf[i]=='\n'){
+						buf[i]=0;
+						break;
+					}
+				}
+				clif_displaymessage(sd->fd,buf);
+			}
+			fclose(fp);
+			clif_displaymessage(sd->fd,"< End of MOTD >");
+		}
+	}
+
 	return 0;
 }
 
