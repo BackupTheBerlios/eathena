@@ -316,13 +316,42 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 {
 	struct map_session_data *sd=NULL;
 	struct map_session_data *sd2=NULL;
+	struct mob_data *md=NULL;
+
 	int skill=0,skill2;
 	int rate;
 	
+	int sc_def_mdef=100;
+	int sc_def_vit=100;
+	int sc_def_int=100;
+
 	if(src->type==BL_PC)
 		sd=(struct map_session_data *)src;
-	if(bl->type==BL_PC)
+	if(bl->type==BL_PC){
 		sd2=(struct map_session_data *)bl;
+		sc_def_mdef=100-sd2->mdef;
+		sc_def_vit=100-(sd2->paramc[2]+sd2->paramc[5]/3);
+		sc_def_int=100-(sd2->paramc[3]+sd2->paramc[5]/3);
+	}else if(bl->type==BL_MOB){
+		md=(struct mob_data *)bl;
+		sc_def_mdef=100-mob_db[md->class].mdef;
+		sc_def_vit=100-(mob_db[md->class].vit+mob_db[md->class].luk/3);
+		sc_def_int=100-(mob_db[md->class].int_+mob_db[md->class].luk/3);
+	}
+	if(sc_def_mdef<0)
+		sc_def_mdef=0;
+	if(sc_def_vit<0)
+		sc_def_vit=0;
+	if(sc_def_int<0)
+		sc_def_int=0;
+
+	/* MOB追加効果スキル用 */
+	const int sc[]={
+		SC_POISON, SC_BLIND, SC_SILENCE, SC_STAN,
+		SC_STONE, SC_CURSE, SC_SLEEP };
+	const int sc2[]={
+		6000, 6000, 6000, 1000,
+		1000, 0, 6000 };
 
 	switch(skillid){
 	case 0:					/* 通常攻撃 */
@@ -338,7 +367,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 				if(pc_steal_item(sd,bl))
 					clif_skill_nodamage(src,bl,TF_STEAL,skill2,1);
 
-		if (sd && sd->sc_data[SC_AUTOSPELL].timer != -1) {				// Added by RoVeRT
+		if (sd && sd->sc_data[SC_AUTOSPELL].timer != -1 && 0) {				// Added by RoVeRT
 			if ((tick - sd->autospell_tick) >= 3000 && sd->sc_data[SC_AUTOSPELL].val1 < rand()%100) {
 				int skilllv=1,max=3,limit=-1,sp;
 				int lv = pc_checkskill(sd,SA_AUTOSPELL);
@@ -411,7 +440,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	case SM_BASH:			/* バッシュ（急所攻撃） */
 		if( sd && (skill=pc_checkskill(sd,SM_FATALBLOW))>0 ){
-			if( rand()%100 < 6*(skilllv-5) )
+			if( rand()%100 < 6*(skilllv-5)*sc_def_vit/100 )
 				skill_status_change_start(bl,SC_STAN,skilllv,5000);
 		}
 		break;
@@ -422,12 +451,12 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		break;
 
 	case TF_POISON:			/* インベナム */
-		if(battle_get_elem_type(bl)!=9 && rand()%100< 2*skilllv+10 )
+		if(battle_get_elem_type(bl)!=9 && rand()%100< (2*skilllv+10)*sc_def_vit/100 )
 			skill_status_change_start(bl,SC_POISON,skilllv,0);
 		break;
 
 	case AS_SONICBLOW:		/* ソニックブロー */
-		if( rand()%100 < 2*skilllv+10 )
+		if( rand()%100 < (2*skilllv+10)*sc_def_vit/100 )
 			skill_status_change_start(bl,SC_STAN,skilllv,5000);
 		break;
 
@@ -441,12 +470,12 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		if(rate>95)rate=95;
 */
 		rate=skilllv*3+35;
-		if( rand()%100 < rate )
+		if(battle_get_elem_type(bl)!=9 && rand()%100 < rate*sc_def_mdef/100)
 			skill_status_change_start(bl,SC_FREEZE,skilllv,0);
 		break;
 
 	case HT_LANDMINE:		/* ランドマイン */
-		if( rand()%100 < 5*skilllv+30 ){
+		if( rand()%100 < (5*skilllv+30)*sc_def_vit/100 ){
 			skill_status_change_start(bl,SC_STAN,skilllv,skilllv*500+1000);
 		}
 		break;
@@ -460,18 +489,18 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		break;
 
 	case HT_SANDMAN:		/* サンドマン */
-		if( rand()%100 < 5*skilllv+30 ){
+		if( rand()%100 < (5*skilllv+30)*sc_def_int/100 ){
 			skill_status_change_start(bl,SC_SLEEP,skilllv,30000);
 		}
 		break;
 
 	case TF_SPRINKLESAND:	/* 砂まき */
-		if( rand()%100 < 15 )
+		if( rand()%100 < 15*sc_def_int/100 )
 			skill_status_change_start(bl,SC_BLIND,1,0);
 		break;
 
 	case TF_THROWSTONE:		/* 石投げ */
-		if( rand()%100 < 5 )
+		if( rand()%100 < 5*sc_def_vit/100 )
 			skill_status_change_start(bl,SC_STAN,1,3000);
 		break;
 
@@ -488,66 +517,80 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		break;
 
 	case CR_HOLYCROSS:		/* ホーリークロス */
-		if( rand()%100 < 3*skilllv )
+		if( rand()%100 < 3*skilllv*sc_def_int/100 )
 			skill_status_change_start(bl,SC_BLIND,1,0);
 		break;
 
 	case CR_GRANDCROSS:		/* グランドクロス */
-		if( battle_get_elem_type(bl) == 9 || battle_get_race(bl) == 6)
+		if( (battle_get_elem_type(bl) == 9 || battle_get_race(bl) == 6) && rand()%100 < sc_def_int)
 			skill_status_change_start(bl,SC_BLIND,1,0);
 		break;
 
 	case RG_RAID:		/* サプライズアタック */
-		if( rand()%100 < 10+3*skilllv )
+		if( rand()%100 < (10+3*skilllv)*sc_def_vit/100 )
 			skill_status_change_start(bl,SC_STAN,1,3000);
-		if( rand()%100 < 10+3*skilllv )
+		if( rand()%100 < (10+3*skilllv)*sc_def_int/100 )
 			skill_status_change_start(bl,SC_BLIND,1,0);
 		break;
 
 #if 0
 	case BA_FROSTJOKE:		/* 寒いジョーク */
-		if( rand()%100 < 15+5*skilllv )
+		if( rand()%100 < (15+5*skilllv)*sc_def_mdef/100 )
 			skill_status_change_start(bl,SC_FREEZE,1,0);
 		break;
 #endif
 
 	case BD_LULLABY:	/* 子守唄 */
-		if( rand()%100 < 15 )
+		if( rand()%100 < 15*sc_def_int/100 )
 			skill_status_change_start(bl,SC_SLEEP,skilllv,30000);
 		break;
 
 	/* MOBの追加効果付きスキル */
-	case NPC_POISON:
-	case NPC_BLINDATTACK:
-	case NPC_SILENCEATTACK:
-	case NPC_STUNATTACK:
+
 	case NPC_PETRIFYATTACK:
-	case NPC_CURSEATTACK:
-	case NPC_SLEEPATTACK:
-		{
-			const int sc[]={
-				SC_POISON, SC_BLIND, SC_SILENCE, SC_STAN,
-				SC_STONE, SC_CURSE, SC_SLEEP };
-			const int sc2[]={
-				6000, 6000, 6000, 1000,
-				1000, 0, 6000 };
+		if(rand()%100 < sc_def_mdef)
 			skill_status_change_start(bl,
 				sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
-		}
+		break;
+	case NPC_POISON:
+	case NPC_SILENCEATTACK:
+	case NPC_STUNATTACK:
+	case NPC_CURSEATTACK:
+		if(rand()%100 < sc_def_vit)
+			skill_status_change_start(bl,
+				sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
+		break;
+	case NPC_SLEEPATTACK:
+	case NPC_BLINDATTACK:
+		if(rand()%100 < sc_def_int)
+			skill_status_change_start(bl,
+				sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
+
 		break;
 	}
 
 	if(sd && skillid != MC_CARTREVOLUTION && attack_type&BF_WEAPON){	/* カードによる追加効果 */
 		int i;
+		int sc_def_card=100;
+
 		for(i=SC_STONE;i<=SC_BLIND;i++){
+			if(i==SC_STONE || i==SC_FREEZE){
+				sc_def_card=sc_def_mdef;
+			}else if(i==SC_STAN || i==SC_POISON || i==SC_CURSE || i==SC_SILENCE){
+				sc_def_card=sc_def_vit;
+			}else if(i==SC_SLEEP || i==SC_CONFUSION || i==SC_BLIND){
+				sc_def_card=sc_def_int;
+			}
+
+
 			if(!sd->state.arrow_atk) {
-				if(rand()%10000 < sd->addeff[i-SC_STONE] ){
+				if(rand()%100 < (sd->addeff[i-SC_STONE])*sc_def_card/100 ){
 					printf("PC %d skill_addeff: cardによる異常発動 %d %d\n",sd->bl.id,i,sd->addeff[i-SC_STONE]);
 					skill_status_change_start(bl,i,1,5);
 				}
 			}
 			else {
-				if(rand()%10000 < sd->addeff[i-SC_STONE]+sd->arrow_addeff[i-SC_STONE] ){
+				if(rand()%100 < (sd->addeff[i-SC_STONE]+sd->arrow_addeff[i-SC_STONE])*sc_def_card/100 ){
 					printf("PC %d skill_addeff: cardによる異常発動 %d %d\n",sd->bl.id,i,sd->addeff[i-SC_STONE]);
 					skill_status_change_start(bl,i,1,5);
 				}
@@ -1296,15 +1339,25 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	struct map_session_data *sd=NULL;
 	struct map_session_data *dstsd=NULL;
 	struct mob_data *md=NULL;
+	struct mob_data *dstmd=NULL;
 	int i;
+	int sc_def_vit=100;
 
 	if(src->type==BL_PC)
 		sd=(struct map_session_data *)src;
 	else if(src->type==BL_MOB)
 		md=(struct mob_data *)src;
 
-	if(bl->type==BL_PC)
+	if(bl->type==BL_PC){
 		dstsd=(struct map_session_data *)bl; 
+		sc_def_vit=100-(dstsd->paramc[2]+dstsd->paramc[5]/3);
+	}
+	else if(bl->type==BL_MOB){
+		dstmd=(struct mob_data *)bl;
+		sc_def_vit=100-(mob_db[dstmd->class].vit+mob_db[dstmd->class].luk/3);
+	}
+	if(sc_def_vit<0)
+		sc_def_vit=0;
 
 	if(bl == NULL || bl->prev == NULL)
 		return 0;
@@ -1456,7 +1509,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		skill_status_change_start( bl,
 			SkillStatusChangeTable[skillid], skilllv, 0 );
 		if(skillid==SM_PROVOKE && bl->type==BL_MOB)
-			mob_target((struct mob_data *)bl,src,skill_get_range(skillid, skilllv));
+		mob_target((struct mob_data *)bl,src,skill_get_range(skillid, skilllv));
 		break;
 	case CR_AUTOGUARD:
 	case CR_REFLECTSHIELD:
@@ -1493,12 +1546,12 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		}
 		break;
 
-/*	case AC_MAKINGARROW:			// 矢作成
+	case AC_MAKINGARROW:			/* 矢作成 */
 		if(sd) {
 			clif_arrow_create_list(sd);
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		}
-		break;*/
+		break;
 
 	case AM_PHARMACY:			/* ポーション作成 */
 		if(sd) {
@@ -1509,7 +1562,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 
 	case BS_HAMMERFALL:		/* ハンマーフォール */
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		if( rand()%100 < (20+ 10*skilllv) ) {
+		if( rand()%100 < (20+ 10*skilllv)*sc_def_vit/100 ) {
 			skill_status_change_start(bl,SC_STAN,skilllv,10000);
 		}
 		break;
@@ -1713,7 +1766,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 				clif_skill_warppoint(sd,sd->skillid,"Random",
 					sd->status.save_point.map,"","");
 			}
-		}else if( bl->type==BL_MOB )
+		}else if( bl->type==BL_MOB)
 			mob_warp((struct mob_data *)bl,-1,-1,3);
 		break;
 
@@ -2339,7 +2392,7 @@ int skill_castend_map( struct map_session_data *sd,int skill_num, const char *ma
  */
 struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,int skilllv,int x,int y,int flag)
 {
-	struct skill_unit_group *group;
+	struct skill_unit_group *group=NULL;
 	int i,count=1,limit=10000,val1=skilllv,val2=0;
 	int target=BCT_ENEMY,interval=1000,range=0;
 	int dir=0;
