@@ -106,7 +106,7 @@ void skill_brandishspear_first(struct square *tc,int dir,int x,int y);
 void skill_brandishspear_dir(struct square *tc,int dir,int are);
 void skill_devotion(struct map_session_data *md,int target);
 void skill_devotion2(struct block_list *bl,int crusader);
-int skill_devotion3(struct block_list *bl,int crusader);
+int skill_devotion3(struct block_list *bl,int target);
 void skill_devotion_end(struct map_session_data *md,struct map_session_data *sd,int target);
 int skill_frostjoke_scream(struct block_list *bl,va_list ap);
 
