@@ -185,6 +185,7 @@ extern struct Battle_Config {
 	int save_log;
 	int error_log;
 	int etc_log;
+	int pc_skillflee;
 	int item_rate_equip;	// Modified by RoVeRT
 	int item_rate_card;
 	int prevent_logout;	// End Modification

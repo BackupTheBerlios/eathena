@@ -1,4 +1,18 @@
 --------------
+//0719 by DRG
+
+・下位スキルがない場合は上位スキルがふれないようにしました。
+　battle_athena.confのskillfleeで設定可能です。
+　下位スキルがないまま上位スキルをふった状態で、このオプションを使う場合はスキルリセットする必要があります。
+　一般アカにスキルリセットを解放したいときに使ってやって下さい。
+	(conf/)
+	battle_athena.conf
+	(map/)
+	battle.c
+	battle.h
+	pc.c		pc_calc_skilltree(),pc_checkskill()修正
+
+--------------
 //0718 by 死神
 
 ・色々と修正。

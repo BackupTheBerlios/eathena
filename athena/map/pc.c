@@ -659,8 +659,20 @@ int pc_calc_skilltree(struct map_session_data *sd)
 						skill_tree[c][i].need[j].lv
 					 ) f=0;
 				if(f && sd->status.skill[id].id==0 ){
-					sd->status.skill[id].id=id;
-					flag=1;
+					f = 0;
+					if(pc_isGM(sd) < battle_config.pc_skillflee)
+					{
+						if(id >=  2 && id <= 53 && sd->status.skill[1].lv < 9)f = 1;
+						if(id >= 54 && id <= 330)
+						{
+							if(sd->status.skill[1].lv < 9)f = 1;
+							if(sd->status.skill_point >= sd->status.job_level)f = 1;
+						}
+					}
+					if(f == 0){
+						sd->status.skill[id].id=id;
+						flag=1;
+					}
 				}
 			}
 		}while(flag);
@@ -2937,7 +2949,7 @@ int pc_checkskill(struct map_session_data *sd,int skill_id)
 		return 0;
 	}
 
-	if(sd->status.skill[skill_id].id == skill_id)
+	if(sd->status.skill[skill_id].id == skill_id || (pc_isGM(sd) < battle_config.pc_skillflee && sd->status.skill[skill_id].id == 0 && sd->status.skill[skill_id].lv > 0))
 		return (sd->status.skill[skill_id].lv);
 
 	return 0;

@@ -1915,17 +1915,32 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;
 
 	case RG_INTIMIDATE:			/* インティミデイト */
-		if( sd ){
-			if(map[sd->bl.m].flag.noteleport)	/* テレポ禁止 */
-				break;
-			if( sd->skilllv==1 )
-				pc_randomwarp(sd,3);
-			else{
-				clif_skill_warppoint(sd,sd->skillid,"Random",
-					sd->status.save_point.map,"","");
-			}
-		}else if( bl->type==BL_MOB )
-			mob_warp((struct mob_data *)bl,-1,-1,3);
+		{
+		if(map[sd->bl.m].flag.noteleport)	/* テレポ禁止 */
+			break;
+
+		int mx,my,xy=map_searchrandfreecell(sd->bl.m, sd->bl.x, sd->bl.y, 5);
+		mx=xy&0xffff;
+		my=(xy>>16)&0xffff;
+
+		if(src->type==BL_PC){
+			pc_setpos(sd,sd->mapname,mx,my,3);
+
+			if(bl->type==BL_PC)
+				pc_setpos(dstsd,sd->mapname,mx,my,3);
+			else
+				mob_warp(dstmd,mx,my,3);
+
+		}else if( src->type==BL_MOB ) {
+			mob_warp(md,mx,my,3);
+	
+			if(bl->type==BL_PC)
+				pc_setpos(dstsd,sd->mapname,mx,my,3);
+			else
+				mob_warp(dstmd,mx,my,3);
+
+		}
+		}
 		break;
 	/* PotionPitcher added by Tato [17/08/03] */
 	case AM_POTIONPITCHER:		/* ポーションピッチャー */

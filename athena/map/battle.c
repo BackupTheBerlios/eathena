@@ -3266,6 +3266,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.save_log = 0;
 	battle_config.error_log = 1;
 	battle_config.etc_log = 1;
+	battle_config.pc_skillflee = 0;
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 	fp=fopen(cfgName,"r");
 	if(fp==NULL){
@@ -3347,10 +3348,16 @@ int battle_config_read(const char *cfgName)
 			{ "max_sp", &battle_config.max_sp },
 			{ "max_parameter", &battle_config.max_parameter },
 			{ "max_cart_weight", &battle_config.max_cart_weight },
+			{ "player_skill_log", &battle_config.pc_skill_log },
+			{ "monster_skill_log", &battle_config.mob_skill_log },
+			{ "battle_log", &battle_config.battle_log },
+			{ "save_log", &battle_config.save_log },
+			{ "error_log", &battle_config.error_log },
+			{ "etc_log", &battle_config.etc_log },
+			{ "pc_skillflee", &battle_config.pc_skillflee },
 		{ "item_rate_equip",	&battle_config.item_rate_equip },		// Added by RoVeRT
 		{ "item_rate_card",	&battle_config.item_rate_card },
 		{ "prevent_logout", 	&battle_config.prevent_logout },		/// End Addition
-
 		};
 		
 		if(line[0] == '/' && line[1] == '/')
