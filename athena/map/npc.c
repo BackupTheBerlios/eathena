@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.14 2004/02/18 18:10:58 rovert Exp $
+// $Id: npc.c,v 1.15 2004/02/20 21:52:41 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -509,24 +509,16 @@ int npc_touch_areanpc(struct map_session_data *sd,int m,int x,int y)
 		}
 		return 1;
 	}
-	f=0;
 	switch(map[m].npc[i]->bl.subtype){
 	case WARP:
-		f=1;
 		pc_setpos(sd,map[m].npc[i]->u.warp.name,map[m].npc[i]->u.warp.x,map[m].npc[i]->u.warp.y,0);
 		break;
 	case SCRIPT:
-		f=1;
 		npc_click(sd,map[m].npc[i]->bl.id);
 		break;
 	}
-	if(f) {
-		sd->to_x = sd->bl.x;
-		sd->to_y = sd->bl.y;
-		clif_walkok(sd);
-	}
 
-	return f;
+	return 0;
 }
 
 /*==========================================

@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.27 2004/02/17 20:00:42 rovert Exp $
+// $Id: script.c,v 1.28 2004/02/20 21:52:41 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -288,7 +288,7 @@ struct {
 	{buildin_getequipcardcnt,"getequipcardcnt","i"},
 	{buildin_successremovecards,"successremovecards","i"},
 	{buildin_failedremovecards,"failedremovecards","ii"},
-	{NULL,NULL,NULL},
+	{NULL,NULL,NULL}
 };
 enum {
 	C_NOP,C_POS,C_INT,C_PARAM,C_FUNC,C_STR,C_CONSTSTR,C_ARG,C_NAME,C_EOL,
@@ -2324,21 +2324,32 @@ int buildin_areamonster(struct script_state *st)
 int buildin_killmonster_sub(struct block_list *bl,va_list ap)
 {
 	char *event=va_arg(ap,char *);
-	if(strcmp(event,((struct mob_data *)bl)->npc_event)==0)
-		mob_delete((struct mob_data *)bl);
+	int allflag=va_arg(ap,int);
+
+	if(!allflag){
+		if(strcmp(event,((struct mob_data *)bl)->npc_event)==0)
+			mob_delete((struct mob_data *)bl);
+		return 0;
+	}else if(allflag){
+		if(((struct mob_data *)bl)->spawndelay1==-1 && ((struct mob_data *)bl)->spawndelay2==-1)
+			mob_delete((struct mob_data *)bl);
+		return 0;
+	}
 	return 0;
 }
 int buildin_killmonster(struct script_state *st)
 {
 	char *mapname,*event;
-	int m;
+	int m,allflag=0;
 	mapname=conv_str(st,& (st->stack->stack_data[st->start+2]));
 	event=conv_str(st,& (st->stack->stack_data[st->start+3]));
+	if(strcmp(event,"All")==0)
+		allflag = 1;
 
 	if( (m=map_mapname2mapid(mapname))<0 )
 		return 0;
 	map_foreachinarea(buildin_killmonster_sub,
-		m,0,0,map[m].xs,map[m].ys,BL_MOB, event );
+		m,0,0,map[m].xs,map[m].ys,BL_MOB, event ,allflag);
 	return 0;
 }
 

@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.8 2004/02/16 19:48:52 rovert Exp $
+// $Id: login.c,v 1.9 2004/02/20 21:52:41 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -465,7 +465,7 @@ int parse_fromchar(int fd)
       break;
 	
 	case 0x2720:	// GM
-/*	  {
+	  {
 	  	int newacc=0,oldacc,i=0,j;
 		if(RFIFOREST(fd)<4)
 			return 0;
@@ -499,7 +499,7 @@ int parse_fromchar(int fd)
 		WFIFOL(fd,2)=oldacc;
 		WFIFOL(fd,6)=newacc;
 		WFIFOSET(fd,10);
-	  }*/
+	  }
 	  return 0;
 
 	case 0x2722:	// changesex
@@ -678,7 +678,7 @@ int parse_login(int fd)
   if(session[fd]->eof){
     for(i=0;i<MAX_SERVERS;i++)
       if(server_fd[i]==fd)
-	server_fd[i]=-1;
+				server_fd[i]=-1;
     close(fd);
     delete_session(fd);
     return 0;
@@ -696,9 +696,9 @@ int parse_login(int fd)
 			login_log("client connection request %s from %d.%d.%d.%d" RETCODE,
 				RFIFOP(fd,6),p[0],p[1],p[2],p[3]);
 		}
-		
+
 		if( !check_ip(session[fd]->client_addr.sin_addr.s_addr) ){
-			struct timeval tv;
+		  struct timeval tv;
 			char tmpstr[256];
 			gettimeofday(&tv,NULL);
 			strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
@@ -936,7 +936,7 @@ int login_config_read(const char *cfgName)
 		else if(strcmpi(w1,"gm_account_filename")==0){
 			strcpy(GM_account_filename,w2);
 		}
-
+		
 		else if(strcmpi(w1,"order")==0){
 			access_order=atoi(w2);
 			if(strcmpi(w2,"deny,allow")==0) access_order=ACO_DENY_ALLOW;
@@ -982,7 +982,7 @@ int do_init(int argc,char **argv)
   md5keylen=rand()%4+12;
   for(i=0;i<md5keylen;i++)
 	md5key[i]=rand()%255+1;
-  
+
   for(i=0;i<AUTH_FIFO_SIZE;i++){
     auth_fifo[i].delflag=1;
   }
