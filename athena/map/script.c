@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.16 2004/02/02 02:37:39 rovert Exp $
+// $Id: script.c,v 1.17 2004/02/03 21:01:09 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -2926,7 +2926,7 @@ int buildin_emotion(struct script_state *st)
 {
 	int type;
 	type=conv_num(st,& (st->stack->stack_data[st->start+2]));
-	if(type < 0 || type > 33)
+	if(type < 0 || type > 100)
 		return 0;
 	clif_emotion(map_id2bl(st->oid),type);
 
