@@ -242,6 +242,8 @@ struct map_session_data {
 
 	char eventqueue[MAX_EVENTQUEUE][50];
 	int eventtimer[MAX_EVENTTIMER];
+
+	int sg_count;
 };
 
 struct npc_item_list {
@@ -322,6 +324,8 @@ struct mob_data {
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL/2];
 	char npc_event[50];
+
+	int sg_count;
 };
 struct pet_data {
 	struct block_list bl;
