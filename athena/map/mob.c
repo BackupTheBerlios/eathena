@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.36 2004/02/09 14:25:30 rovert Exp $
+// $Id: mob.c,v 1.37 2004/02/10 04:39:07 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -660,6 +660,7 @@ int mob_spawn(int id)
 	memset(&md->state,0,sizeof(md->state));
 	md->attacked_id = 0;
 	md->target_id = 0;
+	md->first_attacked_id = 0;
 	md->move_fail_count = 0;
 
 	md->speed = mob_db[md->class].speed;
@@ -1486,6 +1487,7 @@ static int mob_ai_lazy(int tid,unsigned int tick,int id,int data)
 struct delay_item_drop {
 	int m,x,y;
 	int nameid,amount;
+	int first_get_id;
 };
 
 struct delay_item_drop2 {
@@ -1508,6 +1510,7 @@ static int mob_delay_item_drop(int tid,unsigned int tick,int id,int data)
 	temp_item.nameid = ditem->nameid;
 	temp_item.amount = ditem->amount;
 	temp_item.identify = !itemdb_isequip(temp_item.nameid);
+	temp_item.first_get_id = ditem->first_get_id;
 	map_addflooritem(&temp_item,1,ditem->m,ditem->x,ditem->y);
 
 	free(ditem);
@@ -1605,6 +1608,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			printf("mob_damage : BlockError!!\n");
 		return 0;
 	}
+	if(src->type==BL_PC && md->first_attacked_id<=0)
+		md->first_attacked_id = sd->bl.id;
 
 	if(md->state.state==MS_DEAD || md->hp<=0) {
 		if(md->bl.prev != NULL) {
@@ -1779,6 +1784,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			ditem->m=md->bl.m;
 			ditem->x=md->bl.x;
 			ditem->y=md->bl.y;
+			ditem->first_get_id=md->first_attacked_id;
 			add_timer(gettick()+500+i,mob_delay_item_drop,(int)ditem,0);
 		}
 		if(sd && sd->state.attack_type == BF_WEAPON) {
@@ -1804,6 +1810,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 					ditem->m=md->bl.m;
 					ditem->x=md->bl.x;
 					ditem->y=md->bl.y;
+					ditem->first_get_id = md->first_attacked_id;
 					add_timer(gettick()+520+i,mob_delay_item_drop,(int)ditem,0);
 				}
 			}
@@ -2049,6 +2056,7 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	md->target_id=0;	// ƒ^ƒQ‚ð‰ðœ‚·‚é
 	md->state.targettype=NONE_ATTACKABLE;
 	md->attacked_id=0;
+	md->first_attacked_id=0;
 	md->state.state=MS_IDLE;
 	md->state.skillstate=MSS_IDLE;
 
