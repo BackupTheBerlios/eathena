@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.2 2004/01/09 03:00:18 rovert Exp $
+// $Id: itemdb.c,v 1.3 2004/01/11 17:23:07 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -644,8 +644,6 @@ int do_init_itemdb(void)
 
 	itemdb_read_itemslottable();
 	itemdb_readdb("db/item_db.txt");
-	if(battle_config.custom_db)
-		itemdb_readdb("db/custom_item_db.txt");
 	itemdb_read_classequipdb();
 	itemdb_read_itemvaluedb();
 	itemdb_read_randomitem();
