@@ -102,8 +102,6 @@ int main(void)
 		sin_size = sizeof(struct sockaddr_in);
 		new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &sin_size);
 
-		printf("Connection from: %s.\n", inet_ntoa(their_addr.sin_addr));
-
 		if (!fork())
 		{
 			close(sockfd);
@@ -111,6 +109,7 @@ int main(void)
 			recv(new_fd, recvin, 500, 0);
 			send(new_fd, header, strlen(header), 0);
 			generate_page(new_fd, get_query(recvin), inet_ntoa(their_addr.sin_addr));
+			log_visit(get_query(recvin), inet_ntoa(their_addr.sin_addr));
 
 			close(new_fd);
 			exit(0);

@@ -5,6 +5,7 @@ all:
 	$(cc) -c parse.c
 	$(cc) -c generate.c
 	$(cc) -c htmlstyle.c
+	$(cc) -c logs.c
 	
 	#Generate "pages"...
 	cd pages && $(cc) -c about.c && cd ..
@@ -13,7 +14,7 @@ all:
 
 	#Building the server...
 	$(cc) -o webserver main.c parse.o generate.o htmlstyle.o \
-	pages/about.o pages/sample.o pages/notdone.o
+	logs.o pages/about.o pages/sample.o pages/notdone.o
 	
 
 
