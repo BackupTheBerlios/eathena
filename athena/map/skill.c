@@ -3125,7 +3125,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		break;
 
 	case SA_LANDPROTECTOR:	/* グランドクロス */
-		limit=(90+skilllv*30)*1000;
+		limit=skill_get_time(skillid,skilllv);	// changed to get duration from cast_db (moonsoul)
 		val1=skilllv*15+10;
 		aoe_diameter=skilllv+skilllv%2+5;
 		target=BCT_ALL;
@@ -5709,6 +5709,11 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_COMBO:
 			break;
+
+//	-- moonsoul (various lines below have been commented out where they set tick
+//			 or certain values that the skills already set in skill_unitsetting,
+//			 which has been destabilizing map-server)
+//
 		case SC_LULLABY:			/* 子守唄 */
 			val2 = 11;
 			break;
@@ -5737,32 +5742,32 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_WHISTLE:			/* 口笛 */
 			calc_flag = 1;
-			val2 = (pc_checkskill(sd,BA_MUSICALLESSON)+1)>>1;
-			val3 = battle_get_agi(bl)/10;
-			val4 = battle_get_luk(bl)/10;
+//			val2 = (pc_checkskill(sd,BA_MUSICALLESSON)+1)>>1;
+//			val3 = battle_get_agi(bl)/10;
+//			val4 = battle_get_luk(bl)/10;
 			break;
 		case SC_ASSNCROS:			/* ?陽のアサシンクロス */
 			calc_flag = 1;
-			val2 = (pc_checkskill(sd,BA_MUSICALLESSON)+1)>>1;
-			val3 = battle_get_agi(bl)/20;
+//			val2 = (pc_checkskill(sd,BA_MUSICALLESSON)+1)>>1;
+//			val3 = battle_get_agi(bl)/20;
 			break;
 		case SC_POEMBRAGI:			/* ブラギの詩 */
-			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
-			val3 = battle_get_dex(bl)/10;
-			val4 = battle_get_int(bl)/5;
+//			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
+//			val3 = battle_get_dex(bl)/10;
+//			val4 = battle_get_int(bl)/5;
 			break;
 		case SC_APPLEIDUN:			/* イドゥンの林檎 */
 			calc_flag = 1;
-			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
-			val3 = battle_get_vit(bl);
+//			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
+//			val3 = battle_get_vit(bl);
 			break;
 		case SC_UGLYDANCE:			/* 自分勝手な?ンス */
 			val2 = pc_checkskill(sd,DC_DANCINGLESSON)+5;
 			break;
 		case SC_HUMMING:			/* ハ?ング */
 			calc_flag = 1;
-			val2 = pc_checkskill(sd,DC_DANCINGLESSON);
-			val3 = battle_get_dex(bl)/10;
+//			val2 = pc_checkskill(sd,DC_DANCINGLESSON);
+//			val3 = battle_get_dex(bl)/10;
 			break;
 		case SC_DONTFORGETME:		/* 私を忘れないで */
 			calc_flag = 1;
@@ -5779,13 +5784,13 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_FORTUNE:			/* 幸?のキス */
 			calc_flag = 1;
-			val2 = (pc_checkskill(sd,DC_DANCINGLESSON)+1)>>1;
-			val3 = battle_get_luk(bl)/10;
+//			val2 = (pc_checkskill(sd,DC_DANCINGLESSON)+1)>>1;
+//			val3 = battle_get_luk(bl)/10;
 			break;
 		case SC_SERVICE4U:			/* サ?ビスフォ?ユ? */
 			calc_flag = 1;
-			val2 = (pc_checkskill(sd,DC_DANCINGLESSON)+1)>>1;
-			val3 = battle_get_int(bl)/10;
+//			val2 = (pc_checkskill(sd,DC_DANCINGLESSON)+1)>>1;
+//			val3 = battle_get_int(bl)/10;
 			break;
 		case SC_DANCING:			/* ?ンス/演奏中 */
 			calc_flag = 1;
@@ -5803,7 +5808,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 
 		case SC_VOLCANO:
-			tick=((struct skill_unit *)val2)->group->limit;
+//			tick=((struct skill_unit *)val2)->group->limit;
 			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_DELUGE,-1);
 			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
@@ -5813,7 +5818,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 //fix
 		case SC_DELUGE:
-			tick=((struct skill_unit *)val2)->group->limit;
+//			tick=((struct skill_unit *)val2)->group->limit;
 			if( sc_data[SC_LANDPROTECTOR].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_LANDPROTECTOR,-1);
 			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
@@ -5823,7 +5828,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 //fix
 		case SC_VIOLENTGALE:
-			tick=((struct skill_unit *)val2)->group->limit;
+//			tick=((struct skill_unit *)val2)->group->limit;
 			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_DELUGE,-1);
 			if( sc_data[SC_LANDPROTECTOR].timer!=-1 )	/* EP解除 */
@@ -5833,7 +5838,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 //fix
 		case SC_LANDPROTECTOR:
-			tick=((struct skill_unit *)val2)->group->limit;
+//			tick=((struct skill_unit *)val2)->group->limit;
 			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_DELUGE,-1);
 			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
