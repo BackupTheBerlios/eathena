@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.8 2004/01/15 17:55:26 rovert Exp $
+// $Id: clif.c,v 1.9 2004/01/15 22:43:04 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -85,7 +85,7 @@ static const int packet_len_table[0x200]={
     3,  3, 35,  5, 11, 26, -1,  4,   4,  6, 10, 12,  6, -1,  4,  4,
    11,  7, -1, 67, 12, 18,114,  6,   3,  6, 26, 26, 26, 26,  2,  3,
 //#0x01C0
-    2, 14, 10, -1, 22, 22,  4,  2,  13, 97,  0,  9,  9, 29,  6, 28,
+    2, 14, 10, -1, 22, 22,  4,  2,  13, 97,  0,  9,  9, 30,  6, 28,
     8, 14, 10, 35,  6,  8,  4, 11,  54, 53, 60,  2, -1, 47, 33,  6,
     0,  8,  0,  0,  0,  0,  0,  0,  28,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  7,  0,  0,  0,   0,  0,  0,  0,  0,  0,  0,  0,
@@ -4718,9 +4718,7 @@ int clif_guild_broken(struct map_session_data *sd,int flag)
 	WFIFOL(fd,2)=flag;
 	WFIFOSET(fd,packet_len_table[0x15e]);
 	return 0;
-}
-
-/*==========================================
+}/*==========================================
  * ƒGƒ‚[ƒVƒ‡ƒ“
  *------------------------------------------
  */
@@ -6291,7 +6289,34 @@ void clif_parse_skillMessage(int fd,struct map_session_data *sd)	// Added by RoV
 // skill 220 = graffiti
 
 // Process here or in another function
+
+
+//send talkybox (not working)
+	WFIFOW(fd,0)=0x191;
+	WFIFOL(fd,2)=100000001;
+	memcpy(WFIFOP(fd,6),mes,80);
+	WFIFOSET(fd,packet_len_table[0x191]);
+
+
 //printf("skill: %d %d location: %3d %3d message: %s\n",skillid,skilllv,x,y,(char*)mes);
+}
+
+int clif_skill_list_send(struct map_session_data *sd,int skills[],int limit)
+{
+	int i;
+	WFIFOW(sd->fd,0)=0x1cd;
+
+	for(i=0;i<7;i++)
+		WFIFOL(sd->fd,2+4*i)=(i < limit && pc_checkskill(sd,skills[i]) > 0)?skills[i]:0;
+
+	WFIFOSET(sd->fd,packet_len_table[0x1cd]);
+
+	return 0;
+}
+
+void clif_parse_selected_spell(int fd,struct map_session_data *sd)
+{
+	skill_status_change_start((struct block_list*) sd, SC_AUTOSPELL, pc_checkskill(sd,SA_AUTOSPELL), RFIFOL(fd,2) );
 }
 
 /*==========================================
@@ -6554,7 +6579,9 @@ static int clif_parse(int fd)
 		NULL,NULL,
 
 		// 1c0
-		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, NULL,NULL,NULL,NULL,NULL,NULL,
+		clif_parse_selected_spell,
+		NULL,
 		// 1d0
 		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 		clif_parse_GMReqNoChatCount,

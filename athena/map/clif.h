@@ -234,6 +234,9 @@ int clif_GM_kick(struct map_session_data *sd,struct map_session_data *tsd,int ty
 
 int clif_foreachclient(int (*)(struct map_session_data*,va_list),...);
 
+
+int clif_skill_list_send(struct map_session_data *sd,int skills[],int limit);
+
 int do_init_clif(void);
 
 #endif

@@ -367,65 +367,43 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 				if(pc_steal_item(sd,bl))
 					clif_skill_nodamage(src,bl,TF_STEAL,skill2,1);
 
-		if (sd && sd->sc_data[SC_AUTOSPELL].timer != -1 && 0) {				// Added by RoVeRT
-			if ((tick - sd->autospell_tick) >= 3000 && sd->sc_data[SC_AUTOSPELL].val1 < rand()%100) {
-				int skilllv=1,max=3,limit=-1,sp;
-				int lv = pc_checkskill(sd,SA_AUTOSPELL);
-
+		if (sd && sd->sc_data[SC_AUTOSPELL].timer != -1) {				// Added by RoVeRT
+			if ((tick - sd->sc_data[SC_AUTOSPELL].val3) >= 3000 && rand()%1000 < sd->sc_data[SC_AUTOSPELL].val1) {
+				int lv,skilllv=1,max=3,sp;
 				int levels[]={1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3};
-				struct { int skill,max; } skills[] = {
-					{	MG_NAPALMBEAT,	3	},
-					{	MG_COLDBOLT,	3	},
-					{	MG_FIREBOLT,	3	},
-					{	MG_LIGHTNINGBOLT,	3	},
-					{	MG_SOULSTRIKE,	3	},
-					{	MG_FIREBALL,	2	},
-					{	MG_FROSTDIVER,	1	},
-				};
-				switch(lv) {
+
+				int skillid = sd->sc_data[SC_AUTOSPELL].val2;
+				switch((lv=pc_checkskill(sd,SA_AUTOSPELL))) {
 					case 1:
-						skill = 0;
+						max = 3;
 						break;
-					case 2:
-					case 3:
-					case 4:
-						skill = rand()%4;
+					case 2:		case 3:		case 4:
 						max = lv-1;
-						limit = 0;
 						break;
-					case 5:
-					case 6:
-					case 7:
-						skill = rand()%5;
+					case 5:		case 6:		case 7:
 						max = lv-4;
-						limit = 3;
-						break;		
-					case 8:
-					case 9:
-						skill = rand()%6;
+						break;
+					case 8:		case 9:
 						max = lv-7;
-						limit = 5;
 						break;
 					case 10:
-						skill = rand()%7;
 						max = 1;
-						limit = 6;
 					break;
 				}
 
-				do{ skilllv=levels[rand()%21]; } while(skilllv>skills[skill].max || (skill>limit && skilllv>max));
+				do{ skilllv=levels[rand()%21]; } while(skilllv>max && skilllv>pc_checkskill(sd,skillid) );
 
-				sp=skill_get_sp(skills[skill].skill, skilllv) * 2/3;
+				sp=skill_get_sp(skillid,skilllv) * 2/3;
 				if(sd->dsprate!=100)
 					sp=sp*sd->dsprate/100;
 
-				if (sd->status.sp >= sp && pc_checkskill(sd,skills[skill].skill) >= skilllv) {
+				if (sd->status.sp >= sp) {
 					sd->status.sp-=sp;
 					clif_updatestatus(sd,SP_SP);
 
-					sd->autospell_tick = tick;
+					sd->sc_data[SC_AUTOSPELL].val3 = tick;
 
-					skill_castend_damage_id(src,bl,skills[skill].skill,skilllv,tick,0xf00000);
+					skill_castend_damage_id(src,bl,skillid,skilllv,tick,0xf00000);
 				}
 			}
 		}
@@ -2052,9 +2030,14 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;
 
 	case SA_AUTOSPELL:			// Added by RoVeRT
+		{
+		int limit,skills[]={MG_NAPALMBEAT,MG_COLDBOLT,MG_FIREBOLT,MG_LIGHTNINGBOLT,MG_SOULSTRIKE,MG_FIREBALL,MG_FROSTDIVER};
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		skill_status_change_start( bl, SkillStatusChangeTable[skillid], skilllv, 0 );
+		limit=(skilllv==1)?1:(skilllv>1 && skilllv<5)?3:(skilllv>4 || skilllv<8)?4:(skilllv==8 || skilllv==9)?5:6;
+
+		clif_skill_list_send(sd, skills, limit);
 		break;
+		}
 	}
 	return 0;
 }
@@ -4986,7 +4969,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 
 		case SC_AUTOSPELL:
 			tick = 1000 * (90 + 30 * val1); /* SC_AUTOSPELL); */
-			val1 = 5 + 2 * val1;
+			val1 = (5 + 2 * val1) * 10;
 			break;
 
 		default:

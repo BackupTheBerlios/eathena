@@ -247,7 +247,6 @@ struct map_session_data {
 
 	int last_skillid,last_skilllv;		// Added by RoVeRT
 	int cast_skillid,cast_skilllv;
-	int autospell_tick;
 	int skill_limit[350];
 	struct{
 		char name[24];
