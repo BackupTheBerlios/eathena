@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.8 2004/02/04 15:38:09 rovert Exp $
+// $Id: map.c,v 1.9 2004/02/04 23:32:31 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,4 +1,4 @@
-// $Id: pc.h,v 1.6 2004/02/01 18:16:56 rovert Exp $
+// $Id: pc.h,v 1.7 2004/02/04 23:32:31 rovert Exp $
 
 #ifndef _PC_H_
 #define _PC_H_
@@ -138,6 +138,8 @@ int pc_calc_pvprank_timer(int tid,unsigned int tick,int id,int data);
 int pc_read_gm_account(void);
 int pc_setghosttimer(struct map_session_data *sd,int);
 int pc_delghosttimer(struct map_session_data *sd);
+int pc_setgvg_ghosttimer(struct map_session_data *sd,int);
+int pc_delgvg_ghosttimer(struct map_session_data *sd);
 int pc_addspiritball(struct map_session_data *sd,int,int);
 int pc_delspiritball(struct map_session_data *sd,int,int);
 
