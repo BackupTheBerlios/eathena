@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.8 2004/02/05 03:15:14 rovert Exp $
+// $Id: char.c,v 1.9 2004/02/05 23:00:15 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -1437,8 +1437,6 @@ int char_config_read(const char *cfgName)
 			start_point.y=y;
 		} else if(strcmpi(w1,"start_zeny")==0){
 			start_zeny=atoi(w2);
-		} else if(strcmpi(w1,"party_share")==0){
-			party_share_range=atoi(w2);
 		}
 	}
 	fclose(fp);

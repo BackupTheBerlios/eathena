@@ -167,7 +167,7 @@ int party_check_exp_share(struct party *p)
 			if( maxlv < lv ) maxlv=lv;
 		}
 	}
-	return (maxlv==0 || maxlv-minlv<=party_share_range);
+	return (maxlv==0 || maxlv-minlv<=10);
 }
 // パーティが空かどうかチェック
 int party_check_empty(struct party *p)
