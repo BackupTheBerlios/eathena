@@ -4526,6 +4526,7 @@ int skill_status_change_timer(int tid, unsigned int tick, int id, int data)
 	int type=data;
 	struct block_list *bl;
 	struct map_session_data *sd=NULL;
+	struct mob_data *md=NULL;
 	struct status_change *sc_data;
 	short *sc_count;
 	
@@ -4535,11 +4536,35 @@ int skill_status_change_timer(int tid, unsigned int tick, int id, int data)
 	
 	if(bl->type==BL_PC)
 		sd=(struct map_session_data *)bl;
+	if(bl->type==BL_MOB)
+		md=(struct mob_data *)bl;
 
 	sc_data=battle_get_sc_data(bl);
 	sc_count=battle_get_sc_count(bl);
 	
 	switch(type){	/* 特殊な処理になる場合 */
+	case SC_POISON:
+		if(sd){
+				if( sd->status.hp > sd->status.hp*25/100 ){
+					sd->status.hp -= sd->status.hp*2/100;
+					clif_updatestatus(sd,SP_HP);
+				sc_data[type].timer=add_timer(
+					sc_data[type].val3+tick, skill_status_change_timer,
+					bl->id, data);
+				return 0;
+			}
+		}
+		if(md){
+			if( md->hp > md->hp*25/100 ){
+				md->hp -= md->hp*2/100;
+				clif_updatestatus(sd,SP_HP);
+				sc_data[type].timer=add_timer(
+					sc_data[type].val3+tick, skill_status_change_timer,
+					bl->id, data);
+				return 0;
+			}
+		}
+		break;
 	case SC_MAXIMIZEPOWER:	/* マキシマイズパワー */
 	case SC_CLOAKING:		/* クローキング */
 		if(sd){
