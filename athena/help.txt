@@ -76,11 +76,12 @@ GM Hide. Perfect hide that's totally invinsible.
 
 <SPAWNING COMMANDS>
 
-@item <item name or ID> <quantity> - Gives you the desired item.
+@item <item name or ID> <quantity>
+Gives you the desired item.
 
-@monster <desired monster name> <actual monster name or monster ID> <number to spawn>
-@spawn <desired monster name> <actual monster name or monster ID> <number to spawn>
-	Spawns the desired monster with any desired name.
+@monster  <actual monster name or monster ID> <number to spawn (Optional)> <desired monster name (Optional)>
+@spawn <actual monster name or monster ID> <number to spawn (Optional)> <desired monster name (Optional)>
+Spawns the desired monster with any desired name and quantity (if specified).
 
 <MAP OPTIONS COMMANDS>
 
@@ -90,8 +91,11 @@ GM Hide. Perfect hide that's totally invinsible.
 @gvgoff -  Turns gvg off on the current map
 
 <CHARACTER CONTROL COMMANDS>
-@baselvlup <number of levels> - Raises your base level the desired number of levels. The max is 99
-@joblvlup <number of levels> - Raises your job level the desired number of levels. The max is 50
+@baselvlup <number of levels>
+Raises your base level the desired number of levels. The max is 99
+
+@joblvlup <number of levels>
+Raises your job level the desired number of levels. The max is 50
 
 
 @jobchange <job ID>
@@ -223,10 +227,17 @@ Element: 0=None 1=Ice 2=Earth 3=Fire 4=Wind
 Example: @produce 1163 3 3 - Produces a Very Very Very Strong (Your Nick)'s Fire Claymore
 
 <Q-PET/cutePET COMMANDS>
-@makepet <ID> - Gives pet egg for monster ID in pet DB
-@petfriendly <#> - Set pet friendly amount (0-1000) 0 = Min, 1000 = Max
-@pethungry <#> - Set pet hungry amount (0-100) 0 = Min, 100 = Max
-@petrename - Re-enable pet rename
+@makepet <ID>
+Gives pet egg for monster ID in pet DB
+
+@petfriendly <#>
+Set pet friendly amount (0-1000) 0 = Min, 1000 = Max
+
+@pethungry <#>
+Set pet hungry amount (0-100) 0 = Min, 100 = Max
+
+@petrename
+Re-enable pet rename
 
 <REMOTE CHAR COMMANDS>
 @charwarp <map name> <x> <y> <char name>
@@ -293,3 +304,9 @@ Kick all characters off the server
 
 @gat                ---- デバッグ用(周辺gatを調べる)
 @packet             ---- デバッグ用(パケット色々)
+
+@agitstart
+Starts Guild Wars (War of Emperium)
+
+@agitend
+Ends Guild Wars (War of Emperium)
