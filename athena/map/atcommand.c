@@ -1661,6 +1661,8 @@ int atcommand_config_read(const char *cfgName)
 				{ "questskill",&atcommand_config.questskill },
 				{ "lostskill",&atcommand_config.lostskill },
 				{ "spiritball",&atcommand_config.spiritball },
+			{ "charstpoint",	&atcommand_config.charstpoint },
+			{ "charskpoint",	&atcommand_config.charskpoint },
 			{ "chardyeclothes",	&atcommand_config.chardyeclothes },
 			{ "chardyehair",	&atcommand_config.chardyehair },
 			{ "charstylehair",	&atcommand_config.charstylehair },
