@@ -72,7 +72,7 @@ extern struct Atcommand_Config {
 	int charjlvl;
 	int kick;
 	int kickall;
-	int allskill;
+	int skillall;
 	int questskill;
 	int lostskill;
 	int spiritball;

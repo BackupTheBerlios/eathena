@@ -1251,7 +1251,7 @@ z [0`4]•ž‚ÌF
 			return 1;
 		}
 
-		if(strcmpi(command, "@allskill") == 0 && gm_level >= atcommand_config.allskill){
+		if(strcmpi(command, "@skillall") == 0 && gm_level >= atcommand_config.skillall){
 			pc_allskillup(sd);
 			return 1;
 		}
