@@ -2312,7 +2312,7 @@ pay_arche.gat,55,123,8	script	Kafra	117,{
 //===============================================================================================================================\\
 //<=========== Kafra's in Prontera - Begin ==========>\\
 //_WEST_\\
-prontera.gat,29,207,6	script	FGM Kafra	113,{
+prontera.gat,29,207,6	script	Kafra	113,{
 	cutin "kafra_05",2;
 	mes "[Kafra]";
 	mes "Welcome to Kafra Corp.We will stay with you wherever you go This karfa have been made for FGM RO Lord.";
@@ -2472,6 +2472,153 @@ prontera.gat,29,207,6	script	FGM Kafra	113,{
 }
 
 prontera.gat,146,89,6	script	Kafra	115,{
+	cutin "kafra_03",2;
+	mes "[Kafra]";
+	mes "Welcome to Kafra Corp.We will stay with you wherever you go.";
+	next;
+	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
+
+	Lsave:
+		savepoint "prontera.gat",117,73;
+		mes "[Kafra]";
+		mes "Your respawn point has saved. Thank you.";
+		cutin "kafra_03",255;
+		close;
+	Lstorage:
+		if((class ==Job_Novice) && (JobLevel<6)) goto NeedJobLevel;
+		if(Zeny<30) goto NeedZenys;
+		set Zeny, Zeny-30;
+		openstorage;
+		cutin "kafra_05",255;
+		close;
+
+                NeedJobLevel:
+                	mes "[Kafra]";
+                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	cutin "kafra_02",255;
+                	close;
+                
+                NeedZenys:
+			mes "[Kafra]";
+                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	cutin "kafra_02",255;
+                	close;
+	Lteleport:
+		mes "[Kafra]";
+		mes "Please let me know your destination.";
+		next;
+		menu "Izlude -> 900 Zeny.",Izlude,"Geffen -> 1400 Zeny.",Geffen,"Payon -> 1700 Zeny.",Payon,"Morroc -> 1800 z",Morroc,"Orc Dungeon -> 1700 z",OrcDungeon,"Cancel",Cancel;
+		
+		Izlude:
+			if(Zeny<900) goto CantTeleport;
+			set Zeny, Zeny-900;
+			warp "izlude.gat",91,105;
+			cutin "kafra_02",255;
+			close;
+		Geffen:
+			if(Zeny<1800) goto CantTeleport;
+			set Zeny, Zeny-1800;
+			warp "geffen.gat",120,39;
+			cutin "kafra_02",255;
+			close;
+		Payon:
+			if(Zeny<1700) goto CantTeleport;
+			set Zeny, Zeny-1700;
+			warp "payon.gat",69,100;
+			cutin "kafra_02",255;
+			close;
+		Morroc:
+			if(Zeny<1800) goto CantTeleport;
+			set Zeny, Zeny-1800;
+			warp "morocc.gat",156,46;
+			cutin "kafra_02",255;
+			close;
+		OrcDungeon:
+			if(Zeny<1700) goto CantTeleport;
+			set Zeny, Zeny-1700;
+			warp "gef_fild10.gat",52,326;
+			cutin "kafra_02",255;
+			close;
+		Cancel:
+			cutin "kafra_02",255;
+			close;
+
+			CantTeleport:
+				mes "[Kafra]";
+				mes "Dear you don't have enough money. Please check again.";
+				cutin "kafra_02",255;
+				close;
+	Lcart:
+		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		mes "[Kafra]";
+		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		cutin "kafra_04",255;
+		close;
+
+		UseCart:
+			mes "[Kafra]";
+			mes "The Cart Fee is 800 Zeny. Do you want to Rent a Cart?";
+			next;
+			menu "Rent a Cart.",RentCart,"Cancel.",RCCancel;
+
+			RentCart:
+				if(Zeny<800) goto RCNeedZenys;
+				set Zeny, Zeny-800;
+				if((CheckCart)==1) goto GetCart;
+			
+				GetCart:
+					set Zeny,Zeny-800;
+					setcart;
+					mes "[Kafra]";
+					mes "There you go..";
+					cutin "kafra_08",255;
+					close;
+			RCNeedZenys:
+				mes "[Kafra]";
+				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				cutin "kafra_04",255;
+				close;
+		RCCancel:
+			cutin "kafra_04",255;
+			close;
+	Lpass:
+		if(countitem(1084)<1) goto NeedKafraPass;
+		
+		NeedKafraPass:
+			mes "[Kafra]";
+			mes "Dear you need at least 1 passport.";
+			cutin "kafra_02",255;
+			close;
+		mes "[Kafra]";
+		mes "Now you are Using a Kapra's Pass.";
+		delitem 1084,1;
+		next;
+		mes "[Kafra]";
+		mes "Under development";
+		cutin "kafra_02",255;
+		close;
+	Linfo:
+		menu "Special Reverse Check",ReserveCheck,"Location Tip",Location,"Cancel",LiCancel;
+		
+		ReserveCheck:
+			mes "[Kafra]";
+			mes "Under development";
+			cutin "kafra_02",255;
+			close;
+		Location:
+			viewpoint 0,146,89,1,0x0000FF;
+			viewpoint 1,282,200,1,0x0000FF;
+			viewpoint 2,151,29,1,0x0000FF;
+			viewpoint 3,29,207,1,0x0000FF;
+			cutin "kafra_02",255;
+			close;
+	Lcancel:
+		cutin "kafra_02",255;
+		close;
+	close;
+}
+
+prontera.gat,282,199,6	script	Kafra	115,{
 	cutin "kafra_03",2;
 	mes "[Kafra]";
 	mes "Welcome to Kafra Corp.We will stay with you wherever you go.";
