@@ -109,16 +109,16 @@ bonus2 bAddRace,n,x;			In n race the damage addition of x%
 						0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
 bonus2 bSubRace,n,x;			Damage x% reduction from n race
 						0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
+bonus2 bMagicAddRace,n,x;		In n race the damage addition of x% (only magical attack)
+						0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
+bonus2 bMagicSubRace,n,x;		Magical damage x% reduction from n race
+						0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
 bonus2 bAddEle,n,x;			In n attribute the damage addition of x%
+						0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
+bonus2 bMagicAddEle,n,x;			In n attribute the damage addition of x% (only magical attack) 
 						0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
 bonus2 bSubEle,n,x;			Damage x% reduction from n attribute
 						0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
-bonus2 bMagicAddRace,n,x;		In n race the damage addition of x% (only magical attack)
-						0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
-bonus2 bMagicAddEle,n,x;			In n attribute the damage addition of x% (only magical attack) 
-						0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
-bonus2 bMagicSubRace,n,x;		Magical damage x% reduction from n race
-						0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
 bonus2 bAddDamageClass,n,x;		In monster of class n the damage addition of x% (only physical attack), in case of prayer in n occupation the damage addition of x%
 bonus2 bAddMagicDamageClass,n,x;		In monster of class n in case of the magical damage addition and prayer of x% in n occupation the magical damage addition of x%
 bonus2 bAddDefClass,n,x;		In monster of class n the damage reduction of x% (only physical attack), in case of prayer in n occupation the damage reduction of x%

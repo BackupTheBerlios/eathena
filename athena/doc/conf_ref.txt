@@ -545,6 +545,12 @@ shop_exp
 	計算式は適度に作った物です。
 	デフォルトは0です。
 
+combo_delay_rate
+	モンクのコンボディレイの時間の倍率です。（100で通常、200で倍になります。）
+	ただ注意するべきなのは高く設定するのがいいことではないことです。
+	コンボディレイが長いとコンボの繋ぎはよくなりますがその長くなった
+	時間の間は行動できないからです。デフォルトは100です。
+
 item_check
 	アイテムのチェックを行うかどうかです。
 	ログイン時とマップ移動時に所持アイテムに不正アイテムがないかチェックします。
@@ -667,6 +673,7 @@ sanctuary_type: 0
 finger_offensive_type: 0
 heal_exp: 0
 shop_exp: 0
+combo_delay_rate: 100
 item_check: on
 wedding_modifydisplay: no
 natural_healhp_interval:4000

@@ -161,7 +161,7 @@ extern struct Battle_Config {
 	int sanctuary_type;
 	int finger_offensive_type;
 	int heal_exp,shop_exp;
-	int asuradelay;
+	int combo_delay_rate;
 	int item_check;
 	int wedding_modifydisplay;
 	int natural_healhp_interval;

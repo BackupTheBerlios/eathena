@@ -222,11 +222,11 @@ int battle_get_hit(struct block_list *bl)
 int battle_get_flee2(struct block_list *bl)
 {
 	if(bl->type==BL_MOB)
-		return battle_get_luk(bl)/10+1;
+		return battle_get_luk(bl)+10;
 	else if(bl->type==BL_PC)
 		return ((struct map_session_data *)bl)->flee2;
 	else if(bl->type==BL_PET)
-		return battle_get_luk(bl)/10+1;
+		return battle_get_luk(bl)+10;
 	else
 		return 0;
 	
@@ -1205,7 +1205,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 				div_=4;
 				break;
 			case MO_COMBOFINISH:	// 猛龍拳
-				blewcount=3;
+				blewcount=5;
 				damage = damage*(240+ 60*skill_lv)/100;
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
@@ -1516,7 +1516,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 				div_=4;
 				break;
 			case MO_COMBOFINISH:	// 猛龍拳
-				blewcount=3;
+				blewcount=5;
 				damage = damage*(240+ 60*skill_lv)/100;
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
@@ -1594,7 +1594,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 	}
 
 	// 完全回避の判定
-	if( skill_num==0 && tsd!=NULL && hitrate < 1000000 && rand()%100 < tsd->flee2){
+	if( skill_num==0 && tsd!=NULL && hitrate < 1000000 && rand()%1000 < tsd->flee2){
 		damage=0;
 		type=0x0b;
 	}
@@ -1722,7 +1722,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		atkmax_ = watk_;
 	}
 	else if( target->type==BL_MOB ){
-		if(pc_isriding(sd) && (sd->status.weapon==4 || sd->status.weapon==5) && t_size==1) {	//ペコ騎乗していて、槍で中型を攻撃
+		if((pc_isriding(sd) && (sd->status.weapon==4 || sd->status.weapon==5) && t_size==1) || skill_num == MO_EXTREMITYFIST) {	//ペコ騎乗していて、槍で中型を攻撃
 			atkmax = watk;
 			atkmax_ = watk_;
 		}
@@ -1774,10 +1774,10 @@ static struct Damage battle_calc_pc_weapon_attack(
 		cri = 1 + luk*3;
 
 		// カード等の追加効果の再計算(百分率を千分率に直す)
-		cri += 10*(sd->critical - ((sd->paramc[3]*3/10)+1));
+		cri += sd->critical - ((sd->paramc[5]*3)+10);
 
 		if(sd->state.arrow_atk)
-			cri += sd->arrow_cri*10;
+			cri += sd->arrow_cri;
 		if(sd->status.weapon == 16)
 				// カタールの場合、クリティカルを倍に
 			cri <<=1;
@@ -1810,26 +1810,24 @@ static struct Damage battle_calc_pc_weapon_attack(
 			damage2 = (damage2 * (def1 + def2))/100;
 			idef_flag_ = 1;
 		}
-		if(tmd) {
-			if(mob_db[tmd->class].mexp > 0) {
-				if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
-					damage = (damage * (def1 + def2))/100;
-					idef_flag = 1;
-				}
-				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
-					damage2 = (damage2 * (def1 + def2))/100;
-					idef_flag_ = 1;
-				}
+		if(tmd && mob_db[tmd->class].mexp > 0) {
+			if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
+				damage = (damage * (def1 + def2))/100;
+				idef_flag = 1;
 			}
-			else {
-				if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
-					damage = (damage * (def1 + def2))/100;
-					idef_flag = 1;
-				}
-				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
-					damage2 = (damage2 * (def1 + def2))/100;
-					idef_flag_ = 1;
-				}
+			if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
+				damage2 = (damage2 * (def1 + def2))/100;
+				idef_flag_ = 1;
+			}
+		}
+		else {
+			if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
+				damage = (damage * (def1 + def2))/100;
+				idef_flag = 1;
+			}
+			if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
+				damage2 = (damage2 * (def1 + def2))/100;
+				idef_flag_ = 1;
 			}
 		}
 	}
@@ -1864,26 +1862,24 @@ static struct Damage battle_calc_pc_weapon_attack(
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
-			if(tmd) {
-				if(mob_db[tmd->class].mexp > 0) {
-					if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
-						damage = (damage * (def1 + def2))/100;
-						idef_flag = 1;
-					}
-					if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
-						damage2 = (damage2 * (def1 + def2))/100;
-						idef_flag_ = 1;
-					}
+			if(tmd && mob_db[tmd->class].mexp > 0) {
+				if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
+					damage = (damage * (def1 + def2))/100;
+					idef_flag = 1;
 				}
-				else {
-					if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
-						damage = (damage * (def1 + def2))/100;
-						idef_flag = 1;
-					}
-					if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
-						damage2 = (damage2 * (def1 + def2))/100;
-						idef_flag_ = 1;
-					}
+				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
+					damage2 = (damage2 * (def1 + def2))/100;
+					idef_flag_ = 1;
+				}
+			}
+			else {
+				if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
+					damage = (damage * (def1 + def2))/100;
+					idef_flag = 1;
+				}
+				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
+					damage2 = (damage2 * (def1 + def2))/100;
+					idef_flag_ = 1;
 				}
 			}
 		}
@@ -2053,7 +2049,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				div_=4;
 				break;
 			case MO_COMBOFINISH:	// 猛龍拳
-				blewcount=3;
+				blewcount=5;
 				damage = damage*(240+ 60*skill_lv)/100;
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
@@ -2092,19 +2088,17 @@ static struct Damage battle_calc_pc_weapon_attack(
 					idef_flag = 1;
 				if(sd->ignore_def_ele_ & (1<<t_ele) || sd->ignore_def_race_ & (1<<t_race))
 					idef_flag_ = 1;
-				if(tmd) {
-					if(mob_db[tmd->class].mexp > 0) {
-						if(sd->ignore_def_race & (1<<10))
-							idef_flag = 1;
-						if(sd->ignore_def_race_ & (1<<10))
-							idef_flag_ = 1;
-					}
-					else {
-						if(sd->ignore_def_race & (1<<11))
-							idef_flag = 1;
-						if(sd->ignore_def_race_ & (1<<11))
-							idef_flag_ = 1;
-					}
+				if(tmd && mob_db[tmd->class].mexp > 0) {
+					if(sd->ignore_def_race & (1<<10))
+						idef_flag = 1;
+					if(sd->ignore_def_race_ & (1<<10))
+						idef_flag_ = 1;
+				}
+				else {
+					if(sd->ignore_def_race & (1<<11))
+						idef_flag = 1;
+					if(sd->ignore_def_race_ & (1<<11))
+						idef_flag_ = 1;
 				}
 
 				if(!idef_flag)
@@ -2276,13 +2270,13 @@ static struct Damage battle_calc_pc_weapon_attack(
 	}
 
 	// 完全回避の判定
-	if( skill_num==0 && tsd!=NULL && hitrate < 1000000 && rand()%100 < tsd->flee2){
+	if( skill_num==0 && tsd!=NULL && div_ < 255 && hitrate < 1000000 && rand()%1000 < tsd->flee2){
 		damage=damage2=0;
 		type=0x0b;
 	}
 
 	if(battle_config.enemy_perfect_flee) {
-		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000<battle_get_luk(target)+1 ) {
+		if( skill_num==0 && tmd!=NULL && div_ < 255 && hitrate < 1000000 && rand()%1000 < battle_get_luk(target)+1 ) {
 			damage=damage2=0;
 			type=0x0b;
 		}
@@ -2502,15 +2496,13 @@ struct Damage battle_calc_magic_attack(
 		if(sd) {
 			if(sd->ignore_mdef_ele & (1<<t_ele) || sd->ignore_mdef_race & (1<<t_race))
 				imdef_flag = 1;
-			if(tmd) {
-				if(mob_db[tmd->class].mexp > 0) {
-					if(sd->ignore_mdef_race & (1<<10))
-						imdef_flag = 1;
-				}
-				else {
-					if(sd->ignore_mdef_race & (1<<11))
-						imdef_flag = 1;
-				}
+			if(tmd && mob_db[tmd->class].mexp > 0) {
+				if(sd->ignore_mdef_race & (1<<10))
+					imdef_flag = 1;
+			}
+			else {
+				if(sd->ignore_mdef_race & (1<<11))
+					imdef_flag = 1;
 			}
 		}
 		if(!imdef_flag)
@@ -2736,11 +2728,13 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 {
 	struct map_session_data *sd=NULL;
 	short *opt1;
-	sd = (struct map_session_data *)src;
+
+	if(src->type == BL_PC)
+		sd = (struct map_session_data *)src;
 
 	if(src->prev == NULL || target->prev == NULL)
 		return 0;
-	if(src->type == BL_PC && pc_isdead((struct map_session_data *)src))
+	if(src->type == BL_PC && pc_isdead(sd))
 		return 0;
 	if(target->type == BL_PC && pc_isdead((struct map_session_data *)target))
 		return 0;
@@ -2767,26 +2761,34 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 			}
 		}
 		if (wd.div_ == 255 && src->type == BL_PC)	{ //三段掌
-			sd->skill_old = 0;
-			sd->triple_delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
-			if (sd->triple_delay < sd->aspd*2) sd->triple_delay = sd->aspd*2;
-			if (pc_checkskill(sd, MO_COMBOFINISH)) sd->triple_delay += 300;
-			clif_status_change(src, 0x59, 1);
-			clif_combo_delay(src, sd->triple_delay);
+			int delay = 300;
+			if(wd.damage+wd.damage2 < battle_get_hp(target)) {
+				delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
+				if(delay < sd->aspd*2) delay = sd->aspd*2;
+				if(battle_config.combo_delay_rate != 100)
+					delay = delay * battle_config.combo_delay_rate /100;
+				if(pc_checkskill(sd, MO_CHAINCOMBO) > 0)
+					delay += 300;
+				else
+					delay = 300;
+				skill_status_change_start(src,SC_COMBO,MO_TRIPLEATTACK,delay);
+			}
+			sd->attackabletime = sd->canmove_tick = tick + delay;
+			clif_combo_delay(src,delay);
 			clif_skill_damage(src , target , tick , wd.amotion , wd.dmotion , 
-				wd.damage , 3 , MO_TRIPLEATTACK, pc_checkskill(sd,MO_TRIPLEATTACK) , wd.type );
+				wd.damage , 3 , MO_TRIPLEATTACK, pc_checkskill(sd,MO_TRIPLEATTACK) , -1 );
 		}
-		else
+		else {
 			clif_damage(src,target,tick, wd.amotion, wd.dmotion, 
 				wd.damage, wd.div_ , wd.type, wd.damage2);
 		//二刀流左手とカタール追撃のミス表示(無理やり～)
-		if(wd.damage2==-1){wd.damage2=0;clif_damage(src,target,tick+200, wd.amotion, wd.dmotion,0, 1, 0, 0);}
+			if(src->type == BL_PC && sd->status.weapon >= 16 && wd.damage2 == 0)
+				clif_damage(src,target,tick+200, wd.amotion, wd.dmotion,0, 1, 0, 0);
+		}
 		map_freeblock_lock();
-
 		battle_damage(src,target,(wd.damage+wd.damage2));
 		if((wd.damage+wd.damage2)>0)
 			skill_additional_effect(src,target,0,0,BF_WEAPON,tick);
-
 		map_freeblock_unlock();
 	}
 	return 0;
@@ -2982,7 +2984,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.finger_offensive_type=0;
 	battle_config.heal_exp=0;
 	battle_config.shop_exp=0;
-	battle_config.asuradelay=300;
+	battle_config.combo_delay_rate=100;
 	battle_config.item_check=1;
 	battle_config.wedding_modifydisplay=0;
 	battle_config.natural_healhp_interval=4000;
@@ -3062,7 +3064,7 @@ int battle_config_read(const char *cfgName)
 			{ "finger_offensive_type",	&battle_config.finger_offensive_type},
 			{ "heal_exp",				&battle_config.heal_exp				},
 			{ "shop_exp",				&battle_config.shop_exp				},
-			{ "asuradelay",				&battle_config.asuradelay			},
+			{ "combo_delay_rate",				&battle_config.combo_delay_rate			},
 			{ "item_check",				&battle_config.item_check			},
 			{ "wedding_modifydisplay",				&battle_config.wedding_modifydisplay			},
 			{ "natural_healhp_interval", &battle_config.natural_healhp_interval },

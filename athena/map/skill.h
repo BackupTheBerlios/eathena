@@ -138,7 +138,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_WATERBALL			=142,
 	SC_ANKLE				=143,
 	SC_DANCING				=144,
-	
+
 	SC_TRICKDEAD			=29,
 	SC_PROVOKE				= 0,
 	SC_ENDURE				= 1,
@@ -189,6 +189,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_SPEARSQUICKEN		=68,
 	SC_EXPLOSIONSPIRITS		=86,
 	SC_STEELBODY			=87,
+	SC_COMBO					=89,
 	SC_FLAMELAUNCHER		=90,
 	SC_FROSTWEAPON			=91,
 	SC_LIGHTNINGLOADER		=92,
@@ -196,7 +197,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 
 	SC_VOLCANO				=153,
 	SC_DELUGE				=154,
-	
+
 	SC_LULLABY				=160,
 	SC_RICHMANKIM			=161,
 	SC_ETERNALCHAOS			=162,
@@ -248,7 +249,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_METEOSTORM			=189,
 	SC_CASTCANCEL			=190,
 	SC_SPELLBREAKER			=191,
-	SC_AUTOSPELL			=192,
+	SC_AUTOSPELL			=103,
 
 
 };

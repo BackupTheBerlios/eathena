@@ -320,7 +320,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	int skill=0,skill2;
 	int rate;
-	
+
 	int sc_def_mdef=100;
 	int sc_def_vit=100;
 	int sc_def_int=100;
@@ -584,13 +584,13 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 
 			if(!sd->state.arrow_atk) {
-				if(rand()%100 < (sd->addeff[i-SC_STONE])*sc_def_card/100 ){
+				if(rand()%10000 < (sd->addeff[i-SC_STONE])*sc_def_card/100 ){
 					printf("PC %d skill_addeff: cardによる異常発動 %d %d\n",sd->bl.id,i,sd->addeff[i-SC_STONE]);
 					skill_status_change_start(bl,i,1,5);
 				}
 			}
 			else {
-				if(rand()%100 < (sd->addeff[i-SC_STONE]+sd->arrow_addeff[i-SC_STONE])*sc_def_card/100 ){
+				if(rand()%10000 < (sd->addeff[i-SC_STONE]+sd->arrow_addeff[i-SC_STONE])*sc_def_card/100 ){
 					printf("PC %d skill_addeff: cardによる異常発動 %d %d\n",sd->bl.id,i,sd->addeff[i-SC_STONE]);
 					skill_status_change_start(bl,i,1,5);
 				}
@@ -692,7 +692,7 @@ int skill_blown( struct block_list *src, struct block_list *target,int count)
 			md->state.state = prev_state;
 	}
 
-	skill_unit_move(target,gettick(),(count&0xffff)+5);	/* スキルユニットの判定 */
+	skill_unit_move(target,gettick(),(count&0xffff)+7);	/* スキルユニットの判定 */
 
 	return 0;
 }
@@ -743,8 +743,44 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 	if(skillid == CR_GRANDCROSS && src == bl)
 		dsrc = src;
 
+	if(src->type == BL_PC) {
+		struct map_session_data *sd = (struct map_session_data *)src;
+		if(skillid == MO_CHAINCOMBO) {
+			int delay = 300;
+			if(damage < battle_get_hp(bl)) {
+				delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
+				if(delay < sd->aspd*2) delay = sd->aspd*2;
+				if(battle_config.combo_delay_rate != 100)
+					delay = delay * battle_config.combo_delay_rate /100;
+				if(pc_checkskill(sd, MO_COMBOFINISH) > 0)
+					delay += 300;
+				else
+					delay = 300;
+				skill_status_change_start(src,SC_COMBO,MO_CHAINCOMBO,delay);
+			}
+			sd->attackabletime = sd->canmove_tick = tick + delay;
+			clif_combo_delay(src,delay);
+		}
+		else if(skillid == MO_COMBOFINISH) {
+			int delay = 300;
+			if(damage < battle_get_hp(bl)) {
+				delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
+				if(delay < sd->aspd*2) delay = sd->aspd*2;
+				if(battle_config.combo_delay_rate != 100)
+					delay = delay * battle_config.combo_delay_rate /100;
+				if(pc_checkskill(sd, MO_EXTREMITYFIST) > 0 && sd->spiritball >= 4 && sd->sc_data[SC_EXPLOSIONSPIRITS].timer != -1)
+					delay += 300;
+				else
+					delay = 300;
+				skill_status_change_start(src,SC_COMBO,MO_COMBOFINISH,delay);
+			}
+			sd->attackabletime = sd->canmove_tick = tick + delay;
+			clif_combo_delay(src,delay);
+		}
+	}
+
 	clif_skill_damage(dsrc,bl,tick,dmg.amotion,dmg.dmotion,
-			damage, dmg.div_, skillid, (lv!=0)?lv:skilllv, type );
+		damage, dmg.div_, skillid, (lv!=0)?lv:skilllv, type );
 	if( dmg.blewcount > 0) {	/* 吹き飛ばし処理とそのパケット */
 		skill_blown(dsrc,bl,dmg.blewcount);
 		clif_fixpos(bl);
@@ -1082,54 +1118,45 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		}
 		break;
 	case MO_CHAINCOMBO:		/* 連打掌 */
-		sd->combo_delay1 = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
-		if (sd->combo_delay1 < sd->aspd*2)
-			sd->combo_delay1 = sd->aspd*2;
-		sd->combo_flag = 1;
-		if (pc_checkskill(sd, MO_COMBOFINISH))
-			sd->combo_delay1 += 300;
-		clif_status_change(src, 0x59, 1);
-		sd->canmove_tick = tick + sd->combo_delay1;
-		clif_combo_delay(src, sd->combo_delay1);
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
-		sd->combo_delay2 = tick + sd->combo_delay1 - 300;
 		break;
 	case MO_COMBOFINISH:	/* 猛龍拳 */
-		sd->combo_delay2 = 700 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
-		if (sd->combo_delay2 < sd->aspd*2)
-			sd->combo_delay2 = sd->aspd*2;
-		sd->combo_flag = 3;
-		if (pc_checkskill(sd, MO_EXTREMITYFIST))
-			sd->combo_delay2 += 300;
-		clif_status_change(src, 0x59, 1);
-		sd->canmove_tick = tick + sd->combo_delay2;
-		clif_combo_delay(src, sd->combo_delay2);
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
-		sd->combo_delay3 = tick + sd->combo_delay2 - 300;
 		break;
 	case MO_EXTREMITYFIST:	/* 阿修羅覇鳳拳 */
-	{
-		int dx,dy;
-		skill_status_change_end(src, SC_EXPLOSIONSPIRITS, -1);
-		dx = ((sd->bl.x - bl->x)>0?-4:4);
-		dy = ((sd->bl.y - bl->y)>0?-4:4);
-		dx = ((sd->bl.x - bl->x)!=0?dx:0);
-		dy = ((sd->bl.y - bl->y)!=0?dy:0);
-		sd->bl.x = bl->x;
-		sd->bl.y = bl->y;
-		while(!pc_can_reach(sd, sd->bl.x + dx, sd->bl.y + dy)) {
-			dx = (int)((float)dx / 4 * 3);
-			dy = (int)((float)dy / 4 * 3);
-			if(dx == 0 && dy == 0) break;
+		if(sd) {
+			struct walkpath_data wpd;
+			int dx,dy;
+
+			dx = bl->x - sd->bl.x;
+			dy = bl->y - sd->bl.y;
+			if(dx > 0) dx++;
+			else if(dx < 0) dx--;
+			if(dy > 0) dy++;
+			else if(dy < 0) dy--;
+			if(dx == 0 && dy == 0) dx++;
+			if(path_search(&wpd,src->m,sd->bl.x,sd->bl.y,sd->bl.x+dx,sd->bl.y+dy,0x10001) == -1) {
+				dx = bl->x - sd->bl.x;
+				dy = bl->y - sd->bl.y;
+				if(path_search(&wpd,src->m,sd->bl.x,sd->bl.y,sd->bl.x+dx,sd->bl.y+dy,0x10001) == -1) {
+					clif_skill_fail(sd,sd->skillid,0,0);
+					break;
+				}
+			}
+			sd->to_x = sd->bl.x + dx;
+			sd->to_y = sd->bl.y + dy;
+			skill_status_change_end(src, SC_EXPLOSIONSPIRITS, -1);
+			skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
+			clif_walkok(sd);
+			clif_movechar(sd);
+			if(dx < 0) dx = -dx;
+			if(dy < 0) dy = -dy;
+			sd->canmove_tick = tick + 100 + sd->speed * ((dx > dy)? dx:dy);
+			pc_movepos(sd,sd->to_x,sd->to_y);
 		}
-		sd->to_x = sd->bl.x + dx;
-		sd->to_y = sd->bl.y + dy;
-		sd->canact_tick = tick + skill_get_delay(skillid, skilllv);
-		sd->canmove_tick = tick + skill_get_delay(skillid, skilllv);
-		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
-		pc_walktoxy(sd, sd->to_x, sd->to_y);
+		else
+			skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
 		break;
-	}
 	/* 武器系範囲攻撃スキル */
 	case AC_SHOWER:			/* アローシャワー */
 	case SM_MAGNUM:			/* マグナムブレイク */
@@ -1694,7 +1721,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 
 	case BD_ADAPTATION:			/* アドリブ */
 		skill_stop_dancing(src);
-		 break;
+		break;
 
 	case TF_STEAL:			// スティール
 		if(pc_steal_item(sd,bl)) {
@@ -1786,7 +1813,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 				clif_skill_warppoint(sd,sd->skillid,"Random",
 					sd->status.save_point.map,"","");
 			}
-		}else if( bl->type==BL_MOB)
+		}else if( bl->type==BL_MOB )
 			mob_warp((struct mob_data *)bl,-1,-1,3);
 		break;
 
@@ -2032,7 +2059,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	return 0;
 }
 
-
 /*==========================================
  * スキル使用（詠唱完了、ID指定）
  *------------------------------------------
@@ -2058,8 +2084,9 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 	if(sd->bl.m != bl->m || pc_isdead(sd))
 		return 0;
 
-	if(!battle_config.skill_out_range_consume) {
-		if(skill_get_range(sd->skillid, sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
+	if(!battle_config.skill_out_range_consume && 
+		(sd->skillid != MO_EXTREMITYFIST || sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH) ) {
+		if(skill_get_range(sd->skillid,sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
 			clif_skill_fail(sd,sd->skillid,0,0);
 			sd->canact_tick = tick;
 			sd->canmove_tick = tick;
@@ -2071,8 +2098,9 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 		sd->canmove_tick = tick;
 		return 0;
 	}
-	if(battle_config.skill_out_range_consume) {
-		if(skill_get_range(sd->skillid, sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
+	if(battle_config.skill_out_range_consume &&
+		(sd->skillid != MO_EXTREMITYFIST || sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH) ) {
+		if(skill_get_range(sd->skillid,sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
 			clif_skill_fail(sd,sd->skillid,0,0);
 			sd->canact_tick = tick;
 			sd->canmove_tick = tick;
@@ -2344,17 +2372,17 @@ int skill_castend_map( struct map_session_data *sd,int skill_num, const char *ma
 
 			if(!sd->special_state.no_gemstone && (itid=pc_search_inventory(sd, 717)) <= 0){		// Added by RoVeRT
 				clif_skill_fail(sd,sd->skillid,8,0);
-				return 0;
+				break;
 			}else if (!sd->special_state.no_gemstone)
 				pc_delitem(sd, itid, 1, 0);
 
 			group=skill_unitsetting(&sd->bl,sd->skillid,sd->skilllv,sd->skillx,sd->skilly,0);
-			group->valstr=malloc(16);
+			group->valstr=malloc(24);
 			if(group->valstr==NULL){
 				printf("skill_castend_map: out of memory !\n");
 				exit(0);
 			}
-			memcpy(group->valstr,map,16);
+			memcpy(group->valstr,map,24);
 			group->val2=(x<<16)|y;
 		}
 		break;
@@ -2505,7 +2533,6 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		limit=1000*(skilllv+4);
 		interval=3000;
 		break;
-
 	case WZ_FIREPILLAR:			/* ファイアーピラー */
 		if(flag==0)
 			limit=30000;
@@ -2686,8 +2713,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		count=81;
 		limit=60*1000;
 		range=9;
-		val1=skilllv;
-		target=BCT_ALL;
+		target=BCT_NOENEMY;
 		break;
 
 	case BA_DISSONANCE:			/* 不協和音 */
@@ -2699,20 +2725,18 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		target=BCT_ENEMY;
 		break;
 
-	case DC_DONTFORGETME:	/* サービスフォーユー */
+	case DC_DONTFORGETME:		/* 私を忘れないで… */
 		count=81;
 		limit=180*1000;
 		val1=skilllv;
 		target=BCT_ENEMY;
 		break;
-
-	case BA_POEMBRAGI:	/* イドゥンの林檎 */
+	case BA_POEMBRAGI:			/* ブラギの詩 */
 		count=81;
 		limit=180*1000;
 		range=5;
 		target=BCT_NOENEMY;
 		break;
-
 	case BA_APPLEIDUN:			/* イドゥンの林檎 */
 	case DC_SERVICEFORYOU:		/* サービスフォーユー */
 		count=81;
@@ -2721,7 +2745,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		target=BCT_PARTY;
 		break;
 
-	case BA_ASSASSINCROSS:	/* イドゥンの林檎 */
+	case BA_ASSASSINCROSS:		/* 夕陽のアサシンクロス */
 	case DC_FORTUNEKISS:		/* 幸運のキス */
 		count=81;
 		limit=120*1000;
@@ -3368,12 +3392,12 @@ int skill_unit_onlimit(struct skill_unit *src,unsigned int tick)
 			struct skill_unit_group *group=
 				skill_unitsetting(map_id2bl(sg->src_id),sg->skill_id,sg->skill_lv,
 					src->bl.x,src->bl.y,1);
-			group->valstr=malloc(16);
+			group->valstr=malloc(24);
 			if(group->valstr==NULL){
 				printf("skill_unit_ondelete: out of memory !\n");
 				exit(0);
 			}
-			memcpy(group->valstr,sg->valstr,16);
+			memcpy(group->valstr,sg->valstr,24);
 			group->val2=sg->val2;
 		}
 		break;
@@ -3464,7 +3488,6 @@ int skill_castend_pos( int tid, unsigned int tick, int id,int data )
  */
 int skill_check_condition( struct map_session_data *sd )
 {
-	unsigned int tick;
 	int j=0,sp=0,hp=0,zeny=0,spiritball=0;
 	int	i[3]={0,0,0},
 		item_id[3]={0,0,0},
@@ -3646,7 +3669,6 @@ int skill_check_condition( struct map_session_data *sd )
 				return 0;
 			}
 			break;
-			
 		case BS_ADRENALINE:		// アドレナリンラッシュ
 		case BS_HAMMERFALL:		// ハンマーフォール
 			if( sd->status.weapon != 6 && sd->status.weapon != 7 && sd->status.weapon != 8) {
@@ -3741,17 +3763,14 @@ int skill_check_condition( struct map_session_data *sd )
 			break;
 
 		case MO_EXTREMITYFIST:					// 阿修羅覇鳳拳
-			tick = gettick();
 			if( sd->sc_data[SC_EXPLOSIONSPIRITS].timer == -1) {
 				clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
 			}
-			else {
-				if(sd->combo_delay3 <= tick && tick <= sd->combo_delay3 + battle_config.asuradelay) 
-					spiritball = 4;				// 氣球
-				else spiritball = 5;			// 氣球
-			}
-			sd->skill_old = 0;
+			if(sd->sc_data[SC_COMBO].timer != -1 && sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH)
+				spiritball = 4;
+			else
+				spiritball = 5;
 			break;
 
 		case MO_FINGEROFFENSIVE:				//指弾
@@ -3781,32 +3800,14 @@ int skill_check_condition( struct map_session_data *sd )
 			break;
 
 		case MO_CHAINCOMBO:						//連打掌
-			tick = gettick();
-			if(sd->combo_delay1 <= tick && tick <= sd->combo_delay1 + 300) {
-				if(sd->skill_old == sd->skillid)
-					return 0;
-				sd->skill_old = sd->skillid;
-				break;
-			}
-			else {
-				sd->skill_old = 0;
+			if(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_TRIPLEATTACK)
 				return 0;
-			}
 			break;
 
 		case MO_COMBOFINISH:					//猛龍拳
-			tick = gettick();
-			spiritball = 1;
-			if(sd->combo_delay2 <= tick && tick <= sd->combo_delay2 + 300) {
-				if(sd->skill_old == sd->skillid)
-					return 0;
-				sd->skill_old = sd->skillid;
-				break;
-			}
-			else {
-				sd->skill_old = 0;
+			if(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_CHAINCOMBO)
 				return 0;
-			}
+			spiritball = 1;
 			break;
 
 //		case RG_BACKSTAP:	// バックスタブ
@@ -3986,7 +3987,7 @@ int skill_delayfix( struct block_list *bl, int time )
 		time=time*(150- battle_get_dex(bl))/150;
 
 	time=time*battle_config.delay_rate/100;
-
+	
 	/* ブラギの詩 */
 	if( (sc_data = battle_get_sc_data(bl))[SC_POEMBRAGI].timer!=-1 )
 		time=time*(100-sc_data[SC_POEMBRAGI].val2)/100;
@@ -4045,7 +4046,8 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 		target_sd=(struct map_session_data*)bl;
 		target_fd=target_sd->fd;
 	}
-	if(skill_num != MO_CHAINCOMBO && skill_num != MO_COMBOFINISH)
+	if((skill_num != MO_CHAINCOMBO && skill_num != MO_COMBOFINISH && skill_num != MO_EXTREMITYFIST) ||
+		(skill_num == MO_EXTREMITYFIST && sd->state.skill_flag) )
 		pc_stopattack(sd);
 
 	casttime=skill_castfix(&sd->bl, skill_get_cast( skill_num,skill_lv) );
@@ -4091,9 +4093,11 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 		target_id = sd->attacktarget;
 		break;
 	case MO_EXTREMITYFIST:	/*阿修羅覇鳳拳*/
-		if(sd->combo_delay3 <= tick && tick <= sd->combo_delay3 + battle_config.asuradelay) {
+		if(sd->sc_data[SC_COMBO].timer != -1 && sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH) {
 			casttime = 0;
+			target_id = sd->attacktarget;
 		}
+		forcecast=1;
 		break;	
 	}
 
@@ -4751,7 +4755,9 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			tick = 1000 * 300;
 			val2 = 20+val1;
 			break;
-		
+		case SC_COMBO:
+			tick = val2;
+			break;
 		case SC_LULLABY:			/* 子守唄 */
 			tick = 1000 * 6;
 			val2 = 11;
@@ -4821,7 +4827,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		case SC_DANCING:			/* ダンス/演奏中 */
 			tick = 1000 * 181;
 			break;
-
+		
 		case SC_EXPLOSIONSPIRITS:	// 爆裂波動
 			tick = 1000 * 60 * 3;
 			val2 = 75 + 25*val1;
@@ -4932,7 +4938,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			if( (tick=val2)<=0 )
 				tick = 500*600;		/* とりあえず５分 */
 			break;
-			
+
 		/* option */
 		case SC_HIDDING:		/* ハイディング */
 			tick = 1000;			/* １秒ずつ時間チェック */
@@ -5321,7 +5327,7 @@ int skill_delunitgroup(struct skill_unit_group *group)
 		map_freeblock(group->valstr);
 		group->valstr=NULL;
 	}
-	
+
 	map_freeblock(group->unit);	/* free()の替わり */
 	group->unit=NULL;
 	group->src_id=0;
@@ -5741,7 +5747,7 @@ int skill_produce_mix( struct map_session_data *sd,
 
 	/* debug code */
 	/*printf("make success percent = %.2lf\n",(double)make_per/100.); */
-	
+
 	if(rand()%10000 < make_per){
 		/* 成功 */
 		struct item tmp_item;
@@ -5755,28 +5761,26 @@ int skill_produce_mix( struct map_session_data *sd,
 			*((unsigned long *)(&tmp_item.card[2]))=sd->char_id;	/* キャラID */
 		}
 
-		if(equip)
-		{	//武器製造の場合
+		if(equip) {	//武器製造の場合
 			clif_produceeffect(sd,0,nameid);/* 武器製造エフェクトパケット */
-		clif_misceffect(&sd->bl,3); /* 他人にも成功を通知（精錬成功エフェクトと同じでいいの？） */
-		}else
-		{	//ファーマシーの場合
+			clif_misceffect(&sd->bl,3); /* 他人にも成功を通知（精錬成功エフェクトと同じでいいの？） */
+		}
+		else {	//ファーマシーの場合
 			clif_produceeffect(sd,2,nameid);/* 製薬エフェクトパケット */
 			clif_misceffect(&sd->bl,5); /* 他人にも失敗を通知*/
 		}
-		
+
 		if((flag = pc_additem(sd,&tmp_item,1))) {
 			clif_additem(sd,0,0,flag);
 			map_addflooritem(&tmp_item,1,sd->bl.m,sd->bl.x,sd->bl.y);
 		}
 	}
 	else {
-		if(equip)
-		{	//武器製造の場合
+		if(equip) {	//武器製造の場合
 			clif_produceeffect(sd,1,nameid);/* 武器製造失敗エフェクトパケット */
-		clif_misceffect(&sd->bl,2); /* 他人にも失敗を通知 */
-		}else
-		{	//ファーマシーの場合
+			clif_misceffect(&sd->bl,2); /* 他人にも失敗を通知 */
+		}
+		else {	//ファーマシーの場合
 			clif_produceeffect(sd,3,nameid);/* 製薬失敗エフェクトパケット */
 			clif_misceffect(&sd->bl,6); /* 他人にも失敗を通知*/
 		}

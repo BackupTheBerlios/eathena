@@ -293,7 +293,7 @@ int pc_makesavestatus(struct map_session_data *sd)
 		pc_setrestartvalue(sd,1);
 		memcpy(&sd->status.last_point,&sd->status.save_point,sizeof(sd->status.last_point));
 	} else {
-		memcpy(sd->status.last_point.map,sd->mapname,16);
+		memcpy(sd->status.last_point.map,sd->mapname,24);
 		sd->status.last_point.x = sd->bl.x;
 		sd->status.last_point.y = sd->bl.y;
 	}
@@ -340,8 +340,8 @@ int pc_equippoint(struct map_session_data *sd,int n)
 		ep = sd->inventory_data[n]->equip;
 		if(sd->inventory_data[n]->look == 1 || sd->inventory_data[n]->look == 2 || sd->inventory_data[n]->look == 6) {
 			if(ep == 2 && (pc_checkskill(sd,AS_LEFT) > 0 || sd->status.class == 12) )
-			return 34;
-	}
+				return 34;
+		}
 	}
 	return ep;
 }
@@ -1053,12 +1053,12 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 	sd->flee += sd->paramc[1] + sd->status.base_level;
 	sd->def2 += sd->paramc[2];
 	sd->mdef2 += sd->paramc[3];
-	sd->flee2 += sd->paramc[5]/10+1;
-	sd->critical += (sd->paramc[5]*3/10)+1;
+	sd->flee2 += sd->paramc[5]+10;
+	sd->critical += (sd->paramc[5]*3)+10;
 
 	if(sd->critical_rate != 100)
 		sd->critical = (sd->critical*sd->critical_rate)/100;
-	if(sd->critical < 1) sd->critical = 1;
+	if(sd->critical < 10) sd->critical = 10;
 	if(sd->hit_rate != 100)
 		sd->hit = (sd->hit*sd->hit_rate)/100;
 	if(sd->hit < 1) sd->hit = 1;
@@ -1067,7 +1067,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 	if(sd->flee < 1) sd->flee = 1;
 	if(sd->flee2_rate != 100)
 		sd->flee2 = (sd->flee2*sd->flee2_rate)/100;
-	if(sd->flee2 < 1) sd->flee2 = 1;
+	if(sd->flee2 < 10) sd->flee2 = 10;
 	if(sd->def_rate != 100)
 		sd->def = (sd->def*sd->def_rate)/100;
 	if(sd->def < 0) sd->def = 0;
@@ -1209,7 +1209,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->sc_data[i=SC_SPEEDPOTION1].timer!=-1 ||
 			sd->sc_data[i=SC_SPEEDPOTION0].timer!=-1)	// 増 速ポーション
 			aspd_rate -= sd->sc_data[i].val2;
-
+		
 		if( sd->sc_data[SC_DANCING].timer!=-1 )		// 演奏/ダンス使用中
 			sd->speed*=4;
 
@@ -1252,10 +1252,10 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		}
 
 		if(sd->sc_data[SC_FORTUNE].timer!=-1)	// 幸運のキス
-			sd->critical += sd->sc_data[SC_FORTUNE].val1 * sd->critical/100;
+			sd->critical += sd->sc_data[SC_FORTUNE].val1*10;
 
 		if(sd->sc_data[SC_EXPLOSIONSPIRITS].timer!=-1)	// 爆裂波動
-			sd->critical += sd->sc_data[SC_EXPLOSIONSPIRITS].val2 * sd->critical/1000;
+			sd->critical += sd->sc_data[SC_EXPLOSIONSPIRITS].val2;
 
 		if(sd->sc_data[SC_STEELBODY].timer!=-1){	// 金剛
 			sd->def = 90;
@@ -1308,8 +1308,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		clif_updatestatus(sd,SP_MAXHP);
 		clif_updatestatus(sd,SP_MAXSP);
 		if(first&1) {
-		clif_updatestatus(sd,SP_HP);
-		clif_updatestatus(sd,SP_SP);
+			clif_updatestatus(sd,SP_HP);
+			clif_updatestatus(sd,SP_SP);
 		}
 		return 0;
 	}
@@ -1448,7 +1448,7 @@ int pc_bonus(struct map_session_data *sd,int type,int val)
 		break;
 	case SP_HIT:
 		if(sd->state.lr_flag != 2)
-		sd->hit+=val;
+			sd->hit+=val;
 		else
 			sd->arrow_hit+=val;
 		break;
@@ -1458,13 +1458,13 @@ int pc_bonus(struct map_session_data *sd,int type,int val)
 		break;
 	case SP_FLEE2:
 		if(sd->state.lr_flag != 2)
-			sd->flee2+=val;
+			sd->flee2+=val*10;
 		break;
 	case SP_CRITICAL:
 		if(sd->state.lr_flag != 2)
-			sd->critical+=val;
+			sd->critical+=val*10;
 		else
-			sd->arrow_cri += val;
+			sd->arrow_cri += val*10;
 		break;
 	case SP_ATKELE:
 		if(!sd->state.lr_flag)
@@ -2448,9 +2448,9 @@ int pc_setpos(struct map_session_data *sd,char *mapname_org,int x,int y,int clrt
 		pet_changestate(sd->pd,MS_IDLE,0);
 	}
 
-	memcpy(mapname,mapname_org,16);
+	memcpy(mapname,mapname_org,24);
 	mapname[16]=0;
-	if(strstr(mapname,".gat")==NULL && strlen(mapname)<11){
+	if(strstr(mapname,".gat")==NULL && strlen(mapname)<16){
 		strcat(mapname,".gat");
 	}
 	m=map_mapname2mapid(mapname);
@@ -2478,7 +2478,7 @@ int pc_setpos(struct map_session_data *sd,char *mapname_org,int x,int y,int clrt
 						map_delblock(&sd->pd->bl);
 					}
 				}
-				memcpy(sd->mapname,mapname,16);
+				memcpy(sd->mapname,mapname,24);
 				sd->bl.x=x;
 				sd->bl.y=y;
 				sd->state.waitingdisconnect=1;
@@ -2538,7 +2538,7 @@ int pc_setpos(struct map_session_data *sd,char *mapname_org,int x,int y,int clrt
 		memset(sd->skill_limit,0,sizeof(sd->skill_limit));
 	}
 
-	memcpy(sd->mapname,mapname,16);
+	memcpy(sd->mapname,mapname,24);
 	sd->bl.m = m;
 	sd->bl.x = x;
 	sd->bl.y = y;
@@ -2609,7 +2609,7 @@ int pc_memo(struct map_session_data *sd,int i)
 		}
 		i=0;
 	}
-	memcpy(sd->status.memo_point[i].map,map[sd->bl.m].name,16);
+	memcpy(sd->status.memo_point[i].map,map[sd->bl.m].name,24);
 	sd->status.memo_point[i].x=sd->bl.x;
 	sd->status.memo_point[i].y=sd->bl.y;
 
@@ -2865,7 +2865,7 @@ int pc_movepos(struct map_session_data *sd,int dst_x,int dst_y)
 	if(sd->status.option&4)	// クローキングの消滅検査
 		skill_check_cloaking(&sd->bl);
 
-	skill_unit_move(&sd->bl,gettick(),dist+5);	// スキルユニットの検査
+	skill_unit_move(&sd->bl,gettick(),dist+7);	// スキルユニットの検査
 
 	if(map_getcell(sd->bl.m,sd->bl.x,sd->bl.y)&0x80)
 		npc_touch_areanpc(sd,sd->bl.m,sd->bl.x,sd->bl.y);
@@ -2999,38 +2999,25 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 
 	sd->dir=sd->head_dir=map_calc_dir(&sd->bl, bl->x,bl->y );	// 向き設定
 
-	// 実 際に攻撃する
- 	if (sd->combo_flag == 1)
- 		sd->combo_flag = 2;
-	else if (sd->combo_flag == 3)
-		sd->combo_flag = 4;
-	else {
+	if(sd->sc_data[SC_COMBO].timer == -1) {
 		map_freeblock_lock();
 		battle_weapon_attack(&sd->bl,bl,tick,0);
 		if(sd->status.pet_id > 0 && sd->pd && sd->petDB)
 			pet_target_check(sd,bl,0);
 		map_freeblock_unlock();
+		if(sd->skilltimer != -1 && (skill = pc_checkskill(sd,SA_FREECAST)) > 0 ) // フリーキャスト
+			sd->attackabletime = tick + ((sd->aspd<<1)*(150 - skill*5)/100);
+		else
+			sd->attackabletime = tick + (sd->aspd<<1);
+	}
+	else if(sd->attackabletime <= tick) {
+		if(sd->skilltimer != -1 && (skill = pc_checkskill(sd,SA_FREECAST)) > 0 ) // フリーキャスト
+			sd->attackabletime = tick + ((sd->aspd<<1)*(150 - skill*5)/100);
+		else
+			sd->attackabletime = tick + (sd->aspd<<1);
 	}
 
-	if (sd->triple_delay > 0) {
-		sd->attackabletime = tick + sd->triple_delay;
-		sd->combo_delay1 = tick + sd->triple_delay - 300;
-		sd->triple_delay = 0;
-	}
-	else if (sd->combo_flag == 2) {
-		sd->attackabletime = tick + sd->combo_delay1;
-		sd->combo_flag = 0;
-	}
-	else if (sd->combo_flag == 4) {
-		sd->attackabletime = tick + sd->combo_delay2;
-		sd->combo_flag = 0;
-	}
-	else if(sd->skilltimer != -1 && (skill = pc_checkskill(sd,SA_FREECAST)) > 0 ) // フリーキャスト
-		sd->attackabletime = tick + ((sd->aspd<<1)*(150 - skill*5)/100);
-	else
-		sd->attackabletime = tick + (sd->aspd<<1);
-
-	if(sd->state.attack_continue){
+	if(sd->state.attack_continue) {
 		sd->attacktimer=add_timer(sd->attackabletime,pc_attack_timer,sd->bl.id,0);
 	}
 
@@ -3096,7 +3083,7 @@ int pc_checkbaselevelup(struct map_session_data *sd)
 		sd->status.base_level ++;
 		clif_updatestatus(sd,SP_BASELEVEL);
 		clif_updatestatus(sd,SP_NEXTBASEEXP);
-			sd->status.status_point += (sd->status.base_level+14) / 5 ;
+		sd->status.status_point += (sd->status.base_level+14) / 5 ;
 		clif_updatestatus(sd,SP_STATUSPOINT);
 		pc_calcstatus(sd,0);
 		pc_heal(sd,sd->status.max_hp,sd->status.max_sp);
@@ -3596,7 +3583,6 @@ int pc_readparam(struct map_session_data *sd,int type)
 	case SP_MAXWEIGHT:
 		val= sd->max_weight;
 		break;
-		
 	case SP_BASEEXP:
 		val= sd->status.base_exp;
 		break;
@@ -3609,7 +3595,6 @@ int pc_readparam(struct map_session_data *sd,int type)
 	case SP_NEXTJOBEXP:
 		val= pc_nextjobexp(sd);
 		break;
-
 	}
 
 	return val;
@@ -3632,10 +3617,8 @@ int pc_setparam(struct map_session_data *sd,int type,int val)
 	case SP_ZENY:
 		sd->status.zeny = val;
 		break;
-
 	case SP_BASEEXP:
-		if(pc_nextbaseexp(sd) != 0)
-		{
+		if(pc_nextbaseexp(sd) > 0) {
 			sd->status.base_exp = val;
 			if(sd->status.base_exp < 0)
 				sd->status.base_exp=0;
@@ -3643,15 +3626,13 @@ int pc_setparam(struct map_session_data *sd,int type,int val)
 		}
 		break;
 	case SP_JOBEXP:
-		if(pc_nextjobexp(sd) != 0)
-		{
+		if(pc_nextjobexp(sd) > 0) {
 			sd->status.job_exp = val;
 			if(sd->status.job_exp < 0)
 				sd->status.job_exp=0;
 			pc_checkjoblevelup(sd);
 		}
 		break;
-
 	}
 	clif_updatestatus(sd,type);
 
@@ -4787,7 +4768,7 @@ int pc_natural_heal(int tid,unsigned int tick,int id,int data)
  */
 int pc_setsavepoint(struct map_session_data *sd,char *mapname,int x,int y)
 {
-	strncpy(sd->status.save_point.map,mapname,16);
+	strncpy(sd->status.save_point.map,mapname,24);
 	sd->status.save_point.x = x;
 	sd->status.save_point.y = y;
 

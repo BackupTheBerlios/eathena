@@ -39,7 +39,7 @@ struct item {
 	short card[4];
 };
 struct point{
-	char map[16];
+	char map[24];
 	short x,y;
 };
 struct skill {
@@ -107,7 +107,7 @@ struct gm_account {
 
 struct party_member {
 	int account_id;
-	char name[24],map[16];
+	char name[24],map[24];
 	int leader,online,lv;
 	struct map_session_data *sd;
 };

@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.3 2004/01/11 15:08:46 rovert Exp $
+// $Id: map.c,v 1.4 2004/01/14 19:35:42 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -960,7 +960,7 @@ int map_setipport(char *name,unsigned long ip,int port)
 			printf("out of memory : map_setipport\n");
 			exit(1);
 		}
-		memcpy(mdos->name,name,16);
+		memcpy(mdos->name,name,24);
 		mdos->gat  = NULL;
 		mdos->ip   = ip;
 		mdos->port = port;
@@ -1135,7 +1135,7 @@ int map_addmap(char *mapname)
 		printf("too many map\n");
 		return 1;
 	}
-	memcpy(map[map_num].name,mapname,16);
+	memcpy(map[map_num].name,mapname,24);
 	map_num++;
 	return 0;
 }

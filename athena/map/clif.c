@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.5 2004/01/13 14:46:47 rovert Exp $
+// $Id: clif.c,v 1.6 2004/01/14 19:35:42 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -518,7 +518,10 @@ static int clif_set0078(struct map_session_data *sd,unsigned char *buf)
 	WBUFW(buf,12)=sd->status.option;
 	WBUFW(buf,14)=sd->view_class;
 	WBUFW(buf,16)=sd->status.hair;
-	WBUFW(buf,18)=sd->status.weapon;
+	if(sd->view_class != 22)
+		WBUFW(buf,18)=sd->status.weapon;
+	else
+		WBUFW(buf,18)=0;
 	WBUFW(buf,20)=sd->status.head_bottom;
 	WBUFW(buf,22)=sd->status.shield;
 	WBUFW(buf,24)=sd->status.head_top;
@@ -548,7 +551,7 @@ static int clif_set0078(struct map_session_data *sd,unsigned char *buf)
 	WBUFW(buf,12)=sd->status.option;
 	WBUFW(buf,14)=sd->view_class;
 	WBUFW(buf,16)=sd->status.hair;
-	if(sd->equip_index[9] >= 0 && sd->inventory_data[sd->equip_index[9]]) {
+	if(sd->equip_index[9] >= 0 && sd->inventory_data[sd->equip_index[9]] && sd->view_class != 22) {
 		if(sd->inventory_data[sd->equip_index[9]]->view_id > 0)
 			WBUFW(buf,18)=sd->inventory_data[sd->equip_index[9]]->view_id;
 		else
@@ -556,7 +559,7 @@ static int clif_set0078(struct map_session_data *sd,unsigned char *buf)
 	}
 	else
 		WBUFW(buf,18)=0;
-	if(sd->equip_index[8] >= 0 && sd->equip_index[8] != sd->equip_index[9] && sd->inventory_data[sd->equip_index[8]]) {
+	if(sd->equip_index[8] >= 0 && sd->equip_index[8] != sd->equip_index[9] && sd->inventory_data[sd->equip_index[8]] && sd->view_class != 22) {
 		if(sd->inventory_data[sd->equip_index[8]]->view_id > 0)
 			WBUFW(buf,20)=sd->inventory_data[sd->equip_index[8]]->view_id;
 		else
@@ -601,7 +604,10 @@ static int clif_set007b(struct map_session_data *sd,unsigned char *buf)
 	WBUFW(buf,12)=sd->status.option;
 	WBUFW(buf,14)=sd->view_class;
 	WBUFW(buf,16)=sd->status.hair;
-	WBUFW(buf,18)=sd->status.weapon;
+	if(sd->view_class != 22)
+		WBUFW(buf,18)=sd->status.weapon;
+	else
+		WBUFW(buf,18)=0;
 	WBUFW(buf,20)=sd->status.head_bottom;
 	WBUFL(buf,22)=gettick();
 	WBUFW(buf,26)=sd->status.shield;
@@ -631,7 +637,7 @@ static int clif_set007b(struct map_session_data *sd,unsigned char *buf)
 	WBUFW(buf,12)=sd->status.option;
 	WBUFW(buf,14)=sd->view_class;
 	WBUFW(buf,16)=sd->status.hair;
-	if(sd->equip_index[9] >= 0 && sd->inventory_data[sd->equip_index[9]]) {
+	if(sd->equip_index[9] >= 0 && sd->inventory_data[sd->equip_index[9]] && sd->view_class != 22) {
 		if(sd->inventory_data[sd->equip_index[9]]->view_id > 0)
 			WBUFW(buf,18)=sd->inventory_data[sd->equip_index[9]]->view_id;
 		else
@@ -639,7 +645,7 @@ static int clif_set007b(struct map_session_data *sd,unsigned char *buf)
 	}
 	else
 		WBUFW(buf,18)=0;
-	if(sd->equip_index[8] >= 0 && sd->equip_index[8] != sd->equip_index[9] && sd->inventory_data[sd->equip_index[8]]) {
+	if(sd->equip_index[8] >= 0 && sd->equip_index[8] != sd->equip_index[9] && sd->inventory_data[sd->equip_index[8]] && sd->view_class != 22) {
 		if(sd->inventory_data[sd->equip_index[8]]->view_id > 0)
 			WBUFW(buf,20)=sd->inventory_data[sd->equip_index[8]]->view_id;
 		else
@@ -1464,7 +1470,7 @@ int clif_updatestatus(struct map_session_data *sd,int type)
 		WFIFOL(fd,4)=sd->flee;
 		break;
 	case SP_FLEE2:
-		WFIFOL(fd,4)=sd->flee2;
+		WFIFOL(fd,4)=sd->flee2/10;
 		break;
 	case SP_MAXHP:
 		WFIFOL(fd,4)=sd->status.max_hp;
@@ -1500,7 +1506,7 @@ int clif_updatestatus(struct map_session_data *sd,int type)
 		WFIFOL(fd,4)=sd->mdef2;
 		break;
 	case SP_CRITICAL:
-		WFIFOL(fd,4)=sd->critical;
+		WFIFOL(fd,4)=sd->critical/10;
 		break;
 	case SP_MATK1:
 		WFIFOL(fd,4)=sd->matk1;
@@ -1715,8 +1721,8 @@ int clif_initialstatus(struct map_session_data *sd)
 	WBUFW(buf,30) = sd->mdef2;
 	WBUFW(buf,32) = sd->hit;
 	WBUFW(buf,34) = sd->flee;
-	WBUFW(buf,36) = sd->flee2;
-	WBUFW(buf,38) = sd->critical;
+	WBUFW(buf,36) = sd->flee2/10;
+	WBUFW(buf,38) = sd->critical/10;
 	WBUFW(buf,40) = sd->status.karma;
 	WBUFW(buf,42) = sd->status.manner;
 
@@ -2743,6 +2749,37 @@ int clif_petinsight(struct block_list *bl,va_list ap)
 		sd = (struct map_session_data *)bl;
 		clif_getareachar_pet(sd,pd);
 	}
+	return 0;
+}
+
+/*==========================================
+ *
+ *------------------------------------------
+ */
+int clif_skillinfo(struct map_session_data *sd,int skillid,int type,int range)
+{
+	int fd=sd->fd,id;
+	if( (id=sd->status.skill[skillid].id) <= 0 )
+		return 0;
+	WFIFOW(fd,0)=0x147;
+	WFIFOW(fd,2) = id;
+	if(type < 0)
+		WFIFOW(fd,4) = skill_get_inf(id);
+	else
+		WFIFOW(fd,4) = type;
+	WFIFOW(fd,6) = 0;
+	WFIFOW(fd,8) = sd->status.skill[skillid].lv;
+	WFIFOW(fd,10) = skill_get_sp(id,sd->status.skill[skillid].lv);
+	if(range < 0)
+		WFIFOW(fd,12)= skill_get_range(id);
+	else
+		WFIFOW(fd,12)= range;
+	memset(WFIFOP(fd,14),0,24);
+	if(!(skill_get_inf2(id)&0x01) || battle_config.quest_skill_learn == 1 || (battle_config.gm_allskill > 0 && pc_isGM(sd) >= battle_config.gm_allskill) ) 
+		WFIFOB(fd,38)= (sd->status.skill[skillid].lv < skill_get_max(id) && sd->status.skill[skillid].flag ==0 )? 1:0;
+	else
+		WFIFOB(fd,38) = 0;
+	WFIFOSET(fd,packet_len_table[0x147]);
 	return 0;
 }
 
@@ -5552,6 +5589,7 @@ void clif_parse_UseSkillToId(int fd,struct map_session_data *sd)
 {
 	int skillnum,skilllv,lv;
 	unsigned int tick=gettick();
+
 	if(sd->npc_id!=0 || sd->vender_id != 0) return;
 	if(DIFF_TICK(tick , sd->canact_tick) < 0) {
 		clif_skill_fail(sd,RFIFOW(fd,4),4,0);
@@ -5564,10 +5602,18 @@ void clif_parse_UseSkillToId(int fd,struct map_session_data *sd)
 	skilllv = RFIFOW(fd,2);
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
+		if(skillnum == MO_EXTREMITYFIST && !sd->state.skill_flag &&
+			(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH)) {
+			sd->state.skill_flag = 1;
+			clif_skillinfo(sd,MO_EXTREMITYFIST,1,-1);
+			return;
+		}
 		if( (lv = pc_checkskill(sd,skillnum)) > 0) {
 			if(skilllv > lv)
 				skilllv = lv;
 			skill_use_id(sd,RFIFOL(fd,6),skillnum,skilllv);
+			if(sd->state.skill_flag)
+				sd->state.skill_flag = 0;
 		}
 	}
 	else {

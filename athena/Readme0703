@@ -1,3 +1,50 @@
+--------------
+//0705 by 死神
+
+・色々と修正。
+・プレイヤーのクリティカル計算にバグがあったので修正。
+・爆裂波動の処理修正。
+・モンクのコンボを修正。
+・阿修羅覇鳳拳の使用によってマップ鯖の無限ループバグ修正。(これかなり致命的な物だったようです。)
+・コンボで使う阿修羅覇鳳拳は敵をクリックする必要がないように修正。
+・猛龍拳で敵を吹き飛ばす距離を5セルに変更。よってコンボで使う阿修羅覇鳳拳は距離チェックをしません。5セル飛ばされた敵は阿修羅覇鳳拳の射程から離れたわけなので距離チェックで発動します。(本鯖の仕様なんて知りません。)
+・マップの名前を16byteから24bytesに変更。(大した意味はありませんが安全の為の物です。)
+・ウェディングキャラによる鞍落ちを防ぐ為に修正。
+・その他少し修正。(テストは殆んどしてません。)
+	(conf/)
+	battle_athena.conf 修正。
+	(db/)
+	skill_db.txt 修正。
+	(common/)
+	mmo.h 修正。
+	(doc/)
+	conf_ref.txt 修正。
+	item_bonus.txt 修正。
+	(map/)
+	battle.h 修正。
+	battle.c
+		battle_get_flee2()、battle_calc_pet_weapon_attack() 修正。
+		battle_calc_mob_weapon_attack()、battle_calc_pc_weapon_attack() 修正。
+		battle_weapon_attack()、battle_calc_magic_attack() 修正。
+		battle_config_read() 修正。
+	skill.h 修正。
+	skill.c
+		skill_status_change_start()、skill_castend_damage_id() 修正。
+		skill_check_condition()、skill_use_id()、skill_blown() 修正。
+		skill_castend_map()、skill_unit_onlimit()、skill_attack() 修正。
+	pc.c
+		pc_attack_timer()、pc_setpos()、pc_setsavepoint() 修正。
+		pc_movepos()、pc_calcstatus()、pc_bonus() 修正。
+	clif.h 修正。
+	clif.c
+		clif_set0078()、clif_set007b() 修正。
+		clif_updatestatus()、clif_initialstatus()、clif_parse_UseSkillToId() 修正。
+		clif_skillinfo() 追加。
+	map.h 修正。
+	map.c
+		map_setipport()、map_addmap() 修正。
+	その他抜けた所少しあり。
+
 --------------------
 //0704 by kalen
 

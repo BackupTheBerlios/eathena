@@ -118,6 +118,7 @@ struct map_session_data {
 		unsigned connect_new : 1;
 		unsigned arrow_atk : 1;
 		unsigned attack_type : 3;
+		unsigned skill_flag : 1;
 	} state;
 	struct {
 		unsigned restart_full_recover : 1;
@@ -135,7 +136,7 @@ struct map_session_data {
 	short equip_index[11];
 	int weight,max_weight;
 	int cart_weight,cart_max_weight,cart_num,cart_max_num;
-	char mapname[16];
+	char mapname[24];
 	int fd,new_fd;
 	short to_x,to_y;
 	short speed,prev_speed;
@@ -365,7 +366,7 @@ enum { MS_IDLE,MS_WALK,MS_ATTACK,MS_DEAD,MS_DELAY };
 enum { NONE_ATTACKABLE,ATTACKABLE };
 
 struct map_data {
-	char name[16];
+	char name[24];
 	unsigned char *gat;	// NULL‚È‚ç‰º‚Ìmap_data_other_server‚Æ‚µ‚Äˆµ‚¤
 	struct block_list **block,**block_mob;
 	int m;
@@ -389,7 +390,7 @@ struct map_data {
 	struct npc_data *npc[MAX_NPC_PER_MAP];
 };
 struct map_data_other_server {
-	char name[16];
+	char name[24];
 	unsigned char *gat;	// NULLŒÅ’è‚É‚µ‚Ä”»’f
 	unsigned long ip;
 	unsigned int port;
