@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.11 2004/01/19 17:47:49 rovert Exp $
+// $Id: mob.c,v 1.12 2004/01/19 21:36:59 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -738,10 +738,12 @@ int mob_can_reach(struct mob_data *md,struct block_list *bl,int range)
 {
 	int dx=abs(bl->x - md->bl.x),dy=abs(bl->y - md->bl.y);
 	struct walkpath_data wpd;
-	if( range>0 && range < ((dx>dy)?dx:dy) )	// 遠すぎる
-		return 0;
+	int i;
 
 	if( md->bl.m != bl-> m)	// 違うマップ
+		return 0;
+	
+	if( range>0 && range < ((dx>dy)?dx:dy) )	// 遠すぎる
 		return 0;
 
 	if( md->bl.x==bl->x && md->bl.y==bl->y )	// 同じマス
@@ -751,7 +753,21 @@ int mob_can_reach(struct mob_data *md,struct block_list *bl,int range)
 	wpd.path_len=0;
 	wpd.path_pos=0;
 	wpd.path_half=0;
-	return (path_search(&wpd,md->bl.m,md->bl.x,md->bl.y,bl->x,bl->y,0)!=-1)?1:0;
+	if(path_search(&wpd,md->bl.m,md->bl.x,md->bl.y,bl->x,bl->y,0)!=-1)
+		return 1;
+	if(bl->type!=BL_PC && bl->type!=BL_MOB)
+		return 0;
+
+	// 隣接可能かどうか判定
+	dx=(dx>0)?1:((dx<0)?-1:0);
+	dy=(dy>0)?1:((dy<0)?-1:0);
+	if(path_search(&wpd,md->bl.m,md->bl.x,md->bl.y,bl->x-dx,bl->y-dy,0)!=-1)
+		return 1;
+	for(i=0;i<9;i++){
+		if(path_search(&wpd,md->bl.m,md->bl.x,md->bl.y,bl->x-1+i/3,bl->y-1+i%3,0)!=-1)
+			return 1;
+	}
+	return 0;
 }
 
 /*==========================================
@@ -932,7 +948,7 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 	md->master_dist=distance(md->bl.x,md->bl.y,mmd->bl.x,mmd->bl.y);
 
 	// 直前まで主が近くにいたのでテレポートして追いかける
-	if( old_dist<6 && md->master_dist>15){
+	if( old_dist<10 && md->master_dist>18){
 		mob_warp(md,mmd->bl.x,mmd->bl.y,3);
 		md->state.master_check = 1;
 		return 0;

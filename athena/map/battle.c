@@ -3146,24 +3146,34 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
  */
 int battle_check_range(struct block_list *src,struct block_list *bl,int range)
 {
+
 	int dx=abs(bl->x-src->x),dy=abs(bl->y-src->y);
 	struct walkpath_data wpd;
-	if(src->m != bl->m)
+	int arange=((dx>dy)?dx:dy);
+
+	if(src->m != bl->m)	// 違うマップ
 		return 0;
-	if( range>0 && range < ((dx>dy)?dx:dy) )	// 遠すぎる
+	
+	if( range>0 && range < arange )	// 遠すぎる
 		return 0;
 
-	if( src->x==bl->x && src->y==bl->y )	// 同じマス
+	if( arange<2 )	// 同じマスか隣接
 		return 1;
 
-	if(bl->type == BL_SKILL && ((struct skill_unit *)bl)->group->skill_id == WZ_ICEWALL)
-		return 1;
+//	if(bl->type == BL_SKILL && ((struct skill_unit *)bl)->group->skill_id == WZ_ICEWALL)
+//		return 1;
 
 	// 障害物判定
 	wpd.path_len=0;
 	wpd.path_pos=0;
 	wpd.path_half=0;
-	return (path_search(&wpd,src->m,src->x,src->y,bl->x,bl->y,0x10001)!=-1)?1:0;
+	if(path_search(&wpd,src->m,src->x,src->y,bl->x,bl->y,0x10001)!=-1)
+		return 1;
+		
+	dx=(dx>0)?1:((dx<0)?-1:0);
+	dy=(dy>0)?1:((dy<0)?-1:0);
+	return (path_search(&wpd,src->m,src->x+dx,src->y+dy,
+		bl->x-dx,bl->y-dy,0x10001)!=-1)?1:0;
 }
 
 /*==========================================
