@@ -1126,7 +1126,7 @@ int guild_gvg_eliminate_timer(int tid,unsigned int tick,int id,int data)
 	x=guild_gvg_empelium_pos(id,1);
 	y=guild_gvg_empelium_pos(id,2);
 	guild_gvg_eliminate(id);
-	mob_once_spawn(NULL,map[id].name,x,y,"エンペリウム",1288,1,"");//もう一度エンペ出す
+	mob_once_spawn(NULL,map[id].name,x,y,"--ja--",1288,1,"");//もう一度エンペ出す
 	return 0;
 }
 
@@ -1159,7 +1159,7 @@ int guild_gvg_init(void)
 		}
 		intif_guild_castle_info(gc->castle_id);
 		guild_gvg_eliminate(m);
-		mob_once_spawn(NULL,gc->m_name,gc->emp_x,gc->emp_y,"エンペリウム",1288,1,"");
+		mob_once_spawn(NULL,gc->m_name,gc->emp_x,gc->emp_y,"--ja--",1288,1,"");
 		map[m].flag.gvg=1;
 	}
 	return 0;
@@ -1197,11 +1197,11 @@ int guild_gvg_break_empelium(struct mob_data *md)
 	struct map_session_data *sd=NULL;
 	struct block_list *bl=NULL;
 
-	char mes1[] = "エンペリウムが破壊されました";
+	char mes1[] = "Emperium has been destroyed";
 	char mes2[1024];
-	char mes2_1[] = "砦 [";
-	char mes2_2[] = "]を [";
-	char mes2_3[] = "] ギルドが占領しました";
+	char mes2_1[] = "Guild Base [";
+	char mes2_2[] = "] has been taken by [";
+	char mes2_3[] = "] guild";
 
 	for(i=0;i<MAX_GUILDCASTLE;i++){
 		if( (gc=guild_castle_search(i)) != NULL ){
