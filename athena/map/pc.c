@@ -3621,6 +3621,18 @@ int pc_readparam(struct map_session_data *sd,int type)
 	case SP_NEXTJOBEXP:
 		val= pc_nextjobexp(sd);
 		break;
+	case SP_HP:
+		val= sd->status.hp;
+		break;
+	case SP_MAXHP:
+		val= sd->status.max_hp;
+		break;
+	case SP_SP:
+		val= sd->status.sp;
+		break;
+	case SP_MAXSP:
+		val= sd->status.max_sp;
+		break;
 	}
 
 	return val;

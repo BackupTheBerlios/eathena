@@ -5767,7 +5767,7 @@ int skill_produce_mix( struct map_session_data *sd,
 			*((unsigned long *)(&tmp_item.card[2]))=sd->char_id;	/* キャラID */
 		}
 
-		if(equip) {	//武器製造の場合
+		if(skill_produce_db[idx].req_skill!=AM_PHARMACY) {	//武器製造の場合
 			clif_produceeffect(sd,0,nameid);/* 武器製造エフェクトパケット */
 			clif_misceffect(&sd->bl,3); /* 他人にも成功を通知（精錬成功エフェクトと同じでいいの？） */
 		}
@@ -5782,7 +5782,7 @@ int skill_produce_mix( struct map_session_data *sd,
 		}
 	}
 	else {
-		if(equip) {	//武器製造の場合
+		if(skill_produce_db[idx].req_skill!=AM_PHARMACY) {	//武器製造の場合
 			clif_produceeffect(sd,1,nameid);/* 武器製造失敗エフェクトパケット */
 			clif_misceffect(&sd->bl,2); /* 他人にも失敗を通知 */
 		}
