@@ -5360,7 +5360,7 @@ int pc_readdb(void)
 		int bn,b1,b2,b3,jn,j1,j2,j3,j4;
 		if(line[0]=='/' && line[1]=='/')
 			continue;
-		if(sscanf(line,"%d,%d,%d,%d,%d,%d,%d,%d",&bn,&b1,&b2,&b3,&jn,&j1,&j2,&j3,&j4)!=9)
+		if(sscanf(line,"%d,%d,%d,%d,%d,%d,%d,%d,%d",&bn,&b1,&b2,&b3,&jn,&j1,&j2,&j3,&j4)!=9)
 			continue;
 		exp_table[0][i]=bn;
 		exp_table[1][i]=b1;
