@@ -75,6 +75,10 @@ extern struct Atcommand_Config {
 	int questskill;
 	int lostskill;
 	int spiritball;
+	int party;
+	int guild;
+	int gvgstart;
+	int gvgend;
 	int chardyeclothes;
 	int chardyehair;
 	int charstylehair;

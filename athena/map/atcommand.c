@@ -22,6 +22,7 @@
 #include "atcommand.h"
 
 static char msg_table[200][1024];	/* Server message */
+static int gvg_flag=0;
 
 struct Atcommand_Config atcommand_config;
 
@@ -1461,6 +1462,47 @@ z [0`4]•ž‚ÌF
 			return 1;
 		}
 
+		if(strcmpi(command, "@party") == 0 && gm_level >= atcommand_config.party){
+			if(sscanf(message, "%s %[^\n]", command, moji) >= 2) {
+				party_create(sd,moji);
+			}
+			return 1;
+		}
+
+		if(strcmpi(command, "@guild") == 0 && gm_level >= atcommand_config.guild){
+			if(sscanf(message, "%s %[^\n]", command, moji) >= 2) {
+				int temp = battle_config.guild_emperium_check;
+				battle_config.guild_emperium_check = 0;
+				guild_create(sd,moji);
+				battle_config.guild_emperium_check = temp;
+			}
+			return 1;
+		}
+		if(strcmpi(command, "@gvgstart") == 0 && gm_level >= atcommand_config.gvgstart){
+			if(sscanf(message, "%s", command)) {
+				if(gvg_flag==1){
+					clif_displaymessage(fd,msg_table[73]);
+					return 1;
+				}
+				gvg_flag=1;
+				guild_gvg_init();
+				clif_displaymessage(fd,msg_table[72]);
+			}
+			return 1;
+		}
+		if(strcmpi(command, "@gvgend") == 0 && gm_level >= atcommand_config.gvgend){
+			if(sscanf(message, "%s", command)) {
+				if(gvg_flag==0){
+					clif_displaymessage(fd,msg_table[75]);
+					return 1;
+				}
+				gvg_flag=0;
+				guild_gvg_final();
+				clif_displaymessage(fd,msg_table[74]);
+			}
+			return 1;
+		}
+
 		if(strcmpi(command, "@hatch") == 0 && gm_level >= atcommand_config.hatch){
 			clif_sendegg(sd);
 			return 1;
@@ -1645,6 +1687,10 @@ int atcommand_config_read(const char *cfgName)
 				{ "questskill",&atcommand_config.questskill },
 				{ "lostskill",&atcommand_config.lostskill },
 				{ "spiritball",&atcommand_config.spiritball },
+				{ "party",&atcommand_config.party },
+				{ "guild",&atcommand_config.guild },
+				{ "gvgstart",&atcommand_config.gvgstart },
+				{ "gvgend",&atcommand_config.gvgend },
 			{ "charstpoint",	&atcommand_config.charstpoint },
 			{ "charskpoint",	&atcommand_config.charskpoint },
 			{ "chardyeclothes",	&atcommand_config.chardyeclothes },

@@ -1,6 +1,7 @@
 Date	Added
 02/05
-	* fixed provoke so it doesnt work on undead
+	* fixed provoke so it doesnt work on undead [RoVeRT]
+	* added TyrNemesis^ card removal code and min/max settings
 02/04
 	* added start_zeny and party_level_range to char_athena.conf [RoVeRT]
 02/03

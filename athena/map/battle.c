@@ -3633,6 +3633,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.gvg_misc_damage_rate = 100;
 	battle_config.gvg_invincible_time = 10000;
 	battle_config.gvg_continuous_attack = 0;
+	battle_config.gvg_eliminate_time = 5000;
 	battle_config.min_item_drop_common=1;	// Added by TyrNemesis^
 	battle_config.max_item_drop_common=10000;
 	battle_config.min_item_drop_equip=1;
@@ -3752,6 +3753,7 @@ int battle_config_read(const char *cfgName)
 			{ "gvg_misc_attack_damage_rate" ,&battle_config.gvg_misc_damage_rate },
 			{ "gvg_invincible_time" ,&battle_config.gvg_invincible_time },
 			{ "gvg_continuous_attack" ,&battle_config.gvg_continuous_attack },
+			{ "gvg_eliminate_time" ,&battle_config.gvg_eliminate_time },
 		{ "item_drop_common",	&battle_config.min_item_drop_common	},	// Added by RoVeRT
 		{ "item_drop_equip",	&battle_config.min_item_drop_common	},
 		{ "item_drop_card",	&battle_config.min_item_drop_common	},	// End Addition

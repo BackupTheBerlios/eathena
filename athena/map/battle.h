@@ -213,6 +213,7 @@ extern struct Battle_Config {
 	int gvg_misc_damage_rate;
 	int gvg_invincible_time;
 	int gvg_continuous_attack;
+	int gvg_eliminate_time;
 	int item_drop_common,item_drop_card,item_drop_equip;	// Added by RoVeRT
 	int item_drop_common_min,item_drop_common_max;	// Added by TyrNemesis^
 	int min_item_drop_equip,max_item_drop_equip;
