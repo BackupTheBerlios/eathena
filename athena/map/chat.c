@@ -1,4 +1,4 @@
-// $Id: chat.c,v 1.1 2004/01/08 23:08:44 mjflick Exp $
+// $Id: chat.c,v 1.2 2004/01/09 03:00:18 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,7 +62,7 @@ int chat_createchat(struct map_session_data *sd,int limit,int pub,char* pass,cha
  * 既存チャットルームに参加
  *------------------------------------------
  */
-int chat_joinchat(struct map_session_data *sd,int chatid,char* pass)
+int chat_joinchat(struct map_session_data *sd,int chatid,char* pass)	// Modified by RoVeRT
 {
 	struct chat_data *cd;
 
@@ -94,7 +94,7 @@ int chat_joinchat(struct map_session_data *sd,int chatid,char* pass)
 	clif_dispchat(cd,0);
 
 	// 満員でイベントが定義されてるなら実行
-	if(cd->users>=cd->limit && cd->npc_event[0])
+	if(cd->users>=cd->trigger && cd->npc_event[0])
 		npc_event(sd,cd->npc_event,0);
 		
 	return 0;
@@ -250,7 +250,7 @@ int chat_kickchat(struct map_session_data *sd,char *kickusername)
  * npcチャットルーム作成
  *------------------------------------------
  */
-int chat_createcnpchat(struct npc_data *nd,int limit,char* title,int titlelen,const char *ev)
+int chat_createcnpchat(struct npc_data *nd,int limit,int trigger,char* title,int titlelen,const char *ev)	// Modified by RoVeRT
 {
 	struct chat_data *cd;
 
@@ -262,6 +262,7 @@ int chat_createcnpchat(struct npc_data *nd,int limit,char* title,int titlelen,co
 	memset(cd,0,sizeof(*cd));
 
 	cd->limit = limit;
+	cd->trigger = trigger;
 	cd->pub = 1;
 	cd->users = 0;
 	memcpy(cd->pass,"",8);

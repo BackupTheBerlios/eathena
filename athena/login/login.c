@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.1 2004/01/08 23:08:43 mjflick Exp $
+// $Id: login.c,v 1.2 2004/01/09 03:00:18 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>

@@ -799,7 +799,7 @@ int battle_calc_damage(struct block_list *bl,int damage,int flag)
 			damage=0;
 		}
 
-		if(sc_data[SC_LOKIWAIL].timer!=-1 && damage>0 &&
+		if(sc_data[SC_ROKISWEIL].timer!=-1 && damage>0 &&
 			flag&BF_MAGIC ){
 			// ƒjƒ…[ƒ}
 			damage=0;

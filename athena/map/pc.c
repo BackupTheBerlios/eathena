@@ -1169,11 +1169,14 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->sc_data[i=SC_SPEEDPOTION0].timer!=-1)	// ‘ ‘¬ƒ|[ƒVƒ‡ƒ“
 			aspd_rate -= sd->sc_data[i].val2;
 
+		if( skill_check_dancing(&sd->bl) )		// ‰‰‘t/ƒ_ƒ“ƒXg—p’†
+			sd->speed*=4;
+
 		// HIT/FLEE•Ï‰»Œn
 		if(sd->sc_data[SC_WHISTLE].timer!=-1){  // Œû“J
 			sd->flee += sd->sc_data[SC_WHISTLE].val2 * sd->flee/100;
 			sd->flee2+= sd->sc_data[SC_WHISTLE].val2 * sd->flee2/100;
-			sd->status.sp--;		// AppleGirl
+			sd->status.sp--;		// Added by AppleGirl
 			clif_updatestatus(sd,SP_SP);
 		}
 		if(sd->sc_data[SC_HUMMING].timer!=-1)  // ƒnƒ~ƒ“ƒO
@@ -1203,6 +1206,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->status.max_sp += (sd->sc_data[SC_SERVICE4U].val2 * sd->status.max_sp)/100;
 			if(sd->status.max_sp < 0 || sd->status.max_sp > battle_config.max_sp)
 				sd->status.max_sp = battle_config.max_sp;
+			sd->dsprate-=sd->sc_data[SC_SERVICE4U].val3;
+			if(sd->dsprate<0)sd->dsprate=0;
 		}
 
 		if(sd->sc_data[SC_FORTUNE].timer!=-1)	// K‰^‚ÌƒLƒX
@@ -1217,7 +1222,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			aspd_rate += 25;
 			sd->speed = sd->speed * 125 / 100;
 		}
-		if(sd->sc_data[SC_POISON].timer!=-1){		// AppleGirl
+		if(sd->sc_data[SC_POISON].timer!=-1){		// Added by AppleGirl
 			sd->status.hp -= sd->hprate /100;
 		}
 /*		if(sd->sc_data[SC_DEFENDER].timer!=-1)	// Defender
@@ -3275,6 +3280,14 @@ int pc_damage(struct block_list *src,struct map_session_data *sd,int damage)
 	// •à ‚¢‚Ä‚¢‚½‚ç‘«‚ğ~‚ß‚é
 	if(sd->sc_data[SC_ENDURE].timer == -1)
 		pc_stop_walking(sd,3);
+	// ‰‰‘t/ƒ_ƒ“ƒX‚Ì’†’f
+	if( damage*4>sd->status.max_hp ){
+		struct skill_unit_group *group=skill_check_dancing(&sd->bl);
+		if(group){
+			skill_delunitgroup(group);
+			pc_calcstatus(sd,0);
+		}
+	}
 
 	sd->status.hp-=damage;
 	if(sd->status.pet_id > 0 && sd->pd && sd->petDB)

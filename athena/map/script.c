@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.1 2004/01/08 23:08:51 mjflick Exp $
+// $Id: script.c,v 1.2 2004/01/09 03:00:19 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -133,6 +133,8 @@ int buildin_getmapusers(struct script_state *st);
 int buildin_getareausers(struct script_state *st);
 int buildin_enablenpc(struct script_state *st);
 int buildin_disablenpc(struct script_state *st);
+int buildin_enablearena(struct script_state *st);	// Added by RoVeRT
+int buildin_disablearena(struct script_state *st);	// Added by RoVeRT
 int buildin_sc_start(struct script_state *st);
 int buildin_sc_end(struct script_state *st);
 int buildin_debugmes(struct script_state *st);
@@ -232,6 +234,8 @@ struct {
 	{buildin_getareausers,"getareausers","siiii"},
 	{buildin_enablenpc,"enablenpc","s"},
 	{buildin_disablenpc,"disablenpc","s"},
+	{buildin_enablearena,"enablearena",""},		// Added by RoVeRT
+	{buildin_disablearena,"disablearena",""},	// Added by RoVeRT
 	{buildin_sc_start,"sc_start","iii"},
 	{buildin_sc_end,"sc_end","i"},
 	{buildin_debugmes,"debugmes","s"},
@@ -2363,6 +2367,34 @@ int buildin_disablenpc(struct script_state *st)
 	return 0;
 }
 
+int buildin_enablearena(struct script_state *st)	// Added by RoVeRT
+{
+	struct npc_data *nd=(struct npc_data *)map_id2bl(st->oid);
+	struct chat_data *cd;
+
+
+	if(nd==NULL || (cd=(struct chat_data *)map_id2bl(nd->chat_id))==NULL)
+		return 0;
+
+	npc_enable(nd->name,1);
+	nd->arenaflag=1;
+
+printf("a: %d %d %s %d\n", cd->users, cd->trigger, &cd->npc_event[0], nd->arenaflag);
+	if(cd->users>=cd->trigger && cd->npc_event[0]) {
+		npc_timer_event(cd->npc_event);
+printf("run event\n");
+}
+	return 0;
+}
+int buildin_disablearena(struct script_state *st)	// Added by RoVeRT
+{
+	struct npc_data *nd=(struct npc_data *)map_id2bl(st->oid);
+	nd->arenaflag=0;
+
+printf("disable\n");
+	return 0;
+}
+
 /*==========================================
  * 状態異常にかかる
  *------------------------------------------
@@ -2471,38 +2503,43 @@ int buildin_changebase(struct script_state *st)
  * npcチャット作成
  *------------------------------------------
  */
-int buildin_waitingroom(struct script_state *st)
+int buildin_waitingroom(struct script_state *st)	// Modified by RoVeRT
 {
 	char *name,*ev="";
-	int limit;
+	int limit,trigger;
 	name=conv_str(st,& (st->stack->stack_data[st->start+2]));
-	limit= conv_num(st,& (st->stack->stack_data[st->start+3]));
+	limit= trigger= conv_num(st,& (st->stack->stack_data[st->start+3]));
 	if( st->end>st->start+4 )
-		ev=conv_str(st,& (st->stack->stack_data[st->start+4]));
+		trigger=conv_num(st,& (st->stack->stack_data[st->start+4]));
+	if( st->end>st->start+5 )
+		ev=conv_str(st,& (st->stack->stack_data[st->start+5]));
 	chat_createcnpchat( (struct npc_data *)map_id2bl(st->oid),
-		limit,name,strlen(name)+1,ev);
+		limit,trigger,name,strlen(name)+1,ev);
 	return 0;
 }
 /*==========================================
  * チャットメンバー全員ワープ
  *------------------------------------------
  */
-int buildin_warpwaitingpc(struct script_state *st)
+int buildin_warpwaitingpc(struct script_state *st)	// Modified by RoVeRT
 {
 	int x,y,i;
 	char *str;
 	struct npc_data *nd=(struct npc_data *)map_id2bl(st->oid);
 	struct chat_data *cd;
 
-	if(nd==NULL || (cd=(struct chat_data *)map_id2bl(nd->chat_id))==NULL )
+
+	if(nd==NULL || (cd=(struct chat_data *)map_id2bl(nd->chat_id))==NULL || !nd->arenaflag )
 		return 0;
 
 	str=conv_str(st,& (st->stack->stack_data[st->start+2]));
 	x=conv_num(st,& (st->stack->stack_data[st->start+3]));
 	y=conv_num(st,& (st->stack->stack_data[st->start+4]));
 
-	for(i=0;i<cd->users;i++){
+printf("processing... %s %d %d\n",str,y,x);
+	for(i=0;i<cd->trigger;i++){
 		struct map_session_data *sd=cd->usersd[i];
+printf("processing loop... on: %s\n", sd->status.name);
 	
 		if(strcmp(str,"Random")==0)
 			pc_randomwarp(sd,3);
@@ -3214,4 +3251,3 @@ int do_init_script()
 	scriptlabel_db=strdb_init(50);
 	return 0;
 }
-t

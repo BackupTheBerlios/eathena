@@ -1,4 +1,4 @@
-// $Id: core.c,v 1.1 2004/01/08 23:08:37 mjflick Exp $
+// $Id: core.c,v 1.2 2004/01/09 03:00:18 rovert Exp $
 // original : core.c 2003/02/26 18:03:12 Rev 1.7
 
 #include <stdio.h>

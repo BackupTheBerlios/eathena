@@ -282,6 +282,7 @@ struct npc_data {
 	// ‚±‚±‚Éƒƒ“ƒo‚ğ’Ç‰Á‚µ‚Ä‚Í‚È‚ç‚È‚¢(shop_item‚ª‰Â•Ï’·‚Ìˆ×)
 
 	int timer,lastaction;		// Added by RoVeRT
+	short arenaflag;
 };
 struct mob_data {
 	struct block_list bl;
@@ -449,6 +450,7 @@ struct chat_data {
 	struct block_list *owner_;
 	struct block_list **owner;
 	char npc_event[50];
+	int trigger;		// Added by RoVeRT
 };
 
 struct mons_data {
