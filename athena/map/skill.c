@@ -3517,7 +3517,7 @@ int skill_unit_onout(struct skill_unit *src,struct block_list *bl,unsigned int t
 		return 0;
 
 	switch(sg->unit_id){
-/*	case 0x83:	/* サンクチュアリ */
+/*	case 0x83:	// サンクチュアリ
 		{
 			int i,*list=sg->vallist;
 			for(i=0;i<list[i];i++)
