@@ -354,32 +354,31 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 					{	MG_FIREBALL,	2	},
 					{	MG_FROSTDIVER,	1	},
 				};
-
 				switch(lv) {
-					case NV_BASIC:
+					case 1:
 						skill = 0;
 						break;
-					case SM_SWORD:
-					case SM_TWOHAND:
-					case SM_RECOVERY:
+					case 2:
+					case 3:
+					case 4:
 						skill = rand()%4;
 						max = lv-1;
 						limit = 0;
 						break;
-					case SM_BASH:
-					case SM_PROVOKE:
-					case SM_MAGNUM:
+					case 5:
+					case 6:
+					case 7:
 						skill = rand()%5;
 						max = lv-4;
 						limit = 3;
 						break;		
-					case SM_ENDURE:
-					case MG_SRECOVERY:
+					case 8:
+					case 9:
 						skill = rand()%6;
 						max = lv-7;
 						limit = 5;
 						break;
-					case MG_SIGHT:
+					case 10:
 						skill = rand()%7;
 						max = 1;
 						limit = 6;
@@ -1602,11 +1601,11 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case BD_LULLABY:			/* 子守唄 */
 	case BD_RICHMANKIM:			/* ニヨルドの宴 */
 	case BD_ETERNALCHAOS:		/* 永遠の混沌 */
-//	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
-//	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
+	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
+	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
 	case BD_ROKISWEIL:			/* ロキの叫び */
-//	case BD_INTOABYSS:			/* 深淵の中に */
-//	case BD_SIEGFRIED:			/* 不死身のジークフリード */
+	case BD_INTOABYSS:			/* 深淵の中に */
+	case BD_SIEGFRIED:			/* 不死身のジークフリード */
 	case BA_DISSONANCE:			/* 不協和音 */
 	case BA_POEMBRAGI:			/* ブラギの詩 */
 	case BA_WHISTLE:			/* 口笛 */
@@ -1619,23 +1618,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case DC_SERVICEFORYOU:		/* サービスフォーユー */
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		skill_unitsetting(src,skillid,skilllv,src->x,src->y,0);
-		break;
-
-	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
-	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
-	case BD_INTOABYSS:			/* 深淵の中に */
-	case BD_SIEGFRIED:			/* 不死身のジークフリード */
-		if( sd==NULL || sd->status.party_id==0 || (flag&1) ){
-			/* 個別の処理 */
-			clif_skill_nodamage(bl,bl,skillid,skilllv,1);
-			skill_unitsetting(src,skillid,skilllv,src->x,src->y,0);
-		}else{
-			/* パーティ全体への処理 */
-			party_foreachsamemap(skill_area_sub,
-				sd,1,
-				src,skillid,skilllv,tick, flag|BCT_PARTY|1,
-				skill_castend_nodamage_id);
-		}
 		break;
 
 	case BD_ADAPTATION:			/* アドリブ */
