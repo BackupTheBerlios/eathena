@@ -1,4 +1,8 @@
 Date	Added
+01/16
+	* added secondary effects for when characters with appropriate elemental armor
+	  are within area of effect of sage spells SA_VOLCANO(atk up), SA_DELUGE(max hp up),
+	  SA_VIOLENTGALE(flee up) [moonsoul]
 01/15
 	* fixed auto spell so it works the prober way
 01/07
