@@ -87,8 +87,7 @@ void skill_stop_dancing(struct block_list *src);
 // ‰r¥ƒLƒƒƒ“ƒZƒ‹
 int skill_castcancel(struct block_list *bl,int type);
 
-#define skill_calc_heal(bl,skill_lv)	\
-	(( battle_get_lv(bl)+battle_get_int(bl) )/8 *(4+ skill_lv*8))
+#define skill_calc_heal(bl,skill_lv) (( battle_get_lv(bl)+battle_get_int(bl) )/8 *(4+ skill_lv*8))
 
 // ‚»‚Ì‘¼
 int skill_check_cloaking(struct block_list *bl);
