@@ -106,7 +106,9 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				sprintf(moji, "%s %s %d %d", temp1, pl_sd->mapname, pl_sd->bl.x, pl_sd->bl.y);
 				clif_displaymessage(fd,moji);
 			}else{
-				clif_displaymessage(fd,"Character does not exist.");
+//				clif_displaymessage(fd,"Character does not exist.");
+				sprintf(moji, "%s %d %d", sd->mapname, sd->bl.x, sd->bl.y);
+				clif_displaymessage(fd,moji);
 			}
 			return 1;
 		}
@@ -295,10 +297,10 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 //「@hide」と入力
 		if (strcmpi(command, "@hide") == 0 && gm_level >= atcommand_config.hide) {
 			if(sd->status.option&0x40){
-				sd->status.option ^= 0x40;
+				sd->status.option&=~0x40;
 				clif_displaymessage(fd,"Invidible: Off.");
 			}else{
-				sd->status.option ^= 0x40;
+				sd->status.option|=0x40;
 				clif_displaymessage(fd,"Invisible: On.");
 			}
 			clif_changeoption(&sd->bl);
@@ -543,7 +545,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			if(sd->status.party_id)
 				clif_displaymessage(fd,"You must leave your party first.");
 			else if(sd->status.guild_id)
-				clif_displaymessage(fd,"ou must leave your guild first.");
+				clif_displaymessage(fd,"You must leave your guild first.");
 			else{
 				if(sd->status.pet_id > 0 && sd->pd)
 					intif_save_petdata(sd->status.account_id,&sd->pet);
@@ -619,19 +621,18 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			return 1;
 		}
 
-
 //髪型、髪の色、服の色、変更
 //「@model x y z」のように値を入力、ただしこれらを変更した状態で2HQを使うとエラーが・・・(´Д｀)　解明しだい直します。
 /*	例：@model 15 4 0
 
-x [0～17]髪型
+x [0～19]髪型
 y [0～8]髪の色
 z [0～4]服の色
 
 */
 		if (strcmpi(command, "@model") == 0 && gm_level >= atcommand_config.model) {
 			sscanf(message, "%s%d%d%d", command, &x, &y, &z);
-			if (x >= 0 && x < 18 && y >= 0 && y < 9 && z >= 0 && z <= 4) {
+			if (x >= 0 && x < 20 && y >= 0 && y < 9 && z >= 0 && z <= 4) {
 				//服の色変更
 				if ((sd->status.class == 12 || sd->status.class >= 14) && z != 0) {
 					//アサシンは服の色未実装
@@ -707,7 +708,6 @@ z [0～4]服の色
 			}
 			return 1;
 		}
-
 
 // 精錬 @refine 装備場所ID +数値
 // 右手=2 左手=32 両手=34 頭=256/257/768/769 体=16 肩=4 足=64
@@ -849,7 +849,7 @@ z [0～4]服の色
 			sscanf(message,"%s%d",command,&i1);
 			
 			i=(int)(*p[i2])+i1;
-			if(i< 1)i1=1-*p[i2];
+			if(i< 1) i1=1-*p[i2];
 			if(i>battle_config.max_parameter) i1=battle_config.max_parameter-*p[i2];
 			*p[i2]+=i1;
 			clif_updatestatus(sd,SP_STR+i2);
@@ -1003,34 +1003,18 @@ z [0～4]服の色
 			if ((pl_sd=map_nick2sd(temp1))!=NULL) {
 				sprintf(moji,"%s Stats", pl_sd->status.name);
 				clif_displaymessage(fd,moji);
-				sprintf(moji,"Base Level - %d          Job Level - %d", pl_sd->status.base_level, pl_sd->status.job_level);
+				sprintf(moji,"Base Level - %3d          Job Level - %3d", pl_sd->status.base_level, pl_sd->status.job_level);
 				clif_displaymessage(fd,moji);
-//				sprintf(moji,"Job Level - %d", pl_sd->status.job_level);
-//				clif_displaymessage(fd,moji);
-
-				sprintf(moji,"Hp - %d          MaxHP - %d", pl_sd->status.hp, pl_sd->status.max_hp);
+				sprintf(moji,"Hp - %5d        MaxHP - %5d", pl_sd->status.hp, pl_sd->status.max_hp);
 				clif_displaymessage(fd,moji);
-//				sprintf(moji,"MaxHp - %d", pl_sd->status.max_hp);
-//				clif_displaymessage(fd,moji);
-				sprintf(moji,"Sp - %d          MaxSP - %d", pl_sd->status.sp, pl_sd->status.max_sp);
+				sprintf(moji,"Sp - %5d        MaxSP - %5d", pl_sd->status.sp, pl_sd->status.max_sp);
 				clif_displaymessage(fd,moji);
-//				sprintf(moji,"MaxSp - %d", pl_sd->status.max_sp);
-//				clif_displaymessage(fd,moji);
-
-				sprintf(moji,"Str - %d          Agi - %d", pl_sd->status.str, pl_sd->status.agi);
+				sprintf(moji,"Str - %5d          Agi - %3d", pl_sd->status.str, pl_sd->status.agi);
 				clif_displaymessage(fd,moji);
-//				sprintf(moji,"Agi - %d", pl_sd->status.agi);
-//				clif_displaymessage(fd,moji);
-
-				sprintf(moji,"Vit - %d          Int - %d", pl_sd->status.vit, pl_sd->status.int_);
+				sprintf(moji,"Vit - %5d          Int - %3d", pl_sd->status.vit, pl_sd->status.int_);
 				clif_displaymessage(fd,moji);
-//				sprintf(moji,"Int - %d", pl_sd->status.int_);
-//				clif_displaymessage(fd,moji);
-
-				sprintf(moji,"Dex - %d          Luk - %d", pl_sd->status.dex, pl_sd->status.luk);
+				sprintf(moji,"Dex - %5d          Luk - %3d", pl_sd->status.dex, pl_sd->status.luk);
 				clif_displaymessage(fd,moji);
-//				sprintf(moji,"Luk - %d", pl_sd->status.luk);
-//				clif_displaymessage(fd,moji);
 				sprintf(moji,"Zeny - %d", pl_sd->status.zeny);
 				clif_displaymessage(fd,moji);
 			}else{
@@ -1568,8 +1552,8 @@ int atcommand_config_read(const char *cfgName)
 			} data[] ={
 				{ "broadcast",&atcommand_config.broadcast },
 				{ "local_broadcast",&atcommand_config.local_broadcast },
-				{ "resetstate",&atcommand_config.resetstate },
 				{ "mapmove",&atcommand_config.mapmove },
+				{ "resetstate",&atcommand_config.resetstate },
 				{ "rura+",&atcommand_config.rurap },
 				{ "rura",&atcommand_config.rura },
 				{ "where",&atcommand_config.where },
@@ -1589,8 +1573,8 @@ int atcommand_config_read(const char *cfgName)
 				{ "kami",&atcommand_config.kami },
 				{ "heal",&atcommand_config.heal },
 				{ "item",&atcommand_config.item },
-				{ "itemreset",&atcommand_config.itemreset },
 				{ "itemcheck",&atcommand_config.itemcheck },
+				{ "itemreset",&atcommand_config.itemreset },
 				{ "lvup",&atcommand_config.lvup },
 				{ "joblvup",&atcommand_config.joblvup },
 				{ "help",&atcommand_config.help },

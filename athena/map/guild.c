@@ -143,7 +143,8 @@ int guild_payexp_timer(int tid,unsigned int tick,int id,int data)
 		dellist,&delp);
 	for(i=0;i<delp;i++)
 		numdb_erase(guild_expcache_db,dellist[i]);
-//	printf("guild exp %d charactor's exp flushed !\n",delp);
+//	if(battle_config.etc_log)
+//		printf("guild exp %d charactor's exp flushed !\n",delp);
 	return 0;
 }
 
@@ -178,7 +179,8 @@ int guild_created(int account_id,int guild_id)
 			sd->status.guild_id=guild_id;
 			sd->guild_sended=0;
 			if((g=numdb_search(guild_db,guild_id))!=NULL){
-				printf("guild: id already exists!\n");
+				if(battle_config.error_log)
+					printf("guild: id already exists!\n");
 				exit(0);
 			}
 			clif_guild_created(sd,0);
@@ -193,7 +195,8 @@ int guild_created(int account_id,int guild_id)
 // î•ñ—v‹
 int guild_request_info(int guild_id)
 {
-//	printf("guild_request_info\n");
+//	if(battle_config.etc_log)
+//		printf("guild_request_info\n");
 	return intif_guild_request_info(guild_id);
 }
 
@@ -215,8 +218,8 @@ int guild_check_member(const struct guild *g)
 					sd->status.guild_id=0;
 					sd->guild_sended=0;
 					sd->guild_emblem_id=0;
-					printf("guild: check_member %d[%s] is not member\n",
-						sd->status.account_id,sd->status.name);
+					if(battle_config.error_log)
+						printf("guild: check_member %d[%s] is not member\n",sd->status.account_id,sd->status.name);
 				}
 			}
 		}
@@ -245,7 +248,8 @@ int guild_recv_info(struct guild *sg)
 	if((g=numdb_search(guild_db,sg->guild_id))==NULL){
 		g=malloc(sizeof(struct guild));
 		if(g==NULL){
-			printf("guild_recv_info: out of memory!\n");
+			if(battle_config.error_log)
+				printf("guild_recv_info: out of memory!\n");
 			exit(0);
 		}
 		numdb_insert(guild_db,sg->guild_id,g);
@@ -384,7 +388,8 @@ int guild_member_added(int guild_id,int account_id,int char_id,int flag)
 
 	if((sd==NULL || sd->guild_invite==0) && flag==0){
 		// ƒLƒƒƒ‰‘¤‚É“o˜^‚Å‚«‚È‚©‚Á‚½‚½‚ß’E‘Þ—v‹‚ðo‚·
-		printf("guild: member added error %d is not online\n",account_id);
+		if(battle_config.error_log)
+			printf("guild: member added error %d is not online\n",account_id);
  		intif_guild_leave(guild_id,account_id,char_id,0,"**“o˜^Ž¸”s**");
 		return 0;
 	}
@@ -559,8 +564,8 @@ int guild_recv_memberinfoshort(int guild_id,int account_id,int char_id,int onlin
 			om++;
 	}
 	if(idx==g->max_member){
-		printf("guild: not found member %d,%d on %d[%s]\n",
-			account_id,char_id,guild_id,g->name);
+		if(battle_config.error_log)
+			printf("guild: not found member %d,%d on %d[%s]\n",	account_id,char_id,guild_id,g->name);
 		return 0;
 	}
 	g->average_lv=alv/c;
@@ -703,7 +708,8 @@ int guild_payexp(struct map_session_data *sd,int exp)
 	if( (c=numdb_search(guild_expcache_db,sd->status.char_id))==NULL ){
 		c=malloc(sizeof(struct guild_expcache));
 		if(c==NULL){
-			printf("guild_payexp: out of memory !\n");
+			if(battle_config.error_log)
+				printf("guild_payexp: out of memory !\n");
 			return 0;
 		}
 		c->guild_id=sd->status.guild_id;
@@ -915,8 +921,8 @@ int guild_allianceack(int guild_id1,int guild_id2,int account_id1,int account_id
 				clif_guild_allianceack(sd[i],((flag>>4)==i+1)?3:4);
 		return 0;
 	}
-//	printf("guild alliance_ack %d %d %d %d %d %s %s\n",guild_id1,guild_id2,
-//		account_id1,account_id2,flag,name1,name2);
+//	if(battle_config.etc_log)
+//		printf("guild alliance_ack %d %d %d %d %d %s %s\n",guild_id1,guild_id2,account_id1,account_id2,flag,name1,name2);
 
 	if(!(flag&0x08)){	// ŠÖŒW’Ç‰Á
 		for(i=0;i<2-(flag&1);i++)

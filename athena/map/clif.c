@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.11 2004/01/18 02:33:11 rovert Exp $
+// $Id: clif.c,v 1.12 2004/01/18 15:43:58 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -319,7 +319,8 @@ int clif_send(unsigned char *buf,int len,struct block_list *bl,int type)
 						
 					memcpy(WFIFOP(sd->fd,0),buf,len);
 					WFIFOSET(sd->fd,len);
-//					printf("send party %d %d %d\n",p->party_id,i,flag);
+//					if(battle_config.etc_log)
+//						printf("send party %d %d %d\n",p->party_id,i,flag);
 				}
 			}
 		}
@@ -350,7 +351,8 @@ int clif_send(unsigned char *buf,int len,struct block_list *bl,int type)
 		break;
 		
 	default:
-		printf("clif_send まだ作ってないよー\n");
+		if(battle_config.error_log)
+			printf("clif_send まだ作ってないよー\n");
 		return -1;
 	}
 	return 0;
@@ -1610,7 +1612,8 @@ int clif_updatestatus(struct map_session_data *sd,int type)
 		break;
 		
 	default:
-		printf("clif_updatestatus : make %d routine\n",type);
+		if(battle_config.error_log)
+			printf("clif_updatestatus : make %d routine\n",type);
 		return 1;
 	}
 	WFIFOSET(fd,len);
@@ -2599,7 +2602,9 @@ int clif_clearchar_skillunit(struct skill_unit *unit,int fd)
 		clif_getareachar_skillunit(sd,(struct skill_unit *)bl);
 		break;
 	default:
-		printf("get area char ??? %d\n",bl->type);
+		if(battle_config.error_log)
+			printf("get area char ??? %d\n",bl->type);
+		break;
 	}
 	return 0;
 }
@@ -2806,16 +2811,12 @@ int clif_skillinfoblock(struct map_session_data *sd)
 					(sd->status.skill[i].lv < skill_get_max(id) && sd->status.skill[i].flag ==0 )? 1:0;
 			else
 				WFIFOB(fd,len+36) = 0;
-/*			printf("skill id=%d inf=%d lv=%d sp=%d range=%d up=%d\n",
-				WFIFOW(fd,len),WFIFOW(fd,len+2),WFIFOW(fd,len+6),
-				WFIFOW(fd,len+8),WFIFOW(fd,len+10),WFIFOB(fd,len+36) );*/
 			len+=37;
 			c++;
 		}
 	}
 	WFIFOW(fd,2)=len;
 	WFIFOSET(fd,len);
-//	printf("skill len=%d %d\n",len,c);
 	return 0;
 }
 
@@ -2903,11 +2904,6 @@ int clif_skill_damage(struct block_list *src,struct block_list *dst,
 #if PACKETVER < 3
 	WBUFW(buf,0)=0x114;
 	WBUFW(buf,2)=skill_id;
-/*	
-	static int a=157;
-	printf("%d\n",a);
-	WBUFW(buf,2)=a++;
-*/	
 	WBUFL(buf,4)=src->id;
 	WBUFL(buf,8)=dst->id;
 	WBUFL(buf,12)=tick;
@@ -3829,7 +3825,8 @@ int clif_party_option(struct party *p,struct map_session_data *sd,int flag)
 {
 	unsigned char buf[16];
 
-//	printf("clif_party_option: %d %d %d\n",p->exp,p->item,flag);
+//	if(battle_config.etc_log)
+//		printf("clif_party_option: %d %d %d\n",p->exp,p->item,flag);
 	if(sd==NULL && flag==0){
 		int i;
 		for(i=0;i<MAX_PARTY;i++)
@@ -3910,7 +3907,8 @@ int clif_party_xy(struct party *p,struct map_session_data *sd)
 	WBUFW(buf,6)=sd->bl.x;
 	WBUFW(buf,8)=sd->bl.y;
 	clif_send(buf,packet_len_table[0x107],&sd->bl,PARTY_SAMEMAP_WOS);
-//	printf("clif_party_xy %d\n",sd->status.account_id);
+//	if(battle_config.etc_log)
+//		printf("clif_party_xy %d\n",sd->status.account_id);
 	return 0;
 }
 /*==========================================
@@ -3925,7 +3923,8 @@ int clif_party_hp(struct party *p,struct map_session_data *sd)
 	WBUFW(buf,6)=(sd->status.hp > 0x7fff)? 0x7fff:sd->status.hp;
 	WBUFW(buf,8)=(sd->status.max_hp > 0x7fff)? 0x7fff:sd->status.max_hp;
 	clif_send(buf,packet_len_table[0x106],&sd->bl,PARTY_AREA_WOS);
-//	printf("clif_party_hp %d\n",sd->status.account_id);
+//	if(battle_config.etc_log)
+//		printf("clif_party_hp %d\n",sd->status.account_id);
 	return 0;
 }
 /*==========================================
@@ -4772,13 +4771,15 @@ void clif_parse_WantToConnection(int fd,struct map_session_data *sd)
 	struct map_session_data *old_sd;
 
 	if(sd){
-		printf("clif_parse_WantToConnection : invalid request?\n");
+		if(battle_config.error_log)
+			printf("clif_parse_WantToConnection : invalid request?\n");
 		return;
 	}
 
 	sd=session[fd]->session_data=malloc(sizeof(*sd));
 	if(sd==NULL){
-		printf("out of memory : clif_parse_WantToConnection\n");
+		if(battle_config.error_log)
+			printf("out of memory : clif_parse_WantToConnection\n");
 		exit(1);
 	}
 	memset(sd,0,sizeof(*sd));
@@ -5031,7 +5032,8 @@ void clif_parse_GetCharNameRequest(int fd,struct map_session_data *sd)
 		WFIFOSET(fd,packet_len_table[0x95]);
 		break;
 	default:
-		printf("clif_parse_GetCharNameRequest : bad type %d(%d)\n",bl->type,RFIFOL(fd,2));
+		if(battle_config.error_log)
+			printf("clif_parse_GetCharNameRequest : bad type %d(%d)\n",bl->type,RFIFOL(fd,2));
 		break;
 	}
 }
@@ -6026,7 +6028,9 @@ void clif_parse_GuildReqeustInfo(int fd,struct map_session_data *sd)
 		clif_guild_explusionlist(sd);
 		break;
 	default:
-		printf("clif: guild request info: unknown type %d\n",RFIFOL(fd,2));
+		if(battle_config.error_log)
+			printf("clif: guild request info: unknown type %d\n",RFIFOL(fd,2));
+		break;
 	}
 }
 /*==========================================
@@ -6719,7 +6723,6 @@ static int clif_parse(int fd)
 		
 	}else if(clif_parse_func_table[cmd]){
 		// パケット処理
-		//printf("clif_parse : %d %d %x\n",fd,packet_len,cmd);
 		clif_parse_func_table[cmd](fd,sd);
 	} else {
 		// 不明なパケット

@@ -614,6 +614,30 @@ max_cart_weight
 	 カートの最大重量を設定します。
 	デフォルトは8000です。最大は1000000で最小は100です。
 
+player_skill_log
+	プレイヤーのスキル使用を表示するかどうかです。
+	デフォルトはnoです。
+
+monster_skill_log
+	モンスターのスキル使用を表示するかどうかです。
+	デフォルトはnoです。
+
+battle_log
+	戦闘関係の物を表示するかどうかです。
+	デフォルトはnoです。
+
+save_log
+	キャラの保存に関する物を表示するかどうか
+	デフォルトはnoです。
+
+error_log
+	エラーを表示するかどうかです。
+	デフォルトはyesです。
+
+etc_log
+	スキル、戦闘、キャラ保存、エラー以外の物を表示するかどうか
+	デフォルトはyesです。
+
 
 
 < 例 >
@@ -687,6 +711,12 @@ max_hp: 32500
 max_sp: 32500
 max_parameter: 99
 max_cart_weight: 8000
+player_skill_log: off
+monster_skill_log: off
+battle_log: off
+save_log: off
+error_log: on
+etc_log: on
 
 
 =====================================================================ghos6. atcommand_athena.conf

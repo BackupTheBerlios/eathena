@@ -175,6 +175,12 @@ extern struct Battle_Config {
 	int max_sp;
 	int max_parameter;
 	int max_cart_weight;
+	int pc_skill_log;
+	int mob_skill_log;
+	int battle_log;
+	int save_log;
+	int error_log;
+	int etc_log;
 	int item_rate_equip;	// Modified by RoVeRT
 	int item_rate_card;
 	int prevent_logout;	// End Modification

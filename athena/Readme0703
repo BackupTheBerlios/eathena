@@ -1,4 +1,34 @@
 --------------
+//0715 by 死神
+
+・マップサーバーから表示される物を表示するかどうかの設定ができるようにしました。スキル表示だけでもなくしてやるとサーバーがかなり楽になったりもします。
+開発やバグトレースの時は表示する床をお勧めします。
+・その他細かい修正。
+・修正した所を全て書けないのでファイルだけ。
+	(doc/)
+	conf_ref.txt
+	(conf/)
+	battle_athena.conf
+	(map/)
+	makefile
+	skill.c
+	script.c
+	pet.c
+	pc.c
+	path.c
+	party.c
+	npc.c
+	itemdb.c
+	intif.c
+	guild.c
+	chat.c
+	battle.c
+	chrif.c
+	atcommand.c
+	clif.c
+	mob.c
+
+--------------
 //0714 by 死神
 
 ・細かい修正。

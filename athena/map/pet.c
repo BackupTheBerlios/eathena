@@ -346,7 +346,8 @@ static int pet_timer(int tid,unsigned int tick,int id,int data)
 		return 1;
 
 	if(pd->timer != tid){
-		printf("pet_timer %d != %d\n",pd->timer,tid);
+		if(battle_config.error_log)
+			printf("pet_timer %d != %d\n",pd->timer,tid);
 		return 0;
 	}
 	pd->timer=-1;
@@ -365,7 +366,9 @@ static int pet_timer(int tid,unsigned int tick,int id,int data)
 			pet_changestate(pd,MS_IDLE,0);
 			break;
 		default:
-			printf("pet_timer : %d ?\n",pd->state.state);
+			if(battle_config.error_log)
+				printf("pet_timer : %d ?\n",pd->state.state);
+			break;
 	}
 
 	return 0;
@@ -382,7 +385,8 @@ static int pet_walktoxy_sub(struct pet_data *pd)
 	pd->state.change_walk_target=0;
 	pet_changestate(pd,MS_WALK,0);
 	clif_movepet(pd);
-//	printf("walkstart\n");
+//	if(battle_config.etc_log)
+//		printf("walkstart\n");
 
 	return 0;
 }
@@ -413,7 +417,7 @@ int pet_stop_walking(struct pet_data *pd,int type)
 		pd->to_x=pd->bl.x;
 		pd->to_y=pd->bl.y;
 		if(type&0x01)
-			clif_fixpos(&pd->bl);
+			clif_fixpetpos(pd);
 	}
 	if(type&~0xff)
 		pet_changestate(pd,MS_DELAY,type>>8);
@@ -433,7 +437,8 @@ static int pet_hungry(int tid,unsigned int tick,int id,int data)
 		return 1;
 
 	if(sd->pet_hungry_timer != tid){
-		printf("pet_hungry_timer %d != %d\n",sd->pet_hungry_timer,tid);
+		if(battle_config.error_log)
+			printf("pet_hungry_timer %d != %d\n",sd->pet_hungry_timer,tid);
 		return 0;
 	}
 	sd->pet_hungry_timer = -1;
@@ -596,7 +601,8 @@ int pet_data_init(struct map_session_data *sd)
 	sd->petDB = &pet_db[i];
 	sd->pd = pd = malloc(sizeof(struct pet_data));
 	if(pd==NULL){
-		printf("out of memory : pet_data_init\n");
+		if(battle_config.error_log)
+			printf("out of memory : pet_data_init\n");
 		return 1;
 	}
 
@@ -711,8 +717,10 @@ int pet_select_egg(struct map_session_data *sd,short egg_index)
 {
 	if(sd->status.inventory[egg_index].card[0] == (short)0xff00)
 		intif_request_petdata(sd->status.account_id,sd->status.char_id,*((long *)&sd->status.inventory[egg_index].card[1]));
-	else
-		printf("wrong egg item inventory %d\n",egg_index);
+	else {
+		if(battle_config.error_log)
+			printf("wrong egg item inventory %d\n",egg_index);
+	}
 	pc_delitem(sd,egg_index,1,0);
 
 	return 0;
@@ -740,18 +748,18 @@ int pet_catch_process2(struct map_session_data *sd,int target_id)
 	}
 
 	//target_id‚É‚æ‚é“G¨—‘”»’è
+//	if(battle_config.etc_log)
 //		printf("mob_id = %d, mob_class = %d\n",md->bl.id,md->class);
 		//¬Œ÷‚Ìê‡
 	pet_catch_rate = (pet_db[i].capture + (sd->status.base_level - mob_db[md->class].lv)*30 + sd->paramc[5]*20)*(200 - md->hp*100/mob_db[md->class].max_hp)/100;
 	if(pet_catch_rate < 1) pet_catch_rate = 1;
 	if(battle_config.pet_catch_rate != 100)
 		pet_catch_rate = (pet_catch_rate*battle_config.pet_catch_rate)/100;
-// debug code
-//		printf("catch percent = %.2f\n",(double)pet_catch_rate/100.);
 
 	if(rand()%10000 < pet_catch_rate) {
 		mob_catch_delete(md);
 		clif_pet_rulet(sd,1);
+//		if(battle_config.etc_log)
 //			printf("rulet success %d\n",target_id);
 		intif_create_pet(sd->status.account_id,sd->status.char_id,pet_db[i].class,mob_db[pet_db[i].class].lv,
 			pet_db[i].EggID,0,pet_db[i].intimate,100,0,1,pet_db[i].jname);
@@ -952,7 +960,8 @@ static int pet_randomwalk(struct pet_data *pd,int tick)
 			if(i+1>=retrycount){
 				pd->move_fail_count++;
 				if(pd->move_fail_count>1000){
-					printf("PET cant move. hold position %d, class = %d\n",pd->bl.id,pd->class);
+					if(battle_config.error_log)
+						printf("PET cant move. hold position %d, class = %d\n",pd->bl.id,pd->class);
 					pd->move_fail_count=0;
 					pet_changestate(pd,MS_DELAY,60000);
 					return 0;

@@ -1,9 +1,10 @@
-// $Id: path.c,v 1.3 2004/01/18 02:33:11 rovert Exp $
+// $Id: path.c,v 1.4 2004/01/18 15:43:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "map.h"
+#include "battle.h"
 
 #ifdef MEMWATCH
 #include "memwatch.h"
@@ -45,7 +46,8 @@ static inline void update_heap_path(int *heap,struct tmp_path *tp,int index)
 		if(heap[h+1]==index)
 			break;
 	if(h==heap[0]){
-		fprintf(stderr,"update_heap_path bug\n");
+		if(battle_config.error_log)
+			fprintf(stderr,"update_heap_path bug\n");
 		exit(1);
 	}
 	for(i=(h-1)/2;
@@ -191,11 +193,13 @@ int path_blownpos(int m,int x0,int y0,int dx,int dy,int count)
 	md=&map[m];
 
 	if(count>15){	// Å‘å10ƒ}ƒX‚É§ŒÀ
-		printf("path_blownpos: count too many %d !\n",count);
+		if(battle_config.error_log)
+			printf("path_blownpos: count too many %d !\n",count);
 		count=15;
 	}
 	if(dx>1 || dx<-1 || dy>1 || dy<-1){
-		printf("path_blownpos: illeagal dx=%d or dy=%d !\n",dx,dy);
+		if(battle_config.error_log)
+			printf("path_blownpos: illeagal dx=%d or dy=%d !\n",dx,dy);
 		dx=(dx>=0)?1:((dx<0)?-1:0);
 		dy=(dy>=0)?1:((dy<0)?-1:0);
 	}

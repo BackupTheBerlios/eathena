@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.9 2004/01/18 02:33:11 rovert Exp $
+// $Id: mob.c,v 1.10 2004/01/18 15:43:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -113,7 +113,8 @@ int mob_once_spawn(struct map_session_data *sd,char *mapname,
 		}else{
 			return 0;
 		}
-//		printf("mobclass=%d try=%d\n",class,i);
+//		if(battle_config.etc_log)
+//			printf("mobclass=%d try=%d\n",class,i);
 	}
 	if(x<=0) x=sd->bl.x;
 	if(y<=0) y=sd->bl.y;
@@ -121,13 +122,15 @@ int mob_once_spawn(struct map_session_data *sd,char *mapname,
 	for(count=0;count<amount;count++){
 		md=malloc(sizeof(struct mob_data));
 		if(md==NULL){
-			printf("mob_once_spawn: out of memory !\n");
+			if(battle_config.error_log)
+				printf("mob_once_spawn: out of memory !\n");
 			return 0;
 		}
 		if(mob_db[class].mode&0x02) {
 			md->lootitem=malloc(sizeof(struct item)*LOOTITEM_SIZE);
 			if(md->lootitem==NULL){
-				printf("mob_once_spawn: out of memory !\n");
+				if(battle_config.error_log)
+					printf("mob_once_spawn: out of memory !\n");
 			}
 		}
 		else
@@ -485,7 +488,8 @@ static int mob_timer(int tid,unsigned int tick,int id,int data)
 		return 1;
 
 	if(md->timer != tid){
-		printf("mob_timer %d != %d\n",md->timer,tid);
+		if(battle_config.error_log)
+			printf("mob_timer %d != %d\n",md->timer,tid);
 		return 0;
 	}
 	md->timer=-1;
@@ -503,7 +507,9 @@ static int mob_timer(int tid,unsigned int tick,int id,int data)
 		mob_changestate(md,MS_IDLE,0);
 		break;
 	default:
-		printf("mob_timer : %d ?\n",md->state.state);
+		if(battle_config.error_log)
+			printf("mob_timer : %d ?\n",md->state.state);
+		break;
 	}
 
 	return 0;
@@ -524,8 +530,6 @@ static int mob_walktoxy_sub(struct mob_data *md)
 	md->state.change_walk_target=0;
 	mob_changestate(md,MS_WALK,0);
 	clif_movemob(md);
-
-//	printf("walkstart\n");
 
 	return 0;
 }
@@ -637,7 +641,8 @@ int mob_spawn(int id)
 	} while(((c=map_getcell(md->bl.m,x,y))==1 || c==5) && i<50);
 
 	if(i>=50){
-//		printf("MOB spawn error %d @ %s\n",id,map[md->bl.m].name);
+//		if(battle_config.error_log)
+//			printf("MOB spawn error %d @ %s\n",id,map[md->bl.m].name);
 		add_timer(tick+5000,mob_delayspawn,id,0);
 		return 1;
 	}
@@ -730,13 +735,12 @@ int mob_stopattack(struct mob_data *md)
 int mob_stop_walking(struct mob_data *md,int type)
 {
 	if(md->state.state == MS_WALK) {
-//	printf("stop walking\n");
 		md->walkpath.path_len=0;
 		md->to_x=md->bl.x;
 		md->to_y=md->bl.y;
 		mob_changestate(md,MS_IDLE,0);
 		if(type&0x01)
-			clif_fixpos(&md->bl);
+			clif_fixmobpos(md);
 	}
 	if(type&0x02) {
 		int delay=mob_db[md->class].dmotion;
@@ -1074,7 +1078,8 @@ static int mob_randomwalk(struct mob_data *md,int tick)
 			if(i+1>=retrycount){
 				md->move_fail_count++;
 				if(md->move_fail_count>1000){
-					printf("MOB cant move. random spawn %d, class = %d\n",md->bl.id,md->class);
+					if(battle_config.error_log)
+						printf("MOB cant move. random spawn %d, class = %d\n",md->bl.id,md->class);
 					md->move_fail_count=0;
 					mob_spawn(md->bl.id);
 				}
@@ -1585,9 +1590,11 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 		mvp_sd = sd;
 	}
 
-//	printf("mob_damage %d %d %d\n",md->hp,mob_db[md->class].max_hp,damage);
+//	if(battle_config.battle_log)
+//		printf("mob_damage %d %d %d\n",md->hp,mob_db[md->class].max_hp,damage);
 	if(md->bl.prev==NULL){
-		printf("mob_damage : BlockError!!\n");return 0;
+		if(battle_config.error_log)
+			printf("mob_damage : BlockError!!\n");return 0;
 	}
 
 	if(md->state.state==MS_DEAD || md->hp<=0) {
@@ -1655,11 +1662,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 	}
 
 	md->hp-=damage;
-	//printf("%d : %d/%d\n",md->bl.id,md->hp,mob_db[md->class].max_hp);
-
 
 	if(md->hp>0){
-
 		return 0;
 	}
 
@@ -1749,7 +1753,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 		ditem=malloc(sizeof(*ditem));
 		if(ditem==NULL){
-			printf("out of memory : mob_damage\n");
+			if(battle_config.error_log)
+				printf("out of memory : mob_damage\n");
 			exit(1);
 		}
 
@@ -1774,7 +1779,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 				ditem=malloc(sizeof(*ditem));
 				if(ditem==NULL){
-					printf("out of memory : mob_damage\n");
+					if(battle_config.error_log)
+						printf("out of memory : mob_damage\n");
 					exit(1);
 				}
 
@@ -1795,7 +1801,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 			ditem=malloc(sizeof(*ditem));
 			if(ditem==NULL){
-				printf("out of memory : mob_damage\n");
+				if(battle_config.error_log)
+					printf("out of memory : mob_damage\n");
 				exit(1);
 			}
 			memcpy(&ditem->item_data,&md->lootitem[i],sizeof(md->lootitem[0]));
@@ -1841,7 +1848,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 	}
 
 	if(md->npc_event[0]){	// SCRIPTŽÀs
-//		printf("mob_damage : run event : %s\n",md->npc_event);
+//		if(battle_config.battle_log)
+//			printf("mob_damage : run event : %s\n",md->npc_event);
 		npc_event(sd,md->npc_event,1);
 	}
 
@@ -1904,8 +1912,10 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	if(i<1000){
 		md->bl.x=x;
 		md->bl.y=y;
-	}else
-		printf("MOB %d warp failed, class = %d\n",md->bl.id,md->class);
+	}else {
+		if(battle_config.error_log)
+			printf("MOB %d warp failed, class = %d\n",md->bl.id,md->class);
+	}
 
 	md->target_id=0;	// ƒ^ƒQ‚ð‰ðœ‚·‚é
 	md->state.targettype=NONE_ATTACKABLE;
@@ -1913,8 +1923,10 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	md->state.state=MS_IDLE;
 	md->state.skillstate=MSS_IDLE;
 
-	if(type>0 && i==1000)
-		printf("MOB %d warp to (%d,%d), class = %d\n",md->bl.id,x,y,md->class);
+	if(type>0 && i==1000) {
+		if(battle_config.battle_log)
+			printf("MOB %d warp to (%d,%d), class = %d\n",md->bl.id,x,y,md->class);
+	}
 
 	map_addblock(&md->bl);
 	if(type>0)
@@ -1964,13 +1976,15 @@ int mob_summonslave(struct mob_data *md2,int class,int amount,int flag)
 		int x=0,y=0,c=0,i=0;
 		md=malloc(sizeof(struct mob_data));
 		if(md==NULL){
-			printf("mob_once_spawn: out of memory !\n");
+			if(battle_config.error_log)
+				printf("mob_once_spawn: out of memory !\n");
 			return 0;
 		}
 		if(mob_db[class].mode&0x02) {
 			md->lootitem=malloc(sizeof(struct item)*LOOTITEM_SIZE);
 			if(md->lootitem==NULL){
-				printf("mob_once_spawn: out of memory !\n");
+				if(battle_config.error_log)
+					printf("mob_once_spawn: out of memory !\n");
 			}
 		}
 		else
@@ -2063,7 +2077,8 @@ int mobskill_castend_id( int tid, unsigned int tick, int id,int data )
 		return 0;
 	md->skilldelay[md->skillidx]=tick;
 
-	printf("MOB skill castend skill=%d, class = %d\n",md->skillid,md->class);
+	if(battle_config.mob_skill_log)
+		printf("MOB skill castend skill=%d, class = %d\n",md->skillid,md->class);
 
 	switch( skill_get_nk(md->skillid) )
 	{
@@ -2102,7 +2117,8 @@ int mobskill_castend_pos( int tid, unsigned int tick, int id,int data )
 		return 0;
 	md->skilldelay[md->skillidx]=tick;
 
-	printf("MOB skill castend skill=%d, class = %d\n",md->skillid,md->class);
+	if(battle_config.mob_skill_log)
+		printf("MOB skill castend skill=%d, class = %d\n",md->skillid,md->class);
 
 	skill_castend_pos2(&md->bl,md->skillx,md->skilly,md->skillid,md->skilllv,tick,0);
 
@@ -2142,8 +2158,8 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 	md->state.skillcastcancel=ms->cancel;
 	md->skilldelay[skill_idx]=gettick();
 
-	printf("MOB skill use target_id=%d skill=%d lv=%d cast=%d, class = %d\n"
-		,target->id,skill_id,skill_lv,casttime,md->class);
+	if(battle_config.mob_skill_log)
+		printf("MOB skill use target_id=%d skill=%d lv=%d cast=%d, class = %d\n",target->id,skill_id,skill_lv,casttime,md->class);
 
 	if( casttime>0 ){ 	// ‰r¥‚ª•K—v
 		struct mob_data *md2;
@@ -2208,8 +2224,9 @@ int mobskill_use_pos( struct mob_data *md,
 	md->skilldelay[skill_idx]=gettick();
 	md->state.skillcastcancel=ms->cancel;
 
-	printf("MOB skill use target_pos=(%d,%d) skill=%d lv=%d cast=%d, class = %d\n",
-		skill_x,skill_y,skill_num,skill_lv,casttime,md->class);
+	if(battle_config.mob_skill_log)
+		printf("MOB skill use target_pos=(%d,%d) skill=%d lv=%d cast=%d, class = %d\n",
+			skill_x,skill_y,skill_num,skill_lv,casttime,md->class);
 
 	if( casttime>0 )	// ‰r¥‚ª•K—v
 		clif_skillcasting( &md->bl,

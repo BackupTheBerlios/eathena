@@ -99,7 +99,8 @@ static int pc_ghost_timer(int tid,unsigned int tick,int id,int data)
 		return 1;
 
 	if(sd->ghost_timer != tid){
-		printf("ghost_timer %d != %d\n",sd->ghost_timer,tid);
+		if(battle_config.error_log)
+			printf("ghost_timer %d != %d\n",sd->ghost_timer,tid);
 		return 0;
 	}
 	sd->ghost_timer=-1;
@@ -136,7 +137,8 @@ static int pc_spiritball_timer(int tid,unsigned int tick,int id,int data)
 		return 1;
 
 	if(sd->spirit_timer[0] != tid){
-		printf("spirit_timer %d != %d\n",sd->spirit_timer[0],tid);
+		if(battle_config.error_log)
+			printf("spirit_timer %d != %d\n",sd->spirit_timer[0],tid);
 		return 0;
 	}
 	sd->spirit_timer[0]=-1;
@@ -663,7 +665,8 @@ int pc_calc_skilltree(struct map_session_data *sd)
 			}
 		}while(flag);
 	}
-//	printf("calc skill_tree\n");
+//	if(battle_config.etc_log)
+//		printf("calc skill_tree\n");
 	return 0;
 }
 
@@ -1724,7 +1727,8 @@ int pc_bonus(struct map_session_data *sd,int type,int val)
 			sd->special_state.infinite_endure = 1;
 		break;
 	default:
-		printf("pc_bonus: unknown type %d %d !\n",type,val);
+		if(battle_config.error_log)
+			printf("pc_bonus: unknown type %d %d !\n",type,val);
 		break;
 	}
 
@@ -1867,7 +1871,8 @@ int pc_bonus2(struct map_session_data *sd,int type,int type2,int val)
 		}
 		break;
 	default:
-		printf("pc_bonus2: unknown type %d %d %d!\n",type,type2,val);
+		if(battle_config.error_log)
+			printf("pc_bonus2: unknown type %d %d %d!\n",type,type2,val);
 		break;
 	}
 
@@ -1897,7 +1902,8 @@ int pc_bonus3(struct map_session_data *sd,int type,int type2,int type3,int val)
 		}
 		break;
 	default:
-		printf("pc_bonus3: unknown type %d %d %d %d!\n",type,type2,type3,val);
+		if(battle_config.error_log)
+			printf("pc_bonus3: unknown type %d %d %d %d!\n",type,type2,type3,val);
 		break;
 	}
 
@@ -1911,7 +1917,8 @@ int pc_bonus3(struct map_session_data *sd,int type,int type2,int type3,int val)
 int pc_skill(struct map_session_data *sd,int id,int level,int flag)
 {
 	if(level>10){
-		printf("support card skill only!\n");
+		if(battle_config.error_log)
+			printf("support card skill only!\n");
 		return 0;
 	}
 	if(!flag && sd->status.skill[id].id == id){	// クエスト所得ならここで条件を確認して送信する
@@ -2530,7 +2537,10 @@ int pc_setpos(struct map_session_data *sd,char *mapname_org,int x,int y,int clrt
 	if(x <0 || x >= map[m].xs || y <0 || y >= map[m].ys)
 		x=y=0;
 	if((x==0 && y==0) || (c=read_gat(m,x,y))==1 || c==5){
-		if(x||y) printf("stacked (%d,%d)\n",x,y);
+		if(x||y) {
+			if(battle_config.error_log)
+				printf("stacked (%d,%d)\n",x,y);
+		}
 		do {
 			x=rand()%(map[m].xs-2)+1;
 			y=rand()%(map[m].ys-2)+1;
@@ -2540,7 +2550,6 @@ int pc_setpos(struct map_session_data *sd,char *mapname_org,int x,int y,int clrt
 	if(sd->mapname[0] && sd->bl.prev != NULL){
 		skill_unit_out_all(&sd->bl,gettick(),1);
 		clif_clearchar_area(&sd->bl,clrtype&0xffff);
-		// printf("pc.c 63 clif_clearchar_area\n");
 		map_delblock(&sd->bl);
 		// pet
 		if(sd->status.pet_id > 0 && sd->pd) {
@@ -2699,7 +2708,8 @@ static int pc_walk(int tid,unsigned int tick,int id,int data)
 		return 0;
 
 	if(sd->walktimer != tid){
-		printf("pc_walk %d != %d\n",sd->walktimer,tid);
+		if(battle_config.error_log)
+			printf("pc_walk %d != %d\n",sd->walktimer,tid);
 		return 0;
 	}
 	sd->walktimer=-1;
@@ -2989,7 +2999,7 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 	struct map_session_data *sd;
 	struct block_list *bl;
 //	struct WeaponDamage wd;
-	int dist,skill;
+	int dist,skill,range;
 
 	sd=map_id2sd(id);
 	if(sd == NULL)
@@ -3011,7 +3021,10 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 	if( sd->opt1>0 || sd->status.option&6)	// 異常などで攻撃できない
 		return 0;
 
-	if(!battle_config.sdelay_attack_enable && (sd->skilltimer == -1 || pc_checkskill(sd,SA_FREECAST) <= 0) ) {
+	if(sd->skilltimer != -1 && pc_checkskill(sd,SA_FREECAST) <= 0)
+		return 0;
+
+	if(!battle_config.sdelay_attack_enable) {
 		if(DIFF_TICK(tick , sd->canact_tick) < 0) {
 			clif_skill_fail(sd,1,4,0);
 			return 0;
@@ -3019,29 +3032,39 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 	}
 
 	dist = distance(sd->bl.x,sd->bl.y,bl->x,bl->y);
-	if( dist > sd->attackrange+1 ){	// 届 かないので移動
+	range = sd->attackrange;
+	if(sd->status.weapon != 11) range++;
+	if( dist > range ){	// 届 かないので移動
 		clif_movetoattack(sd,bl);
 		return 0;
 	}
 
-	sd->dir=sd->head_dir=map_calc_dir(&sd->bl, bl->x,bl->y );	// 向き設定
-
-	if(sd->sc_data[SC_COMBO].timer == -1) {
-		map_freeblock_lock();
-		battle_weapon_attack(&sd->bl,bl,tick,0);
-		if(sd->status.pet_id > 0 && sd->pd && sd->petDB)
-			pet_target_check(sd,bl,0);
-		map_freeblock_unlock();
-		if(sd->skilltimer != -1 && (skill = pc_checkskill(sd,SA_FREECAST)) > 0 ) // フリーキャスト
-			sd->attackabletime = tick + ((sd->aspd<<1)*(150 - skill*5)/100);
-		else
-			sd->attackabletime = tick + (sd->aspd<<1);
+	if(dist <= range && !battle_check_range(&sd->bl,bl->x,bl->y,range) ) {
+		if(pc_can_reach(sd,bl->x,bl->y) )
+			pc_walktoxy(sd,bl->x,bl->y);
+		sd->attackabletime = tick + (sd->aspd<<1);
 	}
-	else if(sd->attackabletime <= tick) {
-		if(sd->skilltimer != -1 && (skill = pc_checkskill(sd,SA_FREECAST)) > 0 ) // フリーキャスト
-			sd->attackabletime = tick + ((sd->aspd<<1)*(150 - skill*5)/100);
-		else
-			sd->attackabletime = tick + (sd->aspd<<1);
+	else {
+		sd->dir=sd->head_dir=map_calc_dir(&sd->bl, bl->x,bl->y );	// 向き設定
+
+		if(sd->sc_data[SC_COMBO].timer == -1) {
+			map_freeblock_lock();
+			pc_stop_walking(sd,0);
+			battle_weapon_attack(&sd->bl,bl,tick,0);
+			if(sd->status.pet_id > 0 && sd->pd && sd->petDB)
+				pet_target_check(sd,bl,0);
+			map_freeblock_unlock();
+			if(sd->skilltimer != -1 && (skill = pc_checkskill(sd,SA_FREECAST)) > 0 ) // フリーキャスト
+				sd->attackabletime = tick + ((sd->aspd<<1)*(150 - skill*5)/100);
+			else
+				sd->attackabletime = tick + (sd->aspd<<1);
+		}
+		else if(sd->attackabletime <= tick) {
+			if(sd->skilltimer != -1 && (skill = pc_checkskill(sd,SA_FREECAST)) > 0 ) // フリーキャスト
+				sd->attackabletime = tick + ((sd->aspd<<1)*(150 - skill*5)/100);
+			else
+				sd->attackabletime = tick + (sd->aspd<<1);
+		}
 	}
 
 	if(sd->state.attack_continue) {
@@ -3163,7 +3186,6 @@ int pc_gainexp(struct map_session_data *sd,int base_exp,int job_exp)
 	sd->status.base_exp += base_exp;
 	if(sd->status.base_exp < 0)
 		sd->status.base_exp = 0;
-	//printf("base %d/%d ",sd->status.base_exp,pc_nextbaseexp(sd));
 	while(pc_checkbaselevelup(sd)) ;
 
 	clif_updatestatus(sd,SP_BASEEXP);
@@ -3171,7 +3193,6 @@ int pc_gainexp(struct map_session_data *sd,int base_exp,int job_exp)
 	sd->status.job_exp += job_exp;
 	if(sd->status.job_exp < 0)
 		sd->status.job_exp = 0;
-	//printf("job %d/%d\n",sd->status.job_exp,pc_nextjobexp(sd));
 	while(pc_checkjoblevelup(sd)) ;
 
 	clif_updatestatus(sd,SP_JOBEXP);
@@ -3686,7 +3707,8 @@ int pc_setparam(struct map_session_data *sd,int type,int val)
  */
 int pc_heal(struct map_session_data *sd,int hp,int sp)
 {
-//	printf("heal %d %d\n",hp,sp);
+//	if(battle_config.battle_log)
+//		printf("heal %d %d\n",hp,sp);
 	if(pc_checkoverhp(sd)) {
 		if(hp > 0)
 			hp = 0;
@@ -3724,7 +3746,8 @@ int pc_heal(struct map_session_data *sd,int hp,int sp)
 int pc_itemheal(struct map_session_data *sd,int hp,int sp)
 {
 	int bonus;
-//	printf("heal %d %d\n",hp,sp);
+//	if(battle_config.battle_log)
+//		printf("heal %d %d\n",hp,sp);
 	if(pc_checkoverhp(sd)) {
 		if(hp > 0)
 			hp = 0;
@@ -4020,7 +4043,8 @@ int pc_setreg(struct map_session_data *sd,int reg,int val)
 	sd->reg_num++;
 	sd->reg=realloc(sd->reg,sizeof(sd->reg[0])*sd->reg_num);
 	if(sd->reg==NULL){
-		printf("out of memory : pc_setreg\n");
+		if(battle_config.error_log)
+			printf("out of memory : pc_setreg\n");
 		exit(1);
 	}
 	sd->reg[i].index=reg;
@@ -4077,7 +4101,8 @@ int pc_setglobalreg(struct map_session_data *sd,char *reg,int val)
 		sd->status.global_reg_num++;
 		return 0;
 	}
-	printf("pc_setglobalreg : couldn't set %s (GLOBAL_REG_NUM = %d)\n", reg, GLOBAL_REG_NUM);
+	if(battle_config.error_log)
+		printf("pc_setglobalreg : couldn't set %s (GLOBAL_REG_NUM = %d)\n", reg, GLOBAL_REG_NUM);
 
 	return 1;
 }
@@ -4116,8 +4141,10 @@ int pc_eventtimer(int tid,unsigned int tick,int id,int data)
 		}
 	}
 	free((void *)data);
-	if(i==MAX_EVENTTIMER)
-		printf("pc_eventtimer: no such event timer\n");
+	if(i==MAX_EVENTTIMER) {
+		if(battle_config.error_log)
+			printf("pc_eventtimer: no such event timer\n");
+	}
 
 	return 0;
 }
@@ -4136,13 +4163,17 @@ int pc_addeventtimer(struct map_session_data *sd,int tick,const char *name)
 	if(i<MAX_EVENTTIMER){
 		char *evname=malloc(24);
 		if(evname==NULL){
-			printf("pc_addeventtimer: out of memory !\n");exit(1);
+			if(battle_config.error_log)
+				printf("pc_addeventtimer: out of memory !\n");
+			exit(1);
 		}
 		memcpy(evname,name,24);
 		sd->eventtimer[i]=add_timer(gettick()+tick,
 			pc_eventtimer,sd->bl.id,(int)evname);
-	}else
-		printf("pc_addtimer: event timer is full !\n");
+	}else {
+		if(battle_config.error_log)
+			printf("pc_addtimer: event timer is full !\n");
+	}
 
 	return 0;
 }
@@ -4214,7 +4245,8 @@ int pc_equipitem(struct map_session_data *sd,int n,int pos)
 	struct item_data *id;
 	nameid=sd->status.inventory[n].nameid;
 	id=sd->inventory_data[n];
-	printf("equip %d(%d) %x:%x\n",nameid,n,id->equip,pos);
+	if(battle_config.battle_log)
+		printf("equip %d(%d) %x:%x\n",nameid,n,id->equip,pos);
 	if(!pc_isequip(sd,n)) {
 		clif_equipitemack(sd,n,0,0);	// fail
 		return 0;
@@ -4339,7 +4371,8 @@ int pc_equipitem(struct map_session_data *sd,int n,int pos)
  */
 int pc_unequipitem(struct map_session_data *sd,int n,int type)
 {
-	printf("unequip %d %x:%x\n",n,pc_equippoint(sd,n),sd->status.inventory[n].equip);
+	if(battle_config.battle_log)
+		printf("unequip %d %x:%x\n",n,pc_equippoint(sd,n),sd->status.inventory[n].equip);
 	if(sd->status.inventory[n].equip){
 		int i;
 		for(i=0;i<11;i++) {
@@ -4405,8 +4438,8 @@ int pc_checkitem(struct map_session_data *sd)
 		if( (id=sd->status.inventory[i].nameid)==0)
 			continue;
 		if( battle_config.item_check && !itemdb_available(id) ){
-			printf("illeagal item id %d in %d[%s] inventory.\n",
-				id,sd->bl.id,sd->status.name);
+			if(battle_config.error_log)
+				printf("illeagal item id %d in %d[%s] inventory.\n",id,sd->bl.id,sd->status.name);
 			pc_delitem(sd,i,sd->status.inventory[i].amount,3);
 			continue;
 		}
@@ -4426,8 +4459,8 @@ int pc_checkitem(struct map_session_data *sd)
 		if( (id=sd->status.cart[i].nameid)==0 )
 			continue;
 		if( battle_config.item_check &&  !itemdb_available(id) ){
-			printf("illeagal item id %d in %d[%s] cart.\n",
-				id,sd->bl.id,sd->status.name);
+			if(battle_config.error_log)
+				printf("illeagal item id %d in %d[%s] cart.\n",id,sd->bl.id,sd->status.name);
 			pc_cart_delitem(sd,i,sd->status.cart[i].amount,1);
 			continue;
 		}
@@ -4826,7 +4859,8 @@ static int last_save_fd,save_flag;
 static int pc_autosave_sub(struct map_session_data *sd,va_list ap)
 {
 	if(save_flag==0 && sd->fd>last_save_fd){
-		//printf("autosave %d\n",sd->fd);
+//		if(battle_config.save_log)
+//			printf("autosave %d\n",sd->fd);
 		// pet
 		if(sd->status.pet_id > 0 && sd->pd)
 			intif_save_petdata(sd->status.account_id,&sd->pet);
@@ -4893,7 +4927,7 @@ int pc_read_gm_account()
 		c++;
 	}
 	fclose(fp);
-//	printf("gm_account: %s read done (%d gm account ID)\n",gm_account_txt,c);
+	printf("gm_account: %s read done (%d gm account ID)\n",GM_account_filename,c);
 
 	return 0;
 }
@@ -5071,9 +5105,7 @@ int pc_readdb(void)
 					attr_fix_table[lv-1][i][j] = 0;
 				p=strchr(p,',');
 				if(p) *p++=0;
-//				printf("%4d ",attr_fix_table[lv-1][i][j]);
 			}
-//			printf("\n");
 
 			i++;
 		}

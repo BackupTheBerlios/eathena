@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.4 2004/01/11 15:08:46 rovert Exp $
+// $Id: npc.c,v 1.5 2004/01/18 15:43:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -73,7 +73,8 @@ int npc_event_dequeue(struct map_session_data *sd)
 		char *name=malloc(50);
 		int i;
 		if(name==NULL){
-			printf("run_script: out of memory !\n");exit(1);
+			if(battle_config.error_log)
+				printf("run_script: out of memory !\n");exit(1);
 		}
 		memcpy(name,sd->eventqueue[0],50);
 		for(i=MAX_EVENTQUEUE-2;i>=0;i--)
@@ -176,9 +177,11 @@ int npc_event_export(void *key,void *data,va_list ap)
 		ev=malloc(sizeof(struct event_data));
 		buf=malloc(50);
 		if(ev==NULL || buf==NULL){
-			printf("npc_event_export: out of memory !\n");
+			if(battle_config.error_log)
+				printf("npc_event_export: out of memory !\n");
 		}else if(p==NULL || (p-lname)>24){
-			printf("npc_event_export: label name error !\n");
+			if(battle_config.error_log)
+				printf("npc_event_export: label name error !\n");
 		}else{
 			ev->nd=nd;
 			ev->pos=pos;
@@ -186,7 +189,8 @@ int npc_event_export(void *key,void *data,va_list ap)
 			sprintf(buf,"%s::%s",nd->exname,lname);
 			*p=':';
 			strdb_insert(ev_db,buf,ev);
-//			printf("npc_event_export: export [%s]\n",buf);
+//			if(battle_config.etc_log)
+//				printf("npc_event_export: export [%s]\n",buf);
 		}
 	}
 	return 0;
@@ -321,7 +325,8 @@ int npc_event(struct map_session_data *sd,const char *eventname,int mob_kill)
 			}
 		}
 		else {
-			printf("npc_event: event not found [%s]\n",eventname);
+			if(battle_config.error_log)
+				printf("npc_event: event not found [%s]\n",eventname);
 			return 0;
 		}
 	}
@@ -338,15 +343,18 @@ int npc_event(struct map_session_data *sd,const char *eventname,int mob_kill)
 	}
 
 	if( sd->npc_id!=0){
-		//printf("npc_event: npc_id != 0\n");
+//		if(battle_config.error_log)
+//			printf("npc_event: npc_id != 0\n");
 		int i;
 		for(i=0;i<MAX_EVENTQUEUE;i++)
 			if(!sd->eventqueue[i][0])
 				break;
 		if(i==MAX_EVENTQUEUE){
-			printf("npc_event: event queue is full !\n");
+			if(battle_config.error_log)
+				printf("npc_event: event queue is full !\n");
 		}else{
-//			printf("npc_event: enqueue\n");
+//			if(battle_config.etc_log)
+//				printf("npc_event: enqueue\n");
 			memcpy(sd->eventqueue[i],eventname,50);
 		}
 		return 1;
@@ -418,8 +426,10 @@ int npc_touch_areanpc(struct map_session_data *sd,int m,int x,int y)
 			break;
 	}
 	if(i==map[m].npc_num){
-		if(f)
-			printf("npc_touch_areanpc : some bug \n");
+		if(f) {
+			if(battle_config.error_log)
+				printf("npc_touch_areanpc : some bug \n");
+		}
 		return 1;
 	}
 	f=0;
@@ -452,7 +462,8 @@ int npc_checknear(struct map_session_data *sd,int id)
 
 	nd=(struct npc_data *)map_id2bl(id);
 	if(nd==NULL || nd->bl.type!=BL_NPC){
-		printf("no such npc : %d\n",id);
+		if(battle_config.error_log)
+			printf("no such npc : %d\n",id);
 		return 1;
 	}
 	
@@ -477,7 +488,8 @@ int npc_click(struct map_session_data *sd,int id)
 	struct npc_data *nd;
 
 	if(sd->npc_id != 0){
-		printf("npc_click: npc_id != 0\n");
+		if(battle_config.error_log)
+			printf("npc_click: npc_id != 0\n");
 		return 1;
 	}
 
@@ -536,7 +548,8 @@ int npc_buysellsel(struct map_session_data *sd,int id,int type)
 
 	nd=(struct npc_data *)map_id2bl(id);
 	if(nd->bl.subtype!=SHOP){
-		printf("no such shop npc : %d\n",id);
+		if(battle_config.error_log)
+			printf("no such shop npc : %d\n",id);
 		sd->npc_id=0;
 		return 1;
 	}
@@ -575,6 +588,7 @@ int npc_buylist(struct map_session_data *sd,int n,unsigned short *item_list)
 		}
 		if(nd->u.shop_item[j].nameid==0)
 			return 3;
+
 		if (itemdb_value_notdc(nd->u.shop_item[j].nameid))
 			z+=nd->u.shop_item[j].value * item_list[i*2];
 		else
@@ -697,7 +711,8 @@ void npc_addsrcfile(char *name)
 
 	new=malloc(sizeof(*new)+strlen(name));
 	if(new==NULL){
-		printf("out of memory : npc_addsrcfile\n");
+		if(battle_config.error_log)
+			printf("out of memory : npc_addsrcfile\n");
 		exit(1);
 	}
 	new->next = NULL;
@@ -771,7 +786,7 @@ static int npc_parse_warp(char *w1,char *w2,char *w3,char *w4)
 		}
 	}
 
-	//printf("warp npc %s %d read done\n",mapname,nd->bl.id);
+//	printf("warp npc %s %d read done\n",mapname,nd->bl.id);
 	npc_warp++;
 	nd->bl.type=BL_NPC;
 	nd->bl.subtype=WARP;
@@ -1013,7 +1028,7 @@ static int npc_parse_script(char *w1,char *w2,char *w3,char *w4,char *first_line
 	// イベント用ラベルデータのエクスポート
 	label_db=script_get_label_db();
 	strdb_foreach(label_db,npc_event_export,nd);
-	
+
 	return 0;
 }
 
@@ -1230,8 +1245,6 @@ int do_init_npc(void)
 		   npc_id-START_NPC_NUM,npc_warp,npc_shop,npc_script,npc_mob);
 
 	add_timer_func_list(npc_event_timer,"npc_event_timer");
-//	add_timer_func_list(npc_timer,"npc_timer");
-//	add_timer_interval(gettick()+100,npc_timer,0,0,100);
 
 	//exit(1);
 

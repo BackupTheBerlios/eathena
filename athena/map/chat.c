@@ -1,10 +1,11 @@
-// $Id: chat.c,v 1.2 2004/01/09 03:00:18 rovert Exp $
+// $Id: chat.c,v 1.3 2004/01/18 15:43:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "db.h"
 #include "map.h"
+#include "battle.h"
 #include "clif.h"
 #include "pc.h"
 #include "chat.h"
@@ -24,7 +25,8 @@ int chat_createchat(struct map_session_data *sd,int limit,int pub,char* pass,cha
 
 	cd = malloc(sizeof(*cd));
 	if(cd==NULL){
-		printf("out of memory : chat_createchat\n");
+		if(battle_config.error_log)
+			printf("out of memory : chat_createchat\n");
 		exit(1);
 	}
 	memset(cd,0,sizeof(*cd));
@@ -256,7 +258,8 @@ int chat_createcnpchat(struct npc_data *nd,int limit,int trigger,char* title,int
 
 	cd = malloc(sizeof(*cd));
 	if(cd==NULL){
-		printf("out of memory : chat_createchat\n");
+		if(battle_config.error_log)
+			printf("out of memory : chat_createchat\n");
 		exit(1);
 	}
 	memset(cd,0,sizeof(*cd));

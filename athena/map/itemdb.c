@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.5 2004/01/15 23:11:42 rovert Exp $
+// $Id: itemdb.c,v 1.6 2004/01/18 15:43:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,7 +88,6 @@ int itemdb_searchrandomid(int flags)
 			}
 		}
 	}
-//	printf("get %d\n",nameid);
 	return nameid;
 }
 
@@ -113,7 +112,8 @@ struct item_data* itemdb_search(int nameid)
 
 	id=malloc(sizeof(struct item_data));
 	if(id==NULL){
-		printf("out of memory : itemdb_search\n");
+		if(battle_config.error_log)
+			printf("out of memory : itemdb_search\n");
 		exit(1);
 	}
 	memset(id,0,sizeof(struct item_data));
@@ -278,7 +278,6 @@ static int itemdb_readdb(void)
 			id->class=atoi(str[11]);
 			id->sex=atoi(str[12]);
 			if(id->equip != atoi(str[13])){
-				//printf("%d : equip point %d -> %d\n",nameid,id->equip,atoi(str[13]));
 				id->equip=atoi(str[13]);
 			}
 			id->wlv=atoi(str[14]);

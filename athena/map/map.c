@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.5 2004/01/15 23:11:42 rovert Exp $
+// $Id: map.c,v 1.6 2004/01/18 15:43:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,11 +42,11 @@ static int users;
 static struct block_list *object[MAX_FLOORITEM];
 static int first_free_object_id,last_object_id;
 
-#define block_free_max 50000
+#define block_free_max 200000
 static void *block_free[block_free_max];
 static int block_free_count=0,block_free_lock=0;
 
-#define BL_LIST_MAX 5120
+#define BL_LIST_MAX 8192
 
 struct map_data map[MAX_MAP_PER_SERVER];
 int map_num=0;
@@ -91,9 +91,11 @@ int map_freeblock( void *bl )
 	if(block_free_lock==0)
 		free(bl);
 	else{
-		if( block_free_count>=block_free_max )
-			printf("map_freeblock: *WARNING* too many free block! %d %d\n",
-				block_free_count,block_free_lock);
+		if( block_free_count>=block_free_max ) {
+			if(battle_config.error_log)
+				printf("map_freeblock: *WARNING* too many free block! %d %d\n",
+			block_free_count,block_free_lock);
+		}
 		else
 			block_free[block_free_count++]=bl;
 	}
@@ -117,13 +119,16 @@ int map_freeblock_unlock(void)
 {
 	if( (--block_free_lock)==0 ){
 		int i;
-//		if(block_free_count>0)
-//			printf("map_freeblock_unlock: free %d object\n",block_free_count);
+//		if(block_free_count>0) {
+//			if(battle_config.error_log)
+//				printf("map_freeblock_unlock: free %d object\n",block_free_count);
+//		}
 		for(i=0;i<block_free_count;i++)
 			free(block_free[i]);
 		block_free_count=0;
 	}else if(block_free_lock<0){
-		printf("map_freeblock_unlock: lock count < 0 !\n");
+		if(battle_config.error_log)
+			printf("map_freeblock_unlock: lock count < 0 !\n");
 	}
 	return block_free_lock;
 }
@@ -186,7 +191,8 @@ int map_delblock(struct block_list *bl)
 	if(bl->prev==NULL){
 		if(bl->next!=NULL){
 			// prevがNULLでnextがNULLでないのは有ってはならない
-			printf("map_delblock error : bl->next!=NULL\n");
+			if(battle_config.error_log)
+				printf("map_delblock error : bl->next!=NULL\n");
 		}
 		return 0;
 	}
@@ -280,9 +286,11 @@ void map_foreachinarea(int (*func)(struct block_list*,va_list),int m,int x0,int 
 			}
 		}
 	
-	if(blockcount>=block_list_max)
-		printf("map_foreachinarea: *WARNING* block count too many!\n");
-	
+	if(blockcount>=block_list_max) {
+		if(battle_config.error_log)
+			printf("map_foreachinarea: *WARNING* block count too many!\n");
+	}
+
 	map_freeblock_lock();	// メモリからの解放を禁止する
 		
 	for(i=0;i<blockcount;i++)
@@ -385,9 +393,11 @@ void map_foreachinmovearea(int (*func)(struct block_list*,va_list),int m,int x0,
 
 	}
 
-	if(blockcount>=block_list_max)
-		printf("map_foreachinarea: *WARNING* block count too many!\n");
-	
+	if(blockcount>=block_list_max) {
+		if(battle_config.error_log)
+			printf("map_foreachinarea: *WARNING* block count too many!\n");
+	}
+
 	map_freeblock_lock();	// メモリからの解放を禁止する
 		
 	for(i=0;i<blockcount;i++)
@@ -416,7 +426,8 @@ int map_addobject(struct block_list *bl)
 		if(object[i]==NULL)
 			break;
 	if(i>=MAX_FLOORITEM){
-		printf("no free object id\n");
+		if(battle_config.error_log)
+			printf("no free object id\n");
 		return 0;
 	}
 	first_free_object_id=i;
@@ -492,8 +503,10 @@ void map_foreachobject(int (*func)(struct block_list*,va_list),int type,...)
 		if(object[i]){
 			if(type && object[i]->type!=type)
 				continue;
-			if(block_list_count>=block_list_max)
-				printf("map_foreachobject: too many block !\n");
+			if(block_list_count>=block_list_max) {
+				if(battle_config.error_log)
+					printf("map_foreachobject: too many block !\n");
+			}
 			else
 				list[block_list_count++]=object[i];
 		}
@@ -526,7 +539,8 @@ int map_clearflooritem_timer(int tid,unsigned int tick,int id,int data)
 
 	fitem = (struct flooritem_data *)object[id];
 	if(fitem==NULL || fitem->bl.type!=BL_ITEM || (!data && fitem->cleartimer != tid)){
-		printf("map_clearflooritem_timer : error\n");
+		if(battle_config.error_log)
+			printf("map_clearflooritem_timer : error\n");
 		return 1;
 	}
 	if(data)
@@ -602,7 +616,8 @@ int map_addflooritem(struct item *item_data,int amount,int m,int x,int y)
 
 	fitem = malloc(sizeof(*fitem));
 	if(fitem==NULL){
-		printf("out of memory : map_addflooritem\n");
+		if(battle_config.error_log)
+			printf("out of memory : map_addflooritem\n");
 		exit(1);
 	}
 	fitem->bl.type=BL_ITEM;
@@ -640,7 +655,8 @@ void map_addchariddb(int charid,char *name)
 	if(p==NULL){	// データベースにない
 		p = malloc(sizeof(struct charid2nick));
 		if(p==NULL){
-			printf("out of memory : map_addchariddb\n");
+			if(battle_config.error_log)
+				printf("out of memory : map_addchariddb\n");
 			exit(1);
 		}
 		p->req_id=0;
@@ -669,7 +685,8 @@ int map_reqchariddb(struct map_session_data * sd,int charid)
 		return 0;
 	p = malloc(sizeof(struct charid2nick));
 	if(p==NULL){
-		printf("out of memory : map_reqchariddb\n");
+		if(battle_config.error_log)
+			printf("out of memory : map_reqchariddb\n");
 		exit(1);
 	}
 	memset(p->nick,0,24);
@@ -848,7 +865,8 @@ int map_addnpc(int m,struct npc_data *nd)
 		if(map[m].npc[i]==NULL)
 			break;
 	if(i==MAX_NPC_PER_MAP){
-		printf("too many NPCs in one map %s\n",map[m].name);
+		if(battle_config.error_log)
+			printf("too many NPCs in one map %s\n",map[m].name);
 		return -1;
 	}
 	if(i==map[m].npc_num){

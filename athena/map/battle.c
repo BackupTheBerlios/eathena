@@ -755,7 +755,8 @@ int battle_attr_fix(int damage,int atk_elem,int def_elem)
 
 	if(	atk_elem<0 || atk_elem>9 || def_type<0 || def_type>9 ||
 		def_lv<1 || def_lv>4){	// 属 性値がおかしいのでとりあえずそのまま返す
-		printf("battle_attr_fix: unknown attr type: atk=%d def_type=%d def_lv=%d\n",atk_elem,def_type,def_lv);
+		if(battle_config.error_log)
+			printf("battle_attr_fix: unknown attr type: atk=%d def_type=%d def_lv=%d\n",atk_elem,def_type,def_lv);
 		return damage;
 	}
 
@@ -2462,7 +2463,8 @@ struct Damage battle_calc_magic_attack(
 				thres = (skill_lv * 20) + battle_get_luk(bl)+
 						battle_get_int(bl) + battle_get_lv(bl)+
 						((200 - hp * 200 / mhp));
-//				printf("ターンアンデッド！ 確率%d ‰(千分率)\n", thres);
+//				if(battle_config.battle_log)
+//					printf("ターンアンデッド！ 確率%d ‰(千分率)\n", thres);
 				if(rand()%1000 < thres && !(battle_get_mexp(target)))	// 成功
 					damage = hp;
 				else					// 失敗
@@ -2475,8 +2477,10 @@ struct Damage battle_calc_magic_attack(
 			MATK_FIX(70+ skill_lv*10,100);
 			if(flag>0){
 				MATK_FIX(1,flag);
-			}else
-				printf("battle_calc_magic_attack(): napam enemy count=0 !\n");
+			}else {
+				if(battle_config.error_log)
+					printf("battle_calc_magic_attack(): napam enemy count=0 !\n");
+			}
 			break;
 		case MG_FIREBALL:	// ファイヤーボール
 			{
@@ -2762,7 +2766,8 @@ struct Damage battle_calc_attack(	int attack_type,
 	case BF_MISC:
 		return battle_calc_misc_attack(bl,target,skill_num,skill_lv,flag);
 	default:
-		printf("battle_calc_attack: unknwon attack type ! %d\n",attack_type);
+		if(battle_config.error_log)
+			printf("battle_calc_attack: unknwon attack type ! %d\n",attack_type);
 		break;
 	}
 	return d;
@@ -3048,6 +3053,12 @@ int battle_config_read(const char *cfgName)
 	battle_config.max_sp = 32500;
 	battle_config.max_parameter = 99;
 	battle_config.max_cart_weight = 8000;
+	battle_config.pc_skill_log = 0;
+	battle_config.mob_skill_log = 0;
+	battle_config.battle_log = 0;
+	battle_config.save_log = 0;
+	battle_config.error_log = 1;
+	battle_config.etc_log = 1;
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 	fp=fopen(cfgName,"r");
 	if(fp==NULL){
