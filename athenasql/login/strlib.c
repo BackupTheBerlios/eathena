@@ -21,6 +21,10 @@ unsigned char* jstrescape (unsigned char* pt) {
 				pt[j++] = '\\';
 				pt[j++] = ptr[i++];
 				break;
+			case '\\':
+				pt[j++] = '\\';
+				pt[j++] = ptr[i++];
+				break;
 			default:
 				pt[j++] = ptr[i++];
 		}
@@ -40,10 +44,35 @@ unsigned char* jstrescapecpy (unsigned char* pt,unsigned char* spt) {
 				pt[j++] = '\\';
 				pt[j++] = spt[i++];
 				break;
+			case '\\':
+				pt[j++] = '\\';
+				pt[j++] = spt[i++];
+				break;
 			default:
 				pt[j++] = spt[i++];
 		}
 	}
 	pt[j++] = '\0';
 	return (unsigned char*) &pt[0];
+}
+int jmemescapecpy (unsigned char* pt,unsigned char* spt, int size) {
+	//copy from here
+	int i =0, j=0;
+	
+	while (i < size) {
+		switch (spt[i]) {
+			case '\'':
+				pt[j++] = '\\';
+				pt[j++] = spt[i++];
+				break;
+			case '\\':
+				pt[j++] = '\\';
+				pt[j++] = spt[i++];
+				break;
+			default:
+				pt[j++] = spt[i++];
+		}
+	}
+	// copy size is 0 ~ (j-1)
+	return j;
 }

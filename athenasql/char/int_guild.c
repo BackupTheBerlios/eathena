@@ -161,9 +161,9 @@ int inter_guild_tosql(struct guild *g,int flag)
 		sprintf(tmp_sql,"INSERT INTO `guild` "
 			"(`guild_id`, `name`,`master`,`guild_lv`,`connect_member`,`max_member`,`average_lv`,`exp`,`next_exp`,`skill_point`,`castle_id`,`mes1`,`mes2`,`emblem_len`,`emblem_id`,`emblem_data`) "
 			"VALUES ('%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%d', '%d', '%s');",
-			g->guild_id,t_name,g->master,
+			g->guild_id,t_name,jstrescape( g->master),
 			g->guild_lv,g->connect_member,g->max_member,g->average_lv,g->exp,g->next_exp,g->skill_point,g->castle_id,
-			g->mes1,g->mes2,g->emblem_len,g->emblem_id,emblem_data);
+			jstrescape( g->mes1),jstrescape (g->mes2),g->emblem_len,g->emblem_id,jstrescape( emblem_data));
 		//printf(" %s\n",tmp_sql);
 		if(mysql_query(&mysql_handle, tmp_sql) ) {
 			printf("DB server Error (insert `guild`)- %s\n", mysql_error(&mysql_handle) );
@@ -172,9 +172,11 @@ int inter_guild_tosql(struct guild *g,int flag)
 	
 	if (flag&2){
 		printf("- Insert guild %d to guild_member\n",g->guild_id);
+		char t_mname[256];
 		for(i=0;i<g->max_member;i++){
 			if (g->member[i].account_id>0){
 				struct guild_member *m = &g->member[i];
+				jstrescapecpy(t_mname,m->name);
 				sprintf(tmp_sql,"INSERT INTO `guild_member` "
 					"(`guild_id`,`account_id`,`char_id`,`hair`,`hair_color`,`gender`,`class`,`lv`,`exp`,`exp_payper`,`online`,`position`,`rsv1`,`rsv2`,`name`) "
 					"VALUES ('%d','%d','%d','%d','%d', '%d','%d','%d','%d','%d','%d','%d','%d','%d','%s');",
@@ -183,7 +185,7 @@ int inter_guild_tosql(struct guild *g,int flag)
 					m->hair,m->hair_color,m->gender,
 					m->class,m->lv,m->exp,m->exp_payper,m->online,m->position,
 					0,0,
-					((m->account_id>0)?m->name:"-"));
+					((m->account_id>0)?t_mname:"-"));
 				//printf(" %s\n",tmp_sql);
 				if(mysql_query(&mysql_handle, tmp_sql) ) {
 					printf("DB server Error (insert `guild_member`)- %s\n", mysql_error(&mysql_handle) );
@@ -201,7 +203,7 @@ int inter_guild_tosql(struct guild *g,int flag)
 		for(i=0;i<MAX_GUILDPOSITION;i++){
 			struct guild_position *p = &g->position[i];
 			sprintf(tmp_sql,"INSERT INTO `guild_position` (`guild_id`,`position`,`name`,`mode`,`exp_mode`) VALUES ('%d','%d', '%s','%d','%d');",
-				g->guild_id, i, p->name,p->mode,p->exp_mode);
+				g->guild_id, i, jstrescape(p->name),p->mode,p->exp_mode);
 			//printf(" %s\n",tmp_sql);
 			if(mysql_query(&mysql_handle, tmp_sql) ) {
 				printf("DB server Error (insert `guild_position`)- %s\n", mysql_error(&mysql_handle) );
@@ -216,7 +218,7 @@ int inter_guild_tosql(struct guild *g,int flag)
 			if(a->guild_id>0){
 				sprintf(tmp_sql,"INSERT INTO `guild_alliance` (`guild_id`,`opposition`,`alliance_id`,`name`) "
 					"VALUES ('%d','%d','%d','%s');",
-					g->guild_id,a->opposition,a->guild_id,a->name);
+					g->guild_id,a->opposition,a->guild_id, jstrescape(a->name));
 				//printf(" %s\n",tmp_sql);
 				if(mysql_query(&mysql_handle, tmp_sql) ) {
 					printf("DB server Error (insert `guild_alliance`)- %s\n", mysql_error(&mysql_handle) );
@@ -240,7 +242,7 @@ int inter_guild_tosql(struct guild *g,int flag)
 				sprintf(tmp_sql,"INSERT INTO `guild_expulsion` (`guild_id`,`name`,`mes`,`acc`,`account_id`,`rsv1`,`rsv2`,`rsv3`) "
 					"VALUES ('%d','%s','%s','%s','%d','%d','%d','%d');",
 					g->guild_id,
-					e->name,e->mes,e->acc,e->account_id,e->rsv1,e->rsv2,e->rsv3 );
+					jstrescape(e->name), jstrescape(e->mes), jstrescape(e->acc),e->account_id,e->rsv1,e->rsv2,e->rsv3 );
 				//printf(" %s\n",tmp_sql);
 				if(mysql_query(&mysql_handle, tmp_sql) ) {
 					printf("DB server Error (insert `guild_expulsion`)- %s\n", mysql_error(&mysql_handle) );
@@ -605,7 +607,7 @@ struct guild* search_guildname(char *str)
 	struct guild *g=guild_pt;
 	int guild_id=0;
 	printf("search_guildname\n");
-	sprintf (tmp_sql , "SELECT `guild_id` FROM `guild` WHERE `name`='%s'",str);
+	sprintf (tmp_sql , "SELECT `guild_id` FROM `guild` WHERE `name`='%s'", jstrescape(str));
 	if(mysql_query(&mysql_handle, tmp_sql) ) {
 		printf("DB server Error - %s\n", mysql_error(&mysql_handle) );
 	}

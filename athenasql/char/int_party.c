@@ -90,7 +90,7 @@ int inter_party_tosql(int party_id,struct party *p)
 			for (i=0;i<MAX_PARTY;i++){
 
 				if (p->member[i].account_id>0){
-					sprintf(tmp_sql,"UPDATE `char` SET `party_id`='%d', `online`='%d' WHERE `account_id`='%d' AND `name`='%s';",party_id, p->member[i].online, p->member[i].account_id,p->member[i].name);	
+					sprintf(tmp_sql,"UPDATE `char` SET `party_id`='%d', `online`='%d' WHERE `account_id`='%d' AND BINARY `name`='%s';",party_id, p->member[i].online, p->member[i].account_id, jstrescape(p->member[i].name));	
 					//printf("%s",tmp_sql);
 					if(mysql_query(&mysql_handle, tmp_sql) ) {
 						printf("DB server Error (update `char`)- %s\n", mysql_error(&mysql_handle) );
@@ -116,8 +116,8 @@ int inter_party_tosql(int party_id,struct party *p)
 		if(mysql_query(&mysql_handle, tmp_sql) ) {
 			printf("DB server Error (inset/update `party`)- %s\n", mysql_error(&mysql_handle) );
 		}
-		
-		sprintf(tmp_sql,"UPDATE `char` SET `party_id`='%d', `online`='1'  WHERE `account_id`='%d' AND `name`='%s';",party_id,leader_id, p->member[i].name);	
+
+		sprintf(tmp_sql,"UPDATE `char` SET `party_id`='%d', `online`='1'  WHERE `account_id`='%d' AND BINARY `name`='%s';",party_id,leader_id, jstrescape(p->member[i].name));	
 		if(mysql_query(&mysql_handle, tmp_sql) ) {
 			printf("DB server Error (inset/update `party`)- %s\n", mysql_error(&mysql_handle) );
 		}
@@ -237,7 +237,7 @@ struct party* search_partyname(char *str)
 	struct party *p=NULL;
 	int leader_id = 0;
 	
-	sprintf(tmp_sql,"SELECT `party_id`, `name`,`exp`,`item`,`leader_id` FROM `party` WHERE `name`='%s'",str);	
+	sprintf(tmp_sql,"SELECT `party_id`, `name`,`exp`,`item`,`leader_id` FROM `party` WHERE BINARY `name`='%s'", jstrescape(str));
 	if(mysql_query(&mysql_handle, tmp_sql) ) {
 			printf("DB server Error (select `party`)- %s\n", mysql_error(&mysql_handle) );
 	}
@@ -588,8 +588,8 @@ int mapif_parse_PartyLeave(int fd,int party_id,int account_id)
 				
 				
 				// Update char information, does the name need encoding?
-				sprintf(tmp_sql,"UPDATE `char` SET `party_id`='0', `online`='1' WHERE `party_id`='%d' AND `name`='%s';", 
-					party_id, p->member[i].name);	
+				sprintf(tmp_sql,"UPDATE `char` SET `party_id`='0', `online`='1' WHERE `party_id`='%d' AND BINARY `name`='%s';", 
+					party_id, jstrescape(p->member[i].name));
 				if(mysql_query(&mysql_handle, tmp_sql) ) {
 					printf("DB server Error (update `char`)- %s\n", mysql_error(&mysql_handle) );
 				}
@@ -603,7 +603,7 @@ int mapif_parse_PartyLeave(int fd,int party_id,int account_id)
 							mapif_party_leaved(party_id,p->member[j].account_id,p->member[j].name);
 							// Update char information, does the name need encoding?
 							sprintf(tmp_sql,"UPDATE `char` SET `party_id`='0', `online`='1' WHERE `party_id`='%d' AND `name`='%s';", 
-								party_id, p->member[j].name);	
+								party_id, jstrescape(p->member[j].name));
 							if(mysql_query(&mysql_handle, tmp_sql) ) {
 								printf("DB server Error (update `char`)- %s\n", mysql_error(&mysql_handle) );
 							}

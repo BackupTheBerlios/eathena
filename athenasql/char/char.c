@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.2 2004/02/17 04:48:07 rovert Exp $
+// $Id: char.c,v 1.3 2004/02/21 20:22:21 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 //
 // original code from athena
@@ -265,7 +265,7 @@ int mmo_char_tosql(int char_id, struct mmo_charstatus *p){
 	for(i=0;i<p->global_reg_num;i++){
 		if(p->global_reg[i].value !=0){
 			sprintf(tmp_sql,"INSERT INTO `global_reg_value` (`char_id`, `str`, `value`) VALUES ('%d', '%s','%d')",
-				char_id, p->global_reg[i].str, p->global_reg[i].value);
+				char_id, jstrescape (p->global_reg[i].str), p->global_reg[i].value);
 			if(mysql_query(&cmysql_handle, tmp_sql) ) {
 				printf("DB server Error (insert `global_reg_value`)- %s\n", mysql_error(&cmysql_handle) );
 			}
@@ -787,7 +787,7 @@ int make_new_char_sql(int fd,unsigned char *dat){
 
 	sd=session[fd]->session_data;
 
-	sprintf (tmp_sql, "SELECT count(*) FROM `char` WHERE `name` = '%s'",t_name);
+	sprintf (tmp_sql, "SELECT count(*) FROM `char` WHERE BINARY `name` = '%s'",t_name);
 	if(mysql_query(&cmysql_handle, tmp_sql) ) {
 		printf("DB server Error - %s\n", mysql_error(&cmysql_handle) );
 		return -1;
