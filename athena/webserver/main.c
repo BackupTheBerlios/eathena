@@ -88,8 +88,9 @@ int main(void)
 			memset(recvin, 0x0, 2000);
 			recv(new_fd, recvin, 2000, 0);
 			send(new_fd, header, strlen(header), 0);
+			generate_page( get_query(recvin), inet_ntoa(their_addr.sin_addr));
 
-			send(new_fd, "hi\n", 3, 0);
+			//send(new_fd, "hi\n", 3, 0);
 
 			close(new_fd);
 			exit(0);
