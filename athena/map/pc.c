@@ -3765,7 +3765,40 @@ int pc_allskillup(struct map_session_data *sd)
 
 	return 0;
 }
+/*==========================================
+ * /resetlvl
+ *------------------------------------------
+ */
+int pc_resetlvl(struct map_session_data* sd)
+{
+	int add=100;
 
+	sd->status.base_level=1;
+	sd->status.job_level=1;
+	sd->status.status_point+=add;
+
+	clif_updatestatus(sd,SP_BASELEVEL);
+	clif_updatestatus(sd,SP_JOBLEVEL);
+	clif_updatestatus(sd,SP_STATUSPOINT);
+
+	sd->status.str=1;
+	sd->status.agi=1;
+	sd->status.vit=1;
+	sd->status.int_=1;
+	sd->status.dex=1;
+	sd->status.luk=1;
+
+	clif_updatestatus(sd,SP_STR);
+	clif_updatestatus(sd,SP_AGI);
+	clif_updatestatus(sd,SP_VIT);
+	clif_updatestatus(sd,SP_INT);
+	clif_updatestatus(sd,SP_DEX);
+	clif_updatestatus(sd,SP_LUK);
+
+	pc_calcstatus(sd,0);
+
+	return 0;
+}
 /*==========================================
  * /resetstate
  *------------------------------------------

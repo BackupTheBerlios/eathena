@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.32 2004/03/05 05:15:23 sara-chan Exp $
+// $Id: script.c,v 1.33 2004/03/06 22:33:36 akitasha Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -112,6 +112,7 @@ int buildin_bonus2(struct script_state *st);
 int buildin_bonus3(struct script_state *st);
 int buildin_skill(struct script_state *st);
 int buildin_getskilllv(struct script_state *st);
+int buildin_getguildskilllv(struct script_state *st);
 int buildin_basicskillcheck(struct script_state *st);
 int buildin_getgmlevel(struct script_state *st);
 int buildin_end(struct script_state *st);
@@ -146,6 +147,7 @@ int buildin_sc_end(struct script_state *st);
 int buildin_debugmes(struct script_state *st);
 int buildin_catchpet(struct script_state *st);
 int buildin_birthpet(struct script_state *st);
+int buildin_resetlvl(struct script_state *st);
 int buildin_resetstatus(struct script_state *st);
 int buildin_resetskill(struct script_state *st);
 int buildin_changebase(struct script_state *st);
@@ -228,6 +230,7 @@ struct {
 	{buildin_bonus3,"bonus3","iiii"},
 	{buildin_skill,"skill","ii*"},
 	{buildin_getskilllv,"getskilllv","i"},
+	{buildin_getguildskilllv,"getguildskilllv","s"},
 	{buildin_basicskillcheck,"basicskillcheck","*"},
 	{buildin_getgmlevel,"getgmlevel","*"},
 	{buildin_end,"end",""},
@@ -262,6 +265,7 @@ struct {
 	{buildin_debugmes,"debugmes","s"},
 	{buildin_catchpet,"pet","i"},
 	{buildin_birthpet,"bpet",""},
+	{buildin_resetlvl,"resetlvl",""},
 	{buildin_resetstatus,"resetstatus",""},
 	{buildin_resetskill,"resetskill",""},
 	{buildin_changebase,"changebase","i"},
@@ -2120,6 +2124,23 @@ int buildin_getskilllv(struct script_state *st)
 	return 0;
 }
 /*==========================================
+ * スキルレベル所得
+ *------------------------------------------
+ */
+int buildin_getguildskilllv(struct script_state *st)
+{
+	struct map_session_data *sd;
+	struct guild *g;
+	int skill_id;
+
+	sd=map_id2sd(st->rid);
+
+	g=guild_search(sd->status.guild_id);
+	skill_id=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	push_val(st->stack,C_INT, guild_checkskill(g,skill_id) );
+	return 0;
+}
+/*==========================================
  *
  *------------------------------------------
  */
@@ -2667,6 +2688,18 @@ int buildin_birthpet(struct script_state *st)
 	struct map_session_data *sd;
 	sd=map_id2sd(st->rid);
 	clif_sendegg(sd);
+	return 0;
+}
+
+/*==========================================
+ * ステ??スリセット
+ *------------------------------------------
+ */
+int buildin_resetlvl(struct script_state *st)
+{
+	struct map_session_data *sd;
+	sd=map_id2sd(st->rid);
+	pc_resetlvl(sd);
 	return 0;
 }
 
