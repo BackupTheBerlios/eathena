@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.19 2004/01/25 04:18:01 rovert Exp $
+// $Id: clif.c,v 1.20 2004/01/25 14:58:31 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -877,9 +877,6 @@ int clif_spawnmob(struct mob_data *md)
 	int len;
 
 	len = clif_mob0078(md,buf);
-	clif_send(buf,len,&md->bl,AREA);
-
-	len = clif_mob_hp(md,buf);
 	clif_send(buf,len,&md->bl,AREA);
 
 	return 0;
@@ -2485,8 +2482,6 @@ void clif_getareachar_mob(struct map_session_data* sd,struct mob_data* md)
 		len = clif_mob0078(md,WFIFOP(sd->fd,0));
 		WFIFOSET(sd->fd,len);
 	}
-	len = clif_mob_hp(md,WFIFOP(sd->fd,0));
-	WFIFOSET(sd->fd,len);
 }
 /*==========================================
  *
@@ -2545,6 +2540,7 @@ int clif_getareachar_skillunit(struct map_session_data *sd,struct skill_unit *un
 	WFIFOB(fd,15)=0;
 	WFIFOSET(fd,packet_len_table[0x11f]);
 #else
+	memset(WFIFOP(fd,0),0,packet_len_table[0x1c9]);
 	WFIFOW(fd, 0)=0x1c9;
 	WFIFOL(fd, 2)=unit->bl.id;
 	WFIFOL(fd, 6)=unit->group->src_id;
@@ -2552,7 +2548,6 @@ int clif_getareachar_skillunit(struct map_session_data *sd,struct skill_unit *un
 	WFIFOW(fd,12)=unit->bl.y;
 	WFIFOB(fd,14)=unit->group->unit_id;
 	WFIFOB(fd,15)=0;
-	memset(WFIFOP(fd,16),packet_len_table[0x1c9]-16,0);
 	WFIFOSET(fd,packet_len_table[0x1c9]);
 #endif
 	if(unit->group->skill_id == WZ_ICEWALL)
@@ -3016,6 +3011,7 @@ int clif_skill_setunit(struct skill_unit *unit)
 	WBUFB(buf,15)=0;
 	clif_send(buf,packet_len_table[0x11f],&unit->bl,AREA);
 #else
+	memset(WBUFP(buf, 0),0,packet_len_table[0x1c9]);
 	WBUFW(buf, 0)=0x1c9;
 	WBUFL(buf, 2)=unit->bl.id;
 	WBUFL(buf, 6)=unit->group->src_id;
@@ -3023,7 +3019,6 @@ int clif_skill_setunit(struct skill_unit *unit)
 	WBUFW(buf,12)=unit->bl.y;
 	WBUFB(buf,14)=unit->group->unit_id;
 	WBUFB(buf,15)=0;
-	memset(&buf[16],packet_len_table[0x1c9]-16,0);
 	clif_send(buf,packet_len_table[0x1c9],&unit->bl,AREA);
 #endif
 	return 0;
@@ -3932,22 +3927,6 @@ int clif_party_hp(struct party *p,struct map_session_data *sd)
 	return 0;
 }
 /*==========================================
- * パーティHP通知
- *------------------------------------------
- */
-int clif_mob_hp(struct mob_data *md,unsigned char *buf)
-{
-	WBUFW(buf,0)=0x106;
-	WBUFL(buf,2)=md->bl.id;
-	WBUFW(buf,6)=(md->hp > 0x7fff)? 0x7fff:md->hp;
-	WBUFW(buf,8)=(mob_db[md->class].max_hp > 0x7fff)? 0x7fff:mob_db[md->class].max_hp;
-
-	return packet_len_table[0x106];
-//	if(battle_config.etc_log)
-//		printf("clif_party_hp %d\n",sd->status.account_id);
-	return 0;
-}
-/*==========================================
  * パーティ場所移動（未使用）
  *------------------------------------------
  */
@@ -4275,7 +4254,7 @@ int clif_guild_belonginfo(struct map_session_data *sd,struct guild *g)
 	int fd=sd->fd;
 	int ps=guild_getposition(sd,g);
 
-	memset(WFIFOP(fd,0),0,13);
+	memset(WFIFOP(fd,0),0,packet_len_table[0x16c]);
 	WFIFOW(fd,0)=0x16c;
 	WFIFOL(fd,2)=g->guild_id;
 	WFIFOL(fd,6)=g->emblem_id;
