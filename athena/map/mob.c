@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.5 2004/01/12 17:25:49 rovert Exp $
+// $Id: mob.c,v 1.6 2004/01/12 23:55:41 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1864,6 +1864,9 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 {
 	int m,i=0,c,xs=0,ys=0,bx=x,by=y;
 	if( md==NULL || md->bl.prev==NULL )
+		return 0;
+
+	if(map[md->bl.m].flag.noteleport)	// Added by RoVeRT
 		return 0;
 
 	skill_unit_out_all(&md->bl,gettick(),1);
