@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.19 2004/02/05 17:47:27 rovert Exp $
+// $Id: mob.c,v 1.20 2004/02/05 21:54:57 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -12,6 +12,7 @@
 #include "intif.h"
 #include "pc.h"
 #include "mob.h"
+#include "guild.h"
 #include "itemdb.h"
 #include "skill.h"
 #include "battle.h"
@@ -1660,6 +1661,9 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 	}
 
 	// ----- ‚±‚±‚©‚çŽ€–Sˆ— -----
+
+	if(md->class == 1288 && map[md->bl.m].flag.gvg)
+		guild_gvg_break_empelium(md);
 
 	map_freeblock_lock();
 	mob_changestate(md,MS_DEAD,0);
