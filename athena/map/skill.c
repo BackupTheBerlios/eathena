@@ -4530,7 +4530,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		printf("skill_status_change_start: neither MOB nor PC !\n");
 		return 0;
 	}
-	if(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP)
+	if(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP) {
 		battle_stopwalking(bl,1);
 		skill_castcancel(bl);
 	}
@@ -5910,5 +5910,3 @@ int do_init_skill(void)
 
 	return 0;
 }
-
-
