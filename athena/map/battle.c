@@ -2103,6 +2103,11 @@ static struct Damage battle_calc_mob_weapon_attack(
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = 0;
 
+// -- moonsoul (additional damage from aurablade)
+//
+	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
+			damage+=(sc_data[SC_AURABLADE].val1*10);
+
 	if( target->type==BL_PC){
 		int cardfix=100,i;
 		cardfix=cardfix*(100-tsd->subele[s_ele])/100;	// 属 性によるダメージ耐性
@@ -2158,11 +2163,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 
 	if(def1 >= 1000000 && damage > 0)
 		damage = 1;
-
-// -- moonsoul (additional damage from aurablade)
-//
-	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
-			damage+=(sc_data[SC_AURABLADE].val1*10);
 
 	if( tsd && tsd->special_state.no_weapon_damage)
 		damage = 0;
@@ -2886,6 +2886,12 @@ static struct Damage battle_calc_pc_weapon_attack(
 		damage+= skill*2;
 		damage2+= skill*2;
 	}
+
+// -- moonsoul (additional damage from aurablade)
+//
+	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
+			damage+=(sc_data[SC_AURABLADE].val1*10);
+
 	// カード・ダメージUP修正 両手持ちの場合左手のカードも右手に適用,左手はカードによる補正はなし
 	cardfix=100;
 	if(!sd->state.arrow_atk) {
@@ -3061,11 +3067,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 		if(damage2 > 0)
 			damage2 = 1;
 	}
-
-// -- moonsoul (additional damage from aurablade)
-//
-	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
-			damage+=(sc_data[SC_AURABLADE].val1*10);
 
 	if( tsd && tsd->special_state.no_weapon_damage && skill_num != CR_GRANDCROSS)
 		damage = damage2 = 0;
