@@ -632,6 +632,7 @@ int pc_authok(int id,struct mmo_charstatus *st)
 	clif_authok(sd);
 	map_addnickdb(sd);
 
+
 	// ステータス初期計算など
 	pc_calcstatus(sd,1);
 
@@ -993,6 +994,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			continue;
 		if(i == 6 && (sd->equip_index[5] == index || sd->equip_index[4] == index))
 			continue;
+		
 		if(sd->inventory_data[index]) {
 			if(sd->inventory_data[index]->type == 4) {
 				if(sd->status.inventory[index].card[0]!=0x00ff && sd->status.inventory[index].card[0]!=0x00fe && sd->status.inventory[index].card[0]!=(short)0xff00) {
@@ -3841,6 +3843,7 @@ int pc_allskillup(struct map_session_data *sd)
 
 	return 0;
 }
+
 /*==========================================
  * /resetlvl
  *------------------------------------------
@@ -4593,7 +4596,59 @@ int pc_setglobalreg(struct map_session_data *sd,char *reg,int val)
 	return 1;
 }
 
+/*==========================================
+ * script用アカウント変数の値を読む
+ *------------------------------------------
+ */
+int pc_readaccountreg(struct map_session_data *sd,char *reg)
+{
+	int i;
 
+	for(i=0;i<sd->status.account_reg_num;i++){
+		if(strcmp(sd->status.account_reg[i].str,reg)==0)
+			return sd->status.account_reg[i].value;
+	}
+
+	return 0;
+}
+/*==========================================
+ * script用アカウント変数の値を設定
+ *------------------------------------------
+ */
+int pc_setaccountreg(struct map_session_data *sd,char *reg,int val)
+{
+	int i;
+
+	if(val==0){
+		for(i=0;i<sd->status.account_reg_num;i++){
+			if(strcmp(sd->status.account_reg[i].str,reg)==0){
+				sd->status.account_reg[i]=sd->status.account_reg[sd->status.account_reg_num-1];
+				sd->status.account_reg_num--;
+				break;
+			}
+		}
+		chrif_saveaccountreg(sd);
+		return 0;
+	}
+	for(i=0;i<sd->status.account_reg_num;i++){
+		if(strcmp(sd->status.account_reg[i].str,reg)==0){
+			sd->status.account_reg[i].value=val;
+			chrif_saveaccountreg(sd);
+			return 0;
+		}
+	}
+	if(sd->status.account_reg_num<ACCOUNT_REG_NUM){
+		strcpy(sd->status.account_reg[i].str,reg);
+		sd->status.account_reg[i].value=val;
+		sd->status.account_reg_num++;
+		chrif_saveaccountreg(sd);
+		return 0;
+	}
+	if(battle_config.error_log)
+		printf("pc_setaccountreg : couldn't set %s (ACCOUNT_REG_NUM = %d)\n", reg, ACCOUNT_REG_NUM);
+
+	return 1;
+}
 /*==========================================
  * 精錬成功率
  *------------------------------------------
@@ -4862,7 +4917,7 @@ int pc_equipitem(struct map_session_data *sd,int n,int pos)
 			skill_status_change_end(&sd->bl,SC_ENDURE,-1);
 	}
 
-	if(sd->sc_data[SC_SIGNUMCRUCIS].timer != -1 && !battle_check_undead(7,battle_get_elem_type(&sd->bl)))
+	if(sd->sc_data[SC_SIGNUMCRUCIS].timer != -1 && !battle_check_undead(7,sd->def_ele))
 		skill_status_change_end(&sd->bl,SC_SIGNUMCRUCIS,-1);
 
 	return 0;

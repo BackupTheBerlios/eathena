@@ -1,4 +1,4 @@
-// $Id: pc.h,v 1.13 2004/03/06 22:33:36 akitasha Exp $
+// $Id: pc.h,v 1.14 2004/03/12 01:07:00 sara-chan Exp $
 
 #ifndef _PC_H_
 #define _PC_H_
@@ -126,6 +126,8 @@ int pc_readreg(struct map_session_data*,int);
 int pc_setreg(struct map_session_data*,int,int);
 int pc_readglobalreg(struct map_session_data*,char*);
 int pc_setglobalreg(struct map_session_data*,char*,int);
+int pc_readaccountreg(struct map_session_data*,char*);
+int pc_setaccountreg(struct map_session_data*,char*,int);
 int pc_percentrefinery(struct map_session_data *sd,struct item *item);
 
 int pc_addeventtimer(struct map_session_data *sd,int tick,const char *name);
