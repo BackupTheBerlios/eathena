@@ -245,6 +245,7 @@ struct map_session_data {
 	int eventtimer[MAX_EVENTTIMER];
 
 	int sg_count;
+	int intimidate_x,intimidate_y,intimidate_map;
 
 	int last_skillid,last_skilllv;		// Added by RoVeRT
 	int skill_limit[350];
@@ -339,6 +340,7 @@ struct mob_data {
 	char npc_event[50];
 
 	int sg_count;
+	int intimidate_x,intimidate_y;
 
 	int skill_limit[350];			// Added by RoVeRT
 };

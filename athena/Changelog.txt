@@ -1,5 +1,8 @@
 Date	Added
-01/25	* added poison hp reduction [AppleGirl]
+01/25
+	* added poison hp reduction [AppleGirl]
+01/20
+	* added intimidate [RoVeRT]
 01/16
 	* added secondary effects for when characters with appropriate elemental armor
 	  are within area of effect of sage spells SA_VOLCANO(atk up), SA_DELUGE(max hp up),
