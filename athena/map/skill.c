@@ -420,13 +420,6 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		}
 		break;
 
-//		case RG_SNATCHER:	//スナッチャー
-//			if( sd->status.weapon != 0 && sd->status.weapon != 1 && sd->status.weapon != 2 && sd->status.weapon != 6 ) {
-//				clif_skill_fail(sd,sd->skillid,6,0);	//素手、短剣、片手剣、片手斧
-//				return 0;
-//			}
-//			break;
-
 	case SM_BASH:			/* バッシュ（急所攻撃） */
 		if( sd && (skill=pc_checkskill(sd,SM_FATALBLOW))>0 ){
 			if( rand()%100 < 6*(skilllv-5)*sc_def_vit/100 )
@@ -1904,22 +1897,6 @@ case CR_REFLECTSHIELD:
 			mob_warp((struct mob_data *)bl,-1,-1,3);
 		break;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	case AL_HOLYWATER:			/* アクアベネディクタ */
 	case TF_PICKSTONE:
 		if(sd) {
@@ -2278,16 +2255,6 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 			src,skillid,skilllv,tick, flag|BCT_ENEMY|2,
 			skill_castend_nodamage_id);
 		break;
-
-
-
-
-
-
-
-
-
-
 
 	case MG_SAFETYWALL:			/* セイフティウォール */
 	case MG_FIREWALL:			/* ファイヤーウォール */
