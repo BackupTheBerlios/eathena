@@ -49,7 +49,6 @@
 549,Chestnut_Sweet_Potato,Hot Potato,0,180,,80,,,,,10477567,2,,,,,{ itemheal rand(50,99),0; },{}
 550,Popped_Rice,Rice Popper,0,,,10,,,,,10477567,2,,,,,{ itemheal rand(10,14),0; },{}
 551,Sushi,Sushi,0,,,50,,,,,10477567,2,,,,,{ itemheal rand(50,60),0; },{}
-554,,‚¨‚à‚¿,0,100,,80,,,,,10477567,2,,,,,{ itemheal rand(105,144),0; },{}
 601,Wing_of_Fly,Fly Wing,2,60,,50,,,,,10477567,2,,,,,{ warp "Random",0,0; },{}
 602,Wing_of_Butterfly,Butterfly Wing,2,300,,50,,,,,10477567,2,,,,,{ warp "SavePoint",0,0; },{}
 603,Old_Blue_Box,Old Blue Box,2,10000,,200,,,,,10477567,2,,,,,{ getitem -1,1; },{}
@@ -579,7 +578,7 @@
 1556,Book_of_Gust_of_Wind,Book of Gust of Wind,4,35000,,750,90,,1,0,65792,2,2,3,27,15,{},{ bonus bAtkEle,4; }
 1557,Book_of_the_Apocalypse,Book of the Apocalypse,4,35000,,800,120,,1,0,65792,2,2,4,40,15,{},{ bonus bAtkEle,7; bonus2 bSubEle,6,-5; bonus2 bAddEle,1,7; bonus2 bAddEle,2,7; bonus2 bAddEle,3,7; bonus2 bAddEle,4,7; }
 1558,Girl's_Diary,Girl's Diary,4,20,,300,60,,1,1,65792,2,2,4,40,15,{},{ bonus2 bAddDamageClass,1188,50; }
-1599,Angra_Manyu,Angra Manyu,,,,,,,,,,,,,,,{},{}
+1599,Angra_Manyu,Angra Manyu,4,20,,,,,,,,,,,,,{},{}
 1601,Rod,Rod,4,50,,400,15,,1,3,8487701,2,2,1,1,10,{},{ bonus bMatkRate,15; }
 1602,Rod_,Rod,4,50,,400,15,,1,4,8487701,2,2,1,1,10,{},{ bonus bMatkRate,15; }
 1603,Rod__,Rod,4,50,,400,15,,1,0,8487701,2,2,1,1,10,{},{ bonus bMatkRate,15; }
@@ -1223,7 +1222,7 @@
 7059,Cargo_free_ticket,Free Ticket for Kafra Storage,3,,,10,,,,,,,,,,,{},{}
 7060,Warp_free_ticket,Free Ticket for Kafra Transportation,3,,,10,,,,,,,,,,,{},{}
 7061,Cart_free_ticket,Free Ticket for the Cart Service,3,,,10,,,,,,,,,,,{},{}
-7062,,,3,,,10,,,,,,,,,,,{},{}
+7062,Broken_Turtle_Shell,Broken Turtle Shell,3,,,10,,,,,,,,,,,{},{}
 7063,Soft_feather,Soft Feather,3,,,10,,,,,,,,,,,{},{}
 7064,Dragon_fly_wing,Wing of Dragonfly,3,520,,10,,,,,,,,,,,{},{}
 7065,Sea_otter_leather,Sea Otter Fur,3,820,,10,,,,,,,,,,,{},{}
@@ -1353,7 +1352,7 @@
 9026,Alice_Egg,Alice Egg,7,20,,0,,,,,,,,,,,{},{}
 9027,Zherlthsh_Egg,Zherlthsh Egg,7,20,,0,,,,,,,,,,,{},{}
 9028,test_Egg,Test Egg,7,20,,0,,,,,,,,,,,{},{}
-9029,test_Egg,Test Egg,7,20,,0,,,,,,,,,,,{},{}
+9029,test_Egg_,Test Egg,7,20,,0,,,,,,,,,,,{},{}
 10001,Skull_Helm,Skull Helm,8,20,,0,,,,,,,,,,,{},{}
 10002,Monster_Oxygen_Mask,Monster Oxygen Mask,8,20,,0,,,,,,,,,,,{},{}
 10003,Transparent_Headgear,Transparent Headgear,8,20,,0,,,,,,,,,,,{},{}
@@ -1376,15 +1375,15 @@
 10020,Sword_of_Grave_Keeper,Sword of Chinese Exorcist,8,20,,0,,,,,,,,,,,{},{}
 //
 //Ep6 items by Akaru - Working like official servers
-664,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
-665,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
-666,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
-667,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+664,Gift_Box_,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+665,Gift_Box__,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+666,Gift_Box___,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
+667,Gift_Box____,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
 668,Angpow,Angpow,0,1,,2,,,,,10477567,2,,,,,{ set Zeny,Zeny+rand(100,10000); },{}
 //
 //Not sure of functions in official servers
 2634,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,0,136,,,0,{},{},
-2635,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,1,136,,,0,{},{},
+2635,Wedding Ring_,Wedding Ring,5,500,,0,,0,,0,10477567,1,136,,,0,{},{},
 2636,Gold Christmas Ring,Gold Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{},
 2637,Silver Christmas Ring,Silver Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{},
 552,Ketupat,Ketupat,0,50,,10,,,,,10477567,2,,,,,{ itemheal rand(100,200),0; },{}

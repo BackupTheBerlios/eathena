@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.13 2004/02/01 17:58:37 rovert Exp $
+// $Id: map.c,v 1.14 2004/02/01 22:57:32 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -59,6 +59,10 @@ struct charid2nick {
 	char nick[24];
 	int req_id;
 };
+
+
+char motd_txt[256]="conf/motd.txt";
+char help_txt[256]="conf/help.txt";
 
 /*==========================================
  * ëSmapéIëçåvÇ≈ÇÃê⁄ë±êîê›íË
@@ -1293,6 +1297,10 @@ int map_config_read(char *cfgName)
 			autosave_interval=atoi(w2)*1000;
 			if(autosave_interval <= 0)
 				autosave_interval = DEFAULT_AUTOSAVE_INTERVAL;
+		} else if(strcmpi(w1,"motd_txt")==0){
+			strcpy(motd_txt,w2);
+		} else if(strcmpi(w1,"help_txt")==0){
+			strcpy(help_txt,w2);
 		}
 	}
 	fclose(fp);
@@ -1332,7 +1340,7 @@ int do_init(int argc,char *argv[])
 	nick_db = strdb_init(24);
 	charid_db = numdb_init();
 
-	grfio_init((argc>5)? argv[5]:GRF_PATH_FILENAME);
+	grfio_init((argc>6)? argv[6]:GRF_PATH_FILENAME);
 	map_readallmap();
 
 	add_timer_func_list(map_clearflooritem_timer,"map_clearflooritem_timer");

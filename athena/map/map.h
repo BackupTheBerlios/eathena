@@ -10,8 +10,8 @@
 #define AREA_SIZE 20
 #define LOCAL_REG_NUM 16
 #define LIFETIME_FLOORITEM 60
-#define DAMAGELOG_SIZE 16
-#define LOOTITEM_SIZE 20
+#define DAMAGELOG_SIZE 30
+#define LOOTITEM_SIZE 10
 #define MAX_SKILL_LEVEL 100
 #define MAX_STATUSCHANGE 192
 #define MAX_SKILLUNITGROUP	32
@@ -248,7 +248,6 @@ struct map_session_data {
 	int eventtimer[MAX_EVENTTIMER];
 
 	int last_skillid,last_skilllv;		// Added by RoVeRT
-	int skill_limit[350];
 	struct{
 		char name[24];
 		int state;
@@ -339,8 +338,6 @@ struct mob_data {
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL/2];
 	char npc_event[50];
-
-	int skill_limit[350];			// Added by RoVeRT
 };
 struct pet_data {
 	struct block_list bl;
@@ -479,6 +476,10 @@ struct mons_data {
 extern struct map_data map[];
 extern int map_num;
 extern int autosave_interval;
+
+extern char motd_txt[];
+extern char help_txt[];
+
 
 // éIëSëÃèÓïÒ
 void map_setusers(int);

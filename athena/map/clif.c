@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.23 2004/01/28 00:06:40 rovert Exp $
+// $Id: clif.c,v 1.24 2004/02/01 22:57:32 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -3117,7 +3117,7 @@ int clif_skill_estimation(struct map_session_data *sd,struct block_list *dst)
 	WBUFW(buf,18)=battle_get_elem_type(&md->bl);
 	for(i=0;i<9;i++)
 		WBUFB(buf,20+i)= battle_attr_fix(100,i+1,mob_db[md->class].element);
-	
+
 	if(sd->status.party_id>0)
 		clif_send(buf,packet_len_table[0x18c],&sd->bl,PARTY_AREA);
 	else{
@@ -5490,7 +5490,6 @@ void clif_parse_ChatLeave(int fd,struct map_session_data *sd)
  */
 void clif_parse_TradeRequest(int fd,struct map_session_data *sd)
 {
-	if(sd->npc_id!=0) return;
 	if(battle_config.basic_skill_check == 0 || pc_checkskill(sd,NV_BASIC) >= 1){
 		trade_traderequest(sd,RFIFOL(sd->fd,2));
 	}
@@ -5504,7 +5503,6 @@ void clif_parse_TradeRequest(int fd,struct map_session_data *sd)
  */
 void clif_parse_TradeAck(int fd,struct map_session_data *sd)
 {
-	if(sd->npc_id!=0) return;
 	trade_tradeack(sd,RFIFOB(sd->fd,2));
 }
 
@@ -5514,7 +5512,6 @@ void clif_parse_TradeAck(int fd,struct map_session_data *sd)
  */
 void clif_parse_TradeAddItem(int fd,struct map_session_data *sd)
 {
-	if(sd->npc_id!=0) return;
 	trade_tradeadditem(sd,RFIFOW(sd->fd,2),RFIFOL(sd->fd,4));
 }
 
@@ -5524,7 +5521,6 @@ void clif_parse_TradeAddItem(int fd,struct map_session_data *sd)
  */
 void clif_parse_TradeOk(int fd,struct map_session_data *sd)
 {
-	if(sd->npc_id!=0) return;
 	trade_tradeok(sd);
 }
 
@@ -5534,7 +5530,6 @@ void clif_parse_TradeOk(int fd,struct map_session_data *sd)
  */
 void clif_parse_TradeCansel(int fd,struct map_session_data *sd)
 {
-	if(sd->npc_id!=0) return;
 	trade_tradecancel(sd);
 }
 
@@ -5544,7 +5539,6 @@ void clif_parse_TradeCansel(int fd,struct map_session_data *sd)
  */
 void clif_parse_TradeCommit(int fd,struct map_session_data *sd)
 {
-	if(sd->npc_id!=0) return;
 	trade_tradecommit(sd);
 }
 

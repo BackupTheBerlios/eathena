@@ -611,7 +611,7 @@ int pc_authok(int id,struct mmo_charstatus *st)
 	{
 		char buf[256];
 		FILE *fp;
-		if(	(fp = fopen("motd.txt", "r"))!=NULL){
+		if(	(fp = fopen(motd_txt, "r"))!=NULL){
 			clif_displaymessage(sd->fd,"< Message of the Day >");
 			while (fgets(buf, 250, fp) != NULL){
 				int i;
@@ -682,7 +682,7 @@ int pc_calc_skilltree(struct map_session_data *sd)
 	int i,id=0,flag;
 	int c=sd->status.class;
 
-	if(battle_config.skillup_limit) {
+	if(battle_config.skillup_limit && c >= 0 && c < 23) {
 		int skill_point = pc_calc_skillpoint(sd);
 		if(skill_point < 9)
 			c = 0;
@@ -742,9 +742,8 @@ int pc_calc_skilltree(struct map_session_data *sd)
 				if(!battle_config.skillfree) {
 					for(j=0;j<5;j++) {
 						if( skill_tree[c][i].need[j].id &&
-							pc_checkskill(sd,skill_tree[c][i].need[j].id) <
-							skill_tree[c][i].need[j].lv
-						 ) f=0;
+							pc_checkskill(sd,skill_tree[c][i].need[j].id) < skill_tree[c][i].need[j].lv)
+							f=0;
 					}
 				}
 				if(f && sd->status.skill[id].id==0 ){

@@ -1,18 +1,18 @@
-ï»¿==========================================================================
- Athena dev 2.1.1 mod0659 to present db reference
+==========================================================================
+ Athena dev 2.1.1 mod0659 Œ»İ‚Ìdb‚ÌƒŠƒtƒ@ƒŒƒ“ƒX{ƒ¿
 --------------------------------------------------------------------------
 
-< As for this file what? >
+< ‚±‚Ìƒtƒ@ƒCƒ‹‚Í‰½H >
 
- reference of setting methode of the db filf in Athena
+ Athena‚Ìdbƒtƒ@ƒCƒ‹‚Ìİ’è•û–@‚ÌƒŠƒtƒ@ƒŒƒ“ƒX‚Å‚·B
 
 
-< dbâ€šÃŒÆ’Å Æ’XÆ’g >
+< db‚ÌƒŠƒXƒg >
 
-cast_db.txt	casting time of skill and setting delay and maintenance time etc.
-skill_db.txt	setting the data of the skill
-skill_require_db.txt	setting skill working condition
-pet_db.txt	pet data settings
+cast_db.txt	ƒXƒLƒ‹‚ÌƒLƒƒƒXƒeƒBƒ“ƒOŠÔ‚ÆƒfƒBƒŒƒCAˆÛŠÔ“™‚ğİ’èB
+skill_db.txt	ƒXƒLƒ‹‚Ìƒf[ƒ^‚ğİ’èB
+skill_require_db.txt	ƒXƒLƒ‹g—pğŒ‚ğİ’èB
+pet_db.txt	ƒyƒbƒg‚Ìƒf[ƒ^‚ğİ’èB
 
 
 ==========================================================================
@@ -21,15 +21,15 @@ pet_db.txt	pet data settings
 
 id,cast_list,delay_list,upkeep_time,upkeep_time2
 
-id: ID of skill
-cast_list: Casting time of skill. When setting per level use ":" for a delimiter.
-delay_list: Delay time of skill. When setting per level use ":" for a delimiter.
-upkeep_time: Maintenance time of skill. When setting per level use ":" for a delimiter.
-upkeep_time2: Maintenance time of the abnormality state which happens with skill. When setting set leven use ":" for a delimiter. (Simply as for speed decrease being to use upkeep_time.)
+id: ƒXƒLƒ‹‚ÌID‚Å‚·B
+cast_list: ƒXƒLƒ‹‚ÌƒLƒƒƒXƒeƒBƒ“ƒOŠÔ‚ğİ’è‚µ‚Ü‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+delay_list: ƒXƒLƒ‹‚ÌƒfƒBƒŒƒCŠÔ‚ğİ’è‚µ‚Ü‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+upkeep_time:ƒXƒLƒ‹‚ÌˆÛŠÔ‚ğİ’è‚µ‚Ü‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+upkeep_time2:ƒXƒLƒ‹‚É‚æ‚Á‚Ä‹N‚±‚éó‘ÔˆÙí‚ÌˆÛŠÔ‚ğİ’è‚µ‚Ü‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B(‚½‚¾‘¬“xŒ¸­‚Íupkeep_time‚ğg‚¢‚Ü‚·‚Ì‚Å’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢B)
 
-* the state abnormality due to the additional effect of the weapon MG_STONECURSE (petrochemical), MG_FROSTDIVER (freezing), NPC_STUNATTACK (the stun), NPC_SLEEPATTACK (sleep), TF_POISON (the poison), NPC_CURSEATTACK (cursing), NPC_SILENCEATTACK (sleep), NPC_BLINDATTACK (darkness) uses upkeep_time2. (As for level with 10 application) 
-* in case of vital part attack maximum level is 1, but being to be able to modify abnormal time with the level of ãƒãƒƒã‚·ãƒ¥ also multi data inputs are possible. 
-* as for upkeep_time of ãƒã‚­ã‚·ãƒã‚¤ã‚ºãƒ‘ãƒ¯ãƒ¼ and the claw king it is not maintenance time and SP 1 is the time when it decreases. 
+¦•Ší‚Ì’Ç‰ÁŒø‰Ê‚É‚æ‚éó‘ÔˆÙí‚ÍMG_STONECURSE(Î‰»)AMG_FROSTDIVER(“€Œ‹)ANPC_STUNATTACK(ƒXƒ^ƒ“)ANPC_SLEEPATTACK(‡–°)ATF_POISON(“Å)ANPC_CURSEATTACK(ô‚¢)ANPC_SILENCEATTACK(’¾–Ù)ANPC_BLINDATTACK(ˆÃ•)‚Ìupkeep_time2‚ğg‚¢‚Ü‚·B(ƒŒƒxƒ‹‚Í7‚Å“K—p)
+¦‹}ŠUŒ‚‚Ìê‡Å‘åƒŒƒxƒ‹‚Í1‚Å‚·‚ªƒoƒbƒVƒ…‚ÌƒŒƒxƒ‹‚É‚æ‚Á‚ÄˆÙíŠÔ‚ğ•ÏX‚Å‚«‚é‚Ì‚Å•¡”İ’è‚à‰Â”\‚Å‚·B
+¦ƒ}ƒLƒVƒ}ƒCƒYƒpƒ[‚ÆƒNƒ[ƒLƒ“ƒO‚Ìupkeep_time‚ÍˆÛŠÔ‚Å‚Í‚È‚­SP‚ª1Œ¸‚éŠÔ‚Å‚·B
 
 
 ==========================================================================
@@ -38,20 +38,20 @@ upkeep_time2: Maintenance time of the abnormality state which happens with skill
 
 id,range,hit,inf,pl,nk,max,list_num,castcancel,cast_defence_rate,inf2
 
-id: ID of skill
-range: It is bullet range of skill. When setting per level use ":" for a delimiter. If as for -1 in the sense, same as the weapon range of ã‚­ãƒ£ãƒ© -2 if the weapon range of ã‚­ãƒ£ãƒ© +1 and -3 the weapon range of ã‚­ãƒ£ãƒ© it becomes in +2.
-hit: 8- repeated hitting, 6- single-hit
-inf: skill information
-	0- passive, 1- enemy, 2- place, 4- self, 16- friend, 32- trap
-	plural ones are inserted, (adding numerical value) it does not operate just.
-pl: attribute of skill. 
-	0- nothing 1- water 2- area 3- fire 4- wind 5- poison 6- saint 7- darkness 8- sense 9- immortality
-nk: Addition 1 effective 2 blowing throwing
-MaxLv: Maximum level of skill
-list_num: Hit frequency. When setting per level use ":" for a delimiter.
-castcancel: Wheather skill can be canceled. 1 for yes, 0 for no
-cast_defence_rate: Ratio of the defensive power which decreases in the casting. Like ãƒœã‚¦ãƒªãƒ³ã‚°ãƒãƒƒã‚·ãƒ¥ and ã‚¯ãƒ©ãƒ³ãƒ‰ã‚¯ãƒ­ã‚¹ you use in setting of the skill where defense decreases in the skill casting. 
-inf2: Skill information 2 (1- Æ’NÆ’FÆ’XÆ’gÆ’XÆ’LÆ’â€¹(afterwards additional schedule), 2- npc skill, 4- enemy, 8- place, 16- self, 32- friend, 64- skill where the damage enters into all ones which include by your with the trap and 128-PVP mode (only land skill), 256- the skill where the damage enter even by your (only land skill), 512- by your, the skill which cannot use. ) (Active skill of part uses 4, 8, 16, 32 and 64. Now only the Asura supremacy  fist use. )
+id: ƒXƒLƒ‹‚ÌID‚Å‚·B
+range: ƒXƒLƒ‹‚ÌË’ö‹——£‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B-1‚ÍƒLƒƒƒ‰‚Ì•ŠíË’ö‚Æ“¯‚¶‚ÆŒ¾‚¤ˆÓ–¡‚Å-2‚È‚çƒLƒƒƒ‰‚Ì•ŠíË’ö+1A-3‚È‚çƒLƒƒƒ‰‚Ì•ŠíË’ö+2‚É‚È‚è‚Ü‚·B
+hit: ˜A‘Å‚È‚ç8A’P”­‚È‚ç6(ƒXƒLƒ‹‚Ìƒqƒbƒg”‚¶‚á‚ ‚è‚Ü‚¹‚ñB) 
+inf: ƒXƒLƒ‹î•ñ‚Å‚·B
+	0-ƒpƒbƒVƒuA1-“GA2-êŠA4-‘¦”­“®A16-–¡•ûA32-ã©
+	•¡”‚Ì•¨‚ğ“ü‚ê‚é‚Æ(”’l‚ğ‘«‚µ‚Ä)³‚µ‚­“®ì‚µ‚Ü‚¹‚ñB
+pl: ƒXƒLƒ‹‚Ì‘®«‚Å‚·B
+	0-–³ 1-… 2-’n 3-‰Î 4-•— 5-“Å 6-¹ 7-ˆÃ 8-”O 9-•s€
+nk: •t‰Á@1Œø‰Ê@2‚«”ò‚Î‚µ
+MaxLv: ƒXƒLƒ‹‚ÌÅ‘åƒŒƒxƒ‹‚Å‚·B
+list_num: Hit‰ñ”‚ÌƒŠƒXƒg‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+castcancel: ƒXƒLƒ‹‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚é‚©‚Ç‚¤‚©‚ğİ’è‚µ‚Ü‚·B1‚ÍƒLƒƒƒ“ƒZƒ‹‚³‚ê‚é•¨‚Å0‚ÍƒLƒƒƒ“ƒZƒ‹‚³‚ê‚È‚¢•¨‚Å‚·B
+cast_defence_rate: ƒLƒƒƒXƒeƒBƒ“ƒO’†‚É’á‰º‚·‚é–hŒä—Í‚Ì”ä—¦‚Å‚·Bƒ{ƒEƒŠƒ“ƒOƒoƒbƒVƒ…‚âƒNƒ‰ƒ“ƒhƒNƒƒX‚Ì‚æ‚¤‚ÉƒXƒLƒ‹ƒLƒƒƒXƒeƒBƒ“ƒO’†‚É–hŒä‚ªŒ¸‚éƒXƒLƒ‹‚Ìİ’è‚Ég‚¢‚Ü‚·B
+inf2: ƒXƒLƒ‹î•ñ2‚Å‚·B1 - ƒNƒFƒXƒgƒXƒLƒ‹A2 - npc ƒXƒLƒ‹A4-“GA8-êŠA16-‘¦”­“®A32-–¡•ûA64-ã©A128-PVPƒ‚[ƒh‚Å©•ª‚ğŠÜ‚Ş‘S‚Ä‚Ì•¨‚Éƒ_ƒ[ƒW‚ª“ü‚éƒXƒLƒ‹(’n–ÊƒXƒLƒ‹‚Ì‚İ)A256-•’Ê‚Ìg—p‚Å©•ª‚É•K‚¸ƒ_ƒ[ƒW‚ª“ü‚éƒXƒLƒ‹(’n–ÊƒXƒLƒ‹‚Ì‚İ)A512-©•ª‚É‚Íg‚¤‚±‚Æ‚ª‚Å‚«‚È‚¢ƒXƒLƒ‹B(4A8A16A32A64‚Íˆê•”‚ÌƒAƒNƒeƒBƒuƒXƒLƒ‹‚ªg—pB¡‚Íˆ¢C—…”e–PŒ‚Ì‚İg—pB)
 
 
 ==========================================================================
@@ -60,44 +60,43 @@ inf2: Skill information 2 (1- Æ’NÆ’FÆ’XÆ’gÆ’XÆ’LÆ’â€¹(afterwards additional sche
 
 id,list_hp,list_sp,list_hp_rate,list_sp_rate,list_zeny,list_weapon,state,spiritball,itemid1,amount1,itemid2,amount2,itemid3,amount3,itemid4,amount4,itemid5,amount5
 
-iid: It is ID of skill. 
-list_hp: It is the quantity of HP which decreases with skill use. When it sets classified by level, ": "You use. 
-list_sp: It is the quantity of SP which decreases with skill use. When it sets classified by level, ": "You use. 
-list_hp_rate: It is the ratio of HP which decreases with skill use. When it sets classified by level, ": "You use. (Are not the ratio of maximum and HP presently are the ratio of HP. ) 
-list_sp_rate: It is the ratio of SP which decreases with skill use. When it sets classified by level, ": "You use. (Are not the ratio of maximum and SP presently are the ratio of SP. ) 
-list_zeny: It is the quantity of ã‚¼ãƒ‹ which decreases with skill use. When it sets classified by level, ": "You use. 
-list_weapon: The weapon which can use skill is set. 
-99 - All weapons, 0 - the bare hand, 1 - the trench knife, 2 - the one hand sword, 3 - the both hands sword, 4 - the one hand spear, 
-5 - the both hands spear, 6 - the one hand ax, 7 - the both hands ax, 8 - the one hand sluggishly the vessel, 9 - the both hands it is sluggish the vessel, 10 - the rod, 
-11 - the bow, 12 - the knuckle, 13 - the musical instrument, 14 - the rod, 15 - the book, 16 - Qatar, 
-17 - 22: When two swords style 
-plural is set, ": "You use. 
-state: Condition in order to use skill is set. Plural setting is not possible. 
-none - Condition is not 
-hiding - ãƒã‚¤ãƒ‡ã‚£ãƒ³ã‚° state (rear ãƒã‚¤ãƒ‡ã‚£ãƒ³ã‚° of skill use is cancelled) 
-cloacking - claw king state. 
-hidden: ãƒã‚¤ãƒ‡ã‚£ãƒ³ã‚° and clocking state 
-riding: 
-where it is riding in ãƒšã‚³ãƒšã‚³ falcon: 
-where the é·¹ is accompanied cart: 
-where the cart is attached shield: 
-where it has the seal sight: Sight state 
-explosionspirits: Rupture wave motion state 
-recover_weight_rate: The weight which can be recovered naturally 
-move_enable: Skill use position movement the place where it is possible 
-water: Foot water 
-spiritball: It is the number of air bullets which are necessary for skill use. When it sets classified by level, ": "You use. 
-itemid1: Is necessary for skill use ID
-amount1: of the item which When the number of items which are necessary for skill use (number 0 is when there is ID of the item, the item however it does not decrease, reaches the point where it has the necessity to have that item as a catalyst. ) 
-itemid2: On same 
-amount2: On same 
-itemid3: On same 
-amount3: On same 
-itemid4: On same 
-amount4: On same 
-itemid5: On same 
-amount5: On same 
-
+id: ƒXƒLƒ‹‚ÌID‚Å‚·B
+list_hp: ƒXƒLƒ‹g—p‚ÅŒ¸‚éHP‚Ì—Ê‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+list_sp: ƒXƒLƒ‹g—p‚ÅŒ¸‚éSP‚Ì—Ê‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+list_hp_rate: ƒXƒLƒ‹g—p‚ÅŒ¸‚éHP‚Ì”ä—¦‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B(Å‘åHP‚Ì”ä—¦‚Å‚Í‚È‚­Œ»İHP‚Ì”ä—¦‚Å‚·B)
+list_sp_rate: ƒXƒLƒ‹g—p‚ÅŒ¸‚éSP‚Ì”ä—¦‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B(Å‘åSP‚Ì”ä—¦‚Å‚Í‚È‚­Œ»İSP‚Ì”ä—¦‚Å‚·B)
+list_zeny: ƒXƒLƒ‹g—p‚ÅŒ¸‚éƒ[ƒj‚Ì—Ê‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+list_weapon: ƒXƒLƒ‹‚ğg‚¤‚±‚Æ‚ª‚Å‚«‚é•Ší‚ğİ’è‚µ‚Ü‚·B
+	99 - ‘S‚Ä‚Ì•ŠíA0 - ‘fèA1 - ’ZŒ•A2 - •ĞèŒ•A3 - —¼èŒ•A4 - •Ğè‘„A
+	5 - —¼è‘„A6 - •Ğè•€A7 - —¼è•€A8 - •Ğè“İŠíA9 - —¼è“İŠíA10 - ƒƒbƒhA
+	11 - ‹|A12 - ƒiƒbƒNƒ‹A13 - ŠyŠíA14 - •ÚA15 - –{A16 - ƒJƒ^[ƒ‹A
+	17~22: “ñ“—¬
+	•¡”‚ğİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+state:ƒXƒLƒ‹‚ğg—p‚·‚éˆ×‚ÌğŒ‚ğİ’è‚µ‚Ü‚·B•¡”‚Ìİ’è‚Í‚Å‚«‚Ü‚¹‚ñB
+	none - ğŒ–³‚µ
+	hiding - ƒnƒCƒfƒBƒ“ƒOó‘Ô
+	cloacking - ƒNƒ[ƒLƒ“ƒOó‘ÔB
+	hidden: ƒnƒCƒfƒBƒ“ƒO‚âƒNƒƒbƒLƒ“ƒOó‘Ô
+	riding: ƒyƒRƒyƒR‚Éæ‚Á‚Ä‚¢‚é
+	falcon: ‘é‚ğ˜A‚ê‚Ä‚¢‚é
+	cart: ƒJ[ƒg‚ğ’…‚¯‚Ä‚¢‚é
+	shield: ƒV[ƒ‹ƒh‚ğ‚Á‚Ä‚¢‚é
+	sight: ƒTƒCƒgó‘Ô
+	explosionspirits: ”š—ô”g“®ó‘Ô
+	recover_weight_rate: ©‘R‰ñ•œ‚Å‚«‚éd—Ê
+	move_enable: ƒXƒLƒ‹g—pˆÊ’u‚ªˆÚ“®‰Â”\‚ÈêŠ
+	water: ‘«Œ³‚ª…
+spiritball: ƒXƒLƒ‹g—p‚É•K—v‚È‹C’e‚Ì”‚Å‚·BƒŒƒxƒ‹•Ê‚Éİ’è‚·‚éê‡‚Íu:v‚ğg‚¢‚Ü‚·B
+itemid1: ƒXƒLƒ‹g—p‚É•K—v‚ÈƒAƒCƒeƒ€‚ÌID
+amount1: ƒXƒLƒ‹g—p‚É•K—v‚ÈƒAƒCƒeƒ€‚Ì”(”‚ª0‚Ìê‡ƒAƒCƒeƒ€‚ÌID‚ª‚ ‚é‚ÆƒAƒCƒeƒ€‚ÍŒ¸‚ç‚È‚¢‚¯‚ÇG”}‚Æ‚µ‚Ä‚»‚ÌƒAƒCƒeƒ€‚ğ‚Á‚Ä‚¢‚é•K—v‚ª‚ ‚é‚æ‚¤‚É‚È‚è‚Ü‚·B)
+itemid2: ã“¯
+amount2: ã“¯
+itemid3: ã“¯
+amount3: ã“¯
+itemid4: ã“¯
+amount4: ã“¯
+itemid5: ã“¯
+amount5: ã“¯
 
 
 ==========================================================================
@@ -106,27 +105,27 @@ amount5: On same
 
  MobID,Name,JName,ItemID,EggID,AcceID,FoodID,Fullness,HungryDelay ,R_Hungry,R_Full,Intimate,Die,Capture,Speed,S_Performance,talk_convert_class,attack_rate,defence_attack_rate,change_target_rate,pet_script
 
-MobID: It is monster ID. 
-Name: English name (dummy) 
-JName: Name 
-ItemID: Item ID
-EggID: for capture Item ID
-AcceID: of egg Item ID
-FoodID: of equipment accessory Item ID
-Fullness: of feed Full degree of stomach increasing rate %
-HungryDelay: with the feed of 1 time Full the degree of stomach 1% the time when it catches in order to decrease (second) 
-R_Hungry: Hungry time feed doing true density growth 
-R_Full: Very full at the time of the stomach the feed doing true density decrease quantity 
-Intimate: When capturing true density 
-Die: When dying true density decrease quantity 
-Capture: Capture ratio (ten thousand minute ratio) 
-Speed: Drift speed 
-S_Performance: Whether or not there is ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ•ã‚©ãƒãƒ³ã‚¹, (1 is and 0 is not) 
-talk_convert_class: Speech modification to those of other pet. Monster ID of the pet which would like to modify is inserted. In case of 0 without modification when minus is inserted, anything other than emotion (the speech) everything it is ignored. 
-attack_rate: Backing probability. When (ten thousand minute ratio) the master set up attack. 
-defence_attack_rate: Backing probability. When (ten thousand minute ratio) the master receives attack. 
-change_target_rate: The probability which modifies attack goal. (Ten thousand minute ratio) 
-pet_script: When having the pet, setting the status bonus which is applied. 
+MobID: ƒ‚ƒ“ƒXƒ^[ID‚Å‚·B
+Name: ‰pŒê–¼‘O(ƒ_ƒ~[)
+JName: –¼‘O
+ItemID: •ßŠl—p‚ÌƒAƒCƒeƒ€ID
+EggID: —‘‚ÌƒAƒCƒeƒ€ID
+AcceID: ‘•”õƒAƒNƒZƒTƒŠ[‚ÌƒAƒCƒeƒ€ID
+FoodID: ‰a‚ÌƒAƒCƒeƒ€ID
+Fullness: 1‰ñ‚Ì‰a‚Å‚Ì–• “x‘‰Á—¦%
+HungryDelay: –• “x‚ª1%Œ¸‚éˆ×‚É‚©‚©‚éŠÔ(•b)
+R_Hungry: ‹ó• ‰a‚â‚èe–§“x‘‰Á—Ê
+R_Full: ‚Æ‚Ä‚à–• ‰a‚â‚èe–§“xŒ¸­—Ê
+Intimate: •ßŠle–§“x
+Die: €–Se–§“xŒ¸­—Ê
+Capture: •ßŠl—¦(–œ•ª—¦)
+Speed: ˆÚ“®‘¬“x
+S_Performance: ƒXƒyƒVƒƒƒ‹ƒpƒtƒHƒ}ƒ“ƒX‚ª‚ ‚é‚©‚Ç‚¤‚©(1‚Å‚ ‚è0‚Å‚È‚µ)
+talk_convert_class: ‘äŒ‚ğ‘¼‚Ìƒyƒbƒg‚Ì•¨‚É•ÏXB•ÏX‚µ‚½‚¢ƒyƒbƒg‚Ìƒ‚ƒ“ƒXƒ^[ID‚ğ“ü‚ê‚Ü‚·B0‚Ìê‡•ÏX‚È‚µ‚Åƒ}ƒCƒiƒX‚ğ“ü‚ê‚é‚ÆƒGƒ‚[ƒVƒ‡ƒ“ˆÈŠO‚Ì•¨(‘äŒ)‚Í‘S‚Ä–³‹‚³‚ê‚Ü‚·B
+attack_rate: x‰‡UŒ‚Šm—¦B(–œ•ª—¦) ål‚ªUŒ‚‚ğ‚µ‚©‚¯‚½ê‡B
+defence_attack_rate: x‰‡UŒ‚Šm—¦B(–œ•ª—¦) ål‚ªUŒ‚‚ğó‚¯‚½ê‡B
+change_target_rate: UŒ‚–Ú•W‚ğ•ÏX‚·‚éŠm—¦B(–œ•ª—¦)
+pet_script: ƒyƒbƒg‚ğ‚Á‚Ä‚¢‚é“K—p‚³‚ê‚éƒXƒe[ƒ^ƒXƒ{[ƒiƒX‚ğİ’èB
 
 
 

@@ -487,22 +487,24 @@ int battle_get_def(struct block_list *bl)
 	else if(bl->type==BL_PET)
 		def = mob_db[((struct pet_data *)bl)->class].def;
 
-	if(sc_data) {
-		if( sc_data[SC_PROVOKE].timer!=-1 && bl->type != BL_PC)
-			def = (def*(100 - 6*sc_data[SC_PROVOKE].val1)+50)/100;
-		if( sc_data[SC_DRUMBATTLE].timer!=-1 && bl->type != BL_PC)
-			def += sc_data[SC_DRUMBATTLE].val3;
-		if(sc_data[SC_POISON].timer!=-1 && bl->type != BL_PC)
-			def = def*75/100;
-		if(sc_data[SC_ETERNALCHAOS].timer!=-1 && bl->type != BL_PC)
-			def = 0;
-		if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
-			def >>= 1;
-	}
-	if(skilltimer != -1) {
-		int def_rate = skill_get_castdef(skillid);
-		if(def_rate != 0)
-			def = (def * (100 - def_rate))/100;
+	if(def < 1000000) {
+		if(sc_data) {
+			if( sc_data[SC_PROVOKE].timer!=-1 && bl->type != BL_PC)
+				def = (def*(100 - 6*sc_data[SC_PROVOKE].val1)+50)/100;
+			if( sc_data[SC_DRUMBATTLE].timer!=-1 && bl->type != BL_PC)
+				def += sc_data[SC_DRUMBATTLE].val3;
+			if(sc_data[SC_POISON].timer!=-1 && bl->type != BL_PC)
+				def = def*75/100;
+			if(sc_data[SC_ETERNALCHAOS].timer!=-1 && bl->type != BL_PC)
+				def = 0;
+			if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
+				def >>= 1;
+		}
+		if(skilltimer != -1) {
+			int def_rate = skill_get_castdef(skillid);
+			if(def_rate != 0)
+				def = (def * (100 - def_rate))/100;
+		}
 	}
 	if(def < 0) def = 0;
 	return def;
@@ -519,9 +521,11 @@ int battle_get_mdef(struct block_list *bl)
 	else if(bl->type==BL_PET)
 		mdef = mob_db[((struct pet_data *)bl)->class].mdef;
 
-	if(sc_data) {
-		if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
-			mdef = mdef*125/100;
+	if(mdef < 1000000) {
+		if(sc_data) {
+			if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
+				mdef = mdef*125/100;
+		}
 	}
 	if(mdef < 0) mdef = 0;
 	return mdef;
@@ -1562,10 +1566,8 @@ static struct Damage battle_calc_pet_weapon_attack(
 		}
 	}
 
-	if(def1 >= 10000) {
-		if(damage > 0)
-			damage = 1;
-	}
+	if(def1 >= 1000000 && damage > 0)
+		damage = 1;
 
 	if(battle_config.skill_min_damage) {
 		if(div_ < 255) {
@@ -1638,8 +1640,8 @@ static struct Damage battle_calc_mob_weapon_attack(
 			t_sc_data[SC_AUTOCOUNTER].val4 = 1;
 			if(sc_data && sc_data[SC_AUTOCOUNTER].timer == -1) {
 				int range = battle_get_range(target);
-				if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range) ||
-					(target->type == BL_MOB && range <= 3 && dist <= range) )
+				if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range+1) ||
+					(target->type == BL_MOB && range <= 3 && dist <= range+1) )
 					t_sc_data[SC_AUTOCOUNTER].val3 = src->id;
 			}
 			return wd;
@@ -1967,10 +1969,8 @@ static struct Damage battle_calc_mob_weapon_attack(
 		}
 	}
 
-	if(def1 >= 10000) {
-		if(damage > 0)
-			damage = 1;
-	}
+	if(def1 >= 1000000 && damage > 0)
+		damage = 1;
 
 	if(battle_config.skill_min_damage) {
 		if(div_ < 255) {
@@ -2055,8 +2055,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 			t_sc_data[SC_AUTOCOUNTER].val4 = 1;
 			if(sc_data && sc_data[SC_AUTOCOUNTER].timer == -1) {
 				int range = battle_get_range(target);
-				if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range) ||
-					(target->type == BL_MOB && range <= 3 && dist <= range) )
+				if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range+1) ||
+					(target->type == BL_MOB && range <= 3 && dist <= range+1) )
 					t_sc_data[SC_AUTOCOUNTER].val3 = src->id;
 			}
 			return wd;
@@ -2802,7 +2802,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		}
 	}
 
-	if(def1 >= 10000) {
+	if(def1 >= 1000000) {
 		if(damage > 0)
 			damage = 1;
 		if(damage2 > 0)
@@ -3087,9 +3087,9 @@ struct Damage battle_calc_magic_attack(
 	if(div_>1 && skill_num != WZ_VERMILION)
 		damage*=div_;
 
-	if(mdef1 >= 10000 && damage > 0) {
+	if(mdef1 >= 1000000 && damage > 0)
 		damage = 1;
-	}
+
 	if(battle_config.skill_min_damage) {
 		if(damage > 0 && damage < div_)
 			damage = div_;
@@ -3207,7 +3207,7 @@ struct Damage  battle_calc_misc_attack(
 	if(div_>1)
 		damage*=div_;
 
-	if(damage > 0 && (damage < div_ || (battle_get_def(target) >= 10000 && battle_get_mdef(target) >= 10000) ) ) {
+	if(damage > 0 && (damage < div_ || (battle_get_def(target) >= 1000000 && battle_get_mdef(target) >= 1000000) ) ) {
 		damage = div_;
 	}
 
@@ -3559,6 +3559,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.skillfree = 0;
 	battle_config.skillup_limit = 0;
 	battle_config.wp_rate=100;
+	battle_config.pp_rate=100;
 	battle_config.monster_active_enable=1;
 	battle_config.monster_damage_delay_rate=100;
 	battle_config.monster_loot_type=0;
@@ -3578,6 +3579,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.pet_damage_support=0;
 	battle_config.pet_support_rate=100;
 	battle_config.pet_attack_exp_to_master=0;
+	battle_config.pet_attack_exp_rate=100;
 	battle_config.skill_min_damage=0;
 	battle_config.finger_offensive_type=0;
 	battle_config.heal_exp=0;
@@ -3612,6 +3614,8 @@ int battle_config_read(const char *cfgName)
 	battle_config.vit_penaly_type = 0;
 	battle_config.vit_penaly_count = 3;
 	battle_config.vit_penaly_num = 0;
+	battle_config.pc_skill_reiteration = 0;
+	battle_config.monster_skill_reiteration = 0;
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 	fp=fopen(cfgName,"r");
 	if(fp==NULL){
@@ -3660,6 +3664,7 @@ int battle_config_read(const char *cfgName)
 			{ "player_skillfree", &battle_config.skillfree },
 			{ "player_skillup_limit", &battle_config.skillup_limit },
 			{ "weapon_produce_rate",	&battle_config.wp_rate				},
+			{ "potion_produce_rate",	&battle_config.pp_rate				},
 			{ "monster_active_enable",	&battle_config.monster_active_enable},
 			{ "monster_damage_delay_rate",	&battle_config.monster_damage_delay_rate		},
 			{ "monster_loot_type",		&battle_config.monster_loot_type	},
@@ -3679,6 +3684,7 @@ int battle_config_read(const char *cfgName)
 			{ "pet_damage_support",	&battle_config.pet_damage_support },
 			{ "pet_support_rate",	&battle_config.pet_support_rate },
 			{ "pet_attack_exp_to_master",	&battle_config.pet_attack_exp_to_master },
+			{ "pet_attack_exp_rate",	&battle_config.pet_attack_exp_rate },
 			{ "skill_min_damage",		&battle_config.skill_min_damage		},
 			{ "finger_offensive_type",	&battle_config.finger_offensive_type},
 			{ "heal_exp",				&battle_config.heal_exp				},
@@ -3713,6 +3719,8 @@ int battle_config_read(const char *cfgName)
 			{ "vit_penaly_type", &battle_config.vit_penaly_type },
 			{ "vit_penaly_count", &battle_config.vit_penaly_count },
 			{ "vit_penaly_num", &battle_config.vit_penaly_num },
+			{ "player_skill_reiteration", &battle_config.pc_skill_reiteration },
+			{ "monster_skill_reiteration", &battle_config.monster_skill_reiteration },
 		{ "item_rate_equip",	&battle_config.item_rate_equip },		// Added by RoVeRT
 		{ "item_rate_card",	&battle_config.item_rate_card },
 		{ "prevent_logout", 	&battle_config.prevent_logout },		/// End Addition
