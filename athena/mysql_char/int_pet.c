@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static struct dbt *pet_db;
 struct s_pet *pet_pt;
 static int pet_newid = 10000;
 

@@ -3,7 +3,7 @@
 // SQL conversion by Jioh L. Jung
 //
 #include "char.h"
-
+#include "itemdb.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -15,7 +15,7 @@ struct storage *storage=NULL;
 
 // storage data -> DB conversion
 int storage_tosql(int account_id,struct storage *p){
-	int i,j;
+	int i;
 	int eqcount=1;
 	int noteqcount=1;
 	struct itemtemp mapitem;
@@ -150,7 +150,6 @@ int mapif_parse_LoadStorage(int fd){
 int mapif_parse_SaveStorage(int fd){
 	int account_id=RFIFOL(fd,4);
 	int len=RFIFOW(fd,2);
-	int i;
 	
 	if(sizeof(struct storage)!=len-8){
 		printf("inter storage: data size error %d %d\n",sizeof(struct storage),len-8);

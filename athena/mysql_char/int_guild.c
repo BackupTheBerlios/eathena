@@ -525,8 +525,8 @@ int mapif_guild_leaved(int guild_id,int account_id,int char_id,int flag,
 	WBUFL(buf, 6)=account_id;
 	WBUFL(buf,10)=char_id;
 	WBUFB(buf,14)=flag;
-	memcpy(WBUFP(buf,55),name,24);
 	memcpy(WBUFP(buf,15),mes,40);
+	memcpy(WBUFP(buf,55),name,24);
 	mapif_sendall(buf,79);
 	printf("int_guild: guild leaved %d %d %s %s\n",guild_id,account_id,name,mes);
 	return 0;

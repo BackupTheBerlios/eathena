@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.2 2004/01/25 16:45:36 rovert Exp $
+// $Id: char.c,v 1.3 2004/02/02 17:59:57 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 //
 // original code from athena
@@ -81,7 +81,7 @@ struct point start_point={"new_1-1.gat", 53,111};
 
 //=====================================================================================================
 int mmo_char_tosql(int char_id, struct mmo_charstatus *p){
-	int i,j,testcount;
+	int i;
 	int eqcount=1;
 	int noteqcount=1;
 
@@ -279,8 +279,6 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 	int dbeqcount=1;
 	int dbnoteqcount=1;
 	struct itemtemp dbitem;
-	struct timeval tv;
-	char tmpstr[256];
 	char tablename[16];
 	char selectoption[16];
 	switch (tableswitch){
@@ -750,7 +748,6 @@ int mmo_char_sql_init(void) {
 
 
 int make_new_char_sql(int fd,unsigned char *dat){
-	int i=0;
 	struct char_session_data *sd;
 	char t_name[100];
 	FILE *logfp;
@@ -944,10 +941,10 @@ int mmo_char_send006b(int fd, struct char_session_data *sd){
 		WFIFOL(fd, offset+(i*106)+36) = char_dat[0].manner;
 
 		WFIFOW(fd, offset+(i*106)+40) = char_dat[0].status_point;
-    		WFIFOW(fd,offset+(i*106)+42) = (char_dat[j].hp > 0x7fff)? 0x7fff:char_dat[j].hp;
-    		WFIFOW(fd,offset+(i*106)+44) = (char_dat[j].max_hp > 0x7fff)? 0x7fff:char_dat[j].max_hp;
-    		WFIFOW(fd,offset+(i*106)+46) = (char_dat[j].sp > 0x7fff)? 0x7fff:char_dat[j].sp;
-    		WFIFOW(fd,offset+(i*106)+48) = (char_dat[j].max_sp > 0x7fff)? 0x7fff:char_dat[j].max_sp;
+    		WFIFOW(fd,offset+(i*106)+42) = (char_dat[0].hp > 0x7fff)? 0x7fff:char_dat[0].hp;
+    		WFIFOW(fd,offset+(i*106)+44) = (char_dat[0].max_hp > 0x7fff)? 0x7fff:char_dat[0].max_hp;
+    		WFIFOW(fd,offset+(i*106)+46) = (char_dat[0].sp > 0x7fff)? 0x7fff:char_dat[0].sp;
+    		WFIFOW(fd,offset+(i*106)+48) = (char_dat[0].max_sp > 0x7fff)? 0x7fff:char_dat[0].max_sp;
 		WFIFOW(fd, offset+(i*106)+50) = DEFAULT_WALK_SPEED; // char_dat[0].speed;
 		WFIFOW(fd, offset+(i*106)+52) = char_dat[0].class;
 		WFIFOW(fd, offset+(i*106)+54) = char_dat[0].hair;
@@ -1373,7 +1370,6 @@ int parse_char(int fd){
 	int i, ch;
 	char email[40];
 	struct char_session_data *sd;
-	unsigned char *p=(unsigned char *) &session[fd]->client_addr.sin_addr;
 	
 	if(login_fd<0)
 		session[fd]->eof=1;
@@ -1472,11 +1468,9 @@ int parse_char(int fd){
 				WFIFOL(fd, 2) =char_dat[0].char_id;
 				i=search_mapserver(char_dat[0].last_point.map);
 				if(i<0){
-					printf ("cannot find proper map server - set default as prontera\n");
-					memcpy(char_dat[0].last_point.map,"prontera.gat", 16);
-					i=search_mapserver(char_dat[0].last_point.map);
-					if(i<0)
-						i=0;
+					close(fd);
+					session[fd]->eof=1;
+					return 0;
 				}
 				memcpy(WFIFOP(fd, 6), char_dat[0].last_point.map, 16);				
 				WFIFOL(fd, 22) =server[i].ip;
@@ -1892,6 +1886,7 @@ int char_config_read(const char *cfgName){
 	printf("set ip address.....\n");
 //Read ItemDB	
 	do_init_itemdb();
+	return 0;
 }
 
 int do_init(int argc, char **argv){

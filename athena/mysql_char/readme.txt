@@ -1,5 +1,10 @@
 ﻿//Encoded with UTF-8 (UNICODE)
 //---------------------------------------------
+// V.018 - Aarlex
+1. ADD Makefile & GNUmakefile
+2. fix guild_leave.
+3. fix char select windows HP & SP value error.
+
 // V.017 - Aarlex
 1. fix guild member view job update.(For mod-0728)
    inter.c
