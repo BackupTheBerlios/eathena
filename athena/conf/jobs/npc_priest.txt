@@ -37,9 +37,9 @@ noaid:
 	close;
 
 check:
-	if(@priest==1) goto subexam;
-	if(@priest==2) goto quest;
-	if(@priest==3) goto getpriest;
+	if(jobq_pri==1) goto subexam;
+	if(jobq_pri==2) goto quest;
+	if(jobq_pri==3) goto getpriest;
 	mes "[^0000FFHigh Priest^000000]";
 	mes "Ah! So you've come to obtain a higher form of being - You have my admiration!";
 	mes "Now let the ^FF0000Eligibility Exam^000000 begin!";
@@ -62,7 +62,7 @@ check:
 	next;
 	mes "[^0000FFHigh Priest^000000]";
 	mes "^0000FF"+strcharinfo(0)+"^000000 is it? ...Good - we are now ready to give you the ^FF0000Fundamentals Exam^000000.";
-	set @priest,1;
+	set jobq_pri,1;
 	next;
 	goto exam;
 
@@ -275,7 +275,7 @@ examdone:
 	mes "Congratulations! You have passed the ^FF0000Fundamentals Exam^000000!";
 	announce ""+strcharinfo(0)+" has passed the Fundamentals Exam!",3;
 	set @priest_test,0;
-	set @priest,2;
+	set jobq_pri,2;
 	next;
 	mes "[^0000FFHigh Priest^000000]";
 	mes "You are now ready to take the ^FF0000Quest Exam^000000.";
@@ -389,7 +389,7 @@ getpriest:
 	mes "[^0000FFHigh Priest^000000]";
 	mes "...you will forever be known as...";
 	next;
-	set @priest,0;
+	set jobq_pri,0;
 	jobchange 8;
 	announce ""+strcharinfo(0)+" has become a Priest!",3;
 	mes "[^0000FFHigh Priest^000000]";
@@ -405,8 +405,8 @@ getpriest:
 ///  Quest Exam   ///
 /////////////////////
 prontera.gat,275,355,3	script	Nun	79,{
-	if(@priest==3) goto questexamdone;
-	if(@priest==2) goto questexam;
+	if(jobq_pri==3) goto questexamdone;
+	if(jobq_pri==2) goto questexam;
 	mes "[Nun]";
 	mes "Countless heros rest here, I just tend to the cleanliness of their tombstones.";
 	close;
@@ -422,7 +422,7 @@ questexam:
 	
 questexamdone:
 	mes "[Nun]";
-	mes "Congrtulations ^0000FF"+strcharinfo(0)+"^000000 on passing the Quest!";
+	mes "Congratulations ^0000FF"+strcharinfo(0)+"^000000 on passing the Quest!";
 	close;
 
 yes:
@@ -486,7 +486,7 @@ priest_3-1.gat,36,122,4	script	Nun 1	79,{
 	close;
 correct:
 	set @grail,0;
-	set @priest,3;
+	set jobq_pri,3;
 	announce "Correct, "+strcharinfo(0)+" Has Passed The Quest Exam!!!",3;
 	warp "prontera",274,354;
 	close;
@@ -520,7 +520,7 @@ priest_3-1.gat,162,122,4	script	Nun 2	79,{
 	close;
 correct:
 	set @grail,0;
-	set @priest,3;
+	set jobq_pri,3;
 	announce "Correct, "+strcharinfo(0)+" Has Passed The Quest Exam!!!",3;
 	warp "prontera",274,354;
 	close;
