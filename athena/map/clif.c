@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.24 2004/02/01 22:57:32 rovert Exp $
+// $Id: clif.c,v 1.25 2004/02/04 00:02:38 sara-chan Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -4931,6 +4931,10 @@ void clif_parse_LoadEndAck(int fd,struct map_session_data *sd)
 		skill_status_change_start(&sd->bl,SC_ENDURE,10,1,0,0);
 
 	map_foreachinarea(clif_getareachar,sd->bl.m,sd->bl.x-AREA_SIZE,sd->bl.y-AREA_SIZE,sd->bl.x+AREA_SIZE,sd->bl.y+AREA_SIZE,0,sd);
+
+	struct guild *g=guild_search(RFIFOL(fd,2));
+	if(g!=NULL)
+	clif_guild_emblem(sd,g);
 }
 
 /*==========================================
