@@ -3414,6 +3414,20 @@ int skill_unit_onplace(struct skill_unit *src,struct block_list *bl,unsigned int
 			printf("skill_unit_onplace: Unknown skill unit id=%d block=%d\n",sg->unit_id,bl->id);
 		break;*/
 	}
+	if(bl->type==BL_MOB && ss!=bl)	/* スキル使用条件のMOBスキル */
+	{
+		if(battle_config.mob_changetarget_byskill == 1)
+		{
+			int target=((struct mob_data *)bl)->target_id;
+			if(ss->type == BL_PC)
+				((struct mob_data *)bl)->target_id=ss->id;
+			mobskill_use((struct mob_data *)bl,tick,MSC_SKILLUSED|(sg->skill_id<<16));
+			((struct mob_data *)bl)->target_id=target;
+		}
+		else
+			mobskill_use((struct mob_data *)bl,tick,MSC_SKILLUSED|(sg->skill_id<<16));
+	}
+
 	return 0;
 }
 /*==========================================
@@ -5876,7 +5890,6 @@ int skill_unit_timer_sub( struct block_list *bl, va_list ap )
 
 	if(!unit->alive)
 		return 0;
-
 	group=unit->group;
 	range=(unit->range!=0)?unit->range:group->range;
 
@@ -5890,6 +5903,14 @@ int skill_unit_timer_sub( struct block_list *bl, va_list ap )
 	if(unit->alive &&
 		(DIFF_TICK(tick,group->tick)>=group->limit ||
 		 DIFF_TICK(tick,group->tick)>=unit->limit) ){
+		if((group->unit_id >= 0x8f && group->unit_id <= 0x98) && group->unit_id != 0x92) {
+			struct map_session_data *md = map_id2sd(unit->group->src_id);
+			struct item item_tmp;
+			memset(&item_tmp,0,sizeof(item_tmp));
+			item_tmp.nameid=1065;
+			item_tmp.identify=1;
+			if(md != NULL) pc_additem(md,&item_tmp,1);	// 罠返還
+		}
 		skill_delunit(unit);
 	}
 	if(group->unit_id == 0x8d) {
@@ -5900,7 +5921,6 @@ int skill_unit_timer_sub( struct block_list *bl, va_list ap )
 
 	return 0;
 }
-
 /*==========================================
  * スキルユニットタイマー処理
  *------------------------------------------
