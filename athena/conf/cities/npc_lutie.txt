@@ -291,7 +291,7 @@ xmas_in.gat,165,174,4	script	Christmas Girl	711,{
 }
 
 xmas.gat,117,304,4	script	Christmas Guy	712,{
-	if((xmas_npc==3) | (xmas_npc==4)) goto Xmas34;
+	if((xmas_npc==3) || (xmas_npc=4)) goto Xmas34;
 	mes "[Poze]";
 	mes "Merry Christmas!";
 	mes "This is Blessed Christmas Town for every visitors!";

@@ -2,7 +2,7 @@
 
 // Monster Spawns
 
-job_thief1.gat,0,0,0,0	monster	Red Mushroom	1182,180,0,0,0
+job_thief1.gat,0,0,0,0	monster	Orange Mushroom	1182,180,0,0,0
 job_thief1.gat,0,0,0,0	monster	Fabre	1184,50,0,0,0
 job_thief1.gat,0,0,0,0	monster	Chonchon	1183,50,0,0,0
 job_thief1.gat,0,0,0,0	monster	Spore	1014,30,0,0,0
@@ -15,9 +15,9 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 	set @s_flag,0;
 	if(Class==6) goto L00;
 	if((Class !=0) & (Class !=6)) goto L01;
-	if(jobq_thi==3) goto L02;
-	if(jobq_thi==2) goto L03;
-	if(jobq_thi==1) goto L04;
+	if(job_thief_q==3) goto L02;
+	if(job_thief_q==2) goto L03;
+	if(job_thief_q==1) goto L04;
 	mes "[Bogus Man]";
 	mes "Hey!! Novice!";
 	mes "Want to live in Bed of Roses? Want to be Stronger and more Powerful!?";
@@ -99,7 +99,7 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 		mes "Ok! You may go in! But I can't guarantee your safety!! Yahoo!";
 		next;
 		set @TEMP,rand(5);
-		set jobq_thi,jobq_thi+1;
+		set job_thief_q,job_thief_q+1;
 		if(@TEMP != 0) goto warpL03a;
 	  		warp "job_thief1.gat",228,106;
 			close;
@@ -128,10 +128,10 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 	if(Class==6) goto ImThief;
 	if((Class !=0) & (Class !=6)) goto ImOther;
-	if((jobq_thi==3) & ((countitem(1069)>0) | (countitem(1070)>0))) goto L00;
-	if(jobq_thi==3) goto L01;
-	if(jobq_thi==2) goto L02;
-	if(jobq_thi==0) goto L03;
+	if((job_thief_q==3) & ((countitem(1069)>0) | (countitem(1070)>0))) goto L00;
+	if(job_thief_q==3) goto L01;
+	if(job_thief_q==2) goto L02;
+	if(job_thief_q==0) goto L03;
 
 	L00:
 		mes "[Thief Guide]";
@@ -216,7 +216,7 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 					goto L0TEST;
 		L0TEST:
 					if(JobLevel < 10) goto L031a0Neg;	
-					else(jobq_thi==0) goto L031a0;
+					else(job_thief_q==0) goto L031a0;
 
 
 				L031a0:
@@ -225,12 +225,12 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 					mes "Your name is..... Umm..... Where is it....";
 					mes "Ah. I got it, Here it is " + strcharinfo(0) + ".";
 					mes "L~ e~ e~t~'s See.";
-						set jobq_thi,1;
+						set job_thief_q,1;
 						next;
 						mes "[Thief Guide]";
 					mes "Alright.... Refering to your Felony Record from our Inquiry agency, you have a very interesting history. And I think you are capable to Stealing.... Okay.";
 					mes "You " + strcharinfo(0) + " hereby pass the personal Interview!";
-					set jobq_thi,jobq_thi+1;
+					set job_thief_q,job_thief_q+1;
 					next;
 					mes "[Thief Guide]";
 					mes "From now on, Shal we examine your ability for becoming a Thief?";
@@ -390,9 +390,9 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 moc_prydb1.gat,42,133,2	script	Comrade	118,{
 	if(Class==6) goto L00;
 	if((Class !=0) & (Class !=6)) goto L01;
-	if((jobq_thi==0) || (jobq_thi==1)) goto L0100;
-	if(jobq_thi==2) goto L0101;
-	if(jobq_thi==3) goto L0102;
+	if((job_thief_q==0) || (job_thief_q==1)) goto L0100;
+	if(job_thief_q==2) goto L0101;
+	if(job_thief_q==3) goto L0102;
 
 	L0100:
 		mes "[Thief Guide]";

@@ -5,14 +5,14 @@ new_1-3.gat,0,0,0,0	monster	Fabre	1184,50,0,0,0
 
 new_1-1.gat,66,114,1	script	Bulletin Board	111,{
 	mes "^FF0000=================================^000000";
-	mes "^FF0000 ==^000000 ^E40CAAWelcome ^CC0000to^FF90004Ragnarok^0000FFOnline^E40CAA^FF0000==^000000";
+	mes "^FF0000 ==^000000 ^E40CAA[Welcome] ^CC0000to^FF9000Training ^0000FFGround^E40CAA [Welcome] ^FF0000==^000000";
 	mes "^FF0000=================================^000000";
 	close;
 }
 
 new_1-1.gat,117,107,2	script	Guard	105,{
-	set @TEMP,rand(3);
-	if(@TEMP == 1) goto L0;
+	set @TEMP,rand(2);
+	if (@TEMP !=0) goto L0;
 	mes "[Guard]";
 	mes "Go! Newbie! Go! You will see a New sun tomorrow!";
 	close;
@@ -59,26 +59,24 @@ new_1-1.gat,157,124,3	script	Training Ground Chief	56,{
 }
 
 new_1-2.gat,16,183,5	script	Helper	84,{
-	if(signup == 1) goto Lstep2;
-	if(secondstart == 1) goto Lrespawn;
+	if (nov_1_2_cos_c==10) goto Lstep2;
+	if (nov_1_2_cos_c>=11) goto Lrespawn;
 	mes "[Helper]";
 	mes "Heh... I can't find your name on the list.";
 	mes "Could you register first at the front desk?";
 	close;
 
 	Lstep2:
-
 		mes "[Helper]";
 		mes "Heh... I can't find your name on the list.....";
-		mes "Ah! Here you are. Ok. Are you ready?";
+		mes "Ah! Here you are. Ok " + strcharinfo(0) + ". Are you ready?";
 		next;
 		menu "Yes.",Lyes,"No.",Lno;
 
 		Lyes:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Helper]";
 			mes "Well ..We wish you luck.";
-			set secondstart,1;
 			savepoint "new_1-3.gat",96,21;
 			warp "new_1-3.gat",96,21;
 			close;
@@ -98,7 +96,7 @@ new_1-2.gat,16,183,5	script	Helper	84,{
 }
 
 new_1-2.gat,39,183,3	script	Helper	92,{
-	if(signup == 1) goto Lend;
+	if (nov_1_2_cos_c>=10) goto Lend;
 	mes "[Helper]";
 	mes "Your registration has confirmed.I would like to say `Congratulations' also.";
 	mes "I will let you know about 2nd course breifly.";
@@ -112,8 +110,12 @@ new_1-2.gat,39,183,3	script	Helper	92,{
 	mes "[Helper]";
 	mes "Ask the helper located in the left side about the entrance of 2nd Course.";
 	mes "OK,We wish you luck.";
-	set signup,1;
+	if (nov_1_2_cos_c<10) goto Lset;
 	close;
+
+	Lset:
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
+		close;
 	Lend:
 		mes "[Helper]";
 		mes "You can ask the helper located in the left side when you are ready for 2nd course.";
@@ -121,20 +123,18 @@ new_1-2.gat,39,183,3	script	Helper	92,{
 }
 
 new_1-2.gat,78,101,6	script	Helper	105,{
-	if(npc != 1) goto Lcourse1;
-	if(leo != 1) goto Lcourse1;
-	if(manner != 1) goto Lcourse1;
+	if (nov_1_2_cos_c>= 9) goto Lcourse2;
+	mes "[Helper]";
+	mes "I am a helper who will guide you to the 2nd registration office. Please attend all classes in 1st course First.";
+	close;
+
+	Lcourse2:
 		mes "[Helper]";
 		mes "You just finished 1st course... OK.";
 		mes "I will let you go to the 2nd registration office."; 
 		next;
 		warp "new_1-2.gat",44,171;
 		close;
-	Lcourse1:
-	mes "[Helper]";
-	mes "I am a helper who will guide you to the 2nd registration office. Please attend all classes in 1st course First.";
-	close;
-
 }
 
 new_1-2.gat,81,110,4	script	Newbie Instructor	84,{
@@ -229,7 +229,7 @@ new_1-2.gat,81,110,4	script	Newbie Instructor	84,{
 	mes "I know you don't think this is not important right now,but be careful,it causes you the cumulative effects on your character."; 
 	mes "Somehow I believe nice persons will play fair even without this kind of restriction!";
 	next;
-	if(countitem(519)<1) goto Lmilk;
+	if (nov_1_2_cos_c<1) goto Lmilk;
 	mes "[Newbie Instructor]";
 	mes "Well...This is all I can tell you,buddy.Leo Von Frisch will take care of you from now on.";
 	mes "Do your best,Ok? Ragnarok is a worthwhile game.";
@@ -246,13 +246,10 @@ new_1-2.gat,81,110,4	script	Newbie Instructor	84,{
 }
 
 new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
-	if(leo == 1) goto nov12coscM7;
-	set @Leo_1,0;
-	set @Leo_2,0;
-	set @Leo_3,0;
-	set @Leo_4,0;
-	set @Leo_5,0;
-	set @Leo_6,0;
+	if ((nov_1_2_cos_c<7) & (nov_1_2_cos_c>1)) goto Lcontinue;
+	if (nov_1_2_cos_c>7) goto nov12coscM7;
+	if ((nov_1_2_cos_c<7) & (nov_1_2_cos_c>1)) goto nov12coscL7M1;
+	if (nov_1_2_cos_c==7) goto nov12coscE0;
 	mes "[Leo Von Frisch]";
 	mes "Come on! Beginner!! Now You are with an Expert of Ragnarok!!";
 	mes "Me! I am God of beginners and I enlighten your pathetic souls from the Darkened World.";
@@ -260,33 +257,28 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 	mes "You can call me Sir Leo Von Frisch, got that clear?";
 	goto startL0;
 	
-	
-nov12coscM7:
+	nov12coscM7:
 		mes "[Leo Von Frisch]";
 		mes "Um? What's matter? My class is over. Your next course would be 'NPC Guide'....";
 		mes "Or.... Are you willing to attend again?";
 		next;
 		menu "No, Sir! I apologise about my behaviour!",nov12coscM7La,"Yes, Sir!I am!",nov12coscM7Lb;
 
-		
-nov12coscM7La:
+		nov12coscM7La:
 			mes "[Leo Von Frisch]";
 			mes "Feel free to ask something. Dismiss.";
 			close;
-		
-nov12coscM7Lb:
+		nov12coscM7Lb:
 			mes "[Leo Von Frisch]";
 			mes "Alright! I like the way you reply!! Let's get started again!";
 			goto startL0;
-	
-nov12coscL7M1:
+	nov12coscL7M1:
 		mes "[Leo Von Frisch]";
 		mes "Um..something interrupted my class without reason.";
 		mes "Anyhow alright. Shall we begin all over again!";
 		goto startL0;
 		
-	
-startL0:
+	startL0:
 		next;
 		mes "[Leo Von Frisch]";
 		mes "Are you ready!? Answer me!";
@@ -301,33 +293,35 @@ startL0:
 			mes "Ah~ I almost forgot to question you something.";
 			mes "What is the best introduction for `Ragnarok'?";
 			next;
-			set @Leo_1,1;
 			menu "War among human beings",LQ1_1,"War between human beings and monsters",LQ1_2,"World that humans have taken over",LQ1_3,"World humans have coexisted with monsters",LQ1_4;
 		Lno:
 			mes "[Leo Von Frisch]";
 			mes "'Noooo.'?! You said 'Noooo.'! What were you thinking, you rascal! Go get ready to move! Right now!";
 			close;
-	
-		Lrandom:
-			set @rand,rand(8);
-			if(@rand == @Leo_1) goto Lrandom;
-			if(@rand == @Leo_2) goto Lrandom;
-			if(@rand == @Leo_3) goto Lrandom;
-			if(@rand == @Leo_4) goto Lrandom;
-			if(@rand == @Leo_5) goto Lrandom;
-			if(@rand == @Leo_6) goto Lrandom;
-			if(@rand == 2) goto LQ2;
-			if(@rand == 3) goto LQ3;
-			if(@rand == 4) goto LQ4;
-			if(@rand == 5) goto LQ5;
-			if(@rand == 6) goto LQ6;
-			if(@Leo_1 != 1) goto Lrandom;
-			if(@Leo_2 != 2) goto Lrandom;
-			if(@Leo_3 != 3) goto Lrandom;
-			if(@Leo_4 != 4) goto Lrandom;
-			if(@Leo_5 != 5) goto Lrandom;
-			if(@Leo_6 != 6) goto Lrandom;
-			goto LQ7;			
+	Lcontinue:
+		mes "[Leo Von Frisch]";
+		mes "Um..something interrupted my class without reason.";
+		mes "Anyhow alright. Shall we begin all over again!";
+		next;
+		mes "[Leo Von Frisch]";
+		mes "Are you ready!? Answer me!";
+		next;
+		if (nov_1_2_cos_c==1) goto Lc2;
+		if (nov_1_2_cos_c==2) goto Lc2;
+		if (nov_1_2_cos_c==3) goto Lc4;
+		if (nov_1_2_cos_c==4) goto Lc5;
+		if (nov_1_2_cos_c==5) goto Lc6;
+		close;
+		Lc2:
+			menu "Yes sir!",LQ2,"No,I am not ready yet.",Lno;
+		Lc3:
+			menu "Yes sir!",LQ3,"No,I am not ready yet.",Lno;
+		Lc4:
+			menu "Yes sir!",LQ4,"No,I am not ready yet.",Lno;
+		Lc5:
+			menu "Yes sir!",LQ5,"No,I am not ready yet.",Lno;
+		Lc6:
+			menu "Yes sir!",LQ6,"No,I am not ready yet.",Lno;
 		Lend:
 			mes "[Leo Von Frisch]";
 			mes "Umm? What brings you to me? My time is already over.Probably your next course will be 'NPC Information'....";
@@ -343,9 +337,9 @@ startL0:
 				mes "[Leo Von Frisch]";
 				mes "Ok!I love your passionate answer!! Let's begin!";
 				next;
-				goto Lyes;
+				goto LQ2;
 		LQ1_1:
-			set @correct,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Umm...Be cooperate with other people. The world will be end without nothing.";
 			mes "Answer is ^FF0000War between human beings and monsters^000000.";
@@ -355,10 +349,10 @@ startL0:
 			mes "I meant you, dumbhead, alright?";
 			mes "Let's carry on.";
 			next;
-			goto Lrandom;
+			goto LQ2;
 		LQ1_2:
-			set @correct,1;
 			getitem 513,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Yes,that's right. You know well. We are fighting with evil creatures. In most of MMORPG games,they are known as Monsters or commonly just called as Mob.";
 			next;
@@ -367,9 +361,9 @@ startL0:
 			mes "I meant you,dumbhead,alright?";
 			mes "Let's carry on.";
 			next;
-			goto Lrandom;
+			goto LQ2;
 		LQ1_3:
-			set @correct,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "...What the bloody hell are you saying? Why would humans torment creatures for?";
 			mes "Answer is ^FF0000War between human beings and monsters^000000.";
@@ -379,20 +373,19 @@ startL0:
 			mes "I meant you,dumbhead,alright?";
 			mes "Let's carry on.";
 			next;
-			goto Lrandom;
-		LQ1_4:			
-			set @correct,1;
+			goto LQ2;
+		LQ1_4:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Oh well...I fully understand your pursue ideal world...Not now,not now.";
 			mes "Answer is ^FF0000War between human beings and monsters^000000.";
-
 			next;
 			mes "[Leo Von Frisch]";
 			mes "I will keep surprising you with unexpectable questions,concentrate on my lesson.";
 			mes "I meant you,dumbhead,alright?";
 			mes "Let's carry on.";
 			next;
-			goto Lrandom;
+			goto LQ2;
 	LQ2:
 		mes "[Leo Von Frisch]";
 		mes "When you click the shortcut for Ragnarok,it will be automatically connected to patch server,which enables you to continually update game articles. MMORPG game keeps being developed to improve its quality.";
@@ -410,41 +403,44 @@ startL0:
 		mes "^FF0000You can arrange beginning Stats of your character.With that, Your character could be the best for job you wish for.^000000.";
 		mes "So You should consider beginning Stats as well fitting for the job you want your character to be in the future.";
 		next;
+		if(@S_FLAG > 1) goto LQ3; 
 		mes "[Leo Von Frisch]";
 		mes "I give you one easy question!";
 		mes "What is the wrong description for each Stat? You should choose wrong one not right one!!";
 		next;
-		set @Leo_2,2;
 		menu "STR - Increase hit point and maximum weight.",LQ2_1,"AGI - Increase flee rate and attack speed.",LQ2_2,"DEX - Increase accuracy and magic defence.",LQ2_3,"INT - Increase magic attack/defence.",LQ2_4;
 
 		LQ2_1:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "That's wrong!";
 			mes "'DEX -  Increase accuracy and magic defence.'is not correct, it should be:";
 			mes "^FF0000'DEX - Increase accuracy and weapon damage.'^000000.";
 			next;
-			goto Lrandom;
+			goto LQ3;
 		LQ2_2:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "That's wrong!";
 			mes "'DEX -  Increase accuracy and magic defence.'is not correct, it should be:";
 			mes "^FF0000'DEX - Increase accuracy and weapon damage.'^000000.";
 			next;
-			goto Lrandom;
-		LQ2_3:		
-			set @correct,@correct+1;
+			goto LQ3;
+		LQ2_3:
 			getitem 513,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Alright! You got it.";
 			mes "It is not 'DEX - Increase accuracy and magic defence.',correct description is:";
 			mes "^FF0000'DEX - Increase accuracy and weapon damage.'^000000.";
 			mes "This is reward.Take it.";
 			next;
-			goto Lrandom;
+			goto LQ3;
 		LQ2_4:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "That's wrong!";
 			mes "'DEX -  Increase accuracy and magic defence.'is not correct, it should be:";
 			mes "^FF0000'DEX - Increase accuracy and weapon damage.'^000000.";
 			next;
-			goto Lrandom;
+			goto LQ3;
 
 	LQ3:
 		mes "[Leo Von Frisch]";
@@ -470,6 +466,7 @@ startL0:
 		mes "If you don't want to be murdered due to your stupidity, lighten your weight as you can.";
 		mes "You can use Kafra Wearhouse to store items. And it will cost you the different local fee from 35 Zeny to 50 Zeny.";
 		next;
+		if(@S_FLAG > 2) goto LQ4; 
 		mes "[Leo Von Frisch]";
 		mes "Let's take a break~ Phew....";
 		mes "Ah~ I have an idea~ I will give you a 'for-Fun' question.";
@@ -482,36 +479,37 @@ startL0:
 		mes "Ah Ah~ I don't want to show off myself but because I am your tutor. I am just curious. By the way this is just '^990000for fun^000000',you know.";
 		mes "Choose one thing which has nothing to do with me.";
 		next;
-		set @Leo_3,3;
 		menu "Instructor.",LQ3_1,"An Intelligence Officer in the 4th Chivarly of Prontera.",LQ3_2,"Public Prosecutor.",LQ3_3,"I have no idea.",LQ3_4;
 
 		LQ3_1:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Damn you!...... Next!";
 			next;
-			goto Lrandom;
+			goto LQ4;
 		LQ3_2:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Damn you!...... Next!";
 			next;
-			goto Lrandom;
-		LQ3_3:		
-			set @correct,@correct+1;
+			goto LQ4;
+		LQ3_3:
 			mes "[Leo Von Frisch]";
 			mes "Fine! I am not a 'Public Prosecutor' but a ^ff0000'Newbie Tutor^000000!";
 			next;
 			getitem 516,3;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Take this. It is nothing, but I am so pleased that you remembered me in detail.Share with your pals.";
 			next;
-			goto Lrandom;
+			goto LQ4;
 		LQ3_4:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Damn you!...... Next!";
 			next;
-			goto Lrandom;
+			goto LQ4;
 	LQ4:
-
 		mes "[Leo Von Frisch]";
 		mes "When you click 'Item' button,it shows your inventory. Shortcut is 'Alt + E'.";
 		mes "Item windows is devided into 3 parts,the equipment you are wearing is not shown on the item window.";
@@ -531,33 +529,35 @@ startL0:
 		mes "Passive skill means ^FF0000You don't have to spend your SP to use it.It is always in effect^000000.The opposite from Active skill.";
 		mes "Also skills are  ^FF0000possible to register on the Hot key window^000000,you can use your favorite skills quickly and easily this way.";
 		next;
+		if(@S_FLAG > 3) goto LQ5; 
 		mes "[Leo Von Frisch]";
 		mes "One Question for you!";
 		mes "How to see each item's description and the picture with the mouse?";
 		next;
-		set @Leo_4,4;
 		menu "Double Click",LQ4_1,"Right Click",LQ4_2,"Drag & Drop",LQ4_3;
 
 		LQ4_1:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "It is ^FF0000'Right Click'^000000!";
 			next;
-			goto Lrandom;
-		LQ4_2:		
-			set @correct,@correct+1;
+			goto LQ5;
+		LQ4_2:
 			getitem 512,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "It is ^FF0000'Right Click'^000000!Correct!";
 			mes "I will reward you for the correct answer.Take it.";
 			next;
-			goto Lrandom;
+			goto LQ5;
 		LQ4_3:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "It is ^FF0000'Right Click'^000000!";
 			next;
-			goto Lrandom;
+			goto LQ5;
 	LQ5:
 		mes "[Leo Von Frisch]";
 		mes "Ok,Back to the Lesson.";
@@ -587,39 +587,42 @@ startL0:
 		mes "The 'Option'button opens the window that allows you to controll the BGM and Sound Effect and turn on/off them .Shorcut is 'Alt + O'.";
 		mes "After Feb 2002,you can also select a window skin from self-made skins shared in fansites."; 
 		next;
+		if(@S_FLAG > 4) goto LQ6; 
 		mes "[Leo Von Frisch]";
 		mes "Another Question!";
 		mes "Which one is the shortcut for hot key window that hleps you to play easier ?"; 
 		next;
-		set @Leo_5,5;
 		menu "F1",LQ5_1,"F15",LQ5_2,"F16",LQ5_3,"F12",LQ5_4;
 
 		LQ5_1:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "The right key is 'F12'";
 			next;
-			goto Lrandom;
+			goto LQ6;
 		LQ5_2:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "The right key is 'F12'";
 			next;
-			goto Lrandom;
+			goto LQ6;
 		LQ5_3:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "The right key is 'F12'";
 			next;
-			goto Lrandom;
-		LQ5_4:		
-			set @correct,@correct+1;
+			goto LQ6;
+		LQ5_4:
 			getitem 517,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's right.'F12'is correct answer.";
 			mes "This is for you.";
 			next;
-			goto Lrandom;
+			goto LQ6;
 	LQ6:
 		mes "[Leo Von Frisch]";
 		mes "OK Let's move on.";
@@ -627,52 +630,58 @@ startL0:
 		mes "[Leo Von Frisch]";
 		mes "The End.";
 		next;
+		if(@S_FLAG > 5) goto LQ7; 
 		mes "[Leo Von Frisch]";
 		mes "Quiz time!";
 		mes "Choose One showing the Right Shortcut for `Sit' and the Command you type in the Chat Box.";
-		set @Leo_6,6;
 		menu "'insert' - /Sit",LQ6_1,"'page down' - /Sitting",LQ6_2,"'home' - /Sitdown",LQ6_3,"'delete' - /stand",LQ6_4;
 
 		LQ6_1:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Wrong. `'delete' - /stand` is the correct one.";
 			next;
-			goto Lrandom;
+			goto LQ7;
 		LQ6_2:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Wrong. `'delete' - /stand` is the correct one.";
 			next;
-			goto Lrandom;
+			goto LQ7;
 		LQ6_3:
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Wrong. `'delete' - /stand` is the correct one.";
 			next;
-			goto Lrandom;
-		LQ6_4:		
-			set @correct,@correct+1;
+			goto LQ7;
+		LQ6_4:
 			getitem 519,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
+			set @S_FLAG,@S_FLAG+1;
 			mes "[Leo Von Frisch]";
 			mes "Yeah,correct.";
 			next;
-			goto Lrandom;
+			goto LQ7;
 	LQ7:
-		set leo,1;
 		mes "[Leo Von Frisch]";
 		mes "Guys, Thank you for standing my boring class for now. And I am not sure whether you fully understand or not."; 
 		mes "If you can't get it,play by yourself. 'The proof of the pudding is in the eating.',the proverb.";
 		mes "I hope my class will be helpful to your wretched future in Ragnarok.";
 		next;
-		if(@correct > 4) goto Lherb4;
+		if(nov_1_2_cos_c>5) goto Lherb4;
 		getitem 507,2;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		mes "[Leo Von Frisch]";
 		mes "I will reward you for the successful lesson. Take it. They will be useful when you have a hard time.";
 		next;
 		mes "[Leo Von Frisch]";
 		mes "Anyway,Let's call it a day with me,you may go to the 'NPC' master.";
 		mes "If you can't find him, inquire at the sly dog at the centre";
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		close;
 
 		Lherb4:
+			if(nov_1_2_cos_c<7) goto Lget4;
 			mes "[Leo Von Frisch]";
 			mes "I will reward you for the successful lesson. Take it. They will be useful when you have a hard time.";
 			next;
@@ -689,6 +698,7 @@ startL0:
 				mes "[Leo Von Frisch]";
 				mes "Anyway,Let's call it a day with me,you may go to the 'NPC' master.";
 				mes "If you can't find him, inquire at the sly dog at the centre";
+				set nov_1_2_cos_c,nov_1_2_cos_c+1;
 				close;
 }
 
@@ -705,32 +715,70 @@ new_1-2.gat,100,29,4	script	Usher	86,{
 	mes "Please choose ^0099FFIntroduction^000000 first if you need to check detailed information about Training Ground.";
 	next;
 	goto Lmenu;
-	Lmenu:
-	menu "Sign Up on the Training Ground.",Lsign,"Direct Access to Ragnarok.",Ldirect,"^0099FFIntroduction.^000000",Lintro,"Cancel.",Lcancel;
 	Lsign:
 		mes "[Usher]";
 		mes "Registration has been confirmed.";
 		mes "Please inquire at each Guide on the course when you need.";
 		next;
-		set Zeny,50;
-		getitem 3025,1;
+		if (nov_get_item01 != 0) goto Lsign1;
+
+		set nov_get_item01,1;
+		set Zeny,Zeny+150;
 		mes "[Usher]";
 		mes "Training Subsidy 50 Zeny supplied.Please inquire at a Guide on the Centre when you need to know your Current Progress.";
 		mes "I will lead you into the Hall.";
 		next;
-		warp "new_1-2.gat",100,70;
-		close;
+
+		Lsign1:
+			warp "new_1-2.gat",100,70;
+			end;
 	Ldirect:
 		mes "[Usher]";
 		mes "I see.";
 		mes "Hopefully you will contribute to public welfare in near future, good luck.";
 		next;
-		savepoint "prontera.gat",140,200;
-		warp "prontera.gat",140,200;
-		close;
+		set nov_3_merchant,0;
+		set nov_1st_cos,0;
+		set nov_get_item01,0;
+		set nov_3_swordman,0;
+		set nov_3_archer,0;
+		set nov_3_thief,0;
+		set nov_3_magician,0;
+		set nov_3_acolyte,0;
+		set nov_3_merchant,0;
+		set @TEMP,rand(6);
+
+		if(@TEMP !=0) goto Ldirect0;
+			savepoint "prontera.gat",273,354;
+			warp "prontera.gat",273,354;
+			end;
+		Ldirect0:
+			if(@TEMP !=1) goto Ldirect1;
+			savepoint "morocc.gat",160,94;
+			warp "morocc.gat",160,94;
+			end;
+		Ldirect1:
+			if(@TEMP !=2) goto Ldirect2;
+			savepoint "geffen.gat",120,100;
+			warp "geffen.gat",120,100;
+			end;
+		Ldirect2:
+			if(@TEMP !=3) goto Ldirect3;
+			savepoint "payon.gat",87,117;
+			warp "payon.gat",87,117;
+			end;
+		Ldirect3:
+			if(@TEMP !=4) goto Ldirect4;
+			savepoint "alberta.gat",116,57;
+			warp "alberta.gat",116,57;
+			end;
+		Ldirect4:
+			savepoint "izlude.gat",94,103;
+			warp "izlude.gat",94,103;
+			end;
 	Lintro:
 		mes "[Usher]";
-		mes "The Training Grounds were founded to support New Players of Ragnarok Onlinem,";
+		mes "The Training Grounds were founded to support New Players of Ragnarok Online,";
 		mes "under the Auspices of the Minstry of Education in Rune Midgard Kingdom."; 
 		next;
 		mes "[Usher]";
@@ -762,38 +810,46 @@ new_1-2.gat,100,29,4	script	Usher	86,{
 	Lcancel:
 		mes "Take your time.";
 		close;
+
+		Lmenu:
+		menu "Sign Up on the Training Ground.",Lsign,"Direct Access to Ragnarok.",Ldirect,"^0099FFIntroduction.^000000",Lintro,"Cancel.",Lcancel;
 }
 
 new_1-2.gat,100,113,4	script	Guide	97,{
+	set @R_SEL_NUM,rand(2);
 	mes "[Guide]";
-	mes "Mumble~Mumble~Life is getting Suck~What a boring Job I have~~ I was stupid enough to choose this Boring and Solitary thing!Ah~";
+	if (@R_SEL_NUM != 0) goto tmp1;
+		mes "Mumble~Mumble~Life is getting Sick~What a boring Job I have~~ I was stupid enough to choose this Boring and Solitary thing!Ah~";
+		goto NMes;
+	tmp1:
+		mes "I miss my good-for-nothing day~ Phew~ I should never accepted the Full time job.... Eh?!";
+	NMes:
 	mes "Hey Buddy~ Want some Help?";
 	next;
-	menu "Current Course State.",L0,"Nah.",L1;
-	L0:
+		menu "Current Course State.",-, "Quit.",L0;
+
 		mes "[Guide]";
 		mes "Hmm.. Let me see...";
-		if(leo != 1) goto Lnothing;
-		if(npc != 1) goto L00a;
-		if(manner != 1) goto L00b;
-		mes "Ah....? finished the First Course?";
-		mes "Then meet the guy over there at the southwest,tell him 'I got the 1st lesson.'.He will lead you to the Second Hall.";
-		mes "Well done~ Bye Bye~ Take Care,Okay?";
-		close;
-	
-	L00a:
-		mes "Did you attend to 'Sir Leo Von Frisch''s Lesson already? Umm the next is....";
-		mes "Go toward next hall at the Southeast,you will see two guys over there.";
-		mes "Ask the NPC Master first and then the other guy!";
-		close;
-
-	Lnothing:
+		if (nov_1_2_cos_c != 9) goto L00a;
+		if (nov_1_2_cos_c != 8) goto L00b;
+		if (nov_1_2_cos_c != 7) goto L00c;
 		mes "I assure you are at the first place with this empty list of yours. You must go toward the Northwest.";
 		mes "And meet 'Leo Von Frisch',the odd veteran Knight.He is a little bit boring,but that's ok.If you work out a correct answer to his question,he will give you some Snacks. So concentrate on him,Okay?";
-		close;
-	L00b:
-		mes "Err...?Didn't you hear the 'NPC Guide' Master's saying? Told you to go to the table right next him. Sigh~ Hurry up~";
-		close;
+			close;
+
+		L00a:
+			mes "Ah....? finished the First Course?";
+			mes "Then meet the guy over there at the southwest,tell him 'I got the 1st lesson.'.He will lead you to the Second Hall.";
+			mes "Well done~ Bye Bye~ Take Care,Okay?";
+			close;
+		L00b:
+			mes "Err...?Didn't you hear the 'NPC Guide' Master's saying? Told you to go to the table right next him. Sigh~ Hurry up~";
+			close;
+		L00c:
+			mes "Did you attend to 'Sir Leo Von Frisch''s Lesson already? Umm the next is....";
+			mes "Go toward next hall at the Southeast,you will see two guys over there.";
+			mes "Ask either of them~";
+			close;
 
 	L1:
 		mes "[Guide]";
@@ -826,9 +882,10 @@ new_1-2.gat,158,158,8	script	Kafra	117,{
 }
 
 new_1-2.gat,160,183,5	script	NPC Master	83,{
-	if(leo != 1) goto nov12coscL6;
-	if(@explane == 1) goto nov12coscM8;
-	goto nov12coscE7;
+	if(nov_1_2_cos_c<=6) goto nov12coscL6;
+	if(nov_1_2_cos_c>=8) goto nov12coscM8;
+	if(nov_1_2_cos_c==7) goto nov12coscE7;
+
 	nov12coscL6:
 		mes "[NPC Master]";
 		mes "You are not supposed to be here yet. Attend 'Sir Leo Von Frisch''s Lesson first.";
@@ -854,7 +911,6 @@ new_1-2.gat,160,183,5	script	NPC Master	83,{
 		mes "[NPC Master]";
 		mes "Did you finish the Newbie Class? What am I talking about? Err..You know what I am saying~whatever.....";
 		next;
-		goto Lstart;
 
 	Lstart:
 		mes "[NPC Master]";
@@ -876,8 +932,20 @@ new_1-2.gat,160,183,5	script	NPC Master	83,{
 			next;
 			mes "[NPC Master]";
 			mes "And you can store your extra items in 'Kafra Wearhouse'. You can access the Storage wherever Kafra Staffs are located.";
+			if(nov_1_2_cos_c==7) goto Ltell7;
 			mes "I always think, but still I think 'Use storage' Service is the best for Infrastructure among MMORPG world!!Muhahahaha!!!"; 
 			mes "Heh Heh~ And they are all beautiful girls~ What about their boss..? Is it a she or He? I am curious....";
+			goto LtellNext;
+			
+			Ltell7:
+				mes "Able to access storage wherever Kapra's Staffs are located.....";
+				mes "I always think, but still I think 'Use storage' Service is the best for Infrastructure among MMORPG world!!Muhahahaha!!!"; 
+				goto LtellNext;
+
+			LtellNext:
+			next;
+			mes "Accessable storage wherever Kafra Staffs are located.....";
+			mes "I always think, but still I think 'Use storage' Service is the best for Infrastructure among MMORPG world!!Muhahahaha!!!"; 
 			next;
 			mes "[NPC Master]";
 			mes "Unlike `Save','Use the Storage' requires a small fee.The fee is different in different areas.";
@@ -889,15 +957,20 @@ new_1-2.gat,160,183,5	script	NPC Master	83,{
 			mes "Now let's check how they look like. So You will find them easily next time.";
 			mes "We display figures of them over there. Just take a look before you go the next course.";
 			next;
-			mes "[NPC Master]";
-			mes "Those figures...... they were supposed to be right beside me first time...For me they felt really spooky....Imagine,Someone behind you without motion..spooky,huh?";
-			mes "That's why I moved them over there... And now I can see them in front of my eyes... They feel more spooky now...";
-			next;
-			mes "[NPC Master]";
-			mes "Let's call it a day. Next Course is about 'Various examples of rude mannered players and cheaters'. Go to the right table.";
-			set @explane,1;
-			set npc,1;	
-			close;
+			if(nov_1_2_cos_c==7) goto Ltell7a;
+			goto CloseMes;
+
+			Ltell7a:
+				mes "[NPC Master]";
+				mes "Those figures...... they were supposed to be right beside me first time...For me they felt really spooky....Imagine,Someone behind you without motion..spooky,huh?";
+				mes "That's why I moved them over there... And now I can see them in front of my eyes... They feel more spooky now...";
+				next;
+				set nov_1_2_cos_c,nov_1_2_cos_c+1;
+				goto CloseMes;
+			CloseMes:
+				mes "[NPC Master]";
+				mes "Let's call it a day. Next Course is about 'Various examples of rude mannered players and cheaters'. Go to the right table.";
+				close;
 }
 
 new_1-2.gat,161,158,8	script	Guide	105,{
@@ -905,20 +978,12 @@ new_1-2.gat,161,158,8	script	Guide	105,{
 	close;
 }
 
-new_1-2.gat,183,183,3	script	Manner Master	95,{
-	if(leo != 1) goto Lleo;
-	if(npc != 1) goto Lnpc;
-	goto Lstart;
-	Lleo:
+new_1-2.gat,183,183,3	script	Guide	95,{
+	if(nov_1_2_cos_c==8) goto Lstart;
+	if(nov_1_2_cos_c>=9) goto Lagain;
 	mes "[Manner Master]";
 	mes "Eh..Ah...Not here not yet.. Well..What I mean is...Well..uh...";
 	mes "What I mean is.. You should attend to ^FF0000Leo Von Frisch's class on beginner help^000000 first....";
-	close;
-
-	Lnpc:
-	mes "[Manner Master]";
-	mes "Eh..Ah...Not here not yet.. Well..What I mean is...Well..uh...";
-	mes "What I mean is.. You should attend to ^FF0000the NPC Master^000000 first....";
 	close;
 
 	Lstart:
@@ -926,6 +991,7 @@ new_1-2.gat,183,183,3	script	Manner Master	95,{
 		mes "Greetings~ I am just simple man who will inform you of 'Various examples of Ill-mannered players and cheaters'.";
 		mes "Shall we begin?";
 		next;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		goto Ltell;
 		Ltell:
 			mes "[Manner Master]";
@@ -1024,7 +1090,6 @@ new_1-2.gat,183,183,3	script	Manner Master	95,{
 			mes "[Manner Master]";
 			mes "Ok, This is the end of my lesson.You just finished your 1st course.Congratulations.";
 			mes "When you go to the west side through the centre,See the helper who help you to go to the 2nd Course.";
-			set manner,1;
 			close;
 	Lagain:
 		mes "[Manner Master]";
@@ -1043,199 +1108,36 @@ new_1-2.gat,183,183,3	script	Manner Master	95,{
 }
 
 new_1-4.gat,100,29,4	script	Helper	54,{
+	set nov_1_2_cos_c,0;
 	mes "[Helper]";
 	mes "Welcome, Newbie!! I don't have much time to talk. I just tell you the basic details.";
 	mes "Your registration has been confirmed at the time you arrived here! You can go directly through the 3rd course...";
 	mes "Are you gonna start now?";
 	next;
-	menu "Choose the 3rd course.",L0,"Quit",L1;
+	menu "Choose the 3rd course.",-,"Quit",L1;
 	
-	L0:
 		mes "[Helper]";
 		mes "The guide will inform you details!";
 		mes "Bye!";
 		next;
+		if(@TEMP !=0) goto L0a;
+		warp "new_1-4.gat",94,56;
+		close;
+		
+		L0a:
+			if(@TEMP !=1) goto L0b;
+			warp "new_1-4.gat",98,56;
+			close;
+		L0b:
+			if(@TEMP !=2) goto L0c;
+			warp "new_1-4.gat",102,56;
+			close;
+		L0c:
 			warp "new_1-4.gat",106,56;
 			close;
 	L1:
 		mes "[Helper]";
 		mes "Are you waiting for someone here..?";
-		close;
-}
-
-new_1-4.gat,100,69,4	script	Helper	67,{
-	mes "[Helper]";
-	mes "Here we are. From now on we will have 1st personality test.";
-	mes "Take it easy and choose the right one for you.";
-	mes "There are no standards for good and evil, it's just a test for your personality.";
-	mes "Shall we start now?";
-	next;
-	mes "[Helper]";
-	mes "Choose one word most familiar to you.";
-	next;
-	goto LQ0;
-	
-	LQ0:
-		menu "Individual",LQ0a,"Public",LQ0b;
-	
-		LQ0a:
-			set ARCHER,ARCHER+1;
-			goto LQ1;
-		LQ0b:
-			set THIEF,THIEF+1;
-			goto LQ1;
-	LQ1:
-		menu "Chances",LQ1a,"Permanence",LQ1b;
-
-		LQ1a:
-			set MAGE,MAGE+1;
-			goto LQ2;
-		LQ1b:
-			set ACO,ACO+1;
-			goto LQ2;
-	LQ2:
-		menu "Consumer",LQ2a,"Distributor",LQ2b;
-
-		LQ2a:
-			set SWORD,SWORD+1;
-			goto LQ3;
-		LQ2b:
-			set MERC,MERC+1;
-			goto LQ3;
-	LQ3:
-		menu "Swiftness",LQ3a,"Prudence",LQ3b;
-
-		LQ3a:
-			set THIEF,THIEF+1;
-			goto LQ4;
-		LQ3b:
-			set ARCHER,ARCHER+1;
-			goto LQ4;
-	LQ4:
-		menu "Theory",LQ4a,"Experience",LQ4b;
-
-		LQ4a:
-			set MAGE,MAGE+1;
-			goto LQ5;
-		LQ4b:
-			goto LQ5;
-	LQ5:
-		menu "Reality",LQ5a,"Ideal",LQ5b;
-
-		LQ5a:
-			set MERC,MERC+1;
-			goto LQ00;
-		LQ5b:
-			set ACO,ACO+1;
-			goto LQ00;
-	LQ00:
-		mes "[Helper]";
-		mes "Choose 'Yes' or 'No'.";
-		next;
-		mes "[Helper]";
-		mes "To die with honor is better than to live with disgrace.";
-		next;
-		menu "Yes",LQ00a,"No",LQ00b;
-
-		LQ00a:
-			set SWORD,SWORD+1;
-			goto LQ01;
-		LQ00b:
-			set THIEF,THIEF+1;
-			goto LQ01;
-	LQ01:
-		mes "[Helper]";
-		mes "It gives me headache even when my cousin makes big success.";
-		next;
-		menu "Yes",LQ01a,"No",LQ01b;
-
-		LQ01a:
-			set MERC,MERC+1;
-			goto LQ02;
-		LQ01b:
-			set ACO,ACO+1;
-			goto LQ02;
-	LQ02:
-		mes "[Helper]";
-		mes "Always check the manual first before assemble something like household electric appliance.";
-		next;
-		menu "Yes",LQ02a,"No",LQ02b;
-
-		LQ02a:
-			set MAGE,MAGE+1;
-			goto LQ03;
-		LQ02b:
-			set ARCHER,ARCHER+1;
-			goto LQ03;
-	LQ03:
-		mes "[Helper]";
-		mes "I am always at the head of everything.";
-		next;
-		menu "Yes",LQ03a,"No",LQ03b;
-
-		LQ03a:
-			set SWORD,SWORD+1;
-			goto LQ04;
-		LQ03b:
-			set ARCHER,ARCHER+1;
-			goto LQ04;
-	LQ04:
-		mes "[Helper]";
-		mes "When I see the sign 'PULL' on the door I want to PUSH.";
-		next;
-		menu "Yes",LQ04a,"No",LQ04b;
-
-		LQ04a:
-			set THIEF,THIEF+1;
-			goto LQ05;
-		LQ04b:
-			set MERC,MERC+1;
-			goto LQ05;
-	LQ05:
-		mes "[Helper]";
-		mes "Sometimes I see things unreal.";
-		next;
-		menu "Yes",LQ05a,"No",LQ05b;
-
-		LQ05a:
-			set ACO,ACO+1;
-			goto LQ06;
-		LQ05b:
-			set SWORD,SWORD+1;
-			goto LQ06;
-	LQ06:
-		mes "[Helper]";
-		mes "I could fly if I fall off.";
-		next;
-		menu "Yes",LQ06a,"No",LQ06b;
-
-		LQ06a:
-			goto LQ07;
-		LQ06b:
-			set MAGE,MAGE+1;
-			goto LQ07;
-	LQ07:
-		mes "[Helper]";
-		mes "Money talks. I can buy even human being if I want.";
-		next;
-		menu "Yes",LQ07a,"No",LQ07b;
-
-		LQ07a:
-			set MERC,MERC+1;
-			set MAGE,MAGE+1;
-			set THIEF,THIEF+1;
-			goto LQFin;
-		LQ07b:
-			set SWORD,SWORD+1;
-			set ARCHER,ARCHER+1;
-			set ACO,ACO+1;
-			goto LQFin;
-	LQFin:
-		mes "[Helper]";
-		mes "You just finished 1st test. Congratulations.";
-		mes "You can now go to the next test right away";
-		next;
-		warp "new_1-4.gat",20,94;
 		close;
 }
 
@@ -1254,16 +1156,16 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "Feel irritated.",LQ1a,"I like it.",LQ1b,"Doesn't come to my mind.",LQ1c;
 		
 		LQ1a:
-			set SWORD,SWORD+1;
-			set THIEF,THIEF+1;
+			set nov_3_swordman,nov_3_swordman+1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ2;
 		LQ1b:
-			set MERC,MERC+1;
-			set ACO,ACO+1;
+			set nov_3_merchant,nov_3_merchant+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ2;
 		LQ1c:
-			set ARCHER,ARCHER+1;
-			set MAGE,MAGE+1;
+			set nov_3_archer,nov_3_archer+1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ2;
 	LQ2:
 		mes "[Helper]";
@@ -1272,13 +1174,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "Check first whether it's neccessary.",LQ2a,"Check the cash first.",LQ2b,"Regret after shopping.",LQ2c;
 		
 		LQ2a:
-			set ARCHER,ARCHER+1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ3;
 		LQ2b:
-			set MERC,MERC+1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ3;
 		LQ2c:
-			set THIEF,THIEF+1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ3;
 	LQ3:
 		mes "[Helper]";
@@ -1287,13 +1189,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I enjoy it.",LQ3a,"I do if I have to.",LQ3b,"I hate it.",LQ3c;
 		
 		LQ3a:
-			set SWORD,SWORD+1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ4;
 		LQ3b:
-			set ARCHER,ARCHER+1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ4;
 		LQ3c:
-			set ACO,ACO+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ4;
 	LQ4:
 		mes "[Helper]";
@@ -1302,10 +1204,10 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I prefer to deal alone.",LQ4a,"I prefer to deal together.",LQ4b;
 		
 		LQ4a:
-			set MAGE,MAGE+1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ5;
 		LQ4b:
-			set THIEF,THIEF+1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ5;
 	LQ5:
 		mes "[Helper]";
@@ -1314,13 +1216,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "Anything I can help, I will do my best.",LQ5a,"Simply I would help.",LQ5b,"Just ignore.",LQ5c;
 		
 		LQ5a:
-			set ACO,ACO+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ6;
 		LQ5b:
-			set ARCHER,ARCHER+1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ6;
 		LQ5c:
-			set MAGE,MAGE+1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ6;
 	LQ6:
 		mes "[Helper]";
@@ -1329,13 +1231,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "President.",LQ6a,"Vise-President",LQ6b,"Congressman is ok.",LQ6c,"I don't want to be a politican.",LQ6d;
 		
 		LQ6a:
-			set SWORD,SWORD+1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ7;
 		LQ6b:
-			set MERC,MERC+1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ7;
 		LQ6c:
-			set THIEF,THIEF+1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ7;
 		LQ6d:
 			goto LQ7;
@@ -1346,16 +1248,16 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "'Look so sharp!'",LQ7a,"'Who the hell is the owner of this?'",LQ7b,"'Could be dead harm to people. Should be careful!'",LQ7c,"'Nice Brand~!'",LQ7d;
 		
 		LQ7a:
-			set SWORD,SWORD+1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ8;
 		LQ7b:
-			set ACO,ACO+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ8;
 		LQ7c:
-			set MAGE,MAGE+1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ8;
 		LQ7d:
-			set MERC,MERC+1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ8;
 	LQ8:
 		mes "[Helper]";
@@ -1364,16 +1266,16 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I hush up with a joke.",LQ8a,"I change subject.",LQ8b,"I try to excuse.",LQ8c,"I appoligize even though it's not my fault.",LQ8d;
 		
 		LQ8a:
-			set THIEF,THIEF+1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ9;
 		LQ8b:
-			set SWORD,SWORD+1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ9;
 		LQ8c:
-			set MAGE,MAGE+1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ9;
 		LQ8d:
-			set ACO,ACO+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ9;
 	LQ9:
 		mes "[Helper]";
@@ -1391,20 +1293,32 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I would do anything for that person.",LQ9a,"I try to bring around not to buy it.",LQ9b;
 		
 		LQ9a:
-			set ARCHER,ARCHER+1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQFin;
 		LQ9b:
-			set MERC,MERC+1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQFin;
 	LQFin:
 		mes "[Helper]";
 		mes "Now you finished 2nd test! Good job!!";
 		mes "You can go to the result room now.";
 		next;
+		set @TEMP,rand(4);
+		if(@TEMP !=0) goto LQFin0;
 		warp "new_1-4.gat",54,136;
 		close;
 		
-
+		LQFin0:
+			if(@TEMP !=1) goto LQFin1;
+			warp "new_1-4.gat",58,136;
+			close;
+		LQFin1:
+			if(@TEMP !=2) goto LQFin2;
+			warp "new_1-4.gat",62,136;
+			close;
+		LQFin2:
+			warp "new_1-4.gat",66,136;
+			close;
 }
 
 new_1-4.gat,60,149,4	script	Helper	55,{
@@ -1415,70 +1329,105 @@ new_1-4.gat,60,149,4	script	Helper	55,{
 	mes "[Helper]";
 	mes "Ok, here is the result of your own.";
 	next;
-	goto Lsword;
-Lsword:
-	if(ARCHER > SWORD) goto Xarcher;
-	if(MAGE > SWORD) goto Xmage;
-	if(ACO > SWORD) goto Xaco;
-	if(MERC > SWORD) goto Xmerc;
-	if(THIEF > SWORD) goto Xthief;
-	goto JobSwordman;
-Xarcher:
-	if(MAGE > ARCHER) goto Xmage;
-	if(ACO > ARCHER) goto Xaco;
-	if(MERC > ARCHER) goto Xmerc;
-	if(THIEF > ARCHER) goto Xthief;
-	goto JobArcher;
-Xmage:
-	if(SWORD > MAGE) goto Xsword;
-	if(ACO > MAGE) goto Xaco;
-	if(MERC > MAGE) goto Xmerc;
-	if(THIEF > MAGE) goto Xthief;
-	goto JobMagican;
-Xaco:
-	if(MAGE > ACO) goto Xmage;
-	if(ARCHER > ACO) goto Xarcher;
-	if(MERC > ACO) goto Xmerc;
-	if(THIEF > ACO) goto Xthief;
-	goto JobAcolyte;
-Xmerc:
-	if(MAGE > MERC) goto Xmage;
-	if(ACO > MERC) goto Xaco;
-	if(ARCHER > MERC) goto Xarcher;
-	if(THIEF > MERC) goto Xthief;
-	goto JobMerchant;
-Xthief:
-	if(MAGE > THIEF) goto Xmage;
-	if(ACO > THIEF) goto Xaco;
-	if(MERC > THIEF) goto Xmerc;
-	if(ARCHER > THIEF) goto Xarcher;
-	goto JobThief;
+		if (nov_get_item01 < 10) goto L_START_0;
+			set nov_2nd_cos,0;
+			goto L_START_1;
+	L_START_0:
+			set nov_2nd_cos,10;
+			set nov_2nd_cos,nov_2nd_cos - nov_get_item01;
+	L_START_1:
+		set @job_number,1;
+		set @job_with_c,0;
+		set @job_number_chk,0;
+		set @job_with,nov_3_swordman;
+	L_LOOP:
+		if (@job_number == 6) goto L_START_2;
+			if (@job_number != 1) goto L_ROOT_1;
+				set @job_with_c,nov_3_archer;
+				goto L_LOOP_1;
+		L_ROOT_1:
+			if (@job_number != 2) goto L_ROOT_2;
+				set @job_with_c,nov_3_thief;
+				goto L_LOOP_1;
+		L_ROOT_2:
+			if (@job_number != 3) goto L_ROOT_3;
+				set @job_with_c,nov_3_magician;
+				goto L_LOOP_1;
+		L_ROOT_3:
+			if (@job_number != 4) goto L_ROOT_4;
+				set @job_with_c,nov_3_acolyte;
+				goto L_LOOP_1;
+		L_ROOT_4:
+				set @job_with_c,nov_3_merchant;
+		L_LOOP_1:
+			if (@job_with >= @job_with_c) goto L_LOOP_2;
+				set @job_number_chk,@job_number;
+				if (@job_number != 1) goto L_ROOT_5;
+					set @job_with,nov_3_archer;
+					goto L_LOOP_2;
+		L_ROOT_5:
+				if (@job_number != 2) goto L_ROOT_6;
+					set @job_with,nov_3_thief;
+					goto L_LOOP_2;
+		L_ROOT_6:
+				if (@job_number != 3) goto L_ROOT_7;
+					set @job_with,nov_3_magician;
+					goto L_LOOP_2;
+		L_ROOT_7:
+				if (@job_number != 4) goto L_ROOT_8;
+					set @job_with,nov_3_acolyte;
+					goto L_LOOP_2;
+		L_ROOT_8:
+					set @job_with,nov_3_merchant;
+		L_LOOP_2:
+			set @job_number,@job_number+1;
+			goto L_LOOP;
 
+	L_START_2:
+		mes "[Helper]";
+		if (nov_1st_cos != 0) goto L_SCORE_1;
+			mes "1st course: 0 / 6 Points.";
+			goto L_SCORE_2;
+	L_SCORE_1:
+		mes "1st course: " + nov_1st_cos + " / 6 Points.";
+	L_SCORE_2:
+		if (nov_2nd_cos != 0) goto L_SCORE_3;
+			mes "2nd course: 0 / 0 Points";
+			goto L_SCORE_4;
+	L_SCORE_3:			
+		mes "2nd course: " + nov_2nd_cos + " / 10 Points.";
+	L_SCORE_4:
+		mes "And the result of personally test is.....";
+		next;
+	mes "[Helper]";
+
+
+	if (@job_number_chk==0) goto JobSwordman;
+	if (@job_number_chk==1) goto JobArcher;
+	if (@job_number_chk==2) goto JobThief;
+	if (@job_number_chk==3) goto JobMagican;
+	if (@job_number_chk==4) goto JobAcolyte;
+	if (@job_number_chk==5) goto JobMerchant;
 	
 	JobSwordman:
-		set @SWORD,1;
 		mes "'You have simple-minded and always talk straight.And you have an unshaken faith so that you want to rule the world.Also you always stand by the weak.'";
 		mes "'So We suggest you  ^696969Swordman^000000.";
 		goto SelJob;
 	JobArcher:
-		set @ARCHER,1;
 		mes "'You are very emotional and sensative person.And you have open-minded.'";
 		mes "'Also, You don't want to be ordinary,always eager for valuable life of your own .'";
 		mes "'So we suggest you ^696969Archer^000000.'";
 		goto SelJob;
 	JobThief:
-		set @THIEF,1;
 		mes "'You always try to enjoy your life.Life is like adventure for you.'";
 		mes "'So we suggest you ^696969Theif^000000.'";
 		goto SelJob;
 	JobMagican:
-		set @MAGE,1;
 		mes "'You are self-diciplined person.Sometimes you pretend to understand whole things in the world not to be silly to the other person.";
 		mes "'You are man of reason,an introvert,an analyst,a man of keen insight.'";
 		mes "'So we suggest you ^696969Mage^000000.";
 		goto SelJob;
 	JobAcolyte:
-		set @ACO,1;
 		mes "'You are warm-hearted,easy-going person,taking care of people.'";
 		mes "'But actually you pretend not to need help from the other,people think you are *an altruist.";
 		mes "'So we suggest you ^696969Acolyte^000000.'";
@@ -1486,12 +1435,11 @@ Xthief:
 		mes "'*The person who really enjoy helping people with self-sacrifice.'";
 		goto SelJob;
 	JobMerchant:
-		set @MERC,1;
 		mes "'You can easily catch what the public wants,and you have a telent to organize system,and you have a strong sense of responsibility.'";
 		mes "'So we suggest you ^696969Merchant^000000.'";
 		goto SelJob;
 
-	SelJob:
+SelJob:
 	next;
 	mes "[Helper]";
 	mes ".... Report says like this. It is not my intention, I don't mean to nice to you!! To me you are just a novice!!";
@@ -1500,10 +1448,39 @@ Xthief:
 	mes "[Helper]";
 	mes "Here are the subsides from the Training Ground. Even if they are not worthless to veteran players, not to you.";
 	next;
-			set Zeny,0+500;
+	if(nov_get_item03==0) goto nov12coscE0;
+	
+	nov12coscE0:
+		set l0,nov_1st_cos+nov_2nd_cos;
+		if (l0<=8) goto nov1stcosPnov2ndcosL8;
+		if (l0<=15) goto nov1stcosPnov2ndcosL15;
+		if (l0==16) goto nov1stcosPnov2ndcosE16;
+		set Zeny,Zeny-500;
+		getitem 507,10;
+		getitem 519,1;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
+		goto BeL0;
+		
+		nov1stcosPnov2ndcosL8:
+			set Zeny,Zeny+500;
 			getitem 507,10;
 			getitem 519,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
+			goto BeL0;
+		nov1stcosPnov2ndcosL15:
+			set Zeny,Zeny+100;
+			getitem 507,1;
+			getitem 519,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
+			goto BeL0;
+		nov1stcosPnov2ndcosE16:
+			set Zeny,Zeny+300;
+			getitem 507,3;
+			getitem 519,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
+			goto BeL0;
+
+	BeL0:
 	mes "[Helper]";
 	mes "Now I will let you go to the Job Agency. Before going there are a few things you have to know.";
 	next;
@@ -1512,7 +1489,7 @@ Xthief:
 	next;
 	mes "[Helper]";
 	mes "If you follow the test, you can get a lot of subsidy for headstart from guild and assosiation and get to start in the specific town for your job.";
-	mes "If you follow your will, you get to start in specific town for your job";
+	mes "If you follow your will, you get to start in specific town for your job with 100 zeny before we gave you.";
 	next;
 	mes "[Helper]";
 	mes "Choose one. This is your only chance.";
@@ -1570,54 +1547,187 @@ Xthief:
 				next;
 				warp "alberta.gat",116,57;
 				close;
-L1:
-if(@SWORD == 10) goto L00a;
-if(@ARCHER == 10) goto L01a;
-if(@THIEF == 10) goto L02a;
-if(@MAGE == 10) goto L03a;
-if(@ACO == 10) goto L04a;
-if(@MERC == 10) goto L05a;
-			L00a:
-				mes "[Helper]";
-				mes "I expect you the best.";
-				savepoint "izlude.gat",94,104;
-				next;
-				warp "izlude_in.gat",121,165;
-				close;
-			L01a:
-				mes "[Helper]";
-				mes "I expect you the best.";
-				savepoint "payon.gat",87,117;
-				next;
-				warp "payon_in02.gat",21,71;
-				close;
-			L02a:
-				mes "[Helper]";
-				mes "I expect you the best.";
-				savepoint "morroc.gat",160,94;
-				next;
-				warp "morroc.gat",154,50;
-				close;
-			L03a:
-				mes "[Helper]";
-				mes "I expect you the best.";
-				savepoint "geffen.gat",120,100;
-				next;
-				warp "geffen.gat",120,60;
-				close;
-			L04a:
-				mes "[Helper]";
-				mes "I expect you the best.";
-				savepoint "prontera.gat",273,354;
-				next;
-				warp "prontera.gat",233,313;
-				close;
-			L05a:
-				mes "[Helper]";
-				mes "I expect you the best.";
-				savepoint "alberta.gat",116,57;
-				next;
-				warp "alberta.gat",116,57;
-				close;
+	L1:
+		mes "[Helper]";
+		mes "Under development";
+		mes "Please choose your job manualy.";
+		next;
+		goto JobMenu;
+	close;
 }
 
+new_1-4.gat,100,69,4	script	Helper	67,{
+	mes "[Helper]";
+	mes "Here we are. From now on we will have 1st personality test.";
+	mes "Take it easy and choose the right one for you.";
+	mes "There are no standards for good and evil, it's just a test for your personality.";
+	mes "Shall we start now?";
+	next;
+	mes "[Helper]";
+	mes "Choose one word most familiar to you.";
+	next;
+	goto LQ0;
+	
+	LQ0:
+		menu "Individual",LQ0a,"Public",LQ0b;
+	
+		LQ0a:
+			set nov_3_archer,nov_3_archer+1;
+			goto LQ1;
+		LQ0b:
+			set nov_3_thief,nov_3_thief+1;
+			goto LQ1;
+	LQ1:
+		menu "Chances",LQ1a,"Permanence",LQ1b;
+
+		LQ1a:
+			set nov_3_magician,nov_3_magician+1;
+			goto LQ2;
+		LQ1b:
+			set nov_3_acolyte,nov_3_acolyte+1;
+			goto LQ2;
+	LQ2:
+		menu "Consumer",LQ2a,"Distributor",LQ2b;
+
+		LQ2a:
+			set nov_3_swordman,nov_3_swordman+1;
+			goto LQ3;
+		LQ2b:
+			set nov_3_merchant,nov_3_merchant+1;
+			goto LQ3;
+	LQ3:
+		menu "Swiftness",LQ3a,"Prudence",LQ3b;
+
+		LQ3a:
+			set nov_3_thief,nov_3_thief+1;
+			goto LQ4;
+		LQ3b:
+			set nov_3_archer,nov_3_archer+1;
+			goto LQ4;
+	LQ4:
+		menu "Theory",LQ4a,"Experience",LQ4b;
+
+		LQ4a:
+			set nov_3_magician,nov_3_magician+1;
+			goto LQ5;
+		LQ4b:
+			goto LQ5;
+	LQ5:
+		menu "Reality",LQ5a,"Ideal",LQ5b;
+
+		LQ5a:
+			set nov_3_merchant,nov_3_merchant+1;
+			goto LQ00;
+		LQ5b:
+			set nov_3_acolyte,nov_3_acolyte+1;
+			goto LQ00;
+	LQ00:
+		mes "[Helper]";
+		mes "Choose 'Yes' or 'No'.";
+		next;
+		mes "[Helper]";
+		mes "To die with honor is better than to live with disgrace.";
+		next;
+		menu "Yes",LQ00a,"No",LQ00b;
+
+		LQ00a:
+			set nov_3_swordman,nov_3_swordman+1;
+			goto LQ01;
+		LQ00b:
+			set nov_3_thief,nov_3_thief+1;
+			goto LQ01;
+	LQ01:
+		mes "[Helper]";
+		mes "It gives me headache even when my cousin makes big success.";
+		next;
+		menu "Yes",LQ01a,"No",LQ01b;
+
+		LQ01a:
+			set nov_3_merchant,nov_3_merchant+1;
+			goto LQ02;
+		LQ01b:
+			set nov_3_acolyte,nov_3_acolyte+1;
+			goto LQ02;
+	LQ02:
+		mes "[Helper]";
+		mes "Always check the manual first before assemble something like household electric appliance.";
+		next;
+		menu "Yes",LQ02a,"No",LQ02b;
+
+		LQ02a:
+			set nov_3_magician,nov_3_magician+1;
+			goto LQ03;
+		LQ02b:
+			set nov_3_archer,nov_3_archer+1;
+			goto LQ03;
+	LQ03:
+		mes "[Helper]";
+		mes "I am always at the head of everything.";
+		next;
+		menu "Yes",LQ03a,"No",LQ03b;
+
+		LQ03a:
+			set nov_3_swordman,nov_3_swordman+1;
+			goto LQ04;
+		LQ03b:
+			set nov_3_archer,nov_3_archer+1;
+			goto LQ04;
+	LQ04:
+		mes "[Helper]";
+		mes "When I see the sign 'PULL' on the door I want to PUSH.";
+		next;
+		menu "Yes",LQ04a,"No",LQ04b;
+
+		LQ04a:
+			set nov_3_thief,nov_3_thief+1;
+			goto LQ05;
+		LQ04b:
+			set nov_3_merchant,nov_3_merchant+1;
+			goto LQ05;
+	LQ05:
+		mes "[Helper]";
+		mes "Sometimes I see things unreal.";
+		next;
+		menu "Yes",LQ05a,"No",LQ05b;
+
+		LQ05a:
+			set nov_3_acolyte,nov_3_acolyte+1;
+			goto LQ06;
+		LQ05b:
+			set nov_3_swordman,nov_3_swordman+1;
+			goto LQ06;
+	LQ06:
+		mes "[Helper]";
+		mes "I could fly if I fall off.";
+		next;
+		menu "Yes",LQ06a,"No",LQ06b;
+
+		LQ06a:
+			goto LQ07;
+		LQ06b:
+			set nov_3_magician,nov_3_magician+1;
+			goto LQ07;
+	LQ07:
+		mes "[Helper]";
+		mes "Money talks. I can buy even human being if I want.";
+		next;
+		menu "Yes",LQ07a,"No",LQ07b;
+
+		LQ07a:
+			set nov_3_merchant,nov_3_merchant+1;
+			set nov_3_magician,nov_3_magician+1;
+			set nov_3_thief,nov_3_thief+1;
+			goto LQFin;
+		LQ07b:
+			set nov_3_swordman,nov_3_swordman+1;
+			set nov_3_archer,nov_3_archer+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
+			goto LQFin;
+	LQFin:
+		mes "[Helper]";
+		mes "You just finished 1st test. Congratulations.";
+		mes "You can now go to the next test right away";
+		next;
+		warp "new_1-4.gat",20,94;
+		close;
+}

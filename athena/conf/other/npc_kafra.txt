@@ -92,8 +92,8 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 	set @TEMP,0;
 	cutin "kafra_03",2;
 	if(frst_job_quest != 4) goto Kafra;
-	if((jobq_mer==8) | (jobq_mer==7)) goto JobMerQE8oE7;
-	if((jobq_mer==6) | (jobq_mer==5)) goto JobMerQE6oE5;
+	if(job_merchant_q==8) | (job_merchant_q==7)) goto JobMerQE8oE7;
+	if(job_merchant_q==6) | (job_merchant_q==5)) goto JobMerQE6oE5;
 
 	JobMerQE8oE7:
 		if(countitem(Delivery_Message) != 0) goto JobMerQE8oE7Cont;
@@ -147,7 +147,7 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 					goto JobMerQ2Cont;
 
 		JobMerQ2Cont:
-		if(jobq_mer==6) goto JobMerQE6;
+		if(job_merchant_q==6) goto JobMerQE6;
 		getitem 3005,2;
 		goto JobMerQ2Cont1;
 
