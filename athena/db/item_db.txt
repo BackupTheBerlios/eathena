@@ -399,9 +399,16 @@
 1128,Hae_Dong_Gum_,Haedonggum,4,50000,,900,120,,1,2,414946,2,2,3,27,2,{},{ bonus bInt,3; }
 1129,Flamberge,Flamberge,4,60000,,1500,150,,1,0,16512,2,2,3,27,2,{},{}
 1130,Nagan,Nagan,4,20,,500,120,,1,0,414946,2,2,4,40,2,{},{ bonus bDoubleRate,25; bonus2 bAddRace,7,5; }
-1131,Ice_Falchion,Ice Falchon,4,20,,600,100,,1,0,414946,2,2,4,40,2,{},{ bonus bAtkEle,1; skill skill,14,3; bonus2 bAddEff,,500; bonus2 bAutoSpell,14,3;  }
+1131,Ice_Falchion,Ice Falchon,4,20,,600,100,,1,0,414946,2,2,4,40,2,{},{ bonus bAtkEle,1;
+skill 14,3;
+bonus2 bAddEff,Eff_Freeze,500;
+bonus2 bAutoSpell,14,3;
+ }
 1132,Edge,Edge,4,20,,700,115,,1,0,414946,2,2,4,40,2,{},{ bonus2 bAddEff,Eff_Curse,300; }
-1133,Fire_Brand,Fire Brand,4,20,,500,100,,1,0,414946,2,2,4,40,2,{},{ bonus bAtkEle,3; skill skill,19,3; bonus2 bAutoSpell,19,3;  }
+1133,Fire_Brand,Fire Brand,4,20,,500,100,,1,0,414946,2,2,4,40,2,{},{ bonus bAtkEle,3;
+skill 19,3;
+bonus2 bAutoSpell,19,3;
+ }
 1134,Scissores_Sword,Caesar's Sword,4,20,,700,140,,1,0,414946,2,2,4,40,2,{},{ bonus2 bAddRace,3,25; bonus bIgnoreDefRace,3; }
 1135,Cutlas,Cutlas,4,20,,900,150,,1,0,414946,2,2,4,40,2,{},{ skill 5,5; bonus bStr,2; bonus bDef,1; }
 1136,Solar_Sword,Solar Sword,4,20,,1200,85,,1,0,414946,2,2,4,40,2,{},{ bonus bAtkEle,3; }
@@ -430,7 +437,12 @@ bonus bLuk,20;
 1162,Broad_Sword_,Broad Sword,4,65000,,2000,140,,1,2,16514,2,34,3,33,3,{},{ bonus bDef,5; }
 1163,Claymore,Claymore,4,74000,,2500,180,,1,0,16512,2,34,3,33,3,{},{}
 1164,Muramasa,Muramasa,4,20,,1000,155,,1,0,16514,2,34,4,48,3,{},{ bonus bCritical,30; bonus bAspdAddRate,8; }
-1165,Masamune,Masamune,4,20,,1000,200,,1,0,16514,2,34,4,48,3,{},{ bonus bFlee,30; bonus bStr,-5; bonus bAspd,2; bonus bDefRate,-50; bonus bDef2Rate,-50; }
+1165,Masamune,Masamune,4,20,,1000,200,,1,0,16514,2,34,4,48,3,{},{ bonus bFleeRate,30;
+bonus bStr,-5;
+bonus bAspd,2;
+bonus bDefRate,-50;
+bonus bDef2Rate,-50;
+ }
 1166,Dragon_Slayer,Dragon Slayer,4,20,,1300,150,,1,0,16514,2,34,4,48,3,{},{ bonus bIgnoreDefRace,9; bonus2 bAddRace,9,15; }
 1167,Schweizersabel,Schweizersabel,4,20,,1600,160,,1,0,16514,2,34,4,48,3,{},{ bonus bAtkEle,4; skill 20,3; bonus bDef,1; }
 1168,Zweihander,Zweihander,4,20,,2200,200,,1,0,16514,2,34,4,48,3,{},{}
@@ -550,7 +562,11 @@ bonus bLuk,20;
 1465,Halberd__,Halberd,4,54000,,2500,165,,3,0,16514,2,34,3,33,5,{},{}
 1466,Crescent_Scythe,Crescent Scythe,4,20,,2500,180,,3,0,16514,2,34,4,48,5,{},{ bonus bCritical,30; bonus bHit,10; }
 1467,Bill_Guisarme,Bill Guisarme,4,20,,1000,183,,3,0,16514,2,34,4,48,5,{},{ bonus2 bAddRace,2,10; bonus2 bAddRace,7,5; }
-1468,Zephyrus,Zephyrus,4,20,,2000,170,,3,0,16514,2,34,4,48,5,{},{ bonus bAtkEle,4; skill skill,21,3; bonus2 bAddEff,,200; bonus2 bAutoSpell,21,3;  }
+1468,Zephyrus,Zephyrus,4,20,,2000,170,,3,0,16514,2,34,4,48,5,{},{ bonus bAtkEle,4;
+skill 21,3;
+bonus2 bAddEff,Eff_Freeze,200;
+bonus2 bAutoSpell,21,3;
+ }
 1469,Longinus's_Spear,Longinus's Spear,4,20,,2500,180,,3,0,16514,2,34,4,48,5,{},{ bonus bAtkEle,7; bonus2 bAddRace,7,10; bonus2 bAddRace,8,10; }
 1470,Brionac,Brionac,4,20,,3000,190,,3,0,16514,2,34,4,48,5,{},{ bonus bAtkEle,6; skill 28,5; skill 13,3; }
 1471,Hell_fire,Hellfire,4,20,,3500,200,,3,0,16514,2,34,4,48,5,{},{ bonus bAtkEle,3; skill 17,3; }
@@ -630,7 +646,16 @@ bonus bLuk,20;
 1716,Kakkung_,Gakkung,4,42000,,1100,100,,5,2,1706056,2,34,3,33,11,{},{}
 1718,Hunter_Bow,Hunter Bow,4,64000,,1500,125,,5,0,2048,2,34,3,33,11,{},{}
 1719,Bow_of_Roguemaster,Roguemaster's Bow,4,20,,500,75,,11,0,64,2,34,4,48,11,{},{}
-1720,Bow_of_Rudra,Rudra's Bow,4,20,,1300,120,,5,0,1705992,2,34,4,48,11,{},{ bonus bAtkEle,6; bonus bInt,5; bonus2 bResEff,,5000; bonus2 bResEff,,5000; bonus2 bResEff,,5000; bonus2 bResEff,,5000; bonus2 bResEff,,5000; skill 35,1; skill 28,1;  }
+1720,Bow_of_Rudra,Rudra's Bow,4,20,,1300,120,,5,0,1705992,2,34,4,48,11,{},{ bonus bAtkEle,6;
+bonus bInt,5;
+skill 35,1;
+skill 28,1;
+bonus2 bResEff,,5000;
+bonus2 bResEff,,5000;
+bonus2 bResEff,,5000;
+bonus2 bResEff,,5000;
+bonus2 bResEff,,5000;
+ }
 1721,Repeating_Crossbow,Repeating Crossbow,4,89000,,2000,95,,9,1,133184,2,34,3,65,11,{},{}
 1722,Ballista,Ballista,4,20,,3500,145,,5,0,1574912,2,34,4,77,11,{},{}
 1750,Arrow,Arrow,10,1,,1,25,,,,1706056,2,32768,,1,,{},{}
