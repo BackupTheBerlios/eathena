@@ -1,0 +1,186 @@
+//EDITED BY KOOK SWU 09/10/2003
+
+payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
+	mes "[Archer Guildsman]";
+	mes "Good Day.How may I help you?";
+	next;
+	menu "I want to be an Archer.",M0,"Need the Requirements Tip.",M1,"No thanks.",MEnd;
+
+	M0:
+		if(Class==3) goto JobArc;
+		if((Class !=3) & (Class !=0)) goto NotAny;
+		if(@test_AR==0) goto M0BeArc;
+		goto ContM0BeArc;
+		
+		JobArc:
+			mes "[Archer Guildsman]";
+			mes "You've occupied with Archer Job already.";
+			close;
+		NotAny:
+			mes "[Archer Guildsman]";
+			mes "Hmm...You don't look like Novice at all..";
+			mes "Anyway whatever you are,you cannot choose a job as an Archer any more because you have a Job already.";
+			close;
+		M0BeArc:
+			mes "[Archer Guildsman]";
+			mes "Do you want to be an Archer?";
+			mes "If so, you'd better fill this application form.";
+			next;
+			menu "Apply.",M00,"Cancel",M0End;
+
+			M00:
+				
+				mes "[Archer Guildsman]";
+				mes "Ok, Sign here.. Alright... Umm I will promote you when you meet the Requirements.";
+				mes "If you qualified already, we can make it now.";
+				mes "Continue?";
+				next;
+				menu "Yes, Sure.",M000,"No,not yet.",M00End;
+
+				M000:
+					set @test_AR,1;
+					mes "[Archer Guildsman]";
+					mes "Let me check.";
+					next;     									
+					goto ContM0BeArc;
+				M00End:
+					mes "[Archer Guildsman]";
+					mes "I understand.";
+					mes "Be my guest if you want to know the Requirements.";
+					close;
+			M0End:
+				mes "[Archer Guildsman]";
+				mes "Yes..See you next time.";
+				close;
+		ContM0BeArc:
+			mes "[Archer Guildsman]";
+			mes "Are you ... $CharName ?";
+			next;
+			if(JobLevel < 10) goto NotLvl;
+			mes "[Archer Guildsman]";
+			mes "Excellent. Well-done, Dear.";
+			mes "Ok from now on I will appraise the Value of articles, 'Trunk' needed for producing a 'Bow'.";
+			next;
+
+				set Trunk1,countitem(1066);
+				set Trunk2,countitem(1067);
+				set Trunk3,countitem(1068);
+				set Trunk4,countitem(1019);
+
+			if ((Trunk1==0)&(Trunk2==0)&(Trunk3==0)&(Trunk4==0)) goto NoTrunk;
+			goto TotalTrank;	
+			
+			NoTrunk:	
+				mes "[Archer Guildsman]";
+				mes "..... Unfortunately you didn't bring required items at all.";
+				close;
+				
+			TotalTrank:	
+				set archer_item1,Trunk1*5;
+				set archer_item2,Trunk2*3;
+				set archer_item3,Trunk3*2;
+				set archer_item4,Trunk4;
+				set Total_Trunk,archer_item1+archer_item2+archer_item3+archer_item4;
+	
+				mes "[Archer Guildsman]";
+				mes  "  Grade S :  "+Trunk1+"  ea/ Grades :  "+archer_item1;
+				mes  "  Grade A :  "+Trunk2+"  ea/ Grades :  "+archer_item2;
+				mes  "  Grade B :  "+Trunk3+"  ea/ Grades :  "+archer_item3;
+				mes  "  Grade C :  "+Trunk4+"  ea/ Grades :  "+archer_item4;
+				mes " ";
+						
+				if (Total_Trunk > 40) goto HightTrunk;
+				if (Total_Trunk > 30) goto MediamTrunk;
+				if (Total_Trunk >= 25) goto NormalTrunk;
+				mes  "  Total Grades :  ^FF0000"+Total_Trunk+"^000000 / 40";
+				next;
+				mes "[Archer Guildsman]";
+				mes "Below 25 !? You have to gain at least 25! Try Harder!!";
+				close;
+				
+				 HightTrunk:
+					mes  "  Total Grades :  ^0000FF"+Total_Trunk+"^000000 / 40";
+					next;
+					mes "[Archer Guildsman]";
+					mes "Wow!! 40 Above!Excellent! Congraulations!";
+					goto MakArc;
+				MediamTrunk:
+					mes  "  Total Grades :  ^0000FF"+Total_Trunk+"^000000 / 40";
+					next;
+					mes "[Archer Guildsman]";
+					mes "30 Above! Excellent! Congraulations!";
+					goto MakArc;
+				NormalTrunk:
+					mes  "  Total Grades :  ^0000FF"+Total_Trunk+"^000000 / 40";
+					next;	
+					mes "[Archer Guildsman]";
+					mes "Sigh~ You barely passed. Anyway well-done.";
+					goto MakArc;
+ 
+		MakArc:
+		mes "Finally You achieved the Goal. I will promote you right away.";
+		next;
+		JobChange 3;
+		mes "[Archer Guildsman]";
+		mes "Congratulations! Besides we expect you will cooperate us for the Future of Archer Guild.";
+		mes "Ah,Your bow has arrived from Bow Produce Department. Please take it.";
+		mes "Now you become a real Archer with this Bow of your own.";
+		getitem 1702,1;
+		getitem 1750,100;
+		delitem 1066;
+		delitem 1067;
+		delitem 1068;
+		delitem 1019;
+		set Trunk1,0;
+		set Trunk2,0;
+		set Trunk3,0;
+		set Trunk4,0;
+		set archer_item1,0;
+		set archer_item2,0;
+		set archer_item3,0;
+		set archer_item4,0;
+		set Total_Trunk,0;
+
+		next;
+		mes "[Archer Guildsman]";
+		mes "Then Farewell. I wish you will be the greatest Archer in the World.";
+		close;
+
+			NotLvl:
+				mes "[Archer Guildsman]";
+				mes "Well,you are not enough of Job Level..or Basic Skills might be not qualified.";
+				mes "Please check the Requirements again. And level up at least Job Level 10. Don't forget you should learn entire Basic Skills. You may come back after that.";
+				close;
+	M1:
+		mes "[Archer Guildsman]";
+		mes "From now on, I will explain the Requirements of Archer.";
+		if(Class !=0) goto NotNov;
+		goto ContM1;
+		NotNov:
+			if(Class==3) goto M1JobArc;
+			mes "But, You have another job...";
+			goto ContNotNov;
+
+			M1JobArc:
+				mes "However, You've already occupied with Archer Job...";
+				goto ContNotNov;
+		ContNotNov:
+			mes "....Yeah, Whatever.. Who cares..";
+			goto ContM1;
+	ContM1:
+		next;
+		mes "[Archer Guildsman]";
+		mes "First of all, you have to reach at Novice Job level with entire Basic Skills.";
+		mes "Archer needs a high-concentration due to the specialness, We Don't accept the person without Attention.";
+		next;
+		mes "[Archer Guildsman]";
+		mes "You have to gather ^FF0000Trunk^000000 as many as you can.";
+		mes "Those Trunks you bring into will be separeted into 4 kinds by their each Quality, and you'll be given marks with them.";
+		mes "Lastly We will grant you to become an Archer when you receive grades at least ^0000FF25^000000 in 40 total.";
+		next;
+		mes "[Archer Guildsman]";
+		mes "You can get 'Trunk' from 'Willow' the Tree. Although I can't say they are tough monsters, be careful.";
+		close;
+	MEnd:
+		close;
+}

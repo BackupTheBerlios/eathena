@@ -1,0 +1,14 @@
+//Gon Ryun NPCs
+
+gon_fild01.gat,255,83,5	script	Sailor	100,{
+	mes "[Sailor]";
+	mes "Do you wanna return?";
+	next;
+	menu "Return to Alberta",M0,"Quit",MEnd;
+
+	M0:
+		warp "alberta.gat",192,169;
+		close;
+	MEnd:
+		close;
+}

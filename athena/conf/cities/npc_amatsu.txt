@@ -1,0 +1,27 @@
+//w00t! First Amatsu NPC! ^_^ By AjS15822
+amatsu.gat,195,78,4	script	Sailor	100,{
+	mes "[Sailor]";
+	mes "If you wish to travel to Izlude or Alberta, please use our 'Reudelus' connecting route.";
+	mes "We thank you for considering Reudelus of one of your travel options.";
+	mes "Will you be joining us on our voyage?";
+	next;
+	menu "Alberta = 600 Zeny",M0,"Izlude = 800 Zeny",M1,"End Conversation",MEnd;
+	
+	M0:
+		mes "[Sailor]";
+		mes "Alrite, Alberta it is!";
+		next;
+		warp "alberta.gat",27,236;//fix by AjS15822
+		close;
+	M1:
+		mes "[Sailor]";
+		mes "Alrite, Izlude it is!";
+		next;
+		warp "izlude.gat",128,111;//fix by AjS15822
+		close;
+	MEnd:
+		mes "[Sailor]";
+		mes "Thank you for choosing 'Reudelus'!";
+		mes "We are grateful for your choice in us.";
+		close;
+}

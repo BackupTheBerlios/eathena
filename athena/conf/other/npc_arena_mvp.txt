@@ -1,0 +1,116 @@
+//-------------------------------------------------------------------------------------------------------------------------\\
+//                                         MVP ARENA MADE BY DARKCHILD                                                     \\
+//-------------------------------------------------------------------------------------------------------------------------\\
+
+//-------------------------------------------------------------------------------------------------------------------------\\
+//INSTRUTIONS:
+//You have to open your conf/warps/npc_warp.txt and search for these lines:
+//prt_church.gat,31,19,0	warp	prtch02	1,2,prt_church.gat,94,81
+//prt_church.gat,90,81,0	warp	prtch02-1	1,2,prt_church.gat,27,19
+//then DELETE them
+//
+//and in conf/warps/npc_warp25.txt search for these lines and delete them:
+//BETWEEN:
+//job_wiz.gat,0,0,0	warp	jwiz	3,3,job_wiz.gat,0,0
+//AND:
+//job_knt.gat,22,145,0	warp	jknt04	3,3,job_knt.gat,0,0
+//(total of 18 written lines and 2 open lines)
+//
+//
+//IF you want to put other MVPs in the arena you can just edit the name and the monster ID to the MVP you want
+//-------------------------------------------------------------------------------------------------------------------------\\
+
+
+
+prontera.gat,130,200,5	script	MVP Master	725,{
+        mes "[MVP Master]";
+        mes "I may not seem it, but I'm the master of MVPs.";
+	mes "I can send you to some arenas with MVPs .";
+	next;
+        mes "[MVP Master]";
+	mes "Where can I send you?";
+        menu "Zone 1",Z_1,"Zone 2",Z_2,"Zone 3",Z_3,"Zone 4",Z_4,"Nothing",L_close;
+	L_close:
+	close;
+		Z_1:
+			warp "job_wiz.gat",	100,	100;	close;
+		Z_2:
+			warp "job_prist.gat",	100,	100;	close;
+		Z_3:
+	                warp "prt_church.gat",	15,	41;	close;
+		Z_4:
+	                warp "job_cru.gat",	100,	100;	close;
+}
+
+
+job_wiz.gat,100,100,2	script	MVP Worker	733,{
+	mes "[MVP Worker]";
+	mes "What can I do for you?";
+	menu "Heal",heal,"Send me back",sendback,"Nothing",Lbye;
+	Lbye:
+	close;
+		heal:
+				mes "[PVP Worker]";
+				mes "There, all better";			
+				fullheal;
+				close;
+		sendback:		
+			warp "prontera.gat",	150,	190;
+			close;
+}
+
+
+job_prist.gat,100,100,2	script	MVP Worker	733,{
+	mes "[MVP Worker]";
+	mes "What can I do for you?";
+	menu "Heal",heal,"Send me back",sendback,"Nothing",Lbye;
+	Lbye:
+		heal:
+				mes "[PVP Worker]";
+				mes "There, all better";			
+				fullheal;
+				close;
+		sendback:		
+			warp "prontera.gat",	150,	190;
+			close;
+}
+
+
+prt_church.gat,16,41,2	script	MVP Worker	733,{
+	mes "[MVP Worker]";
+	mes "What can I do for you?";
+	menu "Heal",heal,"Send me back",sendback,"Nothing",Lbye;
+	Lbye:
+		heal:
+				mes "[PVP Worker]";
+				mes "There, all better";			
+				fullheal;
+				close;
+		sendback:		
+			warp "prontera.gat",	150,	190;
+			close;
+}
+
+
+job_cru.gat,100,100,2	script	MVP Worker	733,{
+	mes "[MVP Worker]";
+	mes "What can I do for you?";
+	menu "Heal",heal,"Send me back",sendback,"Nothing",Lbye;
+	Lbye:
+		heal:
+				mes "[PVP Worker]";
+				mes "There, all better";			
+				fullheal;
+				close;
+		sendback:		
+			warp "prontera.gat",	150,	190;
+			close;
+}
+
+//MVP arena Monsters
+
+//MVP arena
+job_wiz.gat,100,100,10,10	monster	Phreeoni	1159,1,0,0,0 //Zone 1
+job_prist.gat,100,100,10,10	monster	Baphomet	1039,1,0,0,0 //Zone 2
+prt_church.gat,15,23,1,1	monster	Eddga	1115,1,0,0,0 //Zone 3
+job_cru.gat,100,100,10,10	monster	Osiris	1038,1,0,0,0 //Zone 4

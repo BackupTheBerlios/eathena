@@ -1,0 +1,140 @@
+// $Id: npc_IceCream.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
+//<--------------- Ice Cream Event [Update: Aug. 10, 2003] --------------->\\
+//EDITED BY KOOK SWU 09/10/2003
+
+//ALBERTA
+alberta.gat,120,53,5	script	Ice Cream Maker	85,{
+	mes "[Ice Cream Maker]";
+	mes "Fresh Ice Cream made with snow from Lutie!";
+	mes "Enjoy it now, it won't be on sale for long!";
+	mes "^0000FF100 Zeny^000000 Ice Cream,";
+	mes "Ice Cream!";
+	next;
+	menu "Gimme Ice Cream!",L0,"Cancel Trade",LEnd;
+	
+	L0:
+		mes "[Ice Cream Maker]";
+		mes "Fresh Ice Cream made with snow from Lutie!";
+		mes "Everyone wants our delicious ice cream, but we have limited amount,";
+		mes "so you can only purchase 5 at a time!!";
+		set Script_flag_num;
+		next;
+		input Script_flag_num;
+		if(Script_flag_num==0) goto inpC;
+		if(Script_flag_num>5) goto inpM;
+		if(Zeny<Script_flag_num*100) goto NoZ;
+		getitem 536,Script_flag_num;
+		set Zeny,Zeny-100*Script_flag_num;
+		mes "[Ice Cream Maker]";
+		mes "Here you go  " +Script_flag_num+ "  Ice Cream for you.";
+		close;
+		
+		inpC:
+			mes "[Ice Cream Maker]";
+			mes "Deal is canceled.";
+			close;
+		inpM:
+			mes "[Ice Cream Maker]";
+			mes "Sorry, but you can only buy 5 at a time.";
+			close;
+		NoZ:
+			mes "[Ice Cream Maker]";
+			mes "Sorry, but you need more money.";
+			close;
+	LEnd:
+		mes "[Ice Cream Maker]";
+		mes "Are you sure you don't want any?";
+		mes "I won't be selling it for long, and once I run out, there won't be anymore!!!";
+		close;
+}
+//MORROC FIELD
+moc_fild16.gat,88,304,4	script	Ice Cream Maker	85,{
+	mes "[Ice Cream Maker]";
+	mes "Fresh Ice Cream made with snow from Lutie!";
+	mes "Enjoy it now, it won't be on sale for long!";
+	mes "^0000FF100 Zeny^000000 Ice Cream,";
+	mes "Ice Cream!";
+	next;
+	menu "Gimme Ice Cream!",L0,"Cancel Trade",LEnd;
+	
+	L0:
+		mes "[Ice Cream Maker]";
+		mes "Fresh Ice Cream made with snow from Lutie!";
+		mes "Everyone wants our delicious ice cream, but we have limited amount,";
+		mes "so you can only purchase 5 at a time!!";
+		set Script_flag_num;
+		next;
+		input Script_flag_num;
+		if(Script_flag_num==0) goto inpC;
+		if(Script_flag_num>5) goto inpM;
+		if(Zeny<Script_flag_num*100) goto NoZ;
+		getitem 536,Script_flag_num;
+		set Zeny,Zeny-100*Script_flag_num;
+		mes "[Ice Cream Maker]";
+		mes "Here you go  " +Script_flag_num+ "  Ice Cream for you.";
+		close;
+		
+		inpC:
+			mes "[Ice Cream Maker]";
+			mes "Deal is canceled.";
+			close;
+		inpM:
+			mes "[Ice Cream Maker]";
+			mes "Sorry, but you can only buy 5 at a time.";
+			close;
+		NoZ:
+			mes "[Ice Cream Maker]";
+			mes "Sorry, but you need more money.";
+			close;
+	LEnd:
+		mes "[Ice Cream Maker]";
+		mes "Are you sure you don't want any?";
+		mes "I won't be selling it for long, and once I run out, there won't be anymore!!!";
+		close;
+}
+
+//MORROC
+morocc.gat,160,144,4	script	Ice Cream Maker	85,{
+	mes "[Ice Cream Maker]";
+	mes "Fresh Ice Cream made with snow from Lutie!";
+	mes "Enjoy it now, it won't be on sale for long!";
+	mes "^0000FF100 Zeny^000000 Ice Cream,";
+	mes "Ice Cream!";
+	next;
+	menu "Gimme Ice Cream!",L0,"Cancel Trade",LEnd;
+	
+	L0:
+		mes "[Ice Cream Maker]";
+		mes "Fresh Ice Cream made with snow from Lutie!";
+		mes "Everyone wants our delicious ice cream, but we have limited amount,";
+		mes "so you can only purchase 5 at a time!!";
+		set Script_flag_num;
+		next;
+		input Script_flag_num;
+		if(Script_flag_num==0) goto inpC;
+		if(Script_flag_num>5) goto inpM;
+		if(Zeny<Script_flag_num*100) goto NoZ;
+		getitem 536,Script_flag_num;
+		set Zeny,Zeny-100*Script_flag_num;
+		mes "[Ice Cream Maker]";
+		mes "Here you go  " +Script_flag_num+ "  Ice Cream for you.";
+		close;
+		
+		inpC:
+			mes "[Ice Cream Maker]";
+			mes "Deal is canceled.";
+			close;
+		inpM:
+			mes "[Ice Cream Maker]";
+			mes "Sorry, but you can only buy 5 at a time.";
+			close;
+		NoZ:
+			mes "[Ice Cream Maker]";
+			mes "Sorry, but you need more money.";
+			close;
+	LEnd:
+		mes "[Ice Cream Maker]";
+		mes "Are you sure you don't want any?";
+		mes "I won't be selling it for long, and once I run out, there won't be anymore!!!";
+		close;
+}

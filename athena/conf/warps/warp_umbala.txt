@@ -1,0 +1,69 @@
+//-----------------------------------------------------------------------------------------------------------------------\\
+//                       Umbala Warps by Darkchild
+//-----------------------------------------------------------------------------------------------------------------------\\ 
+
+//Witch House 
+umbala.gat,220,190,0   warp   warp9050   1,1,um_in.gat,32,70 
+um_in.gat,28,70,0   warp   warp9051   1,1,umbala.gat,217,187 
+
+//Weapons 
+umbala.gat,124,158,0   warp   warp9052   1,1,um_in.gat,155,114 
+um_in.gat,155,111,0   warp   warp9053   1,1,umbala.gat,126,152 
+
+//Fan Shack 
+umbala.gat,139,130,0   warp   warp9054   1,1,um_in.gat,99,114 
+um_in.gat,99,110,0   warp   warp9055   1,1,umbala.gat,136,127 
+
+//Lower Double Shack 
+umbala.gat,94,187,0   warp   warp9056   1,1,um_in.gat,142,42 
+um_in.gat,141,39,0   warp   warp9057   1,1,umbala.gat,95,183 
+
+//Upper Double Shack 
+umbala.gat,99,201,0   warp   warp9058   1,1,um_in.gat,163,70 
+um_in.gat,166,70,0   warp   warp9059   1,1,umbala.gat,102,204 
+
+//Small Shack 
+umbala.gat,155,249,0   warp   warp9060   1,1,um_in.gat,99,67 
+um_in.gat,99,63,0   warp   warp9061   1,1,umbala.gat,160,247 
+
+//Large Shack 
+umbala.gat,68,254,0   warp   warp9062   1,1,um_in.gat,38,112 
+um_in.gat,38,110,0   warp   warp9063   1,1,umbala.gat,66,248
+
+//Umbala Field links-------------------------------------------------------------- 
+cmd_fild01.gat,179,370,0   warp   warp8013   1,1,um_fild03.gat,239,27 
+um_fild03.gat,239,25,0   warp   warp8014   1,1,cmd_fild01.gat,179,368 
+cmd_fild01.gat,78,367,0   warp   warp8015   1,1,um_fild03.gat,117,51 
+um_fild03.gat,119,50,0   warp   warp8016   1,1,cmd_fild03.gat,78,365 
+um_fild03.gat,31,150,0   warp   warp8017   1,1,um_fild02.gat,372,329 
+um_fild02.gat,374,329,0   warp   warp8018   1,1,um_fild03.gat,33,150 
+um_fild03.gat,18,335,0   warp   warp8019   1,1,um_fild02.gat,372,148 
+um_fild02.gat,374,148,0   warp   warp8020   1,1,um_fild03.gat,20,335 
+um_fild02.gat,21,272,0   warp   warp8021   1,1,um_fild01.gat,368,275 
+um_fild01.gat,370,272,0   warp   warp8022   1,1,um_fild02.gat,23,273 
+um_fild01.gat,39,280,0   warp   warp8023   1,1,beach_dun2.gat,257,244 
+beach_dun2.gat,258,244,0   warp   warp8024   1,1,um_fild01.gat,41,280 
+um_fild02.gat,191,374,0   warp   warp8025   1,1,um_fild04.gat,179,13 
+um_fild04.gat,179,11,0   warp   warp8026   1,1,um_fild02.gat,191,372 
+um_fild04.gat,215,340,0   warp   warp8027   1,1,umbala.gat,130,80 
+umbala.gat,129,78,0   warp   warp8028   1,1,um_fild04.gat,215,338 
+
+//Dungeon Warps------------------------------------------------------------------ 
+umbala.gat,106,286,0   warp   warp8029   1,1,um_dun01.gat,42,28 
+um_dun01.gat,42,26,0   warp   warp8030   1,1,umbala.gat,108,285 
+um_dun01.gat,149,198,0   warp   warp8031   1,1,um_dun02.gat,48,30 
+um_dun02.gat,51,26,0   warp   warp8032   1,1,um_dun01.gat,153,201 
+
+//Dungeon 2 warps----------------------------------------------------------------
+um_dun02.gat,222,259,0   warp   warp9013   1,1,um_dun02.gat,234,255 
+um_dun02.gat,231,255,0   warp   warp9014   1,1,um_dun02.gat,219,260 
+um_dun02.gat,216,84,0   warp   warp9015   1,1,um_dun02.gat,214,74 
+um_dun02.gat,216,77,0   warp   warp9016   1,1,um_dun02.gat,217,88 
+um_dun02.gat,113,208,0   warp   warp9017   1,1,um_dun02.gat,100,208 
+um_dun02.gat,103,208,0   warp   warp9019   1,1,um_dun02.gat,116,208 
+um_dun02.gat,33,249,0   warp   warp9020   1,1,um_dun02.gat,23,242 
+um_dun02.gat,25,244,0   warp   warp9021   1,1,um_dun02.gat,35,251 
+um_dun02.gat,60,88,0   warp   warp9022   1,1,um_dun02.gat,66,77 
+um_dun02.gat,63,80,0   warp   warp9023   1,1,um_dun02.gat,59,92 
+um_dun02.gat,169,38,0   warp   warp9024   1,1,um_dun02.gat,180,38 
+um_dun02.gat,177,38,0   warp   warp9025   1,1,um_dun02.gat,166,38

@@ -1,0 +1,357 @@
+//----------------------------------------------------------------------------------------
+// *Npc_gflag* - From Weiss, translated by *AppleGirl*
+// eWeiss Project 2003 - http://revolve.emuxhaven.net/weiss/
+//----------------------------------------------------------------------------------------
+
+
+//Guild Wars arent working
+prontera.gat,156,192,4	script	Flag	722,{
+	mes "       [ Kingdom of Prontera ]";
+		next;
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+prontera.gat,146,194,3	script	Flag	722,{
+	mes "       [ Kingdom of Prontera ]";
+		mes " ";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		mes " "
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+prontera.gat,143,203,2	script	Flag	722,{
+	mes "       [ Kingdom of Prontera ]";
+		next;
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+prontera.gat,167,203,6	script	Flag	722,{
+	mes "       [ Kingdom of Prontera ]";
+		next;
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+prontera.gat,165,194,5	script	Flag	722,{
+	mes "       [ Kingdom of Prontera ]";
+		next;
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,79,31,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,79,35,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,79,39,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,79,43,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,79,47,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,89,155,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,82,155,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,97,155,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,103,155,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+payon.gat,75,155,4	script	Flag	722,{
+	mes "       [ Kingdom of Payon ]";
+		next;
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+aldebaran.gat,152,97,4	script	Flag	722,{
+	mes "       [ Kingdom of Aldebaran ]";
+		next;
+		mes "1. As Law of Aldebaran";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+aldebaran.gat,149,97,4	script	Flag	722,{
+	mes "       [ Kingdom of Aldebaran ]";
+		next;
+		mes "1. As Law of Aldebaran";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+aldebaran.gat,134,97,4	script	Flag	722,{
+	mes "       [ Kingdom of Aldebaran ]";
+		next;
+		mes "1. As Law of Aldebaran";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+aldebaran.gat,131,97,4	script	Flag	722,{
+	mes "       [ Kingdom of Aldebaran ]";
+		next;
+		mes "1. As Law of Aldebaran";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+aldebaran.gat,128,97,4	script	Flag	722,{
+	mes "       [ Kingdom of Aldebaran ]";
+		next;
+		mes "1. As Law of Aldebaran";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+geffen.gat,109,123,2	script	Flag	722,{
+	mes "       [ Kingdom of Geffen ]";
+		next;
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+geffen.gat,112,129,1	script	Flag	722,{
+	mes "       [ Kingdom of Geffen ]";
+		next;
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+geffen.gat,120,132,8	script	Flag	722,{
+	mes "       [ Kingdom of Geffen ]";
+		next;
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+geffen.gat,127,130,7	script	Flag	722,{
+	mes "       [ Kingdom of Geffen ]";
+		next;
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
+geffen.gat,131,123,6	script	Flag	722,{
+	mes "       [ Kingdom of Geffen ]";
+		next;
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
+		mes "    any guild yet.";
+		next;
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the EMPERIUM to";
+		mes "    take over the guild base.";
+	close;
+}
