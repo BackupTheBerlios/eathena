@@ -295,6 +295,7 @@ enum {	// struct map_session_data ‚Ì status_change‚Ì”Ô†ƒe[ƒuƒ‹
 	SC_BASILICA				=125,
 	SC_TRUESIGHT			=126,
 	SC_SHARPSHOOT			=127,
+	SC_ENSEMBLE				=192,
 };
 extern int SkillStatusChangeTable[];
 

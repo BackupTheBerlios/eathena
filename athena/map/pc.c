@@ -1307,7 +1307,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 //				High Wizard/Professor Soul Drain bonus SP)
 //
 	if((skill=pc_checkskill(sd,HP_MEDITATIO)) > 0){
-		sd->nshealsp += skill*3 + (sd->status.max_sp*skill/500);
+		sd->nshealsp = sd->nshealsp*(skill*3+100)/100;
 		sd->status.max_sp += (sd->status.max_sp*skill/100);
 	}
 	if((skill=pc_checkskill(sd,HW_SOULDRAIN)) > 0){
@@ -1496,8 +1496,12 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		if(sd->sc_data[SC_ENCPOISON].timer != -1)
 			sd->addeff[4] += sd->sc_data[SC_ENCPOISON].val2;
 
-		if( sd->sc_data[SC_DANCING].timer!=-1 )		// 演奏/ダンス使用中
+		if( sd->sc_data[SC_DANCING].timer!=-1 ){		// 演奏/ダンス使用中
 			sd->speed*=4;
+			sd->nhealsp = 0;
+			sd->nshealsp = 0;
+			sd->nsshealsp = 0;
+		}
 		if(sd->sc_data[SC_CURSE].timer!=-1)
 			sd->speed += 450;
 

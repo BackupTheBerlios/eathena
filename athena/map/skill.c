@@ -2389,7 +2389,8 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case BD_INTOABYSS:			/* 深淵の中に */
 	case BD_SIEGFRIED:			/* 不死身のジークフリード */
 		if(src->type==BL_PC)		
-			skill_ensemble((struct map_session_data *)src,skillid);
+			if(skill_ensemble((struct map_session_data *)src,skillid))==0
+				clif_skill_fail((struct map_session_data *)src,skillid,0,0);
 		break;
 
 	case BD_ADAPTATION:			/* アドリブ */
@@ -2398,6 +2399,12 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			if(sc_data && sc_data[SC_DANCING].timer!=-1){
 				clif_skill_nodamage(src,bl,skillid,skilllv,1);
 				skill_stop_dancing(src);
+				if(sc_data[SC_ENSEMBLE].timer!=-1){
+					struct block_list *t_bl = map_id2bl(sc_data[SC_ENSEMBLE].val3);
+					skill_status_change_end(src,SC_ENSEMBLE,-1);
+					skill_status_change_end(bl,SC_ENSEMBLE,-1);
+					skill_stop_dancing(t_bl);
+				}
 			}
 		}
 		break;
@@ -5504,10 +5511,9 @@ static int skill_ensemble_count(struct block_list *bl,va_list ap)
 		clif_skill_nodamage(src,src,skill_num,skill_av,1);
 		clif_skill_nodamage(bl,bl,skill_num,skill_av,1);
 		skill_unitsetting(src,skill_num,skill_av,src->x,src->y,0);	
-
-		sd->canmove_tick = tick + skill_get_time(skill_num,skill_av);
-		t_sd->canmove_tick = tick + skill_get_time(skill_num,skill_av);	
-
+		skill_status_change_start(src,SC_ENSEMBLE,skill_num,skill_av,bl->id,0,skill_get_time(skill_num,skill_av),0);
+		skill_status_change_start(bl,SC_ENSEMBLE,skill_num,skill_av,src->id,0,skill_get_time(skill_num,skill_av),0);
+		skill_status_change_start(bl,SC_DANCING,skill_num,sd->sc_data[SC_DANCING].val2,0,0,1000*181,0);
 		(*c)++;
 	}
 
@@ -5529,7 +5535,7 @@ int skill_ensemble(struct map_session_data *sd,int skill_num)
 		count++;
 	}
 
-	return 0;
+	return (c>0 ? 1:0);
 }
 
 /*==========================================
@@ -5822,6 +5828,18 @@ int skill_status_change_timer(int tid, unsigned int tick, int id, int data)
 			}
 		}
 		break;
+
+	case SC_DANCING:
+		if(sd){
+			if(sd->status.sp > 0){
+				sd->status.sp = sd->status.sp - sc_data[type].val4;
+				clif_updatestatus(sd,SP_SP);
+				sd->canmove_tick = sc_data[type].val3 + tick;
+				sc_data[type].timer=add_timer(sc_data[type].val3+tick,
+					skill_status_change_timer, bl->id, data );
+				return 0;
+			}
+		}
 
 	case SC_HIDING:		/* ハイディング */
 		if(sd){		/* SPがあって、時間制限の間は持続 */
@@ -6300,10 +6318,49 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 		case SC_SERVICE4U:			/* サービスフォーユー */
 			calc_flag = 1;
 			break;
-		case SC_DANCING:			/* ダンス/演奏中 */
+		case SC_DANCING:
 			calc_flag = 1;
+			switch(val1){
+				case BA_DISSONANCE:
+				case DC_UGLYDANCE:
+				case BA_ASSASSINCROSS:
+				case BD_RICHMANKIM:
+				case BD_SIEGFRIED:
+				case BD_DRUMBATTLEFIELD:
+				case BD_RINGNIBELUNGEN:
+					val3 = 3000;
+					val4 = 1;
+					break;
+				case DC_FORTUNEKISS:
+				case BD_LULLABY:
+					val3 = 4000;
+					val4 = 1;
+					break;
+				case BA_WHISTLE:
+				case BA_POEMBRAGI:
+				case DC_HUMMING:
+				case DC_DONTFORGETME:
+				case DC_SERVICEFORYOU:
+					val3 = 5000;
+					val4 = 1;
+					break;
+				case BA_APPLEIDUN:
+					val3 = 6000;
+					val4 = 1;
+					break;
+				case BD_ETERNALCHAOS:
+				case BD_ROKISWEIL:
+					val3 = 10000;
+					val4 = 4;
+					break;
+				case BD_INTOABYSS:
+					val3 = 10000;
+					val4 = 5;
+					break;
+			}
+			val1 = gettick();
+			tick = val3;
 			break;
-
 		case SC_EXPLOSIONSPIRITS:	// 爆裂波動
 			calc_flag = 1;
 			val2 = 75 + 25*val1;
