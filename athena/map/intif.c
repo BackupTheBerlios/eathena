@@ -32,7 +32,7 @@ static const int packet_len_table[]={
 	-1,-1,27, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	-1, 7, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	35,-1,11,15, 34,29, 7,-1,  0, 0, 0, 0,  0, 0,  0, 0,
-	10,-1,15, 0, 79,17, 7,-1,  0,-1,-1,-1, 14,67,186,-1,
+	10,-1,15, 0, 79,19, 7,-1,  0,-1,-1,-1, 14,67,186,-1,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
@@ -314,7 +314,7 @@ int intif_guild_leave(int guild_id,int account_id,int char_id,int flag,const cha
 }
 // ギルドメンバのオンライン状況/Lv更新要求
 int intif_guild_memberinfoshort(int guild_id,
-	int account_id,int char_id,int online,int lv)
+	int account_id,int char_id,int online,int lv,int class)
 {
 	WFIFOW(inter_fd, 0) = 0x3035;
 	WFIFOL(inter_fd, 2) = guild_id;
@@ -322,7 +322,8 @@ int intif_guild_memberinfoshort(int guild_id,
 	WFIFOL(inter_fd,10) = char_id;
 	WFIFOB(inter_fd,14) = online;
 	WFIFOW(inter_fd,15) = lv;
-	WFIFOSET(inter_fd,17);
+	WFIFOW(inter_fd,17) = class;
+	WFIFOSET(inter_fd,19);
 	return 0;
 }
 // ギルド解散通知
@@ -622,7 +623,7 @@ int intif_parse_GuildMemberLeaved(int fd)
 // ギルドメンバオンライン状態/Lv変更通知
 int intif_parse_GuildMemberInfoShort(int fd)
 {
-	guild_recv_memberinfoshort(RFIFOL(fd,2),RFIFOL(fd,6),RFIFOL(fd,10),RFIFOB(fd,14),RFIFOW(fd,15));
+	guild_recv_memberinfoshort(RFIFOL(fd,2),RFIFOL(fd,6),RFIFOL(fd,10),RFIFOB(fd,14),RFIFOW(fd,15),RFIFOW(fd,17));
 	return 0;
 }
 // ギルド解散通知

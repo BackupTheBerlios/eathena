@@ -512,7 +512,7 @@ int guild_send_memberinfoshort(struct map_session_data *sd,int online)
 		return 0;
 	
 	intif_guild_memberinfoshort(g->guild_id,
-		sd->status.account_id,sd->status.char_id,online,sd->status.base_level);
+		sd->status.account_id,sd->status.char_id,online,sd->status.base_level,sd->status.class);
 
 	if( !online ){	// ログアウトするならsdをクリアして終了
 		int i=guild_getindex(g,sd->status.account_id,sd->status.char_id);
@@ -540,7 +540,7 @@ int guild_send_memberinfoshort(struct map_session_data *sd,int online)
 	return 0;
 }
 // ギルドメンバのオンライン状態/Lv更新通知
-int guild_recv_memberinfoshort(int guild_id,int account_id,int char_id,int online,int lv)
+int guild_recv_memberinfoshort(int guild_id,int account_id,int char_id,int online,int lv,int class)
 {
 	int i,alv,c,idx=0,om=0,oldonline=-1;
 	struct guild *g=guild_search(guild_id);
@@ -552,6 +552,7 @@ int guild_recv_memberinfoshort(int guild_id,int account_id,int char_id,int onlin
 			oldonline=m->online;
 			m->online=online;
 			m->lv=lv;
+			m->class=class;
 			idx=i;
 		}
 		if(m->account_id>0){
