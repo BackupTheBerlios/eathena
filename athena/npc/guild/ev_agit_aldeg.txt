@@ -16,7 +16,7 @@ OnAgitBreak:
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "aldeg_cas01.gat",GetCastleData("aldeg_cas01.gat",1),6;
-	Monster "aldeg_cas01.gat",216,24,"EMPELIUM",1288,1,"Agit_A01::OnAgitBreak";
+//	Monster "aldeg_cas01.gat",216,24,"EMPELIUM",1288,1,"Agit_A01::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "aldeg_cas01.gat",GetCastleData("aldeg_cas01.gat",1),4;
@@ -43,7 +43,7 @@ OnAgitBreak:
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "aldeg_cas02.gat",GetCastleData("aldeg_cas02.gat",1),6;
-	Monster "aldeg_cas02.gat",214,24,"EMPELIUM",1288,1,"Agit_A02::OnAgitBreak";
+//	Monster "aldeg_cas02.gat",214,24,"EMPELIUM",1288,1,"Agit_A02::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "aldeg_cas02.gat",GetCastleData("aldeg_cas02.gat",1),4;
@@ -70,7 +70,7 @@ OnAgitBreak:
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "aldeg_cas03.gat",GetCastleData("aldeg_cas03.gat",1),6;
-	Monster "aldeg_cas03.gat",206,32,"EMPELIUM",1288,1,"Agit_A03::OnAgitBreak";
+//	Monster "aldeg_cas03.gat",206,32,"EMPELIUM",1288,1,"Agit_A03::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "aldeg_cas03.gat",GetCastleData("aldeg_cas03.gat",1),4;
@@ -97,7 +97,7 @@ OnAgitBreak:
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "aldeg_cas04.gat",GetCastleData("aldeg_cas04.gat",1),6;
-	Monster "aldeg_cas04.gat",36,218,"EMPELIUM",1288,1,"Agit_A04::OnAgitBreak";
+//	Monster "aldeg_cas04.gat",36,218,"EMPELIUM",1288,1,"Agit_A04::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "aldeg_cas04.gat",GetCastleData("aldeg_cas04.gat",1),4;
@@ -124,7 +124,7 @@ OnAgitBreak:
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "aldeg_cas05.gat",GetCastleData("aldeg_cas05.gat",1),6;
-	Monster "aldeg_cas05.gat",28,102,"EMPELIUM",1288,1,"Agit_A05::OnAgitBreak";
+//	Monster "aldeg_cas05.gat",28,102,"EMPELIUM",1288,1,"Agit_A05::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "aldeg_cas05.gat",GetCastleData("aldeg_cas05.gat",1),4;

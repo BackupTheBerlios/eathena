@@ -1,7 +1,7 @@
 //===================================================================
 //prtg_cas02         by kalen
 //===================================================================
-prt_gld.gat,244,126,8	script	Flag	722,{
+prt_gld.gat,244,126,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -29,7 +29,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prt_gld.gat,244,128,8	script	Flag	722,{
+prt_gld.gat,244,128,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -57,7 +57,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prt_gld.gat,236,126,8	script	Flag	722,{
+prt_gld.gat,236,126,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -85,7 +85,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prt_gld.gat,236,128,8	script	Flag	722,{
+prt_gld.gat,236,128,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -113,7 +113,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,40,227,4	script	Flag	722,{
+prtg_cas02.gat,40,227,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -141,7 +141,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,46,227,4	script	Flag	722,{
+prtg_cas02.gat,46,227,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -169,7 +169,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,11,219,4	script	Flag	722,{
+prtg_cas02.gat,11,219,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -197,7 +197,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,11,214,4	script	Flag	722,{
+prtg_cas02.gat,11,214,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -225,7 +225,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,20,219,4	script	Flag	722,{
+prtg_cas02.gat,20,219,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -253,7 +253,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,20,214,4	script	Flag	722,{
+prtg_cas02.gat,20,214,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -281,7 +281,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,79,227,8	script	Flag	722,{
+prtg_cas02.gat,79,227,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -309,7 +309,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,70,227,8	script	Flag	722,{
+prtg_cas02.gat,70,227,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -337,7 +337,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,38,189,8	script	Flag	722,{
+prtg_cas02.gat,38,189,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -365,7 +365,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,34,189,8	script	Flag	722,{
+prtg_cas02.gat,34,189,8	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -393,7 +393,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,153,161,4	script	Flag	722,{
+prtg_cas02.gat,153,161,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -421,7 +421,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-prtg_cas02.gat,162,161,4	script	Flag	722,{
+prtg_cas02.gat,162,161,4	script	Swanhild	722,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
@@ -531,6 +531,10 @@ L7:
 L_EXIT:
 	cutin "kafra_01",255;
 	close;
+OnInit:
+	if (getcastledata("prtg_cas02.gat",9) == 1) end;
+	disablenpc "Kafra Service#prt2";
+	end;
 }
 //-------------------------------執事---------------------------------
 prtg_cas02.gat,94,61,4	script	Rhay	55,{
@@ -552,7 +556,7 @@ prtg_cas02.gat,206,228,0	script	Switch	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	warp "prtg_cas02",94,62;
+	warp "prtg_cas02.gat",94,62;
 	end;
 L2:
 	close;
@@ -568,11 +572,338 @@ prtg_cas02.gat,84,72,0	script	Switch 2	111,{
 	menu "Yes",-,"No",L2;
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (getcharid(2) != @GIDp2) goto L1n;
-	warp "gld_dun03",164,268;
+	warp "gld_dun03.gat",164,268;
 	end;
 L1n:
 	mes "[ Vibration of Man's Voice ]";
 	mes " ' LOOOOOOOOSER...... ' ";
 L2:
 	close;
+}
+//================================================
+//prtg_cas02 Rhay Kafra test script by Kalen (Translated By AppleGirl)
+//================================================
+//とりあえず、TEST作成('A`)
+//prtg_cas02.txtのアブライはコメントアウトですよ～
+prtg_cas02.gat,94,61,0	script	Rhay	55,{
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
+	if (@GIDp2 == 0) goto LStart;
+	if (getcharid(2) != @GIDp2) goto LStart2;
+	if (strcharinfo(0) == getguildmaster(@GIDp1)) goto LStart3;
+	
+// ------- アジト未占領 ----------------------------------
+LStart:
+	mes "[ Rhay ]";
+	mes "I am waiting for my master.";
+	mes "Brave Player! follow your destiny!...";
+	close;
+// -------- マスターじゃない ------------------------------
+LStart2:
+	if (strcharinfo(0) == getguildmaster(@GIDp2)) goto LStart3;
+	mes "[ Rhay ]";
+	mes "I am here to follow ^ff0000" + getguildmaster(@GIDp2) + "^000000 's command! where are you guardians! destroy these bastards!";
+	close;
+// -------- 以下マスター時 ---------------------------------
+LStart3:
+	mes "[ Rhay ]";
+	mes "Welcome Master ^ff0000" + getguildmaster(@GIDp2) + "^000000 !";
+	mes "I'll do anything you tell me to do sir!.";
+	next;
+	menu "Guild Base Property",L1,"Commerce Investment",L2,"Defence Investment",L3,"Guardian Installation",L4,"Kafra Service Employement / Dismissal",L5,"Enter Master's Room",L6,"Empty Guild Base",L7;
+//-----------------------------------------------------------
+//================================================
+//Phase 1:ギルドのプロパティ(未調整)
+//================================================
+L1:
+	mes "[ Rhay ]";
+	mes "Guild Base Commerce Investment Improvement Information.";
+	mes " ";
+	mes "^0000ffCurrent Commerce Investment is" + GetCastleData("prtg_cas02.gat",2) + ".";
+	mes "- You have invested" + GetCastleData("prtg_cas02.gat",4) + "times in last time.";
+	mes " ";
+	mes " Current Defence" + GetCastleData("prtg_cas02.gat",3) + ".^000000";
+	mes "^0000ff- You have invested" + GetCastleData("prtg_cas02.gat",5) + "times in last time.^000000";
+	mes " ";
+	mes "That is about it.";
+	close;
+//================================================
+//Phase 2:商業への投資(未調整)
+//================================================
+L2:
+	mes "[ Rhay ]";
+	mes "If you improve your Commerce Investments, Guild's Productive power increases to produce goods.";
+	mes " ";
+	mes "You must Invest once a day, but you can also invest two times a day.";
+	next;
+	set @TriggerE,GetCastleData("prtg_cas02.gat",4);
+	set @Economy,GetCastleData("prtg_cas02.gat",2);
+	if(@TriggerE < 2) goto L2_1;
+		mes "[ Rhay ]";
+		mes " ";
+		mes "^ff0000Guild's Investment is currently at 100% you don't have to invest anymore.^000000";
+	 	close;
+L2_1:
+	mes "[ Rhay ]";
+	mes " ";
+	mes "Required invest amount is^ff0000" + gold + "^000000 Zeny. Would you like to invest?";
+	next;
+	menu "Invest Commerce.",L2_1_1,"Cancel.",-;
+		mes "[ Rhay ]";
+		mes "I'll follow your order Master!... you don't have to be hurry anywayz.";
+		close;
+	L2_1_1:
+		if(Zeny < 10000) goto L2_error;
+		set Zeny,Zeny-10000;
+		SetCastleData "prtg_cas02.gat",4,@TriggerE+1;
+		SetCastleData "prtg_cas02.gat",2,@Economy+10000;
+		mes "[ Rhay ]";
+		mes "You invested successfully.";
+		close;
+L2_error:
+	mes "[ Rhay ]";
+	mes "Master, you do not have enough money to invest, investment has been cancelled.";
+	close;
+//================================================
+//Phase 3:ディフェンスへの投資(現状実装無理か？)
+//================================================
+L3:
+//var defenseOK = AgitGet AGIT_D_FUNDING_OK  
+	mes "[ Rhay ]";
+	mes "If you improve investment of defence, HP of guardian/emperium increase, it helps when enemy try to attack you guild.";
+	mes " ";
+	mes "You must Invest once a day, but you can also invest two times a day.";
+	next;
+	set @TriggerD,GetCastleData("prtg_cas02.gat",5);
+	set @Deffence,GetCastleData("prtg_cas02.gat",3);
+	if(@TriggerD < 2) goto L3_1;
+		mes "[ Rhay ]";
+		mes " ";
+		mes "^ff0000Guild's Investment is currently at 100% you don't have to invest anymore.^000000";
+	 	close;
+L3_1:
+	mes "[ Rhay ]";
+	mes " ";
+	mes "Required invest amount is ^ff0000" + 10,000 + "^000000 Zeny. Would you like to invest?";
+	next;
+	menu "Invest Defence.",L3_1_1,"Cancel",-;
+		mes "[ Rhay ]";
+		mes "I'll follow your order Master!... you don't have to be hurry anywayz.";
+		close;
+	L3_1_1:
+		if(Zeny < 10000) goto L3_error;
+		set Zeny,Zeny-10000;
+		SetCastleData "prtg_cas02.gat",5,@TriggerD+1;
+		SetCastleData "prtg_cas02.gat",3,@Deffence+10000;
+		mes "[ Rhay ]";
+		mes "You invested successfully.";
+		close;
+L3_error:
+	mes "[ Rhay ]";
+	mes "Master, you do not have enough money to invest, investment has been cancelled.";
+	close;
+//================================================
+//Phase 4:ガーディアン設置
+//================================================
+L4:
+	If(getguildskilllv(10002) == 0) goto L4Error;
+	mes "[ Rhay ]";
+	mes "Would you like to install a guardian? Guardian will protect guild base from enemies.";
+	mes "Please choose guardian.";
+	next;
+	menu "Soldier 1",L4_1,"Soldier 2",L4_2,"Soldier 3",L4_3,"Archer 1",L4_4,"Archer 2",L4_5,"Knight 1",L4_6,"Knight 2",L4_7,"Knight 3",L4_8;
+		L4_1:
+			if (GetCastleData("prtg_cas02.gat",10) == 1) goto L4Error2;
+			set @GDnum,10;goto L4_9;
+		L4_2:
+			if (GetCastleData("prtg_cas02.gat",11) == 1) goto L4Error2;
+			set @GDnum,11;goto L4_9;
+		L4_3:
+			if (GetCastleData("prtg_cas02.gat",12) == 1) goto L4Error2;
+			set @GDnum,12;goto L4_9;
+		L4_4:
+			if (GetCastleData("prtg_cas02.gat",13) == 1) goto L4Error2;
+			set @GDnum,13;goto L4_9;
+		L4_5:
+			if (GetCastleData("prtg_cas02.gat",14) == 1) goto L4Error2;
+			set @GDnum,14;goto L4_9;
+		L4_6:
+			if (GetCastleData("prtg_cas02.gat",15) == 1) goto L4Error2;
+			set @GDnum,15;goto L4_9;
+		L4_7:
+			if (GetCastleData("prtg_cas02.gat",16) == 1) goto L4Error2;
+			set @GDnum,16;goto L4_9;
+		L4_8:
+			if (GetCastleData("prtg_cas02.gat",17) == 1) goto L4Error2;
+			set @GDnum,17;goto L4_9;
+	L4_9:
+		mes "[ Rhay ]";
+		mes "Would you really like to install guardian? You need 10000 zeny to install.";
+		next;
+		menu "Install",L4_9_1,"Cancel",-;
+			mes "[ Rhay ]";
+			mes "I'll follow your order sir, but it is worth to have a guardian soon or later.";
+			close;
+		L4_9_1:
+//ギルドスキルの判定→ダメならL4Error
+		if (Zeny < 10000) goto L4Error3;
+		set Zeny,Zeny-10000;
+		setcastledata "prtg_cas02.gat",@GDnum,1;
+		mes "[ Rhay ]";
+		mes "Guardian has been installed, guardian will protect our guild base against enemies.";
+		close;
+L4Error:
+	mes "[ Rhay ]";
+	mes "Master, you do not have any guild skill to install guardian, if you want to gain skill to install guardian, you must get ^ff0000GUARDIAN SKILL^000000. Guardian Installation has been cancelled.";
+	close;
+L4Error2:
+	mes "[ Rhay ]";
+	mes "Master...you installed that guardian already.";
+	close;
+L4Error3:
+	mes "[ Rhay ]";
+	mes "Master, you do not have enough money to invest, investment has been cancelled.";
+	close;
+//================================================
+//Phase 5:カプラとの契約・解雇
+//================================================
+L5:
+	if (GetCastleData("prtg_cas02.gat",9) == 1) goto Lkafra_dimi;
+//=========================
+//(When Karfa off) Employment
+//=========================
+	If(getguildskilllv(10001) == 0) goto L_k_a;
+	mes "[ Rhay ]";
+	mes "Would you like to employee  new Kafra Service?";
+	mes "^ff0000 You need 10000 Zeny to employee... ";
+	next;
+	menu "Employ Kafra.",L_k_0,"Cancel",L_k_E;
+
+	L_k_a:
+		mes "[ Rhay ]";
+		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been canceld .";
+		close;
+	L_k_0:
+		if (Zeny > 10000) goto L_k_1;
+		mes "[ Rhay ]";
+		mes "Master, you do not have enough money to employee Kafra, employment has been cancelled.";
+		close;
+	L_k_1:
+		set Zeny,Zeny-10000;
+		enablenpc "Kafra Service#prt2";
+		setcastledata "prtg_cas02.gat",9,1;
+		mes "[ Rhay ]";
+		mes "You have been contracted with Kafra Service Company.";
+		next;
+		cutin "kafra_01",2;
+		mes "[ Kafra Service ]";
+		mes "Hello, I came here to follow your order sir!^^.";
+		mes "I'll do the best I can.";
+		next;
+		cutin "kafra_01",255;
+		mes "[ Rhay ]";
+		mes "You must pay zeny every month to keep Kafra in your guild base.";
+		mes "I hope you guyz have good time with our sexy Kafra /gg.";
+		close;
+L_k_e:
+		mes "[ Rhay ]";
+		mes "Yes Master! But you must get Kafra as soon as possible.";
+		close;
+//=========================
+//(When karfa ON) Dismissal
+//=========================
+Lkafra_dimi:
+	mes "[ Rhay ]";
+	mes "Would you like to dismissal current Kafra Service?";
+	next;
+	menu "Dismissal",-,"Cancel",L_D_1;
+		cutin "kafra_01",2;
+		mes "[ Kafra Service ]";
+		mes "What have I done wrong? if so, would you please forgive me?";
+		next;
+		menu "Dismissal",-,"Cancel",L_D_2;
+				mes "[ Kafra Service ]";
+				mes "OMG!! how could you do this to meeeeh!! T_T~"
+				next;
+				disablenpc "Kafra Service#prt2";
+				setcastledata "prtg_cas02.gat",9,0;
+				cutin "kafra_01",255;
+				mes "[ Rhay ]";
+				mes "....";
+				mes "Kafra Service has been dismissed";
+				close;
+			L_D_2:
+				mes "[ Kafra Service ]";
+				mes "Thank you master, I'll do my best! ^^.";
+				cutin "kafra_01",255;
+				close;
+		L_D_1:
+			mes "[ Rhay ]";
+			mes "I think you should keep the current Kafra sir, she's trying her best sir.";
+			close;
+L5_1:
+//================================================
+//Phase 6:マスタールームに行く
+//================================================
+L6:
+	mes "[ Rhay ]";
+	mes "Would you like to get into our treasure room?";
+	mes "That place is only for guild master, which means you are the only one who has access to enter.";
+	next;
+	menu "Enter Master's room.",-,"Cancel",L6_1;
+			mes "[ Rhay ]";
+			mes "Please follow me through the secret way.";
+			mes "You must push downt the secret switch in order to get out.";
+			next;
+			warp "prtg_cas02",15,209;
+		L6_1:
+			mes "[ Rhay ]";
+			mes "Goods are producing everyday, you must get'em whenever you can.";
+			mes "Please don't forget to get all the goods in time.";
+			close;
+//================================================
+//Phase 7: アジト放棄
+//================================================
+L7:
+	mes "[ Rhay ]";
+	mes "Master!!";
+	mes "Are you goin to give our guild up?!";
+	mes "It is not worth to give up on our guild master!!!";
+	mes "Please reconsider master!!";
+	next;
+	menu "Empty Guild Base",L7_1,"Cancel",L7_2;
+		L7_1:
+			mes "[ Rhay ]";
+			mes "Master, please reconsider...T_T!!";
+			mes "OMG, please!!!!!!!!";
+			next;
+			menu "Cancel",L7_2,"Empty Guild Base",-;
+				mes "[ Rhay ]";
+				mes "Master!!.....";
+				mes "......BAS......TA..RD......";
+				next;
+		setcastledata "prtg_cas02.gat",1,0;
+		setcastledata "prtg_cas02.gat",2,0;
+		setcastledata "prtg_cas02.gat",3,0;
+		setcastledata "prtg_cas02.gat",4,0;
+		setcastledata "prtg_cas02.gat",5,0;
+		setcastledata "prtg_cas02.gat",6,0;
+		setcastledata "prtg_cas02.gat",7,0;
+		setcastledata "prtg_cas02.gat",8,0;
+		setcastledata "prtg_cas02.gat",9,0;
+		setcastledata "prtg_cas02.gat",10,0;
+		setcastledata "prtg_cas02.gat",11,0;
+		setcastledata "prtg_cas02.gat",12,0;
+		setcastledata "prtg_cas02.gat",13,0;
+		setcastledata "prtg_cas02.gat",14,0;
+		setcastledata "prtg_cas02.gat",15,0;
+		setcastledata "prtg_cas02.gat",16,0;
+		setcastledata "prtg_cas02.gat",17,0;
+		Announce "Stronghold [" + GetCastleName("prtg_cas02.gat") + "], [" + GetGuildName(@GIDp2) + "] has surrendered the castle",0;
+		MapRespawnGuildID "prtg_cas02.gat",GetCastleData("prtg_cas02.gat",1),7;
+		end;
+		L7_2:
+			mes "[ Rhay ]";
+			mes "I knew it master^^!!";
+			mes "Please, don't freak me out like that again^^.";
+			close;
 }

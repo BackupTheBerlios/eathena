@@ -2,7 +2,7 @@
 //aldeg_cas01         by kalen
 //===================================================================
 //----alde_gld----
-alde_gld.gat,61,87,6	script	Flag	722,{
+alde_gld.gat,61,87,6	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -29,7 +29,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-alde_gld.gat,61,79,6	script	Flag	722,{
+alde_gld.gat,61,79,6	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -56,7 +56,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-alde_gld.gat,45,87,8	script	Flag	722,{
+alde_gld.gat,45,87,8	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -83,7 +83,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-alde_gld.gat,51,87,8	script	Flag	722,{
+alde_gld.gat,51,87,8	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -111,7 +111,7 @@ LStartg:
 		close;
 }
 //----aldeg_cas01----
-aldeg_cas01.gat,30,248,4	script	Flag	722,{
+aldeg_cas01.gat,30,248,4	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -138,7 +138,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,30,246,4	script	Flag	722,{
+aldeg_cas01.gat,30,246,4	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -165,7 +165,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,37,248,4	script	Flag	722,{
+aldeg_cas01.gat,37,248,4	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -192,7 +192,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,37,246,4	script	Flag	722,{
+aldeg_cas01.gat,37,246,4	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -219,7 +219,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,95,80,2	script	Flag	722,{
+aldeg_cas01.gat,95,80,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -246,7 +246,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,95,59,2	script	Flag	722,{
+aldeg_cas01.gat,95,59,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -273,7 +273,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,62,75,2	script	Flag	722,{
+aldeg_cas01.gat,62,75,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -300,7 +300,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,70,75,2	script	Flag	722,{
+aldeg_cas01.gat,70,75,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -327,7 +327,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,74,75,2	script	Flag	722,{
+aldeg_cas01.gat,74,75,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -354,7 +354,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,62,64,2	script	Flag	722,{
+aldeg_cas01.gat,62,64,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -381,7 +381,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,66,64,2	script	Flag	722,{
+aldeg_cas01.gat,66,64,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -408,7 +408,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,70,64,2	script	Flag	722,{
+aldeg_cas01.gat,70,64,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -435,7 +435,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,74,64,2	script	Flag	722,{
+aldeg_cas01.gat,74,64,2	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -462,7 +462,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,203,150,4	script	Flag	722,{
+aldeg_cas01.gat,203,150,4	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -489,7 +489,7 @@ LStartg:
 		mes "    honor yourself.";
 		close;
 }
-aldeg_cas01.gat,210,150,4	script	Flag	722,{
+aldeg_cas01.gat,210,150,4	script	Neuschwanstein	722,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
@@ -522,7 +522,7 @@ aldeg_cas01.gat,218,170,0	script	Kafra Service#alde1	117,{
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (getcharid(2) == @GIDa1) goto LStartg;
 	mes "[Kafra Service]";
-	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDa1) + " + "^000000 members, please use different Kafra Service. thank you.";
+	mes "I am here to help only ^ff0000" + GetGuildName(@GIDa1) + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
 	mes "[Kafra Service]";
@@ -554,8 +554,8 @@ L3:
 			set Zeny,Zeny-200;set KF_PIT,KF_PIT+20;warp "aldebaran.gat",132,103;end;
 		L3_2:
 				mes "[Kafra Service]";
-				mes "ありがとうございました。";
-				mes "またご利用くださいませ。";
+				mes "Kafra Service always trying to offer best service for you.";
+				mes "Thank you for using our service.";
 				goto L_EXIT;
 		Lerror3:
 				mes "[Kafra Service]";
@@ -569,8 +569,8 @@ L4:
 	next;
 	menu "Rent Cart",L4_1,"Cancle",-;
 		mes "[Kafra Service]";
-		mes "ありがとうございました。";
-		mes "またご利用くださいませ。";
+		mes "Kafra Service always trying to offer best service for you.";
+		mes "Thank you for using our service.";
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 800) goto Lerror4_2;
@@ -603,27 +603,13 @@ OnInit:
 	disablenpc "Kafra Service#alde1";
 	end;
 }
-//-------------------------------執事---------------------------------
-aldeg_cas01.gat,218,175,0	script	Arl Fredo	55,{
-	getcastledata "gigigigi.gat",1,@GIDa1;
-	if (getcharid(2) == @GIDa1) goto LStartg;
-	mes "NO MSG";
-	close;
-LStartgm:
-	mes "[ Arl Fredo ]";
-	mes "I am here to follow ^ff0000" + GetGuildMaster(@GIDa1) + "^000000 's command! Where are you guardians! Destroy these bastards!";
-	close;
-LStartg:
-	mes "Function not yet coded";
-	close;
-}
 //-----------------------------Switch-------------------------------
 aldeg_cas01.gat,123,223,0	script	Switch	111,{
 	mes " ";
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	warp "aldeg_cas01",218,176;
+	warp "aldeg_cas01.gat",218,176;
 	end;
 L2:
 	close;
@@ -639,11 +625,337 @@ aldeg_cas01.gat,123,223,0	script	Switch 2	111,{
 	menu "Yes",-,"No",L2;
 	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
 	if (getcharid(2) != @GIDa1) goto L1n;
-	warp "gld_dun02",32,122;
+	warp "gld_dun02.gat",32,122;
 	end;
 L1n:
 	mes "[ Vibration of Man's Voice ]";
 	mes " ' LOOOOOOOOSER...... ' ";
 L2:
 	close;
+}
+//================================================
+//aldeg_cas01 Arl Fredo Kafra test script by and translated AppleGirl 
+//================================================
+//とりあえず、TEST作成('A`)
+//aldeg_cas01.txtのアブライはコメントアウトですよ～
+aldeg_cas01.gat,218,175,0	script	Arl Fredo	55,{
+	set @GIDp1,getcastledata("aldeg_cas01.gat",1);
+	if (@GIDp1 == 0) goto LStart;
+	if (getcharid(2) != @GIDp1) goto LStart2;
+	if (strcharinfo(0) == getguildmaster(@GIDp1)) goto LStart3;
+	
+// ------- アジト未占領 ----------------------------------
+LStart:
+	mes "[ Arl Fredo ]";
+	mes "I am waiting for my master.";
+	mes "Brave Player! follow your destiny!...";
+	close;
+// -------- マスターじゃない ------------------------------
+LStart2:
+	mes "[ Arl Fredo ]";
+	mes "I am here to follow ^ff0000" + getguildmaster(@GIDp1) + "^000000 's command! where are you guardians! destroy these bastards!";
+	close;
+// -------- 以下マスター時 ---------------------------------
+LStart3:
+	mes "[ Arl Fredo ]";
+	mes "Welcome Master ^ff0000" + getguildmaster(@GIDp1) + "^000000 !";
+	mes "I'll do anything you tell me to do sir!.";
+	next;
+	menu "Guild Base Property",L1,"Commerce Investment",L2,"Defence Investment",L3,"Guardian Installation",L4,"Kafra Service Employement / Dismissal",L5,"Enter Master's Room",L6,"Empty Guild Base",L7;
+//-----------------------------------------------------------
+//================================================
+//Phase 1:ギルドのプロパティ(未調整)
+//================================================
+L1:
+	mes "[ Arl Fredo ]";
+	mes "Guild Base Commerce Investment Improvement Information.";
+	mes " ";
+	mes "^0000ffCurrent Commerce Investment is" + GetCastleData("aldeg_cas01.gat",2) + ".";
+	mes "- You have invested" +  GetCastleData("aldeg_cas01.gat",4)  + "times in last time.";
+	mes " ";
+	mes " Current Defence" +  GetCastleData("aldeg_cas01.gat",3)  + ".^000000";
+	mes "^0000ff- You have invested" +  GetCastleData("aldeg_cas01.gat",5)  + "times in last time.^000000";
+	mes " ";
+	mes "That is about it.";
+	close;
+//================================================
+//Phase 2:商業への投資(未調整)
+//================================================
+L2:
+	mes "[ Arl Fredo ]";
+	mes "If you improve your Commerce Investments, Guild's Productive power increases to produce goods.";
+	mes " ";
+	mes "You must Invest once a day, but you can also invest two times a day.";
+	next;
+	set @TriggerE,GetCastleData("aldeg_cas01.gat",4);
+	set @Economy,GetCastleData("aldeg_cas01.gat",2);
+	if(@TriggerE < 2) goto L2_1;
+		mes "[ Arl Fredo ]";
+		mes " ";
+		mes "^ff0000Guild's Investment is currently at 100% you don't have to invest anymore.^000000";
+	 	close;
+L2_1:
+	mes "[ Arl Fredo ]";
+	mes " ";
+	mes "Required invest amount is^ff0000" + 10,000 + "^000000 Zeny. Would you like to invest?";
+	next;
+	menu "Invest Commerce.",L2_1_1,"Cancel.",-;
+		mes "[ Arl Fredo ]";
+		mes "I'll follow your order Master!... you don't have to be hurry anywayz.";
+		close;
+	L2_1_1:
+		if(Zeny < 10000) goto L2_error;
+		set Zeny,Zeny-10000;
+		SetCastleData "aldeg_cas01.gat",4,@TriggerE+1;
+		SetCastleData "aldeg_cas01.gat",2,@Economy+10000;
+		mes "[ Arl Fredo ]";
+		mes "You invested successfully.";
+		close;
+L2_error:
+	mes "[ Arl Fredo ]";
+	mes "Master, you do not have enough money to invest, investment has been cancelled.";
+	close;
+//================================================
+//Phase 3:ディフェンスへの投資(現状実装無理か？)
+//================================================
+L3:
+//var defenseOK = AgitGet AGIT_D_FUNDING_OK  
+	mes "[ Arl Fredo ]";
+	mes "If you improve investment of defence, HP of guardian/emperium increase, it helps when enemy try to attack you guild.";
+	mes " ";
+	mes "You must Invest once a day, but you can also invest two times a day.";
+	next;
+	set @TriggerD,GetCastleData("aldeg_cas01.gat",5);
+	set @Deffence,GetCastleData("aldeg_cas01.gat",3);
+	if(@TriggerD < 2) goto L3_1;
+		mes "[ Arl Fredo ]";
+		mes " ";
+		mes "^ff0000Guild's Investment is currently at 100% you don't have to invest anymore.^000000";
+	 	close;
+L3_1:
+	mes "[ Arl Fredo ]";
+	mes " ";
+	mes "Required invest amount is ^ff0000" + 10,000 + "^000000 Zeny. Would you like to invest?";
+	next;
+	menu "Invest Defence.",L3_1_1,"Cancel",-;
+		mes "[ Arl Fredo ]";
+		mes "I'll follow your order Master!... you don't have to be hurry anywayz.";
+		close;
+	L3_1_1:
+		if(Zeny < 10000) goto L3_error;
+		set Zeny,Zeny-10000;
+		SetCastleData "aldeg_cas01.gat",5,@TriggerD+1;
+		SetCastleData "aldeg_cas01.gat",3,@Deffence+10000;
+		mes "[ Arl Fredo ]";
+		mes "You invested successfully.";
+		close;
+L3_error:
+	mes "[ Arl Fredo ]";
+	mes "Master, you do not have enough money to invest, investment has been cancelled.";
+	close;
+//================================================
+//Phase 4:ガーディアン設置
+//================================================
+L4:
+	If(getguildskilllv(10002) == 0) goto L4Error;
+	mes "[ Arl Fredo ]";
+	mes "Would you like to install a guardian? Guardian will protect guild base from enemies.";
+	mes "Please choose guardian.";
+	next;
+	menu "Soldier 1",L4_1,"Soldier 2",L4_2,"Soldier 3",L4_3,"Archer 1",L4_4,"Archer 2",L4_5,"Knight 1",L4_6,"Knight 2",L4_7,"Knight 3",L4_8;
+		L4_1:
+			if (GetCastleData("aldeg_cas01.gat",10) == 1) goto L4Error2;
+			set @GDnum,10;goto L4_9;
+		L4_2:
+			if (GetCastleData("aldeg_cas01.gat",11) == 1) goto L4Error2;
+			set @GDnum,11;goto L4_9;
+		L4_3:
+			if (GetCastleData("aldeg_cas01.gat",12) == 1) goto L4Error2;
+			set @GDnum,12;goto L4_9;
+		L4_4:
+			if (GetCastleData("aldeg_cas01.gat",13) == 1) goto L4Error2;
+			set @GDnum,13;goto L4_9;
+		L4_5:
+			if (GetCastleData("aldeg_cas01.gat",14) == 1) goto L4Error2;
+			set @GDnum,14;goto L4_9;
+		L4_6:
+			if (GetCastleData("aldeg_cas01.gat",15) == 1) goto L4Error2;
+			set @GDnum,15;goto L4_9;
+		L4_7:
+			if (GetCastleData("aldeg_cas01.gat",16) == 1) goto L4Error2;
+			set @GDnum,16;goto L4_9;
+		L4_8:
+			if (GetCastleData("aldeg_cas01.gat",17) == 1) goto L4Error2;
+			set @GDnum,17;goto L4_9;
+	L4_9:
+		mes "[ Arl Fredo ]";
+		mes "Would you really like to install guardian? You need 10,000 zeny to install.";
+		next;
+		menu "Install",L4_9_1,"Cancel",-;
+			mes "[ Arl Fredo ]";
+			mes "I'll follow your order sir, but it is worth to have a guardian soon or later.";
+			close;
+		L4_9_1:
+//ギルドスキルの判定→ダメならL4Error
+		if (Zeny < 10000) goto L4Error3;
+		set Zeny,Zeny-10000;
+		setcastledata "aldeg_cas01.gat",@GDnum,1;
+		mes "[ Arl Fredo ]";
+		mes "Guardian has been installed, guardian will protect our guild base against enemies.";
+		close;
+L4Error:
+	mes "[ Arl Fredo ]";
+	mes "Master, you do not have any guild skill to install guardian, if you want to gain skill to install guardian, you must get ^ff0000GUARDIAN SKILL^000000. Guardian Installation has been cancelled.";
+	close;
+L4Error2:
+	mes "[ Arl Fredo ]";
+	mes "Master...you installed that guardian already.";
+	close;
+L4Error3:
+	mes "[ Arl Fredo ]";
+	mes "Master, you do not have enough money to invest, investment has been cancelled.";
+	close;
+//================================================
+//Phase 5:カプラとの契約・解雇
+//================================================
+L5:
+	if (GetCastleData("aldeg_cas01.gat",9) == 1) goto Lkafra_dimi;
+//=========================
+//(When Karfa off) Employment
+//=========================
+	If(getguildskilllv(10002) == 0) goto L_k_a;
+	mes "[ Arl Fredo ]";
+	mes "Would you like to employee  new Kafra Service?";
+	mes "^ff0000 You need 10,000 Zeny to employee... ";
+	next;
+	menu "Employ Kafra.",L_k_0,"Cancel",L_k_E;
+
+	L_k_a:
+		mes "[ Arl Fredo ]";
+		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been canceld .";
+		close;
+	L_k_0:
+		if (Zeny > 10000) goto L_k_1;
+		mes "[ Arl Fredo ]";
+		mes "Master, you do not have enough money to employee Kafra, employment has been cancelled.";
+		close;
+	L_k_1:
+		set Zeny,Zeny-10000;
+		enablenpc "Kafra Service#alde2";
+		setcastledata "aldeg_cas01.gat",9,1;
+		mes "[ Arl Fredo ]";
+		mes "You have been contracted with Kafra Service Company.";
+		next;
+		cutin "kafra_01",2;
+		mes "[ Kafra Service ]";
+		mes "Hello, I came here to follow your order sir!^^.";
+		mes "I'll do the best I can.";
+		next;
+		cutin "kafra_01",255;
+		mes "[ Arl Fredo ]";
+		mes "You must pay zeny every month to keep Kafra in your guild base.";
+		mes "I hope you guyz have good time with our sexy Kafra /gg.";
+		close;
+L_k_e:
+		mes "[ Arl Fredo ]";
+		mes "Yes Master! But you must get Kafra as soon as possible.";
+		close;
+//=========================
+//(When karfa ON) Dismissal
+//=========================
+Lkafra_dimi:
+	mes "[ Arl Fredo ]";
+	mes "Would you like to dismissal current Kafra Service?";
+	next;
+	menu "Dismissal",-,"Cancel",L_D_1;
+		cutin "kafra_01",2;
+		mes "[ Kafra Service ]";
+		mes "What have I done wrong? if so, would you please forgive me?";
+		next;
+		menu "Dismissal",-,"Cancel",L_D_2;
+				mes "[ Kafra Service ]";
+				mes "OMG!! how could you do this to meeeeh!! T_T~"
+				next;
+				disablenpc "Kafra Service#alde2";
+				setcastledata "aldeg_cas01.gat",9,0;
+				cutin "kafra_01",255;
+				mes "[ Arl Fredo ]";
+				mes "....";
+				mes "Kafra Service has been dismissed";
+				close;
+			L_D_2:
+				mes "[ Kafra Service ]";
+				mes "Thank you master, I'll do my best! ^^.";
+				cutin "kafra_01",255;
+				close;
+		L_D_1:
+			mes "[ Arl Fredo ]";
+			mes "I think you should keep the current Kafra sir, she's trying her best sir.";
+			close;
+L5_1:
+//================================================
+//Phase 6:マスタールームに行く
+//================================================
+L6:
+	mes "[ Arl Fredo ]";
+	mes "Would you like to get into our treasure room?";
+	mes "That place is only for guild master, which means you are the only one who has access to enter.";
+	next;
+	menu "Enter Master's room.",-,"Cancel",L6_1;
+			mes "[ Arl Fredo ]";
+			mes "Please follow me through the secret way.";
+			mes "You must push downt the secret switch in order to get out.";
+			next;
+			warp "aldeg_cas01",15,209;
+		L6_1:
+			mes "[ Arl Fredo ]";
+			mes "Goods are producing everyday, you must get'em whenever you can.";
+			mes "Please don't forget to get all the goods in time.";
+			close;
+//================================================
+//Phase 7: アジト放棄
+//================================================
+L7:
+	mes "[ Arl Fredo ]";
+	mes "Master!!";
+	mes "Are you goin to give our guild up?!";
+	mes "It is not worth to give up on our guild master!!!";
+	mes "Please reconsider master!!";
+	next;
+	menu "Empty Guild Base",L7_1,"Cancel",L7_2;
+		L7_1:
+			mes "[ Arl Fredo ]";
+			mes "Master, please reconsider...T_T!!";
+			mes "OMG, please!!!!!!!!";
+			next;
+			menu "Cancel",L7_2,"Empty Guild Base",-;
+				mes "[ Arl Fredo ]";
+				mes "Master!!.....";
+				mes "......BAS......TA..RD......";
+				next;
+		setcastledata "aldeg_cas01.gat",1,0;
+		setcastledata "aldeg_cas01.gat",2,0;
+		setcastledata "aldeg_cas01.gat",3,0;
+		setcastledata "aldeg_cas01.gat",4,0;
+		setcastledata "aldeg_cas01.gat",5,0;
+		setcastledata "aldeg_cas01.gat",6,0;
+		setcastledata "aldeg_cas01.gat",7,0;
+		setcastledata "aldeg_cas01.gat",8,0;
+		setcastledata "aldeg_cas01.gat",9,0;
+		setcastledata "aldeg_cas01.gat",10,0;
+		setcastledata "aldeg_cas01.gat",11,0;
+		setcastledata "aldeg_cas01.gat",12,0;
+		setcastledata "aldeg_cas01.gat",13,0;
+		setcastledata "aldeg_cas01.gat",14,0;
+		setcastledata "aldeg_cas01.gat",15,0;
+		setcastledata "aldeg_cas01.gat",16,0;
+		setcastledata "aldeg_cas01.gat",17,0;
+		Announce "Stronghold [" + GetCastleName("aldeg_cas01.gat") + "], [" + GetGuildName(@GIDp1) + "] has surrendered the castle",0;
+		MapRespawnGuildID "aldeg_cas01.gat",GetCastleData("aldeg_cas01.gat",1),7;
+		end;
+		L7_2:
+			mes "[ Arl Fredo ]";
+			mes "I knew it master^^!!";
+			mes "Please, don't freak me out like that again^^.";
+			close;
 }
