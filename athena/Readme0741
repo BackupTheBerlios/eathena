@@ -1,4 +1,17 @@
 --------------
+//0747 by 聖
+・ペットがエモを出すとmap-serverが落ちることがあった問題を修正。
+	(map/)
+		clif_parse_SendEmotion() 修正。
+
+--------------
+//0746 by Michael
+	(map/)
+	script.c 
+		Add Script command - checkoption(type);
+		Attach a npc_testchkoption.txt npc script!
+
+--------------
 //0745 by ぴざまん
 ・ギャングスターパラダイス実装
 ・PvPエリアのmapflagを修正(同士討ちが無くなったかと思います)

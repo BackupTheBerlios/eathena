@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.21 2004/01/26 19:16:04 rovert Exp $
+// $Id: clif.c,v 1.22 2004/01/27 08:25:59 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -6185,7 +6185,8 @@ void clif_parse_SelectEgg(int fd,struct map_session_data *sd)
 
 void clif_parse_SendEmotion(int fd,struct map_session_data *sd)
 {
-	clif_pet_emotion(sd->pd,RFIFOL(fd,2));
+	if(sd->pd)
+		clif_pet_emotion(sd->pd,RFIFOL(fd,2));
 }
 
 void clif_parse_ChangePetName(int fd,struct map_session_data *sd)
