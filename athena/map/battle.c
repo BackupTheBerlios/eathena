@@ -2007,7 +2007,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		damage = 0;
 
 	if(skill_num != CR_GRANDCROSS)
-		damage=battle_calc_damage(target,damage,skill_num,skill_lv,flag);
+		damage=battle_calc_damage(src,target,damage,skill_num,skill_lv,flag);
 
 	wd.damage=damage;
 	wd.damage2=0;
