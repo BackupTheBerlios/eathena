@@ -438,7 +438,7 @@
 
 // High Wizard
 364,0,0,0,0,0,10,1,no,0,0,0,magic,0	//HW_SOULDRAIN
-365,8,6,1,0,2,5,1,yes,0,0,0,magic,0	//HW_MAGICCRASHER
+365,8,8,1,0,2,5,1,yes,0,0,0,magic,0	//HW_MAGICCRASHER
 366,0,6,4,0,1,10,1,no,0,0,0,magic,0	//HW_MAGICPOWER
 
 // Paladin

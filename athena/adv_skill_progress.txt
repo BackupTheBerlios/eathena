@@ -66,12 +66,22 @@ halves all damage:		(done)	(battle_calc_damage)
 
 HW_SOULDRAIN:
 
-1% extra SP per level:		(done)	(pc_calcstatus)
+1% extra max SP per level:			(done)	(pc_calcstatus)
 
-certain amount of SP drained	(partial)	(skill_attack)
-from enemy kills:
+SP drained related to enemy level
+from enemy kills:					(done)	(skill_attack)
 
 -----------------------------------------------------------------
+
+HW_MAGICCRASHER:
+
+matk dmg done against phys. def:		(done)	(battle_calc_magic_attack)
+
+checked against target flee
+(enemy can dodge):				(done)	(battle_calc_magic_attack)
+
+-----------------------------------------------------------------
+
 
 PA_PRESSURE:
 

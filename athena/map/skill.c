@@ -1012,6 +1012,19 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 		skill_status_change_end(bl,SC_AUTOCOUNTER,-1);
 	}
 
+//	-- moonsoul	(testing soul drain SP return to caster)
+//
+	if(src->type==BL_PC && src!=bl && damage > battle_get_hp(bl)
+		&& pc_checkskill((struct map_session_data *)src,HW_SOULDRAIN) > 0
+		&& skill_get_inf(skillid)==1){
+
+		struct map_session_data *sd = (struct map_session_data *)src;
+		int sp_heal,sp_percent = sd->status.skill[HW_SOULDRAIN].lv * 10;
+		sp_heal = battle_get_lv(bl)*sp_percent/100;
+		if( (sd->status.sp+sp_heal) <= sd->status.max_sp)
+			clif_heal(sd->fd,SP_SP,sp_heal);
+	}
+
 	map_freeblock_unlock();
 
 	return (dmg.damage+dmg.damage2);	/* —^ƒ_ƒ‚ğ•Ô‚· */

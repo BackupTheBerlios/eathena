@@ -3324,6 +3324,71 @@ struct Damage battle_calc_magic_attack(
 	}
 	if(damage < 0) damage = 0;
 
+// -- moonsoul	(special condition for magic crasher spell, where it is based on
+//				 hitrate and target can dodge)
+//
+	if(skill_num==HW_MAGICCRASHER){
+		int hitrate = 0,flee = battle_get_flee(target);
+		int t_def,target_count = 1,type = 0;
+		int def1 = battle_get_def(target);
+		int def2 = battle_get_def2(target);
+		int vitbonusmax,t_vit = battle_get_vit(target);
+		int idef_flag = 0;
+		struct status_change *t_sc_data = battle_get_sc_data(target);
+
+		if(battle_config.agi_penaly_type > 0 || battle_config.vit_penaly_type > 0)
+			target_count += battle_counttargeted(target,bl);
+		if(battle_config.vit_penaly_type > 0){
+			if(target_count >= battle_config.vit_penaly_count){
+				if(battle_config.vit_penaly_type == 1){
+					def1 = (def1 * (100 - (target_count - (battle_config.vit_penaly_count - 1))*battle_config.vit_penaly_num))/100;
+					def2 = (def2 * (100 - (target_count - (battle_config.vit_penaly_count - 1))*battle_config.vit_penaly_num))/100;
+					t_vit = (t_vit * (100 - (target_count - (battle_config.vit_penaly_count - 1))*battle_config.vit_penaly_num))/100;
+				}
+				else if(battle_config.vit_penaly_type == 2){
+					def1 -= (target_count - (battle_config.vit_penaly_count - 1))*battle_config.vit_penaly_num;
+					def2 -= (target_count - (battle_config.vit_penaly_count - 1))*battle_config.vit_penaly_num;
+					t_vit -= (target_count - (battle_config.vit_penaly_count - 1))*battle_config.vit_penaly_num;
+				}
+				if(def1 < 0) def1 = 0;
+				if(def2 < 1) def2 = 1;
+				if(t_vit < 1) t_vit = 1;
+			}
+		}
+		t_def = def2*8/10;
+		vitbonusmax = (t_vit/20)*(t_vit/20)-1;
+		if(sd!=NULL){
+			if(sd->ignore_def_ele & (1<<t_ele) || sd->ignore_def_race & (1<<t_race))
+				idef_flag = 1;
+			if(t_mode & 0x20) {
+				if(sd->ignore_def_race & (1<<10))
+					idef_flag = 1;
+			}
+			if(!idef_flag)
+				damage = damage * (100 - def1) /100
+					- t_def - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+		}
+		if(battle_config.agi_penaly_type > 0) {
+			if(target_count >= battle_config.agi_penaly_count) {
+				if(battle_config.agi_penaly_type == 1)
+					flee = (flee * (100 - (target_count - (battle_config.agi_penaly_count - 1))*battle_config.agi_penaly_num))/100;
+				else if(battle_config.agi_penaly_type == 2)
+					flee -= (target_count - (battle_config.agi_penaly_count - 1))*battle_config.agi_penaly_num;
+				if(flee < 1) flee = 1;
+			}
+		}
+		hitrate = battle_get_hit(bl) - flee + 80;
+		if(hitrate<5)
+			hitrate = 5;
+		if(	hitrate < 1000000 && // 必中攻撃
+			(t_sc_data != NULL && (t_sc_data[SC_SLEEP].timer!=-1 ||	// 睡眠は必中
+			t_sc_data[SC_STAN].timer!=-1 ||		// スタンは必中
+			t_sc_data[SC_FREEZE].timer!=-1 || (t_sc_data[SC_STONE].timer!=-1 && t_sc_data[SC_STONE].val2==0) ) ) )	// 凍結は必中
+			hitrate = 1000000;
+		if(type == 0 && rand()%100 >= hitrate)
+			damage = 0;
+	}
+
 	damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// 属 性修正
 
 // -- moonsoul (special case "absolute" damage for paladin skill PRESSURE)
