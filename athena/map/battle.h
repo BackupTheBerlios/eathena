@@ -76,8 +76,11 @@ int battle_get_mdef(struct block_list *bl);
 int battle_get_flee2(struct block_list *bl);
 int battle_get_def2(struct block_list *bl);
 int battle_get_mdef2(struct block_list *bl);
+int battle_get_baseatk(struct block_list *bl);
 int battle_get_atk(struct block_list *bl);
 int battle_get_atk2(struct block_list *bl);
+int battle_get_speed(struct block_list *bl);
+int battle_get_adelay(struct block_list *bl);
 int battle_get_amotion(struct block_list *bl);
 int battle_get_dmotion(struct block_list *bl);
 int battle_get_element(struct block_list *bl);
@@ -109,7 +112,7 @@ enum {
 };
 int battle_check_target( struct block_list *src, struct block_list *target,int flag);
 
-int battle_check_range(struct block_list *src,int x,int y,int range);
+int battle_check_range(struct block_list *src,struct block_list *bl,int range);
 
 
 // İ’è
@@ -120,6 +123,7 @@ extern struct Battle_Config {
 	int enemy_perfect_flee;
 	int cast_rate,delay_rate,delay_dependon_dex;
 	int sdelay_attack_enable;
+	int left_cardfix_to_right;
 	int pc_skill_add_range;
 	int skill_out_range_consume;
 	int mob_skill_add_range;

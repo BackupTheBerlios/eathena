@@ -66,98 +66,114 @@ int battle_get_max_hp(struct block_list *bl)
 }
 int battle_get_str(struct block_list *bl)
 {
+	int str=0;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+
 	if(bl->type==BL_MOB)
-		return mob_db[((struct mob_data *)bl)->class].str;
+		str = mob_db[((struct mob_data *)bl)->class].str;
 	else if(bl->type==BL_PC)
 		return ((struct map_session_data *)bl)->paramc[0];
 	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data *)bl)->class].str;
-	else
-		return 0;
+		str = mob_db[((struct pet_data *)bl)->class].str;
+
+	if(sc_data) {
+		if(sc_data[SC_LOUD].timer!=-1 && sc_data[SC_QUAGMIRE].timer == -1 && bl->type != BL_PC)
+			str += 4;
+		if( sc_data[SC_BLESSING].timer != -1 && bl->type != BL_PC){	// ブレッシング
+			int race=battle_get_race(bl);
+			if( race==1 || race==6 )	str >>= 1;	// 悪 魔/不死
+			else str += sc_data[SC_BLESSING].val1;	// その他
+		}
+	}
+	return str;
 }
 int battle_get_agi(struct block_list *bl)
 {
 	int agi=0;
 	struct status_change *sc_data=battle_get_sc_data(bl);
-	
-	if(bl->type==BL_MOB){
+
+	if(bl->type==BL_MOB)
 		agi=mob_db[((struct mob_data *)bl)->class].agi;
-
-		if( sc_data[SC_INCREASEAGI].timer!=-1)	// 速度増加(PCはpc.cで)
-			agi += 2+sc_data[SC_INCREASEAGI].val1;
-
-	}
 	else if(bl->type==BL_PC)
 		agi=((struct map_session_data *)bl)->paramc[1];
 	else if(bl->type==BL_PET)
 		agi=mob_db[((struct pet_data *)bl)->class].agi;
-	else
-		return 0;
 
 	if(sc_data) {
+		if( sc_data[SC_INCREASEAGI].timer!=-1 && sc_data[SC_QUAGMIRE].timer == -1 && bl->type != BL_PC)	// 速度増加(PCはpc.cで)
+			agi += 2+sc_data[SC_INCREASEAGI].val1;
+
+		if(sc_data[SC_CONCENTRATE].timer!=-1 && sc_data[SC_QUAGMIRE].timer == -1 && bl->type != BL_PC)
+			agi += agi*(2+sc_data[SC_CONCENTRATE].val1)/100;
+
 		if(sc_data[SC_DECREASEAGI].timer!=-1)	// 速度減少
 			agi -= 2+sc_data[SC_DECREASEAGI].val1;
 
 		if(sc_data[SC_QUAGMIRE].timer!=-1 )	// クァグマイア
-			agi/=2;
+			agi >>= 1;
 	}
 
 	return agi;
 }
 int battle_get_vit(struct block_list *bl)
 {
+	int vit=0;
 	if(bl->type==BL_MOB)
-		return mob_db[((struct mob_data *)bl)->class].vit;
+		vit=mob_db[((struct mob_data *)bl)->class].vit;
 	else if(bl->type==BL_PC)
-		return ((struct map_session_data *)bl)->paramc[2];
+		vit=((struct map_session_data *)bl)->paramc[2];
 	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data *)bl)->class].vit;
-	else
-		return 0;
+		vit=mob_db[((struct pet_data *)bl)->class].vit;
+
+	return vit;
 }
 int battle_get_int(struct block_list *bl)
 {
-	if(bl->type==BL_MOB){
-		struct status_change *sc_data=battle_get_sc_data(bl);
-		int int_=mob_db[((struct mob_data *)bl)->class].int_;
+	int int_=0;
+	struct status_change *sc_data=battle_get_sc_data(bl);
 
-		if( sc_data[SC_BLESSING].timer!=-1){	// ブレッシング
+	if(bl->type==BL_MOB)
+		int_=mob_db[((struct mob_data *)bl)->class].int_;
+	else if(bl->type==BL_PC)
+		int_=((struct map_session_data *)bl)->paramc[3];
+	else if(bl->type==BL_PET)
+		int_=mob_db[((struct pet_data *)bl)->class].int_;
+
+	if(sc_data) {
+		if( sc_data[SC_BLESSING].timer != -1 && bl->type != BL_PC){	// ブレッシング
 			int race=battle_get_race(bl);
-			if( race==1 || race==6 )	int_/=2;	// 悪 魔/不死
+			if( race==1 || race==6 )	int_ >>= 1;	// 悪 魔/不死
 			else int_ += sc_data[SC_BLESSING].val1;	// その他
 		}
-		return int_;
 	}
-	else if(bl->type==BL_PC)
-		return ((struct map_session_data *)bl)->paramc[3];
-	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data *)bl)->class].int_;
-	else
-		return 0;
+
+	return int_;
 }
 int battle_get_dex(struct block_list *bl)
 {
 	int dex=0;
 	struct status_change *sc_data=battle_get_sc_data(bl);
 
-	if(bl->type==BL_MOB){
-		dex= mob_db[((struct mob_data *)bl)->class].dex;
+	if(bl->type==BL_MOB)
+		dex=mob_db[((struct mob_data *)bl)->class].dex;
+	else if(bl->type==BL_PC)
+		dex=((struct map_session_data *)bl)->paramc[4];
+	else if(bl->type==BL_PET)
+		dex=mob_db[((struct pet_data *)bl)->class].dex;
 
-		if(sc_data[SC_BLESSING].timer!=-1){	// ブレッシング
+	if(sc_data) {
+		if(sc_data[SC_CONCENTRATE].timer!=-1 && sc_data[SC_QUAGMIRE].timer == -1 && bl->type != BL_PC)
+			dex += dex*(2+sc_data[SC_CONCENTRATE].val1)/100;
+
+		if( sc_data[SC_BLESSING].timer != -1 && bl->type != BL_PC){	// ブレッシング
 			int race=battle_get_race(bl);
-			if( race==1 || race==6 )	dex/=2;		// 悪 魔/不死
+			if( race==1 || race==6 )	dex >>= 1;	// 悪 魔/不死
 			else dex += sc_data[SC_BLESSING].val1;	// その他
 		}
-	}
-	else if(bl->type==BL_PC)
-		dex= ((struct map_session_data *)bl)->paramc[4];
-	else if(bl->type==BL_PET)
-		dex = mob_db[((struct pet_data *)bl)->class].dex;
-	else
-		return 0;
 
-	if(sc_data && sc_data[SC_QUAGMIRE].timer!=-1 )	// クァグマイア
-		dex/=2;
+		if(sc_data[SC_QUAGMIRE].timer!=-1 )	// クァグマイア
+			dex >>= 1;
+	}
 
 	return dex;
 }
@@ -165,110 +181,150 @@ int battle_get_luk(struct block_list *bl)
 {
 	int luk=0;
 	struct status_change *sc_data=battle_get_sc_data(bl);
-	if(bl->type==BL_MOB){
-		luk=mob_db[((struct mob_data*)bl)->class].luk;
-		// MOBのみ追加計算（PCはpc_calcstatusで計算する）
-		if(sc_data[SC_GLORIA].timer!=-1 )	// グロリア(PCはpc.cで)
-			luk+=30;
-	}
-	else if(bl->type==BL_PC)
-		luk=((struct map_session_data*)bl)->paramc[5];
-	else if(bl->type==BL_PET)
-		luk=mob_db[((struct pet_data*)bl)->class].luk;
-	else
-		return 0;
 
-	if(sc_data && sc_data[SC_CURSE].timer!=-1 )		// 呪い
-		luk=0;
+	if(bl->type==BL_MOB)
+		luk=mob_db[((struct mob_data *)bl)->class].luk;
+	else if(bl->type==BL_PC)
+		luk=((struct map_session_data *)bl)->paramc[5];
+	else if(bl->type==BL_PET)
+		luk=mob_db[((struct pet_data *)bl)->class].luk;
+
+	if(sc_data) {
+		if(sc_data[SC_GLORIA].timer!=-1 && bl->type != BL_PC)	// グロリア(PCはpc.cで)
+			luk += 30;
+		if(sc_data[SC_CURSE].timer!=-1 )		// 呪い
+			luk=0;
+	}
 
 	return luk;
 }
 
 int battle_get_flee(struct block_list *bl)
 {
-	int flee;
-	if(bl->type==BL_MOB){
+	int flee=0;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+
+	if(bl->type==BL_PC)
+		flee=((struct map_session_data *)bl)->flee;
+	else
 		flee=battle_get_agi(bl) + battle_get_lv(bl);
-		// MOBのみ追加計算（PCはpc_calcstatusで計算する）
-		if( battle_get_sc_data(bl)[SC_BLIND].timer!=-1 )	// 暗黒による低下
+
+	if(sc_data) {
+		if(sc_data[SC_WHISTLE].timer!=-1 && bl->type != BL_PC)	// グロリア(PCはpc.cで)
+			flee += flee*sc_data[SC_WHISTLE].val1/100;
+		if(sc_data[SC_BLIND].timer!=-1 && bl->type != BL_PC)		// 呪い
 			flee -= flee*25/100;
 	}
-	else if(bl->type==BL_PC)
-		flee=((struct map_session_data *)bl)->flee;
-	else if(bl->type==BL_PET)
-		flee=battle_get_agi(bl) + battle_get_lv(bl);
-	else
-		return 0;
-	
+
 	return flee;
 }
 int battle_get_hit(struct block_list *bl)
 {
-	int hit;
-	if(bl->type==BL_MOB){
+	int hit=0;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+
+	if(bl->type==BL_PC)
+		hit=((struct map_session_data *)bl)->hit;
+	else
 		hit=battle_get_dex(bl) + battle_get_lv(bl);
-		// MOBのみ追加計算（PCはpc_calcstatusで計算する）
-		if( battle_get_sc_data(bl)[SC_BLIND].timer!=-1 )	// 暗黒による低下
+
+	if(sc_data) {
+		if(sc_data[SC_HUMMING].timer!=-1 && bl->type != BL_PC)	// グロリア(PCはpc.cで)
+			hit += hit*sc_data[SC_HUMMING].val2/100;
+		if(sc_data[SC_BLIND].timer!=-1 && bl->type != BL_PC)		// 呪い
 			hit -= hit*25/100;
 	}
-	else if(bl->type==BL_PC)
-		hit=((struct map_session_data *)bl)->hit;
-	else if(bl->type==BL_PET)
-		hit=battle_get_dex(bl) + battle_get_lv(bl);
-	else
-		return 0;
 
 	return hit;
 }
 int battle_get_flee2(struct block_list *bl)
 {
-	if(bl->type==BL_MOB)
-		return battle_get_luk(bl)+10;
-	else if(bl->type==BL_PC)
-		return ((struct map_session_data *)bl)->flee2;
-	else if(bl->type==BL_PET)
-		return battle_get_luk(bl)+10;
+	int flee2=0;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+
+	if(bl->type==BL_PC) {
+		flee2 = battle_get_luk(bl) + 10;
+		flee2 += ((struct map_session_data *)bl)->flee2 - (((struct map_session_data *)bl)->paramc[5] + 10);
+	}
 	else
-		return 0;
-	
+		flee2=battle_get_luk(bl)+1;
+
+	if(sc_data) {
+		if(sc_data[SC_WHISTLE].timer!=-1 && bl->type != BL_PC)
+			flee2 += sc_data[SC_WHISTLE].val1*10;
+	}
+
+	return flee2;
 }
 int battle_get_critical(struct block_list *bl)
 {
-	if(bl->type==BL_MOB)
-		return battle_get_luk(bl)*3+1;
-	else if(bl->type==BL_PC)
-		return ((struct map_session_data *)bl)->critical*10;
-	else if(bl->type==BL_PET)
-		return battle_get_luk(bl)*3+1;
+	int critical=0;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+
+	if(bl->type==BL_PC) {
+		critical = battle_get_luk(bl)*3 + 10;
+		critical += ((struct map_session_data *)bl)->critical - ((((struct map_session_data *)bl)->paramc[5]*3) + 10);
+	}
 	else
-		return 0;
+		critical=battle_get_luk(bl)*3 + 1;
+
+	if(sc_data) {
+		if(sc_data[SC_FORTUNE].timer!=-1 && bl->type != BL_PC)
+			critical += sc_data[SC_FORTUNE].val1*10;
+		if(sc_data[SC_EXPLOSIONSPIRITS].timer!=-1 && bl->type != BL_PC)
+			critical += sc_data[SC_EXPLOSIONSPIRITS].val2;
+	}
+
+	return critical;
+}
+
+int battle_get_baseatk(struct block_list *bl)
+{
+	struct status_change *sc_data=battle_get_sc_data(bl);
+	int batk=0;
+	if(bl->type == BL_PC)
+		batk = ((struct map_session_data *)bl)->base_atk;
+	else {
+		int str,dstr;
+		str = battle_get_str(bl);
+		dstr = str/10;
+		batk = dstr*dstr + str;
+	}
+	if(sc_data) {
+		if(sc_data[SC_PROVOKE].timer!=-1 && bl->type != BL_PC)
+			batk = batk*(100+2*sc_data[SC_PROVOKE].val1)/100;
+		if(sc_data[SC_CURSE].timer!=-1 )
+			batk -= batk*25/100;
+	}
+	return batk;
 }
 
 int battle_get_atk(struct block_list *bl)
 {
-	if(bl->type==BL_MOB)
-		return mob_db[((struct mob_data*)bl)->class].atk1;
-	else if(bl->type==BL_PC){
-		int atk=((struct map_session_data*)bl)->watk;
-
-		// PCのみ追加計算（atk1,atk2の定義がmobと異なる。mobはatk2で計算）
-		if( battle_get_sc_data(bl)[SC_CURSE].timer!=-1 )		// 呪い
-			atk-= atk*25/100;
-		return atk;
-	}
+	struct status_change *sc_data=battle_get_sc_data(bl);
+	int atk=0;
+	if(bl->type==BL_PC)
+		atk = ((struct map_session_data*)bl)->watk;
+	else if(bl->type==BL_MOB)
+		atk = mob_db[((struct mob_data*)bl)->class].atk1;
 	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data*)bl)->class].atk1;
-	else
-		return 0;
+		atk = mob_db[((struct pet_data*)bl)->class].atk1;
+
+	if(sc_data) {
+		if(sc_data[SC_PROVOKE].timer!=-1 && bl->type != BL_PC)
+			atk = atk*(100+2*sc_data[SC_PROVOKE].val1)/100;
+		if(sc_data[SC_CURSE].timer!=-1 )
+			atk -= atk*25/100;
+	}
+	return atk;
 }
 int battle_get_atk_(struct block_list *bl)
 {
 	if(bl->type==BL_PC){
 		int atk=((struct map_session_data*)bl)->watk_;
 
-		// PCのみ追加計算（atk1,atk2の定義がmobと異なる。mobはatk2で計算）
-		if( battle_get_sc_data(bl)[SC_CURSE].timer!=-1 )		// 呪い
-			atk-= atk*25/100;
+		if(((struct map_session_data *)bl)->sc_data[SC_CURSE].timer!=-1 )
+			atk -= atk*25/100;
 		return atk;
 	}
 	else
@@ -276,25 +332,30 @@ int battle_get_atk_(struct block_list *bl)
 }
 int battle_get_atk2(struct block_list *bl)
 {
-	if(bl->type==BL_MOB){
+	if(bl->type==BL_PC)
+		return ((struct map_session_data*)bl)->watk2;
+	else {
 		struct status_change *sc_data=battle_get_sc_data(bl);
-		int atk2=mob_db[((struct mob_data*)bl)->class].atk2;
-		
-		// MOBのみ追加計算（PCはpc_calcstatusで計算する）
-		if( sc_data[SC_IMPOSITIO].timer!=-1)	// インポシティオマヌス
-			atk2 += sc_data[SC_IMPOSITIO].val1*5;
-		if( sc_data[SC_PROVOKE].timer!=-1 )		// プロボック
-			atk2 = atk2*(100+2*sc_data[SC_PROVOKE].val1)/100;
-		if( sc_data[SC_CURSE].timer!=-1 )		// 呪い
-			atk2 -= atk2*25/100;
+		int atk2=0;
+		if(bl->type==BL_MOB)
+			atk2 = mob_db[((struct mob_data*)bl)->class].atk2;
+		else if(bl->type==BL_PET)
+			atk2 = mob_db[((struct pet_data*)bl)->class].atk2;
+		if(sc_data) {
+			if( sc_data[SC_IMPOSITIO].timer!=-1)
+				atk2 += sc_data[SC_IMPOSITIO].val1*5;
+			if( sc_data[SC_PROVOKE].timer!=-1 )
+				atk2 = atk2*(100+2*sc_data[SC_PROVOKE].val1)/100;
+			if( sc_data[SC_CURSE].timer!=-1 )
+				atk2 -= atk2*25/100;
+			if(sc_data[SC_DRUMBATTLE].timer!=-1)
+				atk2 += sc_data[SC_DRUMBATTLE].val2;
+			if(sc_data[SC_NIBELUNGEN].timer!=-1)
+				atk2 += sc_data[SC_NIBELUNGEN].val2;
+		}
 		return atk2;
 	}
-	else if(bl->type==BL_PC)
-		return ((struct map_session_data*)bl)->watk2;
-	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data*)bl)->class].atk2;
-	else
-		return 0;
+	return 0;
 }
 int battle_get_atk_2(struct block_list *bl)
 {
@@ -339,54 +400,74 @@ int battle_get_matk2(struct block_list *bl)
 }
 int battle_get_def(struct block_list *bl)
 {
-	if(bl->type==BL_MOB) {
-		struct status_change *sc_data=battle_get_sc_data(bl);
-		int def= mob_db[((struct mob_data *)bl)->class].def;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+	int def=0;
 
-		if( sc_data[SC_PROVOKE].timer!=-1 )		// プロボック
-			def= (def*(100-6*sc_data[SC_PROVOKE].val1)+50)/100;
-
-		return def;
-	}
-	else if(bl->type==BL_PC)
-		return ((struct map_session_data *)bl)->def;
+	if(bl->type==BL_PC)
+		def = ((struct map_session_data *)bl)->def;
+	else if(bl->type==BL_MOB)
+		def = mob_db[((struct mob_data *)bl)->class].def;
 	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data *)bl)->class].def;
-	else
-		return 0;
+		def = mob_db[((struct pet_data *)bl)->class].def;
+
+	if(sc_data) {
+		if( sc_data[SC_PROVOKE].timer!=-1 && bl->type != BL_PC)
+			def = (def*(100 - 6*sc_data[SC_PROVOKE].val1)+50)/100;
+		if( sc_data[SC_DRUMBATTLE].timer!=-1 && bl->type != BL_PC)
+			def += sc_data[SC_DRUMBATTLE].val3;
+		if(sc_data[SC_POISON].timer!=-1 && bl->type != BL_PC)
+			def = def*75/100;
+		if(sc_data[SC_ETERNALCHAOS].timer!=-1 && bl->type != BL_PC)
+			def = 0;
+		if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
+			def >>= 1;
+	}
+
+	return def;
 }
 int battle_get_mdef(struct block_list *bl)
 {
-	if(bl->type==BL_MOB)
-		return mob_db[((struct mob_data *)bl)->class].mdef;
-	else if(bl->type==BL_PC)
-		return ((struct map_session_data *)bl)->mdef;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+	int mdef=0;
+
+	if(bl->type==BL_PC)
+		mdef = ((struct map_session_data *)bl)->mdef;
+	else if(bl->type==BL_MOB)
+		mdef = mob_db[((struct mob_data *)bl)->class].mdef;
 	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data *)bl)->class].mdef;
-	else
-		return 0;
+		mdef = mob_db[((struct pet_data *)bl)->class].mdef;
+
+	if(sc_data) {
+		if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
+			mdef = mdef*125/100;
+	}
+
+	return mdef;
 }
 int battle_get_def2(struct block_list *bl)
 {
-	if(bl->type==BL_MOB){
-		struct status_change *sc_data=battle_get_sc_data(bl);
-		int def2= mob_db[((struct mob_data *)bl)->class].vit;
+	struct status_change *sc_data=battle_get_sc_data(bl);
+	int def2=0;
 
-		// MOBのみ追加計算（PCはpc_calcstatusで計算する）
-		if( sc_data[SC_ANGELUS].timer!=-1)	// エンジェラス
-			def2 = def2*(110+5*sc_data[SC_ANGELUS].val1)/100;
-
-		if( sc_data[SC_PROVOKE].timer!=-1 )		// プロボック
-			def2= def2*(100-6*sc_data[SC_PROVOKE].val1)/100;
-
-		return def2;
-	}
-	else if(bl->type==BL_PC)
-		return ((struct map_session_data *)bl)->def2;
+	if(bl->type==BL_PC)
+		def2 = ((struct map_session_data *)bl)->def2;
+	else if(bl->type==BL_MOB)
+		def2 = mob_db[((struct mob_data *)bl)->class].vit;
 	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data *)bl)->class].vit;
-	else
-		return 0;
+		def2 = mob_db[((struct pet_data *)bl)->class].vit;
+
+	if(sc_data) {
+		if( sc_data[SC_ANGELUS].timer!=-1 && bl->type != BL_PC)
+			def2 = def2*(110+5*sc_data[SC_ANGELUS].val1)/100;
+		if( sc_data[SC_PROVOKE].timer!=-1 && bl->type != BL_PC)
+			def2 = (def2*(100 - 6*sc_data[SC_PROVOKE].val1)+50)/100;
+		if(sc_data[SC_POISON].timer!=-1 && bl->type != BL_PC)
+			def2 = def2*75/100;
+		if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
+			def2 >>= 1;
+	}
+
+	return def2;
 }
 int battle_get_mdef2(struct block_list *bl)
 {
@@ -399,16 +480,112 @@ int battle_get_mdef2(struct block_list *bl)
 	else
 		return 0;
 }
+int battle_get_speed(struct block_list *bl)
+{
+	if(bl->type == BL_PC)
+		return ((struct map_session_data *)bl)->speed;
+	else {
+		struct status_change *sc_data=battle_get_sc_data(bl);
+		int speed = 1000;
+		if(bl->type == BL_MOB)
+			speed = mob_db[((struct mob_data *)bl)->class].speed;
+		else if(bl->type == BL_PET)
+			speed = ((struct pet_data *)bl)->msd->petDB->speed;
+
+		if(sc_data) {
+			if(sc_data[SC_INCREASEAGI].timer!=-1)
+				speed -= speed*25/100;
+			if(sc_data[SC_DECREASEAGI].timer!=-1)
+				speed = speed*125/100;
+			if(sc_data[SC_QUAGMIRE].timer!=-1)
+				speed = speed*3/2;
+			if(sc_data[SC_DONTFORGETME].timer!=-1)
+				speed = speed*sc_data[SC_DONTFORGETME].val3/100;
+			if(sc_data[SC_STEELBODY].timer!=-1)
+				speed = speed*125/100;
+			if(sc_data[SC_DEFENDER].timer!=-1)
+				speed = speed*120/100;
+		}
+		return speed;
+	}
+
+	return 1000;
+}
+int battle_get_adelay(struct block_list *bl)
+{
+	if(bl->type == BL_PC)
+		return (((struct map_session_data *)bl)->aspd<<1);
+	else {
+		struct status_change *sc_data=battle_get_sc_data(bl);
+		int adelay=4000,aspd_rate = 100;
+		if(bl->type == BL_MOB)
+			adelay = mob_db[((struct mob_data *)bl)->class].adelay;
+		else if(bl->type == BL_PET)
+			adelay = mob_db[((struct pet_data *)bl)->class].adelay;
+
+		if(sc_data) {
+			if(sc_data[SC_TWOHANDQUICKEN].timer != -1 && sc_data[SC_QUAGMIRE].timer == -1)	// 2HQ
+				aspd_rate -= 30;
+			if(sc_data[SC_ADRENALINE].timer != -1 && sc_data[SC_TWOHANDQUICKEN].timer == -1 &&
+				sc_data[SC_QUAGMIRE].timer == -1)	// アドレナリンラッシュ
+				aspd_rate -= 30;
+			if(sc_data[SC_SPEARSQUICKEN].timer != -1 && sc_data[SC_ADRENALINE].timer == -1 &&
+				sc_data[SC_TWOHANDQUICKEN].timer == -1 && sc_data[SC_QUAGMIRE].timer == -1)	// スピアクィッケン
+				aspd_rate -= sc_data[SC_SPEARSQUICKEN].val2;
+			if(sc_data[SC_ASSNCROS].timer!=-1 && // 夕陽のアサシンクロス
+				sc_data[SC_TWOHANDQUICKEN].timer==-1 && sc_data[SC_ADRENALINE].timer==-1 && sc_data[SC_SPEARSQUICKEN].timer==-1)
+				aspd_rate -= sc_data[SC_ASSNCROS].val2;
+			if(sc_data[SC_DONTFORGETME].timer!=-1)		// 私を忘れないで
+				aspd_rate += sc_data[SC_DONTFORGETME].val2;
+			if(sc_data[SC_STEELBODY].timer!=-1)	// 金剛
+				aspd_rate += 25;
+			if(sc_data[SC_DEFENDER].timer != -1)
+				aspd_rate += 20;
+		}
+		if(aspd_rate != 100)
+			adelay = adelay*aspd_rate/100;
+
+		return adelay;
+	}
+	return 4000;
+}
 int battle_get_amotion(struct block_list *bl)
 {
-	if(bl->type==BL_MOB)
-		return mob_db[((struct mob_data *)bl)->class].amotion;
-	else if(bl->type==BL_PC)
+	if(bl->type==BL_PC)
 		return ((struct map_session_data *)bl)->amotion;
-	else if(bl->type==BL_PET)
-		return mob_db[((struct pet_data *)bl)->class].amotion;
-	else
-		return 200;
+	else {
+		struct status_change *sc_data=battle_get_sc_data(bl);
+		int amotion=2000,aspd_rate = 100;
+		if(bl->type == BL_MOB)
+			amotion = mob_db[((struct mob_data *)bl)->class].amotion;
+		else if(bl->type == BL_PET)
+			amotion = mob_db[((struct pet_data *)bl)->class].amotion;
+
+		if(sc_data) {
+			if(sc_data[SC_TWOHANDQUICKEN].timer != -1 && sc_data[SC_QUAGMIRE].timer == -1)	// 2HQ
+				aspd_rate -= 30;
+			if(sc_data[SC_ADRENALINE].timer != -1 && sc_data[SC_TWOHANDQUICKEN].timer == -1 &&
+				sc_data[SC_QUAGMIRE].timer == -1)	// アドレナリンラッシュ
+				aspd_rate -= 30;
+			if(sc_data[SC_SPEARSQUICKEN].timer != -1 && sc_data[SC_ADRENALINE].timer == -1 &&
+				sc_data[SC_TWOHANDQUICKEN].timer == -1 && sc_data[SC_QUAGMIRE].timer == -1)	// スピアクィッケン
+				aspd_rate -= sc_data[SC_SPEARSQUICKEN].val2;
+			if(sc_data[SC_ASSNCROS].timer!=-1 && // 夕陽のアサシンクロス
+				sc_data[SC_TWOHANDQUICKEN].timer==-1 && sc_data[SC_ADRENALINE].timer==-1 && sc_data[SC_SPEARSQUICKEN].timer==-1)
+				aspd_rate -= sc_data[SC_ASSNCROS].val2;
+			if(sc_data[SC_DONTFORGETME].timer!=-1)		// 私を忘れないで
+				aspd_rate += sc_data[SC_DONTFORGETME].val2;
+			if(sc_data[SC_STEELBODY].timer!=-1)	// 金剛
+				aspd_rate += 25;
+			if(sc_data[SC_DEFENDER].timer != -1)
+				aspd_rate += 20;
+		}
+		if(aspd_rate != 100)
+			amotion = amotion*aspd_rate/100;
+
+		return amotion;
+	}
+	return 2000;
 }
 int battle_get_dmotion(struct block_list *bl)
 {
@@ -427,7 +604,7 @@ int battle_get_dmotion(struct block_list *bl)
 	else if(bl->type==BL_PET)
 		ret=mob_db[((struct pet_data *)bl)->class].dmotion;
 	else
-		return 200;
+		return 2000;
 
 	if(sc_data && sc_data[SC_ENDURE].timer!=-1 )
 		ret=0;
@@ -436,7 +613,7 @@ int battle_get_dmotion(struct block_list *bl)
 }
 int battle_get_element(struct block_list *bl)
 {
-	int ret;
+	int ret = 20;
 	struct status_change *sc_data=battle_get_sc_data(bl);
 
 	if(bl->type==BL_MOB)	// 10の位＝Lv*2、１の位＝属性
@@ -445,21 +622,23 @@ int battle_get_element(struct block_list *bl)
 		ret=20+((struct map_session_data *)bl)->def_ele;	// 防御属性Lv1
 	else if(bl->type==BL_PET)
 		ret = mob_db[((struct pet_data *)bl)->class].element;
-	else
-		return 20;
+	else if(bl->type==BL_SKILL)
+		ret = skill_get_pl(((struct skill_unit *)bl)->group->skill_id)|0x20;
 
 	if(sc_data) {
 		if( sc_data[SC_BENEDICTIO].timer!=-1 )	// 聖体降福
 			ret=26;
 		if( sc_data[SC_FREEZE].timer!=-1 )	// 凍結
 			ret=21;
+		if( sc_data[SC_STONE].timer!=-1 )
+			ret=22;
 	}
 
 	return ret;
 }
 int battle_get_attack_element(struct block_list *bl)
 {
-	int ret;
+	int ret = 0;
 	struct status_change *sc_data=battle_get_sc_data(bl);
 
 	if(bl->type==BL_MOB)
@@ -468,8 +647,6 @@ int battle_get_attack_element(struct block_list *bl)
 		ret=((struct map_session_data *)bl)->atk_ele;
 	else if(bl->type==BL_PET)
 		ret=0;
-	else
-		return 0;
 
 	if(sc_data) {
 		if( sc_data[SC_FROSTWEAPON].timer!=-1)	// フロストウェポン
@@ -492,7 +669,7 @@ int battle_get_attack_element2(struct block_list *bl)
 {
 	if(bl->type==BL_PC) {
 		int ret = ((struct map_session_data *)bl)->atk_ele_;
-		struct status_change *sc_data = battle_get_sc_data(bl);
+		struct status_change *sc_data = ((struct map_session_data *)bl)->sc_data;
 
 		if(sc_data) {
 			if( sc_data[SC_FROSTWEAPON].timer!=-1)	// フロストウェポン
@@ -1018,7 +1195,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 	struct pet_data *pd = (struct pet_data *)src;
 	struct mob_data *tmd=NULL;
 	int hitrate,cri = 0,atkmin,atkmax;
-	int str,luk;
+	int luk;
 	int def1 = battle_get_def(target);
 	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
@@ -1051,10 +1228,9 @@ static struct Damage battle_calc_pet_weapon_attack(
 	type=0;	// normal
 	div_ = 1; // single attack
 
-	str=battle_get_str(src);
 	luk=battle_get_luk(src);
 
-	damage = (str/10)*(str/10)+str;
+	damage = battle_get_baseatk(src);
 	atkmin = battle_get_atk(src);
 	atkmax = battle_get_atk2(src);
 	if( mob_db[pd->class].range>2 )
@@ -1062,7 +1238,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 
 	if(atkmin > atkmax) atkmin = atkmax;
 
-	cri = 1 + luk*3;
+	cri = battle_get_critical(src);
 	cri -= battle_get_luk(target) * 3;
 	if(battle_config.enemy_critical_rate != 100) {
 		cri = cri*battle_config.enemy_critical_rate/100;
@@ -1275,7 +1451,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 
 	// 完全回避の判定
 	if(battle_config.enemy_perfect_flee) {
-		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000<battle_get_luk(target)+1 ){
+		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000 < battle_get_flee2(target) ){
 			damage=0;
 			type=0x0b;
 		}
@@ -1318,7 +1494,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 	struct map_session_data *tsd=NULL;
 	struct mob_data* md=(struct mob_data *)src,*tmd=NULL;
 	int hitrate,cri = 0,atkmin,atkmax;
-	int str,luk;
+	int luk;
 	int def1 = battle_get_def(target);
 	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
@@ -1341,7 +1517,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 	// ターゲット
 	if(target->type==BL_PC)
 		tsd=(struct map_session_data *)target;
-	else
+	else if(target->type==BL_MOB)
 		tmd=(struct mob_data *)target;
 	t_race=battle_get_race( target );
 	t_size=battle_get_size( target );
@@ -1356,10 +1532,9 @@ static struct Damage battle_calc_mob_weapon_attack(
 	type=0;	// normal
 	div_ = 1; // single attack
 
-	str=battle_get_str(src);
 	luk=battle_get_luk(src);
 
-	damage = (str/10)*(str/10)+str;
+	damage = battle_get_baseatk(src);
 	atkmin = battle_get_atk(src);
 	atkmax = battle_get_atk2(src);
 	if( mob_db[md->class].range>2 )
@@ -1371,7 +1546,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		atkmin=atkmax;
 	}
 
-	cri = 1 + luk*3;
+	cri = battle_get_critical(src);
 	cri -= battle_get_luk(target) * 3;
 	if(battle_config.enemy_critical_rate != 100) {
 		cri = cri*battle_config.enemy_critical_rate/100;
@@ -1619,13 +1794,13 @@ static struct Damage battle_calc_mob_weapon_attack(
 	}
 
 	// 完全回避の判定
-	if( skill_num==0 && tsd!=NULL && hitrate < 1000000 && rand()%1000 < tsd->flee2){
+	if( skill_num==0 && tsd!=NULL && hitrate < 1000000 && rand()%1000 < battle_get_flee2(target) ){
 		damage=0;
 		type=0x0b;
 	}
 
 	if(battle_config.enemy_perfect_flee) {
-		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000<battle_get_luk(target)+1 ){
+		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000 < battle_get_flee2(target) ){
 			damage=0;
 			type=0x0b;
 		}
@@ -1668,7 +1843,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 	struct map_session_data *sd=(struct map_session_data *)src,*tsd=NULL;
 	struct mob_data *tmd=NULL;
 	int hitrate,cri = 0,atkmin,atkmax;
-	int str,dex,luk;
+	int dex,luk;
 	int def1 = battle_get_def(target);
 	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
@@ -1700,7 +1875,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 	// ターゲット
 	if(target->type==BL_PC)
 		tsd=(struct map_session_data *)target;
-	else
+	else if(target->type==BL_MOB)
 		tmd=(struct mob_data *)target;
 	t_ele=battle_get_elem_type(target);
 	t_race=battle_get_race( target );
@@ -1716,13 +1891,12 @@ static struct Damage battle_calc_pc_weapon_attack(
 	type=0;	// normal
 	div_ = 1; // single attack
 
-	str=battle_get_str(src);
 	dex=battle_get_dex(src);
 	luk=battle_get_luk(src);
 	watk = battle_get_atk(src);
 	watk_ = battle_get_atk_(src);
 
-	damage = damage2 = sd->base_atk;
+	damage = damage2 = battle_get_baseatk(&sd->bl);
 	atkmin = atkmin_ = dex;
 	sd->state.arrow_atk = 0;
 	if(sd->status.weapon == 11) {
@@ -1796,10 +1970,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 
 	if(da == 0){ //ダブルアタックが発動していない
 		// クリティカル計算
-		cri = 1 + luk*3;
-
-		// カード等の追加効果の再計算(百分率を千分率に直す)
-		cri += sd->critical - ((sd->paramc[5]*3)+10);
+		cri = battle_get_critical(src);
 
 		if(sd->state.arrow_atk)
 			cri += sd->arrow_cri;
@@ -2194,9 +2365,16 @@ static struct Damage battle_calc_pc_weapon_attack(
 	// カード・ダメージUP修正 両手持ちの場合左手のカードも右手に適用,左手はカードによる補正はなし
 	cardfix=100;
 	if(!sd->state.arrow_atk) {
-		cardfix=cardfix*(100+sd->addrace[t_race])/100;	// 種族によるダメージ修正
-		cardfix=cardfix*(100+sd->addele[t_ele])/100;	// 属 性によるダメージ修正
-		cardfix=cardfix*(100+sd->addsize[t_size])/100;	// サイズによるダメージ修正
+		if(!battle_config.left_cardfix_to_right) {
+			cardfix=cardfix*(100+sd->addrace[t_race])/100;	// 種族によるダメージ修正
+			cardfix=cardfix*(100+sd->addele[t_ele])/100;	// 属 性によるダメージ修正
+			cardfix=cardfix*(100+sd->addsize[t_size])/100;	// サイズによるダメージ修正
+		}
+		else {
+			cardfix=cardfix*(100+sd->addrace[t_race]+sd->addrace_[t_race])/100;	// 種族によるダメージ修正
+			cardfix=cardfix*(100+sd->addele[t_ele]+sd->addele_[t_ele])/100;	// 属 性によるダメージ修正
+			cardfix=cardfix*(100+sd->addsize[t_size]+sd->addsize_[t_size])/100;	// サイズによるダメージ修正
+		}
 	}
 	else {
 		cardfix=cardfix*(100+sd->addrace[t_race]+sd->arrow_addrace[t_race])/100;	// 種族によるダメージ修正
@@ -2204,10 +2382,26 @@ static struct Damage battle_calc_pc_weapon_attack(
 		cardfix=cardfix*(100+sd->addsize[t_size]+sd->arrow_addsize[t_size])/100;	// サイズによるダメージ修正
 	}
 	if(tmd) {
-		if(mob_db[tmd->class].mexp > 0)
-			cardfix=cardfix*(100+sd->addrace[10])/100;
-		else
-			cardfix=cardfix*(100+sd->addrace[11])/100;
+		if(mob_db[tmd->class].mexp > 0) {
+			if(!sd->state.arrow_atk) {
+				if(!battle_config.left_cardfix_to_right)
+					cardfix=cardfix*(100+sd->addrace[10])/100;
+				else
+					cardfix=cardfix*(100+sd->addrace[10]+sd->addrace_[10])/100;
+			}
+			else
+				cardfix=cardfix*(100+sd->addrace[10]+sd->arrow_addrace[10])/100;
+		}
+		else {
+			if(!sd->state.arrow_atk) {
+				if(!battle_config.left_cardfix_to_right)
+					cardfix=cardfix*(100+sd->addrace[11])/100;
+				else
+					cardfix=cardfix*(100+sd->addrace[11]+sd->addrace_[11])/100;
+			}
+			else
+				cardfix=cardfix*(100+sd->addrace[11]+sd->arrow_addrace[11])/100;
+		}
 	}
 	t_class = battle_get_class(target);
 	for(i=0;i<sd->add_damage_class_count;i++) {
@@ -2219,14 +2413,16 @@ static struct Damage battle_calc_pc_weapon_attack(
 	damage=damage*cardfix/100;
 
 	cardfix=100;
-	cardfix=cardfix*(100+sd->addrace_[t_race])/100;	// 種族によるダメージ修正
-	cardfix=cardfix*(100+sd->addele_[t_ele])/100;	// 属 性によるダメージ修正
-	cardfix=cardfix*(100+sd->addsize_[t_size])/100;	// サイズによるダメージ修正
-	if(tmd) {
-		if(mob_db[tmd->class].mexp > 0)
-			cardfix=cardfix*(100+sd->addrace_[10])/100;
-		else
-			cardfix=cardfix*(100+sd->addrace_[11])/100;
+	if(!battle_config.left_cardfix_to_right) {
+		cardfix=cardfix*(100+sd->addrace_[t_race])/100;	// 種族によるダメージ修正
+		cardfix=cardfix*(100+sd->addele_[t_ele])/100;	// 属 性によるダメージ修正
+		cardfix=cardfix*(100+sd->addsize_[t_size])/100;	// サイズによるダメージ修正
+		if(tmd) {
+			if(mob_db[tmd->class].mexp > 0)
+				cardfix=cardfix*(100+sd->addrace_[10])/100;
+			else
+				cardfix=cardfix*(100+sd->addrace_[11])/100;
+		}
 	}
 	for(i=0;i<sd->add_damage_class_count_;i++) {
 		if(sd->add_damage_classid_[i] == t_class) {
@@ -2314,13 +2510,13 @@ static struct Damage battle_calc_pc_weapon_attack(
 	}
 
 	// 完全回避の判定
-	if( skill_num==0 && tsd!=NULL && div_ < 255 && hitrate < 1000000 && rand()%1000 < tsd->flee2){
+	if( skill_num==0 && tsd!=NULL && div_ < 255 && hitrate < 1000000 && rand()%1000 < battle_get_flee2(target) ){
 		damage=damage2=0;
 		type=0x0b;
 	}
 
 	if(battle_config.enemy_perfect_flee) {
-		if( skill_num==0 && tmd!=NULL && div_ < 255 && hitrate < 1000000 && rand()%1000 < battle_get_luk(target)+1 ) {
+		if( skill_num==0 && tmd!=NULL && div_ < 255 && hitrate < 1000000 && rand()%1000 < battle_get_flee2(target) ) {
 			damage=damage2=0;
 			type=0x0b;
 		}
@@ -2798,7 +2994,7 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		return 0;
 	}
 	if(battle_check_target(src,target,BCT_ENEMY) > 0 &&
-		battle_check_range(src,target->x,target->y,0)){
+		battle_check_range(src,target,0)){
 		// 攻撃対象となりうるので攻撃
 		struct Damage wd;
 		wd=battle_calc_weapon_attack(src,target,0,0,0);
@@ -2880,6 +3076,11 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 //	if( target->type==BL_SKILL )	// 対 象がスキルユニットなら無条件肯定
 //		return 0;
 
+	if(target->type == BL_SKILL) {
+		if(((struct skill_unit *)target)->group->unit_id == 0x8d)
+			return 0;
+	}
+
 	if(target->type == BL_PET)
 		return -1;
 
@@ -2943,21 +3144,26 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
  * 射程判定
  *------------------------------------------
  */
-int battle_check_range(struct block_list *src,int x,int y,int range)
+int battle_check_range(struct block_list *src,struct block_list *bl,int range)
 {
-	int dx=abs(x-src->x),dy=abs(y-src->y);
+	int dx=abs(bl->x-src->x),dy=abs(bl->y-src->y);
 	struct walkpath_data wpd;
+	if(src->m != bl->m)
+		return 0;
 	if( range>0 && range < ((dx>dy)?dx:dy) )	// 遠すぎる
 		return 0;
 
-	if( src->x==x && src->y==y )	// 同じマス
+	if( src->x==bl->x && src->y==bl->y )	// 同じマス
+		return 1;
+
+	if(bl->type == BL_SKILL && ((struct skill_unit *)bl)->group->skill_id == WZ_ICEWALL)
 		return 1;
 
 	// 障害物判定
 	wpd.path_len=0;
 	wpd.path_pos=0;
 	wpd.path_half=0;
-	return (path_search(&wpd,src->m,src->x,src->y,x,y,0x10001)!=-1)?1:0;
+	return (path_search(&wpd,src->m,src->x,src->y,bl->x,bl->y,0x10001)!=-1)?1:0;
 }
 
 /*==========================================
@@ -2990,6 +3196,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.delay_rate=100;
 	battle_config.delay_dependon_dex=0;
 	battle_config.sdelay_attack_enable=0;
+	battle_config.left_cardfix_to_right=0;
 	battle_config.pc_skill_add_range=0;
 	battle_config.skill_out_range_consume=1;
 	battle_config.mob_skill_add_range=0;
@@ -3078,6 +3285,7 @@ int battle_config_read(const char *cfgName)
 			{ "delay_rate",				&battle_config.delay_rate			},
 			{ "delay_dependon_dex",		&battle_config.delay_dependon_dex	},
 			{ "skill_delay_attack_enable", &battle_config.sdelay_attack_enable },
+			{ "left_cardfix_to_right", &battle_config.left_cardfix_to_right },
 			{ "player_skill_add_range", &battle_config.pc_skill_add_range },
 			{ "skill_out_range_consume", &battle_config.skill_out_range_consume },
 			{ "monster_skill_add_range", &battle_config.mob_skill_add_range },

@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.6 2004/01/18 15:43:58 rovert Exp $
+// $Id: itemdb.c,v 1.7 2004/01/19 17:47:48 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -112,8 +112,7 @@ struct item_data* itemdb_search(int nameid)
 
 	id=malloc(sizeof(struct item_data));
 	if(id==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : itemdb_search\n");
+		printf("out of memory : itemdb_search\n");
 		exit(1);
 	}
 	memset(id,0,sizeof(struct item_data));

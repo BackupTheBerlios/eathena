@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.10 2004/01/18 15:43:58 rovert Exp $
+// $Id: mob.c,v 1.11 2004/01/19 17:47:49 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -122,15 +122,14 @@ int mob_once_spawn(struct map_session_data *sd,char *mapname,
 	for(count=0;count<amount;count++){
 		md=malloc(sizeof(struct mob_data));
 		if(md==NULL){
-			if(battle_config.error_log)
-				printf("mob_once_spawn: out of memory !\n");
-			return 0;
+			printf("mob_once_spawn: out of memory !\n");
+			exit(1);
 		}
 		if(mob_db[class].mode&0x02) {
 			md->lootitem=malloc(sizeof(struct item)*LOOTITEM_SIZE);
 			if(md->lootitem==NULL){
-				if(battle_config.error_log)
-					printf("mob_once_spawn: out of memory !\n");
+				printf("mob_once_spawn: out of memory !\n");
+				exit(1);
 			}
 		}
 		else
@@ -208,37 +207,6 @@ int mob_get_viewclass(struct mob_data *md)
 }
 
 /*==========================================
- * mobのadelay所得
- *------------------------------------------
- */
-static int mob_get_adelay(struct mob_data *md)
-{
-	int a=mob_db[md->class].adelay;
-	if( md->sc_data[SC_ADRENALINE].timer!=-1)	// アドレナリンラッシュ
-		a = a *70/100;
-	if( md->sc_data[SC_TWOHANDQUICKEN].timer!=-1)	// 2HQ
-		a = a *70/100;
-	return a;
-}
-/*==========================================
- * mobのspeed所得
- *------------------------------------------
- */
-int mob_get_speed(struct mob_data *md)
-{
-	int a=mob_db[md->class].speed;
-
-	if(md->sc_data[SC_INCREASEAGI].timer!=-1)	// 速度増加
-		a -= a*25/100;
-	if(md->sc_data[SC_DECREASEAGI].timer!=-1)	// 速度減少
-		a = a*125/100;
-	if(md->sc_data[SC_QUAGMIRE].timer!=-1)	// クァグマイア(AGI/DEXはbattle.cで)
-		a = a*3/2;
-
-	return md->speed=a;
-}
-
-/*==========================================
  * mobの次の1歩にかかる時間計算
  *------------------------------------------
  */
@@ -247,8 +215,8 @@ static int calc_next_walk_step(struct mob_data *md)
 	if(md->walkpath.path_pos>=md->walkpath.path_len)
 		return -1;
 	if(md->walkpath.path[md->walkpath.path_pos]&1)
-		return mob_get_speed(md)*14/10;
-	return mob_get_speed(md);
+		return battle_get_speed(&md->bl)*14/10;
+	return battle_get_speed(&md->bl);
 }
 
 static int mob_walktoxy_sub(struct mob_data *md);
@@ -399,7 +367,7 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 
 	battle_weapon_attack(&md->bl,&sd->bl,tick,0);
 
-	md->attackabletime = tick + mob_get_adelay(md);
+	md->attackabletime = tick + battle_get_adelay(&md->bl);
 
 	md->timer=add_timer(md->attackabletime,mob_timer,md->bl.id,0);
 	md->state.state=MS_ATTACK;
@@ -458,11 +426,13 @@ int mob_changestate(struct mob_data *md,int state,int type)
 		md->timer=add_timer(gettick()+type,mob_timer,md->bl.id,0);
 		break;
 	case MS_DEAD:
-		mobskill_deltimer(md);
+		skill_castcancel(&md->bl,0);
+//		mobskill_deltimer(md);
 		md->state.skillstate=MSS_DEAD;
 		md->last_deadtime=gettick();
 		// 死んだのでこのmobへの攻撃者全員の攻撃を止める
 		clif_foreachclient(mob_stopattacked,md->bl.id);
+		skill_unit_out_all(&md->bl,gettick(),1);
 		skill_status_change_clear(&md->bl);	// ステータス異常を解除する
 		skill_clear_unitgroup(&md->bl);	// 全てのスキルユニットグループを削除する
 		skill_cleartimerskill(&md->bl);
@@ -483,18 +453,24 @@ static int mob_timer(int tid,unsigned int tick,int id,int data)
 {
 	struct mob_data *md;
 
+	map_freeblock_lock();
 	md=(struct mob_data*)map_id2bl(id);
-	if(md==NULL || md->bl.type!=BL_MOB)
+	if(md==NULL || md->bl.type!=BL_MOB) {
+		map_freeblock_unlock();
 		return 1;
+	}
 
 	if(md->timer != tid){
 		if(battle_config.error_log)
 			printf("mob_timer %d != %d\n",md->timer,tid);
+		map_freeblock_unlock();
 		return 0;
 	}
 	md->timer=-1;
-	if(md->bl.prev == NULL || md->state.state == MS_DEAD)
+	if(md->bl.prev == NULL || md->state.state == MS_DEAD) {
+		map_freeblock_unlock();
 		return 1;
+	}
 
 	switch(md->state.state){
 	case MS_WALK:
@@ -511,7 +487,7 @@ static int mob_timer(int tid,unsigned int tick,int id,int data)
 			printf("mob_timer : %d ?\n",md->state.state);
 		break;
 	}
-
+	map_freeblock_unlock();
 	return 0;
 }
 
@@ -1063,7 +1039,7 @@ static int mob_unlocktarget(struct mob_data *md,int tick)
 static int mob_randomwalk(struct mob_data *md,int tick)
 {
 	const int retrycount=20;
-	int speed=mob_get_speed(md);
+	int speed=battle_get_speed(&md->bl);
 	if(DIFF_TICK(md->next_walktime,tick)<0){
 		int i,x,y,c,d=12-md->move_fail_count;
 		if(d<5) d=5;
@@ -1211,7 +1187,7 @@ static int mob_ai_sub_hard(struct block_list *bl,va_list ap)
 			// スキルなどによる策敵妨害
 				mob_unlocktarget(md,tick);
 
-			} else if(!battle_check_range(&md->bl,sd->bl.x,sd->bl.y,mob_db[md->class].range)){
+			} else if(!battle_check_range(&md->bl,&sd->bl,mob_db[md->class].range)){
 
 				// 攻撃範囲外なので移動
 				if(!(mode&1)){	// 移動しないモード
@@ -1753,8 +1729,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 		ditem=malloc(sizeof(*ditem));
 		if(ditem==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : mob_damage\n");
+			printf("out of memory : mob_damage\n");
 			exit(1);
 		}
 
@@ -1779,8 +1754,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 				ditem=malloc(sizeof(*ditem));
 				if(ditem==NULL){
-					if(battle_config.error_log)
-						printf("out of memory : mob_damage\n");
+					printf("out of memory : mob_damage\n");
 					exit(1);
 				}
 
@@ -1801,8 +1775,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 			ditem=malloc(sizeof(*ditem));
 			if(ditem==NULL){
-				if(battle_config.error_log)
-					printf("out of memory : mob_damage\n");
+				printf("out of memory : mob_damage\n");
 				exit(1);
 			}
 			memcpy(&ditem->item_data,&md->lootitem[i],sizeof(md->lootitem[0]));
@@ -1853,10 +1826,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 		npc_event(sd,md->npc_event,1);
 	}
 
-	skill_castcancel(&md->bl,0);
 	clif_clearchar_area(&md->bl,1);
-	skill_unit_out_all(&md->bl,gettick(),1);
-	skill_status_change_clear(&md->bl);
 	map_delblock(&md->bl);
 	mob_deleteslave(md);
 	mob_setdelayspawn(md->bl.id);
@@ -1976,15 +1946,14 @@ int mob_summonslave(struct mob_data *md2,int class,int amount,int flag)
 		int x=0,y=0,c=0,i=0;
 		md=malloc(sizeof(struct mob_data));
 		if(md==NULL){
-			if(battle_config.error_log)
-				printf("mob_once_spawn: out of memory !\n");
-			return 0;
+			printf("mob_once_spawn: out of memory !\n");
+			exit(1);
 		}
 		if(mob_db[class].mode&0x02) {
 			md->lootitem=malloc(sizeof(struct item)*LOOTITEM_SIZE);
 			if(md->lootitem==NULL){
-				if(battle_config.error_log)
-					printf("mob_once_spawn: out of memory !\n");
+				printf("mob_once_spawn: out of memory !\n");
+				exit(1);
 			}
 		}
 		else
@@ -2066,7 +2035,7 @@ int mobskill_castend_id( int tid, unsigned int tick, int id,int data )
 	if( md->skilltimer != tid )	// タイマIDの確認
 		return 0;
 	md->skilltimer=-1;
-	md->last_thinktime=tick + mob_get_adelay(md);
+	md->last_thinktime=tick + battle_get_adelay(&md->bl);
 
 	bl=map_id2bl(md->skilltarget);
 	if(bl==NULL || bl->prev==NULL)
@@ -2147,7 +2116,7 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 		return 0;
 	
 	// 射程と障害物チェック
-	if(!battle_check_range(&md->bl,target->x,target->y,skill_get_range(skill_id, skill_lv)))
+	if(!battle_check_range(&md->bl,target,skill_get_range(skill_id,skill_lv)))
 		return 0;
 
 //	casttime=skill_castfix(&md->bl, skill_get_cast( skill_id,skill_lv) );
@@ -2206,6 +2175,7 @@ int mobskill_use_pos( struct mob_data *md,
 {
 	int casttime=0;
 	struct mob_skill *ms=&mob_db[md->class].skill[skill_idx];
+	struct block_list bl;
 	int skill_num=ms->skill_id, skill_lv=ms->skill_lv;
 
 	if( md->bl.prev==NULL )
@@ -2215,7 +2185,11 @@ int mobskill_use_pos( struct mob_data *md,
 		return 0;	// 異常や沈黙など
 
 	// 射程と障害物チェック
-	if(!battle_check_range(&md->bl,skill_x,skill_y,skill_get_range(skill_num, skill_lv)))
+	bl.type = BL_NUL;
+	bl.m = md->bl.m;
+	bl.x = skill_x;
+	bl.y = skill_y;
+	if(!battle_check_range(&md->bl,&bl,skill_get_range(skill_num,skill_lv)))
 		return 0;
 
 //	casttime=skill_castfix(&sd->bl, skill_get_cast( skill_num,skill_lv) );

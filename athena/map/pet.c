@@ -148,7 +148,7 @@ static int pet_attack(struct pet_data *pd,unsigned int tick,int data)
 	pd->state.state=MS_IDLE;
 
 	md=(struct mob_data *)map_id2bl(pd->target_id);
-	if(md==NULL || md->bl.type != BL_MOB || pd->bl.m != md->bl.m || md->bl.prev == NULL ||
+	if(md == NULL || md->bl.type != BL_MOB || pd->bl.m != md->bl.m || md->bl.prev == NULL ||
 		distance(pd->bl.x,pd->bl.y,md->bl.x,md->bl.y) > 13) {
 		pd->target_id=0;
 		return 0;
@@ -174,7 +174,7 @@ static int pet_attack(struct pet_data *pd,unsigned int tick,int data)
 
 	battle_weapon_attack(&pd->bl,&md->bl,tick,0);
 
-	pd->attackabletime = tick + mob_db[pd->class].adelay;
+	pd->attackabletime = tick + battle_get_adelay(&pd->bl);
 
 	pd->timer=add_timer(pd->attackabletime,pet_timer,pd->bl.id,0);
 	pd->state.state=MS_ATTACK;
@@ -601,9 +601,8 @@ int pet_data_init(struct map_session_data *sd)
 	sd->petDB = &pet_db[i];
 	sd->pd = pd = malloc(sizeof(struct pet_data));
 	if(pd==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : pet_data_init\n");
-		return 1;
+		printf("out of memory : pet_data_init\n");
+		exit(1);
 	}
 
 	pd->n = 0;
@@ -940,12 +939,10 @@ int pet_food(struct map_session_data *sd)
 	return 0;
 }
 
-
-
 static int pet_randomwalk(struct pet_data *pd,int tick)
 {
 	const int retrycount=20;
-	int speed = pd->speed;
+	int speed = battle_get_speed(&pd->bl);
 	if(DIFF_TICK(pd->next_walktime,tick) < 0){
 		int i,x,y,c,d=12-pd->move_fail_count;
 		if(d<5) d=5;
@@ -1028,14 +1025,14 @@ static int pet_ai_sub_hard(struct pet_data *pd,unsigned int tick)
 				pet_unlocktarget(pd);
 			else if(mob_db[pd->class].mexp <= 0 && !(mode&0x20) && (md->option & 0x06 && race!=4 && race!=6) )
 				pet_unlocktarget(pd);
-			else if(!battle_check_range(&pd->bl,md->bl.x,md->bl.y,mob_db[pd->class].range)){
+			else if(!battle_check_range(&pd->bl,&md->bl,mob_db[pd->class].range)){
 				if(pd->timer != -1 && pd->state.state == MS_WALK && distance(pd->to_x,pd->to_y,md->bl.x,md->bl.y) < 2)
 					return 0;
 				if( !pet_can_reach(pd,md->bl.x,md->bl.y))
 					pet_unlocktarget(pd);
 				else {
 					i=0;
-					pd->speed = sd->petDB->speed;
+					pd->speed = battle_get_speed(&pd->bl);
 					do {
 						if(i==0) {	// Å‰‚ÍAEGIS‚Æ“¯‚¶•û–@‚ÅŒŸõ
 							dx=md->bl.x - pd->bl.x;
@@ -1073,14 +1070,14 @@ static int pet_ai_sub_hard(struct pet_data *pd,unsigned int tick)
 		else {
 			if(dist <= 3 || (pd->timer != -1 && pd->state.state == MS_WALK && distance(pd->to_x,pd->to_y,sd->bl.x,sd->bl.y) < 3) )
 				return 0;
-			pd->speed = sd->petDB->speed;
+			pd->speed = battle_get_speed(&pd->bl);
 			pet_calc_pos(pd,sd->bl.x,sd->bl.y,sd->dir);
 			if(pet_walktoxy(pd,pd->to_x,pd->to_y))
 				pet_randomwalk(pd,tick);
 		}
 	}
 	else {
-		pd->speed = sd->petDB->speed;
+		pd->speed = battle_get_speed(&pd->bl);
 		if(pd->state.state == MS_ATTACK)
 			pet_stopattack(pd);
 		pet_randomwalk(pd,tick);

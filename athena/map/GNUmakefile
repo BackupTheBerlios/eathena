@@ -11,9 +11,9 @@ chrif.o: chrif.c map.h battle.h chrif.h clif.h intif.h pc.h ../common/socket.h .
 clif.o: clif.c map.h chrif.h clif.h mob.h intif.h pc.h npc.h itemdb.h chat.h script.h storage.h party.h guild.h atcommand.h pet.h atcommand.h ../common/socket.h ../common/timer.h ../common/mmo.h ../common/version.h
 pc.o: pc.c map.h clif.h intif.h pc.h npc.h mob.h itemdb.h battle.h skill.h script.h party.h guild.h pet.h trade.h storage.h chat.h vending.h ../common/timer.h ../common/mmo.h ../common/db.h
 npc.o: npc.c map.h npc.h clif.h pc.h script.h mob.h itemdb.h battle.h ../common/db.h ../common/timer.h ../common/mmo.h
-chat.o: chat.c map.h battle.h clif.h pc.h chat.h ../common/db.h ../common/mmo.h
+chat.o: chat.c map.h clif.h pc.h chat.h ../common/db.h ../common/mmo.h
 path.o: path.c map.h battle.h ../common/mmo.h
-itemdb.o: itemdb.c map.h itemdb.h battle.h ../common/db.h ../common/grfio.h ../common/mmo.h
+itemdb.o: itemdb.c map.h battle.h itemdb.h ../common/db.h ../common/grfio.h ../common/mmo.h
 mob.o: mob.c map.h clif.h intif.h pc.h mob.h skill.h battle.h npc.h itemdb.h ../common/timer.h ../common/mmo.h
 script.o: script.c itemdb.h map.h pc.h mob.h clif.h intif.h npc.h script.h storage.h skill.h pet.h battle.h ../common/timer.h ../common/socket.h ../common/db.h ../common/mmo.h
 storage.o: storage.c itemdb.h pc.h clif.h intif.h storage.h ../common/mmo.h

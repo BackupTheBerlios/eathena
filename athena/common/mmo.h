@@ -175,7 +175,7 @@ enum {
 
 	GMI_POSITION	=0,		// メンバーの役職変更
 	GMI_EXP			=1,		// メンバーのEXP
-	
+
 };
 
 #ifndef strcmpi

@@ -1,4 +1,4 @@
-// $Id: chrif.c,v 1.3 2004/01/18 15:43:58 rovert Exp $
+// $Id: chrif.c,v 1.4 2004/01/19 17:47:48 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -203,8 +203,7 @@ int chrif_changemapserverack(int fd)
 int chrif_connectack(int fd)
 {
 	if(RFIFOB(fd,2)){
-		if(battle_config.error_log)
-			printf("chrif : connect char server failed %d\n",RFIFOB(fd,2));
+		printf("chrif : connect char server failed %d\n",RFIFOB(fd,2));
 		exit(1);
 	}
 	chrif_state = 1;
@@ -221,8 +220,7 @@ int chrif_connectack(int fd)
 int chrif_sendmapack(int fd)
 {
 	if(RFIFOB(fd,2)){
-		if(battle_config.error_log)
-			printf("chrif : send map list to char server failed %d\n",RFIFOB(fd,2));
+		printf("chrif : send map list to char server failed %d\n",RFIFOB(fd,2));
 		exit(1);
 	}
 	chrif_state = 2;

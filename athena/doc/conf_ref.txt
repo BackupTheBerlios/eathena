@@ -336,6 +336,9 @@ skill_delay_attack_enable
 	スキルディレイの間攻撃できるかどうかです。yesにすればスキルディレイの間スキルは使えないけど攻撃はできます。
 	デフォルトはnoです。
 
+left_cardfix_to_right
+	二刀流の左手武器の種族、属性、Sizeのダメージ補正を右手武器に適用するかどうかです。これをyesにすると左手武器には種族、属性、Sizeのダメージ補正が掛からなくなります。デフォルトはnoです。
+
 player_skill_add_range
 	プレイヤーのスキル射程から敵が離れた時どれぐらいの距離までスキルを使用可能にするかを決めます。スキルの射程+player_skill_add_rangeまでスキルが届きます。デフォルトは0ですが少しは入れた方がいいです。
 
@@ -650,6 +653,7 @@ casting_rate: 100
 delay_rate: 100
 delay_dependon_dex: no
 skill_delay_attack_enable: no
+left_cardfix_to_right: no
 player_skill_add_range: 0
 skill_out_range_consume: yes
 monster_skill_add_range: 0

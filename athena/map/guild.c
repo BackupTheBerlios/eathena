@@ -179,9 +179,8 @@ int guild_created(int account_id,int guild_id)
 			sd->status.guild_id=guild_id;
 			sd->guild_sended=0;
 			if((g=numdb_search(guild_db,guild_id))!=NULL){
-				if(battle_config.error_log)
-					printf("guild: id already exists!\n");
-				exit(0);
+				printf("guild: id already exists!\n");
+				exit(1);
 			}
 			clif_guild_created(sd,0);
 			if(battle_config.guild_emperium_check)
@@ -248,9 +247,8 @@ int guild_recv_info(struct guild *sg)
 	if((g=numdb_search(guild_db,sg->guild_id))==NULL){
 		g=malloc(sizeof(struct guild));
 		if(g==NULL){
-			if(battle_config.error_log)
-				printf("guild_recv_info: out of memory!\n");
-			exit(0);
+			printf("guild_recv_info: out of memory!\n");
+			exit(1);
 		}
 		numdb_insert(guild_db,sg->guild_id,g);
 		before=*sg;
@@ -708,9 +706,8 @@ int guild_payexp(struct map_session_data *sd,int exp)
 	if( (c=numdb_search(guild_expcache_db,sd->status.char_id))==NULL ){
 		c=malloc(sizeof(struct guild_expcache));
 		if(c==NULL){
-			if(battle_config.error_log)
-				printf("guild_payexp: out of memory !\n");
-			return 0;
+			printf("guild_payexp: out of memory !\n");
+			exit(1);
 		}
 		c->guild_id=sd->status.guild_id;
 		c->account_id=sd->status.account_id;

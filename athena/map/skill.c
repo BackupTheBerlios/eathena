@@ -441,7 +441,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 	case WZ_FROSTNOVA:		/* フロストノヴァ */
 	case WZ_STORMGUST:		/* ストームガスト */
 	case HT_FREEZINGTRAP:	/* フリージングトラップ */
-//	case BA_FROSTJOKE:		/* 寒いジョーク */
+	case BA_FROSTJOKE:		/* 寒いジョーク */
 /*
 		rate=battle_get_lv(src)/2 +battle_get_int(src)/3+ skilllv*2 +15 -battle_get_mdef(bl);
 		if(rate>95)rate=95;
@@ -824,7 +824,7 @@ int skill_area_sub( struct block_list *bl,va_list ap )
 	unsigned int tick;
 	SkillFunc func;
 	
-	if(bl->type!=BL_PC && bl->type!=BL_MOB)
+	if(bl->type!=BL_PC && bl->type!=BL_MOB && bl->type!=BL_SKILL)
 		return 0;
 
 	src=va_arg(ap,struct block_list *);
@@ -2397,9 +2397,8 @@ int skill_castend_map( struct map_session_data *sd,int skill_num, const char *ma
 			group=skill_unitsetting(&sd->bl,sd->skillid,sd->skilllv,sd->skillx,sd->skilly,0);
 			group->valstr=malloc(24);
 			if(group->valstr==NULL){
-				if(battle_config.error_log)
-					printf("skill_castend_map: out of memory !\n");
-				exit(0);
+				printf("skill_castend_map: out of memory !\n");
+				exit(1);
 			}
 			memcpy(group->valstr,map,24);
 			group->val2=(x<<16)|y;
@@ -2714,7 +2713,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		count=81;
 		limit=skill_get_delay(skillid,skilllv);
 		range=9;
-		target=BCT_NOENEMY;
+		target=BCT_ENEMY;
 		break;
 
 	case BA_WHISTLE:			/* 口笛 */
@@ -2889,6 +2888,10 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 			{
 				static const int dirx[8]={0,-1,-1,-1,0,1,1,1};
 				static const int diry[8]={1,1,0,-1,-1,-1,0,1};
+				if(skilllv <= 1)
+					val1 = 500;
+				else
+					val1 = 200 + 200*skilllv;
 				dir=map_calc_dir(src,x,y);
 				ux+=(2-i)*diry[dir];
 				uy+=(i-2)*dirx[dir];
@@ -2990,7 +2993,7 @@ int skill_unit_onplace(struct skill_unit *src,struct block_list *bl,unsigned int
 
 	if(bl == NULL ||  bl->prev==NULL || !src->alive)
 		return 0;
-	if( bl->type!=BL_PC && bl->type!=BL_MOB )
+	if( bl->type!=BL_PC && bl->type!=BL_MOB && bl->type!=BL_SKILL)
 		return 0;
 
 	if(ss==NULL)
@@ -3410,9 +3413,8 @@ int skill_unit_onlimit(struct skill_unit *src,unsigned int tick)
 					src->bl.x,src->bl.y,1);
 			group->valstr=malloc(24);
 			if(group->valstr==NULL){
-				if(battle_config.error_log)
-					printf("skill_unit_ondelete: out of memory !\n");
-				exit(0);
+				printf("skill_unit_ondelete: out of memory !\n");
+				exit(1);
 			}
 			memcpy(group->valstr,sg->valstr,24);
 			group->val2=sg->val2;
@@ -3435,13 +3437,16 @@ int skill_unit_ondamaged(struct skill_unit *src,struct block_list *bl,
 	int damage,unsigned int tick)
 {
 	struct skill_unit_group *sg= src->group;
-	
+
 	switch(sg->unit_id){
 	case 0x8d:	/* アイスウォール */
-		sg->limit-=damage;
+		src->val1-=damage;
+		break;
+	default:
+		damage = 0;
 		break;
 	}
-	return 0;
+	return damage;
 }
 
 
@@ -4069,7 +4074,7 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 	}
 
 	/* 射程と障害物チェック */
-	if(!battle_check_range(&sd->bl,bl->x,bl->y,skill_get_range(skill_num, skill_lv)))
+	if(!battle_check_range(&sd->bl,bl,skill_get_range(skill_num, skill_lv)))
 		return 0;
 
 	if(bl->type==BL_PC){
@@ -4188,6 +4193,7 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 int skill_use_pos( struct map_session_data *sd,
 	int skill_x, int skill_y, int skill_num, int skill_lv)
 {
+	struct block_list bl;
 	unsigned int tick;
 	int casttime=0,delay=0,skill;
 	
@@ -4203,7 +4209,11 @@ int skill_use_pos( struct map_session_data *sd,
 		return 0;
 
 	/* 射程と障害物チェック */
-	if(!battle_check_range(&sd->bl,skill_x,skill_y,skill_get_range(skill_num, skill_lv)))
+	bl.type = BL_NUL;
+	bl.m = sd->bl.m;
+	bl.x = skill_x;
+	bl.y = skill_y;
+	if(!battle_check_range(&sd->bl,&bl,skill_get_range(skill_num, skill_lv)))
 		return 0;
 	
 	pc_stopattack(sd);
@@ -4617,7 +4627,10 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 	short *sc_count, *option, *opt1, *opt2;
 	int opt_flag = 0;
 	int val3=0,val4=val2;
-	
+
+	if(bl->type == BL_SKILL)
+		return 0;
+
 	sc_data=battle_get_sc_data(bl);
 	sc_count=battle_get_sc_count(bl);
 	option=battle_get_option(bl);
@@ -5247,8 +5260,7 @@ int skill_delunit(struct skill_unit *unit)
 		&unit->bl,gettick() );
 
 	clif_skill_delunit(unit);
-	
-	
+
 	unit->group=NULL;
 	unit->alive=0;
 	map_delobjectnofree(unit->bl.id);
@@ -5311,9 +5323,8 @@ struct skill_unit_group *skill_initunitgroup(struct block_list *src,
 	}
 
 	if(group==NULL){
-		if(battle_config.error_log)
-			printf("skill_initunitgroup: error unit group !\n");
-		exit(0);
+		printf("skill_initunitgroup: error unit group !\n");
+		exit(1);
 	}
 
 	group->src_id=src->id;
@@ -5325,9 +5336,8 @@ struct skill_unit_group *skill_initunitgroup(struct block_list *src,
 
 	group->unit=malloc(sizeof(struct skill_unit)*count);
 	if(group->unit==NULL){
-		if(battle_config.error_log)
-			printf("skill_initunitgroup: out of memory! \n");
-		exit(0);
+		printf("skill_initunitgroup: out of memory! \n");
+		exit(1);
 	}
 	memset(group->unit,0,sizeof(struct skill_unit)*count);
 
@@ -5501,7 +5511,7 @@ int skill_unit_timer_sub_ondelete( struct block_list *bl, va_list ap )
 	return 0;
 }
 
-
+static int del_count=0;
 /*==========================================
  * スキルユニットタイマー処理用(foreachobject)
  *------------------------------------------
@@ -5532,6 +5542,11 @@ int skill_unit_timer_sub( struct block_list *bl, va_list ap )
 		 DIFF_TICK(tick,group->tick)>=unit->limit) ){
 		skill_delunit(unit);
 	}
+	if(group->unit_id == 0x8d) {
+		unit->val1 -= 5;
+		if(unit->val1 <= 0 && del_count == 0)
+			skill_delunit(unit);
+	}
 
 	return 0;
 }
@@ -5547,6 +5562,9 @@ int skill_unit_timer( int tid,unsigned int tick,int id,int data)
 	map_foreachobject( skill_unit_timer_sub, BL_SKILL, tick );
 
 	map_freeblock_unlock();
+	del_count++;
+	del_count%=5;
+
 	return 0;
 }
 
@@ -5866,7 +5884,6 @@ int skill_arrow_create( struct map_session_data *sd,int nameid)
 			clif_additem(sd,0,0,flag);
 			map_addflooritem(&tmp_item,tmp_item.amount,sd->bl.m,sd->bl.x,sd->bl.y);
 		}
-//		printf("arrow create %d -> %d:%d\n",mate,tmp_item.nameid,tmp_item.amount);
 	}
 
 	return 0;

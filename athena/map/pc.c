@@ -1201,7 +1201,13 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->watk += sd->sc_data[SC_IMPOSITIO].val1*5;
 		if(sd->sc_data[SC_PROVOKE].timer!=-1){	// プロボック
 			sd->def2 = sd->def2*(100-6*sd->sc_data[SC_PROVOKE].val1)/100;
+			sd->base_atk = sd->base_atk*(100+2*sd->sc_data[SC_PROVOKE].val1)/100;
 			sd->watk = sd->watk*(100+2*sd->sc_data[SC_PROVOKE].val1)/100;
+		}
+		if(sd->sc_data[SC_POISON].timer!=-1){	// プロボック
+			sd->def = sd->def*75/100;
+			sd->def2 = sd->def2*75/100;
+			sd->status.hp -= sd->hprate /100;
 		}
 		if(sd->sc_data[SC_DRUMBATTLE].timer!=-1){	// 戦太鼓の響き
 			sd->watk += sd->sc_data[SC_DRUMBATTLE].val2;
@@ -1241,7 +1247,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->flee += (int)(sd->sc_data[SC_VIOLENTGALE].val1 * 3);
 		if(sd->sc_data[SC_WHISTLE].timer!=-1){  // 口笛
 			sd->flee += sd->sc_data[SC_WHISTLE].val1 * sd->flee/100;
-			sd->flee2+= sd->sc_data[SC_WHISTLE].val1 * sd->flee2/100;
+			sd->flee2+= sd->sc_data[SC_WHISTLE].val1 * 10;
 			sd->status.sp--;		// Added by AppleGirl
 			clif_updatestatus(sd,SP_SP);
 		}
@@ -1295,9 +1301,6 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->mdef = 90;
 			aspd_rate += 25;
 			sd->speed = (sd->speed * 125) / 100;
-		}
-		if(sd->sc_data[SC_POISON].timer!=-1){		// Added by AppleGirl
-			sd->status.hp -= sd->hprate /100;
 		}
 		if(sd->sc_data[SC_DEFENDER].timer != -1) {
 			sd->long_attack_def_rate += 5 + sd->sc_data[SC_DEFENDER].val1*15;
@@ -2068,7 +2071,8 @@ int pc_inventoryblank(struct map_session_data *sd)
  */
 int pc_payzeny(struct map_session_data *sd,int zeny)
 {
-	if(sd->status.zeny<zeny)
+	double z = (double)sd->status.zeny;
+	if(sd->status.zeny<zeny || z - (double)zeny > MAX_ZENY)
 		return 1;
 	sd->status.zeny-=zeny;
 	clif_updatestatus(sd,SP_ZENY);
@@ -2083,8 +2087,11 @@ int pc_payzeny(struct map_session_data *sd,int zeny)
  */
 int pc_getzeny(struct map_session_data *sd,int zeny)
 {
-	if(sd->status.zeny+zeny > MAX_ZENY)
-		return 1;
+	double z = (double)sd->status.zeny;
+	if(z + (double)zeny > MAX_ZENY) {
+		zeny = 0;
+		sd->status.zeny = MAX_ZENY;
+	}
 	sd->status.zeny+=zeny;
 	clif_updatestatus(sd,SP_ZENY);
 
@@ -3035,12 +3042,13 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 	range = sd->attackrange;
 	if(sd->status.weapon != 11) range++;
 	if( dist > range ){	// 届 かないので移動
-		clif_movetoattack(sd,bl);
+		if(pc_can_reach(sd,bl->x,bl->y))
+			clif_movetoattack(sd,bl);
 		return 0;
 	}
 
-	if(dist <= range && !battle_check_range(&sd->bl,bl->x,bl->y,range) ) {
-		if(pc_can_reach(sd,bl->x,bl->y) )
+	if(dist <= range && !battle_check_range(&sd->bl,bl,range) ) {
+		if(pc_can_reach(sd,bl->x,bl->y) && sd->canmove_tick < tick && sd->sc_data[SC_ANKLE].timer == -1)
 			pc_walktoxy(sd,bl->x,bl->y);
 		sd->attackabletime = tick + (sd->aspd<<1);
 	}
@@ -3086,7 +3094,9 @@ int pc_attack(struct map_session_data *sd,int target_id,int type)
 	int d;
 
 	bl=map_id2bl(target_id);
-	if(bl==NULL || (bl->type!=BL_MOB && bl->type!=BL_PC))
+	if(bl==NULL)
+		return 1;
+	if(!battle_check_target(&sd->bl,bl,BCT_ENEMY))
 		return 1;
 	if(sd->attacktimer != -1)
 		pc_stopattack(sd);
@@ -4043,8 +4053,7 @@ int pc_setreg(struct map_session_data *sd,int reg,int val)
 	sd->reg_num++;
 	sd->reg=realloc(sd->reg,sizeof(sd->reg[0])*sd->reg_num);
 	if(sd->reg==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : pc_setreg\n");
+		printf("out of memory : pc_setreg\n");
 		exit(1);
 	}
 	sd->reg[i].index=reg;
@@ -4115,9 +4124,7 @@ int pc_setglobalreg(struct map_session_data *sd,char *reg,int val)
 int pc_percentrefinery(struct map_session_data *sd,struct item *item)
 {
 	int percent=percentrefinery[itemdb_wlv(item->nameid)][(int)item->refine];
-	if(pc_checkskill(sd,BS_WEAPONRESEARCH)>0)	// 武器研究スキル所持
-		if(percent<100)
-			percent+=10;
+	percent += pc_checkskill(sd,BS_WEAPONRESEARCH);	// 武器研究スキル所持
 
 	return percent;
 }
@@ -4163,8 +4170,7 @@ int pc_addeventtimer(struct map_session_data *sd,int tick,const char *name)
 	if(i<MAX_EVENTTIMER){
 		char *evname=malloc(24);
 		if(evname==NULL){
-			if(battle_config.error_log)
-				printf("pc_addeventtimer: out of memory !\n");
+			printf("pc_addeventtimer: out of memory !\n");
 			exit(1);
 		}
 		memcpy(evname,name,24);
@@ -4914,7 +4920,7 @@ int pc_read_gm_account()
 		p=malloc(sizeof(struct gm_account));
 		if(p==NULL){
 			printf("gm_account: out of memory!\n");
-			exit(0);
+			exit(1);
 		}
 		if(sscanf(line,"%d %d",&p->account_id,&p->level) != 2 || p->level <= 0) {
 			printf("gm_account: broken data [%s] line %d\n",GM_account_filename,c);

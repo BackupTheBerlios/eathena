@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.6 2004/01/18 15:43:58 rovert Exp $
+// $Id: map.c,v 1.7 2004/01/19 17:47:48 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -616,8 +616,7 @@ int map_addflooritem(struct item *item_data,int amount,int m,int x,int y)
 
 	fitem = malloc(sizeof(*fitem));
 	if(fitem==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : map_addflooritem\n");
+		printf("out of memory : map_addflooritem\n");
 		exit(1);
 	}
 	fitem->bl.type=BL_ITEM;
@@ -655,8 +654,7 @@ void map_addchariddb(int charid,char *name)
 	if(p==NULL){	// データベースにない
 		p = malloc(sizeof(struct charid2nick));
 		if(p==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : map_addchariddb\n");
+			printf("out of memory : map_addchariddb\n");
 			exit(1);
 		}
 		p->req_id=0;
@@ -685,8 +683,7 @@ int map_reqchariddb(struct map_session_data * sd,int charid)
 		return 0;
 	p = malloc(sizeof(struct charid2nick));
 	if(p==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : map_reqchariddb\n");
+		printf("out of memory : map_reqchariddb\n");
 		exit(1);
 	}
 	memset(p->nick,0,24);
@@ -1177,7 +1174,7 @@ int map_config_read(char *cfgName)
 	while(fgets(line,1020,fp)){
 		if(line[0] == '/' && line[1] == '/')
 			continue;
-		i=sscanf(line,"%[^:]: %[^\r\n]",w1,w2);
+		i=sscanf(line,"%[^:]: %[^\r\n\t]",w1,w2);
 		if(i!=2)
 			continue;
 		if(strcmpi(w1,"userid")==0){

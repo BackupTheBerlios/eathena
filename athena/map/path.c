@@ -1,4 +1,4 @@
-// $Id: path.c,v 1.4 2004/01/18 15:43:58 rovert Exp $
+// $Id: path.c,v 1.5 2004/01/19 17:47:49 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,8 +46,7 @@ static inline void update_heap_path(int *heap,struct tmp_path *tp,int index)
 		if(heap[h+1]==index)
 			break;
 	if(h==heap[0]){
-		if(battle_config.error_log)
-			fprintf(stderr,"update_heap_path bug\n");
+		fprintf(stderr,"update_heap_path bug\n");
 		exit(1);
 	}
 	for(i=(h-1)/2;

@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.12 2004/01/18 15:43:58 rovert Exp $
+// $Id: clif.c,v 1.13 2004/01/19 17:47:48 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -687,7 +687,7 @@ static int clif_mob0078(struct mob_data *md,unsigned char *buf)
 
 	WBUFW(buf,0)=0x78;
 	WBUFL(buf,2)=md->bl.id;
-	WBUFW(buf,6)=mob_get_speed(md);
+	WBUFW(buf,6)=battle_get_speed(&md->bl);
 	WBUFW(buf,8)=md->opt1;
 	WBUFW(buf,10)=md->opt2;
 	WBUFW(buf,12)=md->option;
@@ -710,7 +710,7 @@ static int clif_mob007b(struct mob_data *md,unsigned char *buf)
 
 	WBUFW(buf,0)=0x7b;
 	WBUFL(buf,2)=md->bl.id;
-	WBUFW(buf,6)=mob_get_speed(md);
+	WBUFW(buf,6)=battle_get_speed(&md->bl);
 	WBUFW(buf,8)=md->opt1;
 	WBUFW(buf,10)=md->opt2;
 	WBUFW(buf,12)=md->option;
@@ -3085,10 +3085,10 @@ int clif_skill_estimation(struct map_session_data *sd,struct block_list *dst)
 	WBUFW(buf, 4)=mob_db[md->class].lv;
 	WBUFW(buf, 6)=mob_db[md->class].size;
 	WBUFL(buf, 8)=md->hp;
-	WBUFW(buf,12)=mob_db[md->class].vit;
+	WBUFW(buf,12)=battle_get_def2(&md->bl);
 	WBUFW(buf,14)=mob_db[md->class].race;
-	WBUFW(buf,16)=mob_db[md->class].int_;
-	WBUFW(buf,18)=mob_db[md->class].element%10;
+	WBUFW(buf,16)=battle_get_mdef2(&md->bl) - (mob_db[md->class].vit>>1);
+	WBUFW(buf,18)=battle_get_elem_type(&md->bl);
 	for(i=0;i<9;i++)
 		WBUFB(buf,20+i)= battle_attr_fix(100,i+1,mob_db[md->class].element);
 	
@@ -4778,8 +4778,7 @@ void clif_parse_WantToConnection(int fd,struct map_session_data *sd)
 
 	sd=session[fd]->session_data=malloc(sizeof(*sd));
 	if(sd==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : clif_parse_WantToConnection\n");
+		printf("out of memory : clif_parse_WantToConnection\n");
 		exit(1);
 	}
 	memset(sd,0,sizeof(*sd));
@@ -6726,19 +6725,21 @@ static int clif_parse(int fd)
 		clif_parse_func_table[cmd](fd,sd);
 	} else {
 		// 不明なパケット
-		printf("clif_parse : %d %d %x\n",fd,packet_len,cmd);
+		if(battle_config.error_log) {
+			printf("clif_parse : %d %d %x\n",fd,packet_len,cmd);
 #ifdef DUMP_UNKNOWN_PACKET
-		{
-			int i;
-			printf("---- 00-01-02-03-04-05-06-07-08-09-0A-0B-0C-0D-0E-0F");
-			for(i=0;i<packet_len;i++){
-				if((i&15)==0)
-					printf("\n%04X ",i);
-				printf("%02X ",RFIFOB(fd,i));
+			{
+				int i;
+				printf("---- 00-01-02-03-04-05-06-07-08-09-0A-0B-0C-0D-0E-0F");
+				for(i=0;i<packet_len;i++){
+					if((i&15)==0)
+						printf("\n%04X ",i);
+					printf("%02X ",RFIFOB(fd,i));
+				}
+				printf("\n");
 			}
-			printf("\n");
-		}
 #endif
+		}
 	}
 	RFIFOSKIP(fd,packet_len);
 

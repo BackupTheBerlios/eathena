@@ -54,15 +54,13 @@ int party_created(int account_id,int fail,int party_id,char *name)
 		struct party *p;
 		sd->status.party_id=party_id;
 		if((p=numdb_search(party_db,party_id))!=NULL){
-			if(battle_config.error_log)
-				printf("party: id already exists!\n");
-			exit(0);
+			printf("party: id already exists!\n");
+			exit(1);
 		}
 		p=malloc(sizeof(struct party));
 		if(p==NULL){
-			if(battle_config.error_log)
-				printf("party: out of memory!\n");
-			exit(0);
+			printf("party: out of memory!\n");
+			exit(1);
 		}
 		memset(p,0,sizeof(struct party));
 		p->party_id=party_id;
@@ -131,9 +129,8 @@ int party_recv_info(struct party *sp)
 	if((p=numdb_search(party_db,sp->party_id))==NULL){
 		p=malloc(sizeof(struct party));
 		if(p==NULL){
-			if(battle_config.error_log)
-				printf("party: out of memory!\n");
-			exit(0);
+			printf("party: out of memory!\n");
+			exit(1);
 		}
 		numdb_insert(party_db,sp->party_id,p);
 		

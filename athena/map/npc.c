@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.5 2004/01/18 15:43:58 rovert Exp $
+// $Id: npc.c,v 1.6 2004/01/19 17:47:49 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -73,8 +73,8 @@ int npc_event_dequeue(struct map_session_data *sd)
 		char *name=malloc(50);
 		int i;
 		if(name==NULL){
-			if(battle_config.error_log)
-				printf("run_script: out of memory !\n");exit(1);
+			printf("run_script: out of memory !\n");
+			exit(1);
 		}
 		memcpy(name,sd->eventqueue[0],50);
 		for(i=MAX_EVENTQUEUE-2;i>=0;i--)
@@ -177,11 +177,11 @@ int npc_event_export(void *key,void *data,va_list ap)
 		ev=malloc(sizeof(struct event_data));
 		buf=malloc(50);
 		if(ev==NULL || buf==NULL){
-			if(battle_config.error_log)
-				printf("npc_event_export: out of memory !\n");
+			printf("npc_event_export: out of memory !\n");
+			exit(1);
 		}else if(p==NULL || (p-lname)>24){
-			if(battle_config.error_log)
-				printf("npc_event_export: label name error !\n");
+			printf("npc_event_export: label name error !\n");
+			exit(1);
 		}else{
 			ev->nd=nd;
 			ev->pos=pos;
@@ -572,7 +572,8 @@ int npc_buysellsel(struct map_session_data *sd,int id,int type)
 int npc_buylist(struct map_session_data *sd,int n,unsigned short *item_list)
 {
 	struct npc_data *nd;
-	int i,j,w,z,skill,itemamount=0,new=0;
+	double z;
+	int i,j,w,skill,itemamount=0,new=0;
 
 	if(npc_checknear(sd,sd->npc_shopid))
 		return 3;
@@ -581,7 +582,7 @@ int npc_buylist(struct map_session_data *sd,int n,unsigned short *item_list)
 	if(nd->bl.subtype!=SHOP)
 		return 3;
 
-	for(i=0,w=z=0;i<n;i++){
+	for(i=0,w=0,z=0;i<n;i++){
 		for(j=0;nd->u.shop_item[j].nameid;j++){
 			if(nd->u.shop_item[j].nameid==item_list[i*2+1])
 				break;
@@ -590,9 +591,9 @@ int npc_buylist(struct map_session_data *sd,int n,unsigned short *item_list)
 			return 3;
 
 		if (itemdb_value_notdc(nd->u.shop_item[j].nameid))
-			z+=nd->u.shop_item[j].value * item_list[i*2];
+			z+=(double)nd->u.shop_item[j].value * item_list[i*2];
 		else
-			z+=pc_modifybuyvalue(sd,nd->u.shop_item[j].value) * item_list[i*2];
+			z+=(double)pc_modifybuyvalue(sd,nd->u.shop_item[j].value) * item_list[i*2];
 		itemamount+=item_list[i*2];
 
 		switch(pc_checkadditem(sd,item_list[i*2+1],item_list[i*2])){
@@ -607,15 +608,14 @@ int npc_buylist(struct map_session_data *sd,int n,unsigned short *item_list)
 
 		w+=itemdb_weight(item_list[i*2+1]) * item_list[i*2];
 	}
-	if(z > sd->status.zeny)
+	if(z > (double)sd->status.zeny)
 		return 1;	// zeny不足
 	if(w+sd->weight > sd->max_weight)
 		return 2;	// 重量超過
 	if(pc_inventoryblank(sd)<new)
 		return 3;	// 種類数超過
 
-
-	pc_payzeny(sd,z);
+	pc_payzeny(sd,(int)z);
 	for(i=0;i<n;i++){
 		struct item item_tmp;
 
@@ -635,10 +635,10 @@ int npc_buylist(struct map_session_data *sd,int n,unsigned short *item_list)
 		if(sd->status.skill[MC_DISCOUNT].flag != 0)
 			skill = sd->status.skill[MC_DISCOUNT].flag - 2;
 		if(skill > 0) {
-			z = (int)(log((double)z * (double)skill) * (double)battle_config.shop_exp/100.);
-			if(z <= 0)
+			z = (log(z * (double)skill) * (double)battle_config.shop_exp/100.);
+			if(z < 1)
 				z = 1;
-			pc_gainexp(sd,0,z);
+			pc_gainexp(sd,0,(int)z);
 		}
 	}
 
@@ -651,7 +651,8 @@ int npc_buylist(struct map_session_data *sd,int n,unsigned short *item_list)
  */
 int npc_selllist(struct map_session_data *sd,int n,unsigned short *item_list)
 {
-	int i,z,skill,itemamount=0;
+	double z;
+	int i,skill,itemamount=0;
 
 	if(npc_checknear(sd,sd->npc_shopid))
 		return 1;
@@ -664,17 +665,17 @@ int npc_selllist(struct map_session_data *sd,int n,unsigned short *item_list)
 		   sd->status.inventory[item_list[i*2]-2].amount < item_list[i*2+1])
 			return 1;
 		if (itemdb_value_notoc(nameid))
-			z+=itemdb_value_sell(nameid) * item_list[i*2+1];
+			z+=(double)itemdb_value_sell(nameid) * item_list[i*2+1];
 		else
-			z+=pc_modifysellvalue(sd,itemdb_value_sell(nameid)) * item_list[i*2+1];
+			z+=(double)pc_modifysellvalue(sd,itemdb_value_sell(nameid)) * item_list[i*2+1];
 		itemamount+=item_list[i*2+1];
 	}
 
-	pc_getzeny(sd,z);
+	if(z > MAX_ZENY) z = MAX_ZENY;
+	pc_getzeny(sd,(int)z);
 	for(i=0;i<n;i++){
 		pc_delitem(sd,item_list[i*2]-2,item_list[i*2+1],0);
 	}
-	
 
 	//商人経験値
 /*	if((sd->status.class == 5) || (sd->status.class == 10) || (sd->status.class == 18)){
@@ -685,10 +686,10 @@ int npc_selllist(struct map_session_data *sd,int n,unsigned short *item_list)
 		if(sd->status.skill[MC_OVERCHARGE].flag != 0)
 			skill = sd->status.skill[MC_OVERCHARGE].flag - 2;
 		if(skill > 0) {
-			z = (int)(log((double)z * (double)skill) * (double)battle_config.shop_exp/100.);
-			if(z <= 0)
+			z = (log(z * (double)skill) * (double)battle_config.shop_exp/100.);
+			if(z < 1)
 				z = 1;
-			pc_gainexp(sd,0,z);
+			pc_gainexp(sd,0,(int)z);
 		}
 	}
 
@@ -711,8 +712,7 @@ void npc_addsrcfile(char *name)
 
 	new=malloc(sizeof(*new)+strlen(name));
 	if(new==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : npc_addsrcfile\n");
+		printf("out of memory : npc_addsrcfile\n");
 		exit(1);
 	}
 	new->next = NULL;
@@ -1015,6 +1015,7 @@ static int npc_parse_script(char *w1,char *w2,char *w3,char *w4,char *first_line
 		struct event_data *ev=malloc(sizeof(struct event_data));
 		if(ev==NULL){
 			printf("npc_parse_script: out of memory !(event_data)\n");
+			exit(1);
 		}else{
 			ev->nd=nd;
 			ev->pos=0;

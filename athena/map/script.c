@@ -1,6 +1,5 @@
-// $Id: script.c,v 1.8 2004/01/18 15:43:58 rovert Exp $
+// $Id: script.c,v 1.9 2004/01/19 17:47:49 rovert Exp $
 //#define DEBUG_FUNCIN
-//#define DEBUG_DISP
 //#define DEBUG_RUN
 
 //following by RoVeRT
@@ -342,8 +341,7 @@ static int add_str(unsigned char *p)
 		str_data_size+=128;
 		str_data=realloc(str_data,sizeof(str_data[0])*str_data_size);
 		if(str_data==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : add_str str_data\n");
+			printf("out of memory : add_str str_data\n");
 			exit(1);
 		}
 	}
@@ -351,8 +349,7 @@ static int add_str(unsigned char *p)
 		str_size+=256;
 		str_buf=realloc(str_buf,str_size);
 		if(str_buf==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : add_str str_buf\n");
+			printf("out of memory : add_str str_buf\n");
 			exit(1);
 		}
 	}
@@ -378,8 +375,7 @@ static void check_script_buf(int size)
 		script_size+=SCRIPT_BLOCK_SIZE;
 		script_buf=realloc(script_buf,script_size);
 		if(script_buf==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : check_script_buf \n");
+			printf("out of memory : check_script_buf \n");
 			exit(1);
 		}
 	}
@@ -537,19 +533,17 @@ static void disp_error_message(char *mes,unsigned char *pos)
 			*lineend=0;
 		}
 		if(lineend==NULL || pos<lineend){
-			if(battle_config.error_log) {
-				printf("%s line %d : ",mes,line);
-				for(i=0;linestart[i];i++){
-					if(linestart+i!=pos)
-						printf("%c",linestart[i]);
-					else
-						printf("\'%c\'",linestart[i]);
-				}
-				printf("\n");
-				if(lineend)
-					*lineend=c;
-				return;
+			printf("%s line %d : ",mes,line);
+			for(i=0;linestart[i];i++){
+				if(linestart+i!=pos)
+					printf("%c",linestart[i]);
+				else
+					printf("\'%c\'",linestart[i]);
 			}
+			printf("\n");
+			if(lineend)
+				*lineend=c;
+			return;
 		}
 		*lineend=c;
 		p=lineend+1;
@@ -846,10 +840,6 @@ unsigned char* parse_script(unsigned char *src,int line)
 	}
 	for(p++;p && *p && *p!='}';){
 		p=skip_space(p);
-#ifdef DEBUG_DISP
-		disp_error_message("test",p);
-#endif
-
 		// label‚¾‚¯“ÁŽêˆ—
 		tmpp=skip_space(skip_word(p));
 		if(*tmpp==':'){
@@ -959,8 +949,7 @@ char* conv_str(struct script_state *st,struct script_data *data)
 		char *buf;
 		buf=malloc(16);
 		if(buf==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : conv_str\n");
+			printf("out of memory : conv_str\n");
 			exit(1);
 		}
 		sprintf(buf,"%d",data->u.num);
@@ -1004,8 +993,7 @@ void push_val(struct script_stack *stack,int type,int val)
 		stack->sp_max+=64;
 		stack->stack_data=realloc(stack->stack_data,sizeof(stack->stack_data[0])*stack->sp_max);
 		if(stack->stack_data==NULL){
-			if(battle_config.error_log)
-				printf("push_val:stack over flow\n");
+			printf("push_val:stack over flow\n");
 			exit(1);
 		}
 	}
@@ -1026,8 +1014,7 @@ void push_str(struct script_stack *stack,int type,unsigned char *str)
 		stack->sp_max+=64;
 		stack->stack_data=realloc(stack->stack_data,sizeof(stack->stack_data[0])*stack->sp_max);
 		if(stack->stack_data==NULL){
-			if(battle_config.error_log)
-				printf("push_val:stack over flow\n");
+			printf("push_val:stack over flow\n");
 			exit(1);
 		}
 	}
@@ -1146,8 +1133,7 @@ int buildin_menu(struct script_state *st)
 		}
 		buf=malloc(len);
 		if(buf==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : buildin_menu\n");
+			printf("out of memory : buildin_menu\n");
 			exit(1);
 		}
 		buf[0]=0;
@@ -1660,8 +1646,7 @@ int buildin_getequipname(struct script_state *st)
 
 	buf=malloc(64);
 	if(buf==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : buildin_getequipname\n");
+		printf("out of memory : buildin_getequipname\n");
 		exit(1);
 	}
 	sd=map_id2sd(st->rid);
@@ -2997,8 +2982,7 @@ void op_add(struct script_state* st)
 		buf=malloc(strlen(st->stack->stack_data[st->stack->sp-1].u.str)+
 				strlen(st->stack->stack_data[st->stack->sp].u.str)+1);
 		if(buf==NULL){
-			if(battle_config.error_log)
-				printf("out of memory : op_add\n");
+			printf("out of memory : op_add\n");
 			exit(1);
 		}
 		strcpy(buf,st->stack->stack_data[st->stack->sp-1].u.str);
@@ -3171,8 +3155,7 @@ int run_script(unsigned char *script,int pos,int rid,int oid)
 	stack.sp_max=64;
 	stack.stack_data=malloc(sizeof(stack.stack_data[0])*stack.sp_max);
 	if(stack.stack_data==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : run_script\n");
+		printf("out of memory : run_script\n");
 		exit(1);
 	}
 
