@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.17 2004/02/03 21:01:09 rovert Exp $
+// $Id: script.c,v 1.18 2004/02/05 18:54:22 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -118,9 +118,6 @@ int buildin_setoption(struct script_state *st);
 int buildin_setcart(struct script_state *st);
 int buildin_setfalcon(struct script_state *st);
 int buildin_setriding(struct script_state *st);
-int buildin_checkcart(struct script_state *st);
-int buildin_checkfalcon(struct script_state *st);
-int buildin_checkriding(struct script_state *st);
 int buildin_savepoint(struct script_state *st);
 int buildin_openstorage(struct script_state *st);
 int buildin_itemskill(struct script_state *st);
@@ -226,9 +223,6 @@ struct {
 	{buildin_setcart,"setcart",""},
 	{buildin_setfalcon,"setfalcon",""},
 	{buildin_setriding,"setriding",""},
-	{buildin_checkcart,"checkcart",""},		// Added by RoVeRT
-	{buildin_checkfalcon,"checkfalcon",""},
-	{buildin_checkriding,"checkriding",""},		// End Addition
 	{buildin_savepoint,"savepoint","sii"},
 	{buildin_openstorage,"openstorage",""},
 	{buildin_itemskill,"itemskill","iis"},
@@ -2148,36 +2142,6 @@ int buildin_setriding(struct script_state *st)
 	sd=map_id2sd(st->rid);
 	pc_setriding(sd);
 
-	return 0;
-}
-
-/*==========================================
- * カートを付ける
- *------------------------------------------
- */
-int buildin_checkcart(struct script_state *st)		// Added by RoVeRT
-{
-	push_val(st->stack,C_INT, pc_iscarton(map_id2sd(st->rid)));
-	return 0;
-}
-
-/*==========================================
- * 鷹を付ける
- *------------------------------------------
- */
-int buildin_checkfalcon(struct script_state *st)	// Added by RoVeRT
-{
-	push_val(st->stack,C_INT, pc_isfalcon(map_id2sd(st->rid)));
-	return 0;
-}
-
-/*==========================================
- * ペコペコ乗り
- *------------------------------------------
- */
-int buildin_checkriding(struct script_state *st)	// Added by RoVeRT
-{
-	push_val(st->stack,C_INT,pc_isriding(map_id2sd(st->rid)));
 	return 0;
 }
 
