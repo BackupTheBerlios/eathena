@@ -2,276 +2,276 @@
 // nameid, item_name(dummy), rate
 // アイテムID、アイテムの名前(ダミー)、確率(*10000)をした物です。500000なら50%で1000000なら100%です。)
 // アイテムIDが0の場合確率をアイテムの選択に失敗した時に得られるデフォルトアイテムのIDとして認識します。(複数である場合最後の物だけ有効です。) 
-0,Guard,2102
-2102,Guard,10000
-2104,Buckler,10000
-2106,Shield,10000
-2108,Mirror Shield,10000
-2207,Fancy Flower,10000
-2209,Ribbon,10000
-2213,Kitty Band,10000
-2215,Flower Band,10000
-2217,Biretta,10000
-2221,Hat,10000
-2223,Turban,10000
-2227,Cap,10000
-2229,Helm,10000
-2231,Gemmed Sallet,10000
-2233,Circlet,10000
-2236,Santa's Hat,10000
-2244,Big Ribbon,10000
-2249,Coronet,10000
-2250,Cute Ribbon,10000
-2257,Snow Horn,10000
-2258,Spiky Band,10000
-2262,Pierrot Nose,10000
-2263,Zoro Masque,10000
-2265,Ganster Mask,10000
-2269,Romantic Flower,10000
-2270,Romantic Leaf,10000
-2271,Jack a Dandy,10000
-2272,Stop Post,10000
-2273,Doctor Band,10000
-2275,Red Bandana,10000
-2276,Eagle Eyes,10000
-2279,Bomb Wick,10000
-2284,Antler,10000
-2287,Pirate Bandana,10000
-2289,Poo Poo Hat,10000
-2290,Funeral Hat,10000
-2291,Masquerade,10000
-2293,Pretend Murdered,10000
-2294,Stellar,10000
-2295,Blinker,10000
-2296,Binoculars,10000
-2298,Green Feeler,10000
-2299,Orc Helm,10000
-2302,Cotton Shirt,10000
-2304,Leather Jacket,10000
-2306,Adventurer's Suit,10000
-2308,Mantle,10000
-2310,Coat,10000
-2311,Mink Coat,10000
-2313,Padded Armor,10000
-2315,Chain Mail,10000
-2317,Full Plate,10000
-2322,Silk Robe,10000
-2324,Scapulare,10000
-2326,Saint's Robe,10000
-2329,Wooden Mail,10000
-2331,Tights,10000
-2333,Silver Robe,10000
-2336,Thief Clothes,10000
-2337,Ninja Suit,10000
-2338,Wedding Dress,10000
-2339,Pantie,10000
-2402,Sandals,10000
-2404,Shoes,10000
-2407,Crystal Pumps,10000
-2408,Ball'n'Chain,10000
-2409,Highheals,10000
-2502,Hood,10000
-2504,Muffler,10000
-2506,Manteau,10000
-2507,Cape of Old Marquess,10000
-2508,Ragamuffin Manteau,10000
-2601,Ring,10000
-2602,Earring,10000
-2603,Necklace,10000
-2604,Glove,10000
-2605,Brooch,10000
-2607,Clip,10000
-2608,Rosary,10000
-2609,Skull Ring,10000
-2610,Gold Ring,10000
-2611,Silver Ring,10000
-2612,Flower Ring,10000
-2613,Diamond Ring,10000
-5008,Puppy Love,10000
-5009,Safety Helmet,10000
-5010,Indian fillet,10000
-5014,Fin Helm,10000
-5015,Egg Shell,10000
-2225,Goggle,10000
-1117,Katana,10000
-1152,Slayer,10000
-1155,Bastard Sword,10000
-1158,Two-handed Sword,10000
-1162,Broad Sword,10000
-1163,Claymore,10000
-1352,Battle Axe,10000
-1355,Hammer,10000
-1358,Buster,10000
-1361,Two-handed Axe,10000
-1452,Guisarme,10000
-1455,Glaive,10000
-1458,Partizan,10000
-1461,Trident,10000
-1464,Halberd,10000
-1410,Lance,10000
-1251,Jur,10000
-1253,Katar,10000
-1255,Jamadhar,10000
-1702,Bow,10000
-1705,Composite Bow,10000
-1718,Hunter Bow,10000
-1711,Cross Bow,10000
-1719,Roguemaster's Bow,10000
-1713,Arbalest,10000
-1714,Gakkung,10000
-701,Ora Ora,10000
-702,Animal Gore,10000
-703,Hinalle,10000
-704,Aloe,10000
-706,Four leaf Clover,10000
-707,Singing Plant,10000
-708,Ment,10000
-710,Illusion Flower,10000
-714,Emperium,10000
-715,Yellow Gemstone,10000
-716,Red Gemstone,10000
-717,Blue Gemstone,10000
-718,Garnet,10000
-719,Amethyst,10000
-720,Aquamarine,10000
-721,Emerald,10000
-722,Pearl,10000
-723,Ruby,10000
-724,Cursed Ruby,10000
-725,Sardonyx,10000
-726,Sapphire,10000
-727,Opal,10000
-728,Topaz,10000
-729,Zircon,10000
+0,GUARD_,Guard,2102
+2102,Guard_,Guard,10000
+2104,Buckler_,Buckler,10000
+2106,Shield_,Shield,10000
+2108,Mirror_Shield_,Mirror Shield,10000
+2207,Fancy_Flower,Fancy Flower,10000
+2209,Ribbon_,Ribbon,10000
+2213,Cat_Hairband,Kitty Band,10000
+2215,Flower_Hairband,Flower Band,10000
+2217,Biretta_,Biretta,10000
+2221,Hat_,Hat,10000
+2223,Turban_,Turban,10000
+2227,Cap_,Cap,10000
+2229,Helm_,Helm,10000
+2231,Gemmed_Sallet_,Gemmed Sallet,10000
+2233,Circlet_,Circlet,10000
+2236,Santa's_Hat,Santa's Hat,10000
+2244,Big_Sis'_Ribbon,Big Ribbon,10000
+2249,Coronet,Coronet,10000
+2250,Fillet,Cute Ribbon,10000
+2257,Snowy_Horn,Snow Horn,10000
+2258,Sharp_Gear,Spiky Band,10000
+2262,Pierrot_Nose,Pierrot Nose,10000
+2263,Gangster_Patch,Zoro Masque,10000
+2265,Ganster_Mask,Ganster Mask,10000
+2269,Centimental_Flower,Romantic Flower,10000
+2270,Centimental_Leaf,Romantic Leaf,10000
+2271,Jack_a_Dandy,Jack a Dandy,10000
+2272,Stop_Post,Stop Post,10000
+2273,Doctor_Cap,Doctor Band,10000
+2275,Red_Bandana,Red Bandana,10000
+2276,Eagle_Eyes,Eagle Eyes,10000
+2279,Bomb_Wick,Bomb Wick,10000
+2284,Antler,Antler,10000
+2287,Pirate_Bandana,Pirate Bandana,10000
+2289,Poo_Poo_Hat,Poo Poo Hat,10000
+2290,Funeral_Costume,Funeral Hat,10000
+2291,Masquerade,Masquerade,10000
+2293,Pretend_Murdered,Pretend Murdered,10000
+2294,Stellar,Stellar,10000
+2295,Blinker,Blinker,10000
+2296,Binoculars,Binoculars,10000
+2298,Green_Feeler,Green Feeler,10000
+2299,Viking_Helm,Orc Helm,10000
+2302,Cotton_Shirt_,Cotton Shirt,10000
+2304,Leather_Jacket_,Leather Jacket,10000
+2306,Adventure_Suit_,Adventurer's Suit,10000
+2308,Mantle_,Mantle,10000
+2310,Coat_,Coat,10000
+2311,Mink_Coat,Mink Coat,10000
+2313,Padded_Armor_,Padded Armor,10000
+2315,Chain_Mail_,Chain Mail,10000
+2317,Plate_Armor_,Full Plate,10000
+2322,Silk_Robe_,Silk Robe,10000
+2324,Scapulare_,Scapulare,10000
+2326,Saint_Robe_,Saint's Robe,10000
+2329,Wooden_Mail_,Wooden Mail,10000
+2331,Tights_,Tights,10000
+2333,Silver_Robe_,Silver Robe,10000
+2336,Thief_Clothes_,Thief Clothes,10000
+2337,Ninja_Suit,Ninja Suit,10000
+2338,Wedding_Dress,Wedding Dress,10000
+2339,G_Strings,Pantie,10000
+2402,Sandals_,Sandals,10000
+2404,Shoes_,Shoes,10000
+2407,Crystal_Pumps,Crystal Pumps,10000
+2408,Cuffs,Ball'n'Chain,10000
+2409,Spiky_Heel,Highheals,10000
+2502,Hood_,Hood,10000
+2504,Muffler_,Muffler,10000
+2506,Manteau_,Manteau,10000
+2507,Cape_Of_Ancient_Lord,Cape of Old Marquess,10000
+2508,Ragamuffin_Cape,Ragamuffin Manteau,10000
+2601,Ring,Ring,10000
+2602,Earring,Earring,10000
+2603,Necklace,Necklace,10000
+2604,Glove,Glove,10000
+2605,Brooch,Brooch,10000
+2607,Clip,Clip,10000
+2608,Rosary,Rosary,10000
+2609,Skull_Ring,Skull Ring,10000
+2610,Gold_Ring,Gold Ring,10000
+2611,Silver_Ring,Silver Ring,10000
+2612,Flower_Ring,Flower Ring,10000
+2613,Diamond_Ring,Diamond Ring,10000
+5008,Puppy_Love,Puppy Love,10000
+5009,Safety_Helmet,Safety Helmet,10000
+5010,Indian_Hair_Piece,Indian fillet,10000
+5014,Fin_Helm,Fin Helm,10000
+5015,Egg_Shell,Egg Shell,10000
+2225,Goggle_,Goggle,10000
+1117,Katana_,Katana,10000
+1152,Slayer_,Slayer,10000
+1155,Bastard_Sword_,Bastard Sword,10000
+1158,Two_hand_Sword_,Two-handed Sword,10000
+1162,Broad_Sword_,Broad Sword,10000
+1163,Claymore,Claymore,10000
+1352,Battle_Axe_,Battle Axe,10000
+1355,Hammer_,Hammer,10000
+1358,Buster_,Buster,10000
+1361,Two_handed_Axe_,Two-handed Axe,10000
+1452,Guisarme_,Guisarme,10000
+1455,Glaive_,Glaive,10000
+1458,Partizan_,Partizan,10000
+1461,Trident_,Trident,10000
+1464,Halberd_,Halberd,10000
+1410,Lance,Lance,10000
+1251,Jur_,Jur,10000
+1253,Katar_,Katar,10000
+1255,Jamadhar_,Jamadhar,10000
+1702,Bow_,Bow,10000
+1705,Composite_Bow_,Composite Bow,10000
+1718,Hunter_Bow,Hunter Bow,10000
+1711,CrossBow_,Cross Bow,10000
+1719,Bow_of_Roguemaster,Roguemaster's Bow,10000
+1713,Arbalest,Arbalest,10000
+1714,Kakkung,Gakkung,10000
+701,Ora_Ora,Ora Ora,10000
+702,Animal_Blood,Animal Gore,10000
+703,Hinalle,Hinalle,10000
+704,Aloe,Aloe,10000
+706,Four_leaf_Clover,Four leaf Clover,10000
+707,Singing_Plant,Singing Plant,10000
+708,Ment,Ment,10000
+710,Illusion_Flower,Illusion Flower,10000
+714,Emperium,Emperium,10000
+715,Yellow_Gemstone,Yellow Gemstone,10000
+716,Red_Gemstone,Red Gemstone,10000
+717,Blue_Gemstone,Blue Gemstone,10000
+718,Dark_red_Jewel,Garnet,10000
+719,Violet_Jewel,Amethyst,10000
+720,Skyblue_Jewel,Aquamarine,10000
+721,Azure_Jewel,Emerald,10000
+722,Scarlet_Jewel,Pearl,10000
+723,Cardinal_Jewel,Ruby,10000
+724,Cardinal_Jewel_,Cursed Ruby,10000
+725,Red_Jewel,Sardonyx,10000
+726,Blue_Jewel,Sapphire,10000
+727,White_Jewel,Opal,10000
+728,Golden_Jewel,Topaz,10000
+729,Blueish_green_Jewel,Zircon,10000
 730,1carat Diamond,10000
 731,2carat Diamond,10000
 732,3carat Diamond,10000
-733,Cracked Diamond,10000
-734,Red Frame,10000
-735,Chung Jah,10000
-736,China,10000
-737,Black Ladle,10000
-738,Pencil Case,10000
-740,Puppet,10000
-741,Poring Doll,10000
-742,Chonchon Doll,10000
-743,Spore Doll,10000
-745,Wedding Bouquet,10000
-747,Crystal Mirror,10000
-748,Witherless Rose,10000
-749,Frozen Rose,10000
-752,Grasshopper Doll,10000
-753,Yoyo Doll,10000
-754,Raccoon Doll,10000
-756,Oridecon Stone,10000
-757,Elunium Stone,10000
-909,Jellopy,10000
-910,Garlet,10000
-911,Scell,10000
-912,Zargon,10000
-931,Orcish Voucher,10000
-934,Memento,10000
-968,Heroic Emblem,10000
-969,Gold,10000
-970,Alchol,10000
-971,Detrimindexta,10000
-972,Karvodailnirol,10000
-973,Counteragent,10000
-974,Mixture,10000
-975,Scarlet Dyestuffs,10000
-976,Lemon Dyestuffs,10000
-978,Cobaltblue Dyestuffs,10000
-979,Darkgreen Dyestuffs,10000
-980,Orange Dyestuffs,10000
-981,Violet Dyestuffs,10000
-982,White Dyestuffs,10000
-983,Black Dyestuffs,10000
-984,Oridecon,10000
-985,Elunium,10000
-986,Anvil,10000
-987,Oridecon Anvil,10000
-988,Golden Anvil,10000
-989,Emperium Anvil,10000
-990,Red Blood,10000
-991,Crystal Blue,10000
-992,Wind of Verdure,10000
-993,Green Live,10000
-994,Flame Heart,10000
-995,Mistic Frozen,10000
-996,Rough Wind,10000
-997,Great Nature,10000
-998,Iron,10000
-999,Steel,10000
-1000,Star Crumb,10000
-1001,Star Dust,10000
-1002,Iron Ore,10000
-1003,Coal,10000
-1004,Chivalry Emblem,10000
-1005,Hammer of Blacksmith,10000
-1006,Old Magic Book,10000
-1007,Necklace of Wisdom,10000
-1008,Necklace of Oblivion,10000
-1009,Hand of God,10000
-1010,Phracon,10000
-1011,Emveretarcon,10000
-1065,Trap,10000
-501,Red Potion,10000
-502,Orange Potion,10000
-503,Yellow Potion,10000
-504,White Potion,10000
-505,Blue Potion,10000
-506,Green Potion,10000
-518,Honey,10000
-520,Hinalle Leaflet,10000
-521,Aloe Leaflet,20000
-525,Panacea,10000
-526,Royal Jelly,10000
-529,Candy,10000
-530,Candy Cane,10000
-603,Old Blue Box,400000
-604,Branch of Dead tree,90000
-605,Anodyne,10000
-606,Aloevera,10000
-607,Yggdrasilberry,10000
-608,Yggdrasil Seed,10000
-610,Yggdrasil Leaf,10000
-612,Mini Furnace,50000
-613,Iron Hammer,10000
-614,Golden Hammer,10000
-615,Oridecon Hammer,10000
-1102,Sword,10000
-1105,Falchion,10000
-1108,Blade,10000
-1111,Rapier,10000
-1114,Scimiter,10000
-1120,Tsurugi,10000
-1125,Ring Pommel Saber,10000
-1127,Saber,10000
-1128,Haedonggum,10000
-1129,Flamberge,10000
-1202,Knife,10000
-1205,Cutter,10000
-1208,Main Gauche,10000
-1211,Dirk,10000
-1214,Dagger,10000
-1217,Stiletto,10000
-1220,Gladius,10000
-1226,Damascus,10000
-1302,Axe,10000
-1402,Javelin,10000
-1405,Spear,10000
-1408,Pike,10000
-1502,Club,10000
-1505,Mace,10000
-1508,Smasher,10000
-1511,Flail,10000
-1514,Morning Star,10000
-1517,Sword Mace,10000
-1520,Chain,10000
-1550,Book,10000
-1551,Bible,10000
-1602,Rod,10000
-1605,Wand,10000
-1608,Staff,10000
-1611,Arc Wand,10000
-1613,Mighty Staff,10000
+733,Crystal_Jewel___,Cracked Diamond,10000
+734,Red_Frame,Red Frame,10000
+735,Blue_Porcelain,Chung Jah,10000
+736,White_Platter,China,10000
+737,Black_Ladle,Black Ladle,10000
+738,Pencil_Case,Pencil Case,10000
+740,Stuffed_Doll,Puppet,10000
+741,Poring_Doll,Poring Doll,10000
+742,Chonchon_Doll,Chonchon Doll,10000
+743,Spore_Doll,Spore Doll,10000
+745,Wedding_Bouquet,Wedding Bouquet,10000
+747,Crystal_Mirror,Crystal Mirror,10000
+748,Witherless_Rose,Witherless Rose,10000
+749,Frozen_Rose,Frozen Rose,10000
+752,Grasshopper_Doll,Grasshopper Doll,10000
+753,Monkey_Doll,Yoyo Doll,10000
+754,Raccoon_Doll,Raccoon Doll,10000
+756,Oridecon_Stone,Oridecon Stone,10000
+757,Elunium_Stone,Elunium Stone,10000
+909,Jellopy,Jellopy,10000
+910,Garlet,Garlet,10000
+911,Scell,Scell,10000
+912,Zargon,Zargon,10000
+931,Orcish_Voucher,Orcish Voucher,10000
+934,Mementos,Memento,10000
+968,Voucher_Of_Orcish_Hero,Heroic Emblem,10000
+969,Gold,Gold,10000
+970,Alchol,Alchol,10000
+971,Detrimindexta,Detrimindexta,10000
+972,Karvodailnirol,Karvodailnirol,10000
+973,Counteragent,Counteragent,10000
+974,Mixture,Mixture,10000
+975,Scarlet_Dyestuffs,Scarlet Dyestuffs,10000
+976,Lemon_Dyestuffs,Lemon Dyestuffs,10000
+978,Cobaltblue_Dyestuffs,Cobaltblue Dyestuffs,10000
+979,Darkgreen_Dyestuffs,Darkgreen Dyestuffs,10000
+980,Orange_Dyestuffs,Orange Dyestuffs,10000
+981,Violet_Dyestuffs,Violet Dyestuffs,10000
+982,White_Dyestuffs,White Dyestuffs,10000
+983,Black_Dyestuffs,Black Dyestuffs,10000
+984,Oridecon,Oridecon,10000
+985,Elunium,Elunium,10000
+986,Anvil,Anvil,10000
+987,Oridecon_Anvil,Oridecon Anvil,10000
+988,Golden_Anvil,Golden Anvil,10000
+989,Emperium_Anvil,Emperium Anvil,10000
+990,Bloody_Red,Red Blood,10000
+991,Crystal_Blue,Crystal Blue,10000
+992,Wind_Of_verdure,Wind of Verdure,10000
+993,Yellow_Live,Green Live,10000
+994,Flame_Heart,Flame Heart,10000
+995,Mistic_Frozen,Mistic Frozen,10000
+996,Rough_Wind,Rough Wind,10000
+997,Great_Nature,Great Nature,10000
+998,Iron,Iron,10000
+999,Steel,Steel,10000
+1000,Star_Crumb,Star Crumb,10000
+1001,Sparkling_Dust,Star Dust,10000
+1002,Iron_Ore,Iron Ore,10000
+1003,Coal,Coal,10000
+1004,Patriotism_Marks,Chivalry Emblem,10000
+1005,Hammer_of_Blacksmith,Hammer of Blacksmith,10000
+1006,Old_Magic_Book,Old Magic Book,10000
+1007,Penetration,Necklace of Wisdom,10000
+1008,Frozen_Heart,Necklace of Oblivion,10000
+1009,Sacred_Marks,Hand of God,10000
+1010,Phracon,Phracon,10000
+1011,Emveretarcon,Emveretarcon,10000
+1065,Booby_Trap,Trap,10000
+501,Red_Potion,Red Potion,10000
+502,Orange_Potion,Orange Potion,10000
+503,Yellow_Potion,Yellow Potion,10000
+504,White_Potion,White Potion,10000
+505,Blue_Potion,Blue Potion,10000
+506,Green_Potion,Green Potion,10000
+518,Honey,Honey,10000
+520,Leaflet_of_Hinalle,Hinalle Leaflet,10000
+521,Leaflet_of_Aloe,Aloe Leaflet,20000
+525,Panacea,Panacea,10000
+526,Royal_Jelly,Royal Jelly,10000
+529,Candy,Candy,10000
+530,Candy_Striper,Candy Cane,10000
+603,Old_Blue_Box,Old Blue Box,400000
+604,Branch_of_Dead_tree,Branch of Dead tree,90000
+605,Anodyne,Anodyne,10000
+606,Aloebera,Aloevera,10000
+607,Yggdrasilberry,Yggdrasilberry,10000
+608,Seed_of_Yggdrasil,Yggdrasil Seed,10000
+610,Leaf_of_Yggdrasil,Yggdrasil Leaf,10000
+612,Portable_Furnace,Mini Furnace,50000
+613,Iron_Hammer,Iron Hammer,10000
+614,Golden_Hammer,Golden Hammer,10000
+615,Oridecon_Hammer,Oridecon Hammer,10000
+1102,Sword_,Sword,10000
+1105,Falchion_,Falchion,10000
+1108,Blade_,Blade,10000
+1111,Lapier_,Rapier,10000
+1114,Scimiter_,Scimiter,10000
+1120,Tsurugi_,Tsurugi,10000
+1125,Ring_pommel_Saber_,Ring Pommel Saber,10000
+1127,Saber_,Saber,10000
+1128,Hae_Dong_Gum_,Haedonggum,10000
+1129,Flamberge,Flamberge,10000
+1202,Knife_,Knife,10000
+1205,Cutter_,Cutter,10000
+1208,Main_gauche_,Main Gauche,10000
+1211,Dirk_,Dirk,10000
+1214,Dagger_,Dagger,10000
+1217,Stiletto_,Stiletto,10000
+1220,Gladius_,Gladius,10000
+1226,Damascus_,Damascus,10000
+1302,Axe_,Axe,10000
+1402,Javelin_,Javelin,10000
+1405,Spear_,Spear,10000
+1408,Pike_,Pike,10000
+1502,Club_,Club,10000
+1505,Mace_,Mace,10000
+1508,Smasher_,Smasher,10000
+1511,Flail_,Flail,10000
+1514,Morning_Star_,Morning Star,10000
+1517,Sword_Mace_,Sword Mace,10000
+1520,Chain_,Chain,10000
+1550,Book,Book,10000
+1551,Bible,Bible,10000
+1602,Rod_,Rod,10000
+1605,Wand_,Wand,10000
+1608,Staff_,Staff,10000
+1611,Arc_Wand_,Arc Wand,10000
+1613,Mighty_Staff,Mighty Staff,10000
