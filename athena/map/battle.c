@@ -1750,7 +1750,10 @@ static struct Damage battle_calc_mob_weapon_attack(
 
 	luk=battle_get_luk(src);
 
+	if(battle_config.enemy_str)
 	damage = battle_get_baseatk(src);
+	else
+		damage=0;
 	atkmin = battle_get_atk(src);
 	atkmax = battle_get_atk2(src);
 	if( mob_db[md->class].range>3 )
@@ -3522,22 +3525,16 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		}
 		if(wd.flag&BF_WEAPON && src != target && (wd.damage > 0 || wd.damage2 > 0)) {
 			int hp = 0,sp = 0;
-			if(sd->hp_drain_rate > 0 && sd->hp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->hp_drain_rate) {
+				if(sd->hp_drain_rate > 0 && sd->hp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->hp_drain_rate)
 				hp += (wd.damage * sd->hp_drain_per)/100;
-				if(hp < 1) hp = 1;
-			}
-			if(sd->hp_drain_rate_ > 0 && sd->hp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->hp_drain_rate_) {
+				if(sd->hp_drain_rate_ > 0 && sd->hp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->hp_drain_rate_)
 				hp += (wd.damage2 * sd->hp_drain_per_)/100;
-				if(hp < 1) hp = 1;
-			}
-			if(sd->sp_drain_rate > 0 && sd->sp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->sp_drain_rate) {
+				//if(hp < 1) hp = 1;
+				if(sd->sp_drain_rate > 0 && sd->sp_drain_per > 0 && wd.damage > 0 && rand()%100 < sd->sp_drain_rate)
 				sp += (wd.damage * sd->sp_drain_per)/100;
-				if(sp < 1) sp = 1;
-			}
-			if(sd->sp_drain_rate_ > 0 && sd->sp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->sp_drain_rate_) {
+				if(sd->sp_drain_rate_ > 0 && sd->sp_drain_per_ > 0 && wd.damage2 > 0 && rand()%100 < sd->sp_drain_rate_)
 				sp += (wd.damage2 * sd->sp_drain_per_)/100;
-				if(sp < 1) sp = 1;
-			}
+				//if(sp < 1) sp = 1;
 			if(hp > 0 || sp > 0) pc_heal(sd,hp,sp);
 		}
 		}
@@ -3753,6 +3750,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.warp_point_debug=0;
 	battle_config.enemy_critical=1;
 	battle_config.enemy_critical_rate=100;
+	battle_config.enemy_str=1;
 	battle_config.enemy_perfect_flee=0;
 	battle_config.cast_rate=100;
 	battle_config.delay_rate=100;
@@ -3885,6 +3883,7 @@ int battle_config_read(const char *cfgName)
 			{ "warp_point_debug",		&battle_config.warp_point_debug		},
 			{ "enemy_critical",			&battle_config.enemy_critical		},
 			{ "enemy_critical_rate",			&battle_config.enemy_critical_rate		},
+			{ "enemy_str",			&battle_config.enemy_str		},
 			{ "enemy_perfect_flee", &battle_config.enemy_perfect_flee },
 			{ "casting_rate",			&battle_config.cast_rate			},
 			{ "delay_rate",				&battle_config.delay_rate			},

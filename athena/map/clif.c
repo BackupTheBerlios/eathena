@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.41 2004/02/27 07:21:27 sara-chan Exp $
+// $Id: clif.c,v 1.42 2004/02/28 03:36:33 sara-chan Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -806,11 +806,25 @@ static int clif_pet0078(struct pet_data *pd,unsigned char *buf)
 	WBUFL(buf,2)=pd->bl.id;
 	WBUFW(buf,6)=pd->speed;
 	WBUFW(buf,14)=mob_get_viewclass(pd->class);
+	if(mob_get_viewclass(pd->class) < 24)
+	{
+		WBUFW(buf,16)=mob_get_hair(pd->class);
+		WBUFW(buf,18)=mob_get_weapon(pd->class);
+		WBUFW(buf,20)=mob_get_head_buttom(pd->class);
+		WBUFW(buf,22)=mob_get_shield(pd->class);
+		WBUFW(buf,24)=mob_get_head_top(pd->class);
+		WBUFW(buf,26)=mob_get_head_mid(pd->class);
+		WBUFW(buf,28)=mob_get_hair_color(pd->class);
+		WBUFB(buf,45)=mob_get_sex(pd->class);
+	}
+	else
+	{
 	WBUFW(buf,16)=0x14;
 	if((view = itemdb_viewid(pd->equip)) > 0)
 		WBUFW(buf,20)=view;
 	else
 		WBUFW(buf,20)=pd->equip;
+	}
 	WBUFPOS(buf,46,pd->bl.x,pd->bl.y);
 	WBUFB(buf,48)|=pd->dir&0x0f;
 	WBUFB(buf,49)=0;
@@ -834,12 +848,27 @@ static int clif_pet007b(struct pet_data *pd,unsigned char *buf)
 	WBUFL(buf,2)=pd->bl.id;
 	WBUFW(buf,6)=pd->speed;
 	WBUFW(buf,14)=mob_get_viewclass(pd->class);
+	if(mob_get_viewclass(pd->class) < 24)
+	{
+		WBUFW(buf,16)=mob_get_hair(pd->class);
+		WBUFW(buf,18)=mob_get_weapon(pd->class);
+		WBUFW(buf,20)=mob_get_head_buttom(pd->class);
+		WBUFL(buf,22)=gettick();
+		WBUFW(buf,26)=mob_get_shield(pd->class);
+		WBUFW(buf,28)=mob_get_head_top(pd->class);
+		WBUFW(buf,30)=mob_get_head_mid(pd->class);
+		WBUFW(buf,32)=mob_get_hair_color(pd->class);
+		WBUFB(buf,49)=mob_get_sex(pd->class);
+	}
+	else
+	{
 	WBUFW(buf,16)=0x14;
 	if((view = itemdb_viewid(pd->equip)) > 0)
 		WBUFW(buf,20)=view;
 	else
 		WBUFW(buf,20)=pd->equip;
 	WBUFL(buf,22)=gettick();
+	}
 	WBUFPOS2(buf,50,pd->bl.x,pd->bl.y,pd->to_x,pd->to_y);
 	WBUFB(buf,56)=0;
 	WBUFB(buf,57)=0;
@@ -977,6 +1006,8 @@ int clif_spawnpet(struct pet_data *pd)
 	unsigned char buf[64];
 	int len;
 
+	if(mob_get_viewclass(pd->class) > 23)
+	{
 	memset(buf,0,packet_len_table[0x7c]);
 
 	WBUFW(buf,0)=0x7c;
@@ -986,6 +1017,7 @@ int clif_spawnpet(struct pet_data *pd)
 	WBUFPOS(buf,36,pd->bl.x,pd->bl.y);
 
 	clif_send(buf,packet_len_table[0x7c],&pd->bl,AREA);
+	}
 
 	len = clif_pet0078(pd,buf);
 	clif_send(buf,len,&pd->bl,AREA);

@@ -1,6 +1,6 @@
 #ifndef _BATTLE_H_
 #define _BATTLE_H_
-//.
+
 // ƒ_ƒ[ƒW
 struct Damage {
 	int damage,damage2;
@@ -125,6 +125,7 @@ extern struct Battle_Config {
 	int warp_point_debug;
 	int enemy_critical;
 	int enemy_critical_rate;
+	int enemy_str;
 	int enemy_perfect_flee;
 	int cast_rate,delay_rate,delay_dependon_dex;
 	int sdelay_attack_enable;
