@@ -599,7 +599,7 @@ prt_in.gat,244,135,5	script	Inn Maid	53,{
 }
 
 prt_in.gat,88,105,2	script	Recruiter	105,{
-	if (sewer_prt == 1) goto L0a;
+	if (culvert == 1) goto L0a;
 	mes "[Recruiter]";
 	mes "Let me inform the Notice from the Capital Defense Headquarter of Rune-Midgard Kingdom";
 	mes "We decided to recruit the punitive force throughthis incident.";
@@ -611,7 +611,7 @@ prt_in.gat,88,105,2	script	Recruiter	105,{
 		mes "Your Registration confirmed. We will try to maintain peace and order in Rune-Midgard Kingdom. And I appreciate you speaking for Capital Defense Headquarter.";
 		mes "These are subsidies. 3 Red Potions, 1 Milk.";
 		mes "And 1 Orange Potion for Emergency.";
-		set sewer_prt,1;
+		set culvert,1;
 		getitem 501,3;
 		getitem 519,1;
 		getitem 502,1;
@@ -653,7 +653,7 @@ prt_in.gat,88,105,2	script	Recruiter	105,{
 }
 
 prt_fild05.gat,270,212,5	script	Culvert Gaurdian	105,{
-	if (sewer_prt == 1) goto L0;
+	if (culvert == 1) goto L0;
 	mes "[Culvert Guardian]";
 	mes "Sorry, Only Volunteers for the Culvert Campaign can go inside.";
 	mes "You can check this issue in the ^000077Culvert Registrar's Office^000000. It is located at the North-West, direction of 11 O'clock.";
