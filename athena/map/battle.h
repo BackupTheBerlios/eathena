@@ -7,6 +7,7 @@ struct Damage {
 	int type,div_;
 	int amotion,dmotion;
 	int blewcount;
+	int flag;
 };
 
 // 属性表（読み込みはpc.c、battle_attr_fixで使用）
