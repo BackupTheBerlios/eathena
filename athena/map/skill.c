@@ -1511,7 +1511,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case AM_CP_ARMOR:
 	case AM_CP_HELM:
 	case CR_PROVIDENCE:		/* プロヴィデンス */
-	case CR_DEFENDER:
 	case MO_BLADESTOP:
 	case SA_FLAMELAUNCHER:	/* フレイムランチャー */
 	case SA_FROSTWEAPON:	/* フロストウェポン */
@@ -3537,13 +3536,6 @@ int skill_check_condition( struct map_session_data *sd )
 			item_amount[1]+=1;
 			break;
 
-		case SA_CASTCANCEL:
-			if(sd->skilltimer == -1) {
-				clif_skill_fail(sd,sd->skillid,0,0);
-				return 0;
-			}
-			break;
-
 		case MG_STONECURSE:		// ストーンカース
 		case AS_VENOMDUST:		// ベナムダスト
 			item_id[0]=716;		//	red_gem = 716;
@@ -4626,7 +4618,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 	}
 	if(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP) {
 		battle_stopwalking(bl,1);
-		skill_castcancel(bl);
+		skill_castcancel(bl,0);
 	}
 
 	if(sc_data[type].timer != -1){	/* すでに同じ異常になっている場合タイマ解除 */

@@ -234,7 +234,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_SIGHTTRASHER			=73,
 
 //	SC_CALLSPIRITS			=100,
-//	SC_FREECAST			=101,
+	SC_FREECAST			=101,
 //	SC_ABSORBSPIRIT			=102,
 	SC_BLADESTOP			=180,
 	SC_VIOLENTGALE			=181,
@@ -246,8 +246,8 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	
 	SC_CANNIBALIZE			=186,
 	SC_SPHEREMINE			=187,
-//	SC_METEOSTORM			=189,
-//	SC_CASTCANCEL			=190,
+	SC_METEOSTORM			=189,
+	SC_CASTCANCEL			=190,
 	SC_SPELLBREAKER			=191,
 	SC_AUTOSPELL			=103,
 
