@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.10 2004/02/16 19:36:00 rovert Exp $
+// $Id: login.c,v 1.11 2004/02/20 20:50:18 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -456,7 +456,7 @@ int parse_fromchar(int fd)
       break;
 	
 	case 0x2720:	// GM
-/*	  {
+	  {
 	  	int newacc=0,oldacc,i=0,j;
 		if(RFIFOREST(fd)<4)
 			return 0;
@@ -490,7 +490,7 @@ int parse_fromchar(int fd)
 		WFIFOL(fd,2)=oldacc;
 		WFIFOL(fd,6)=newacc;
 		WFIFOSET(fd,10);
-	  }*/
+	  }
 	  return 0;
 
 	case 0x2722:	// changesex
