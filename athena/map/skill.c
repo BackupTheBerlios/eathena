@@ -314,6 +314,14 @@ int skill_get_unit_id(int id,int flag)
  */
 int skill_additional_effect( struct block_list* src, struct block_list *bl,int skillid,int skilllv,int attack_type,unsigned int tick)
 {
+	/* MOB追加効果スキル用 */
+	const int sc[]={
+		SC_POISON, SC_BLIND, SC_SILENCE, SC_STAN,
+		SC_STONE, SC_CURSE, SC_SLEEP };
+	const int sc2[]={
+		6000, 6000, 6000, 1000,
+		1000, 0, 6000 };
+
 	struct map_session_data *sd=NULL;
 	struct map_session_data *sd2=NULL;
 	struct mob_data *md=NULL;
@@ -344,14 +352,6 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		sc_def_vit=0;
 	if(sc_def_int<0)
 		sc_def_int=0;
-
-	/* MOB追加効果スキル用 */
-	const int sc[]={
-		SC_POISON, SC_BLIND, SC_SILENCE, SC_STAN,
-		SC_STONE, SC_CURSE, SC_SLEEP };
-	const int sc2[]={
-		6000, 6000, 6000, 1000,
-		1000, 0, 6000 };
 
 	switch(skillid){
 	case 0:					/* 通常攻撃 */
@@ -531,22 +531,19 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	case NPC_PETRIFYATTACK:
 		if(rand()%100 < sc_def_mdef)
-			skill_status_change_start(bl,
-				sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
+			skill_status_change_start(bl,sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
 		break;
 	case NPC_POISON:
 	case NPC_SILENCEATTACK:
 	case NPC_STUNATTACK:
 	case NPC_CURSEATTACK:
 		if(rand()%100 < sc_def_vit)
-			skill_status_change_start(bl,
-				sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
+			skill_status_change_start(bl,sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
 		break;
 	case NPC_SLEEPATTACK:
 	case NPC_BLINDATTACK:
 		if(rand()%100 < sc_def_int)
-			skill_status_change_start(bl,
-				sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
+			skill_status_change_start(bl,sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
 
 		break;
 	}
@@ -3008,7 +3005,7 @@ int skill_unit_onplace(struct skill_unit *src,struct block_list *bl,unsigned int
 
 	if(bl == NULL ||  bl->prev==NULL || !src->alive)
 		return 0;
-	if( bl->type!=BL_PC && bl->type!=BL_MOB && bl->type!=BL_SKILL)
+	if( bl->type!=BL_PC && bl->type!=BL_MOB)
 		return 0;
 
 	if(ss==NULL)
@@ -5525,7 +5522,7 @@ int skill_unit_timer_sub_ondelete( struct block_list *bl, va_list ap )
 	return 0;
 }
 
-static int del_count=0;
+static int del_count = 0;
 /*==========================================
  * スキルユニットタイマー処理用(foreachobject)
  *------------------------------------------

@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.7 2004/01/19 17:47:48 rovert Exp $
+// $Id: map.c,v 1.8 2004/01/20 16:25:56 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,11 +42,13 @@ static int users;
 static struct block_list *object[MAX_FLOORITEM];
 static int first_free_object_id,last_object_id;
 
-#define block_free_max 200000
+#define block_free_max 262144
 static void *block_free[block_free_max];
 static int block_free_count=0,block_free_lock=0;
 
-#define BL_LIST_MAX 8192
+#define BL_LIST_MAX 262144
+static struct block_list *bl_list[BL_LIST_MAX];
+static int bl_list_count = 0;
 
 struct map_data map[MAX_MAP_PER_SERVER];
 int map_num=0;
@@ -254,9 +256,7 @@ void map_foreachinarea(int (*func)(struct block_list*,va_list),int m,int x0,int 
 	int bx,by;
 	struct block_list *bl;
 	va_list ap;
-	const size_t block_list_max=BL_LIST_MAX;
-	struct block_list *list[block_list_max];
-	int blockcount=0,i;
+	int blockcount=bl_list_count,i;
 
 	va_start(ap,type);
 	if(x0<0) x0=0;
@@ -270,8 +270,8 @@ void map_foreachinarea(int (*func)(struct block_list*,va_list),int m,int x0,int 
 				for(;bl;bl=bl->next){
 					if(type && bl->type!=type)
 						continue;
-					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && blockcount<block_list_max)
-						list[blockcount++]=bl;
+					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && bl_list_count<BL_LIST_MAX)
+						bl_list[bl_list_count++]=bl;
 				}
 			}
 		}
@@ -280,8 +280,8 @@ void map_foreachinarea(int (*func)(struct block_list*,va_list),int m,int x0,int 
 			for(bx=x0/BLOCK_SIZE;bx<=x1/BLOCK_SIZE;bx++){
 				bl = map[m].block_mob[bx+by*map[m].bxs];
 				for(;bl;bl=bl->next){
-					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && blockcount<block_list_max)
-						list[blockcount++]=bl;
+					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && bl_list_count<BL_LIST_MAX)
+						bl_list[bl_list_count++]=bl;
 				}
 			}
 		}
@@ -293,13 +293,14 @@ void map_foreachinarea(int (*func)(struct block_list*,va_list),int m,int x0,int 
 
 	map_freeblock_lock();	// メモリからの解放を禁止する
 		
-	for(i=0;i<blockcount;i++)
-		if(list[i]->prev)	// 有効かどうかチェック
-			func(list[i],ap);
+	for(i=blockcount;i<bl_list_count;i++)
+		if(bl_list[i]->prev)	// 有効かどうかチェック
+			func(bl_list[i],ap);
 
 	map_freeblock_unlock();	// 解放を許可する
-	
+
 	va_end(ap);
+	bl_list_count = blockcount;
 }
 
 /*==========================================
@@ -315,9 +316,7 @@ void map_foreachinmovearea(int (*func)(struct block_list*,va_list),int m,int x0,
 	int bx,by;
 	struct block_list *bl;
 	va_list ap;
-	const size_t block_list_max=BL_LIST_MAX;
-	struct block_list *list[block_list_max];
-	int blockcount=0,i;
+	int blockcount=bl_list_count,i;
 
 	va_start(ap,type);
 	if(dx==0 || dy==0){
@@ -345,15 +344,15 @@ void map_foreachinmovearea(int (*func)(struct block_list*,va_list),int m,int x0,
 				for(;bl;bl=bl->next){
 					if(type && bl->type!=type)
 						continue;
-					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && blockcount<block_list_max)
-						list[blockcount++]=bl;
+					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && bl_list_count<BL_LIST_MAX)
+						bl_list[bl_list_count++]=bl;
 				}
 				bl = map[m].block_mob[bx+by*map[m].bxs];
 				for(;bl;bl=bl->next){
 					if(type && bl->type!=type)
 						continue;
-					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && blockcount<block_list_max)
-						list[blockcount++]=bl;
+					if(bl->x>=x0 && bl->x<=x1 && bl->y>=y0 && bl->y<=y1 && bl_list_count<BL_LIST_MAX)
+						bl_list[bl_list_count++]=bl;
 				}
 			}
 		}
@@ -374,8 +373,8 @@ void map_foreachinmovearea(int (*func)(struct block_list*,va_list),int m,int x0,
 						continue;
 					if(((dx>0 && bl->x<x0+dx) || (dx<0 && bl->x>x1+dx) ||
 						(dy>0 && bl->y<y0+dy) || (dy<0 && bl->y>y1+dy)) &&
-						blockcount<block_list_max)
-							list[blockcount++]=bl;
+						bl_list_count<BL_LIST_MAX)
+							bl_list[bl_list_count++]=bl;
 				}
 				bl = map[m].block_mob[bx+by*map[m].bxs];
 				for(;bl;bl=bl->next){
@@ -385,29 +384,29 @@ void map_foreachinmovearea(int (*func)(struct block_list*,va_list),int m,int x0,
 						continue;
 					if(((dx>0 && bl->x<x0+dx) || (dx<0 && bl->x>x1+dx) ||
 						(dy>0 && bl->y<y0+dy) || (dy<0 && bl->y>y1+dy)) &&
-						blockcount<block_list_max)
-							list[blockcount++]=bl;
+						bl_list_count<BL_LIST_MAX)
+							bl_list[bl_list_count++]=bl;
 				}
 			}
 		}
 
 	}
 
-	if(blockcount>=block_list_max) {
+	if(bl_list_count>=BL_LIST_MAX) {
 		if(battle_config.error_log)
 			printf("map_foreachinarea: *WARNING* block count too many!\n");
 	}
 
 	map_freeblock_lock();	// メモリからの解放を禁止する
 		
-	for(i=0;i<blockcount;i++)
-		if(list[i]->prev)	// 有効かどうかチェック
-			func(list[i],ap);
+	for(i=blockcount;i<bl_list_count;i++)
+		if(bl_list[i]->prev)	// 有効かどうかチェック
+			func(bl_list[i],ap);
 
 	map_freeblock_unlock();	// 解放を許可する
-	
 
 	va_end(ap);
+	bl_list_count = blockcount;
 }
 
 /*==========================================
@@ -491,36 +490,34 @@ int map_delobject(int id)
 void map_foreachobject(int (*func)(struct block_list*,va_list),int type,...)
 {
 	int i;
-	int block_list_count=0;
-	const size_t block_list_max=BL_LIST_MAX;
-	struct block_list *list[block_list_max];
+	int blockcount=bl_list_count;
 	va_list ap;
 
 	va_start(ap,type);
-
 
 	for(i=2;i<=last_object_id;i++){
 		if(object[i]){
 			if(type && object[i]->type!=type)
 				continue;
-			if(block_list_count>=block_list_max) {
+			if(bl_list_count>=BL_LIST_MAX) {
 				if(battle_config.error_log)
 					printf("map_foreachobject: too many block !\n");
 			}
 			else
-				list[block_list_count++]=object[i];
+				bl_list[bl_list_count++]=object[i];
 		}
 	}
-	
+
 	map_freeblock_lock();
-	
-	for(i=0;i<block_list_count;i++)
-		if( list[i]->prev || list[i]->next )
-			func(list[i],ap);
+
+	for(i=blockcount;i<bl_list_count;i++)
+		if( bl_list[i]->prev || bl_list[i]->next )
+			func(bl_list[i],ap);
 
 	map_freeblock_unlock();
 
 	va_end(ap);
+	bl_list_count = blockcount;
 }
 
 /*==========================================

@@ -21,7 +21,7 @@
 #define MAX_EVENTQUEUE	2
 #define MAX_EVENTTIMER	32
 #define NATURAL_HEAL_INTERVAL 500
-#define MAX_FLOORITEM 100000
+#define MAX_FLOORITEM 262144
 #define MAX_LEVEL 255
 
 #define DEFAULT_AUTOSAVE_INTERVAL 60*1000
@@ -209,8 +209,6 @@ struct map_session_data {
 	int double_add_rate,speed_add_rate,aspd_add_rate,perfect_hit_add,get_zeny_add_num;
 	short spiritball, spiritball_old;
 	int spirit_timer[10];
-	unsigned short combo_flag, skill_old;
-	unsigned int combo_delay1, combo_delay2, combo_delay3, triple_delay;
 
 	int reg_num;
 	struct script_reg *reg;

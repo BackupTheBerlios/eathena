@@ -142,6 +142,7 @@ extern struct Battle_Config {
 	int mvp_item_rate,mvp_exp_rate;
 	int mvp_hp_rate;
 	int atc_gmonly,gm_allskill;
+	int pc_skillfree;
 	int wp_rate;
 	int monster_active_enable;
 	int monster_damage_delay_rate;
@@ -185,7 +186,6 @@ extern struct Battle_Config {
 	int save_log;
 	int error_log;
 	int etc_log;
-	int pc_skillflee;
 	int item_rate_equip;	// Modified by RoVeRT
 	int item_rate_card;
 	int prevent_logout;	// End Modification

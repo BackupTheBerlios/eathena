@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.13 2004/01/19 17:47:48 rovert Exp $
+// $Id: clif.c,v 1.14 2004/01/20 16:25:56 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -4958,8 +4958,8 @@ void clif_parse_WalkToXY(int fd,struct map_session_data *sd)
  */
 void clif_parse_QuitGame(int fd,struct map_session_data *sd)
 {
+	WFIFOW(fd,0)=0x18b;
 	if (battle_config.prevent_logout && (gettick() - sd->canlog_tick) >= 10000) {
-		WFIFOW(fd,0)=0x018b;
 		WFIFOW(fd,2)=0;
 
 		WFIFOSET(fd,packet_len_table[0x018b]);
@@ -4967,7 +4967,6 @@ void clif_parse_QuitGame(int fd,struct map_session_data *sd)
 	}
 	else
 	{
-		WFIFOW(fd,0)=0x18b;
 		WFIFOW(fd,2)=1;
 		WFIFOSET(fd,packet_len_table[0x18b]);
 	}
@@ -5183,7 +5182,7 @@ void clif_parse_Restart(int fd,struct map_session_data *sd)
 			chrif_charselectreq(sd);
 		}
 		else {
-			WFIFOW(fd,0)=0x018b;
+			WFIFOW(fd,0)=0x18b;
 			WFIFOW(fd,2)=1;
 
 			WFIFOSET(fd,packet_len_table[0x018b]);
@@ -6209,7 +6208,8 @@ void clif_parse_GMKick(int fd,struct map_session_data *sd)
 			}
 			else if(target->type == BL_MOB) {
 				struct mob_data *md = (struct mob_data *)target;
-				mob_damage(NULL,md,md->hp);
+				sd->state.attack_type = 0;
+				mob_damage(sd,md,md->hp,2);
 			}
 			else
 				clif_GM_kickack(sd,0);

@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.6 2004/01/19 17:47:49 rovert Exp $
+// $Id: npc.c,v 1.7 2004/01/20 16:25:56 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -313,7 +313,8 @@ int npc_event(struct map_session_data *sd,const char *eventname,int mob_kill)
 	int xs,ys;
 	char mobevent[100];
 
-	if (ev==NULL || (nd=ev->nd)==NULL){
+	if(sd == NULL) return 0;
+	if(ev==NULL || (nd=ev->nd)==NULL){
 		if(mob_kill && (ev==NULL || (nd=ev->nd)==NULL)){
 			strcpy( mobevent, eventname);
 			strcat( mobevent, "::OnMyMobDead");

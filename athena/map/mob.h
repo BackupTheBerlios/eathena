@@ -79,7 +79,7 @@ int mob_target(struct mob_data *md,struct block_list *bl,int dist);
 int mob_stop_walking(struct mob_data *md,int type);
 int mob_stopattack(struct mob_data *);
 int mob_spawn(int);
-int mob_damage(struct block_list *,struct mob_data*,int);
+int mob_damage(struct block_list *,struct mob_data*,int,int);
 int mob_changestate(struct mob_data *md,int state,int type);
 int mob_heal(struct mob_data*,int);
 int mob_get_viewclass(struct mob_data *md);

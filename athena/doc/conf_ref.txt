@@ -437,6 +437,11 @@ gm_all_skill
 	これを0以外にすると、そのGMレベル以上のGMはJOBやスキル所得条件に関係なく全スキルが覚えられます。(クェストスキルも含めて)
 	デフォルトは 0 です。0の場合はGMではない全てのキャラの意味ではなく全てのGMが全てのスキルを覚えられないと言うことです。
 
+player_skillfree
+	スキルツリーに関係なくスキルを上げることができるかどうかです。
+	これをyesにすればプレイヤーの職業で習うことができるスキル全てを
+	スキルツリーに関係なく上げることができます。デフォルトはnoです。
+
 weapon_produce_rate
 	武器製造スキルでの製造成功率を百分率で調整します。
 	0-1000程度の数値を指定してください。デフォルトは100です。
@@ -677,6 +682,7 @@ mvp_item_rate: 100
 mvp_exp_rate: 100
 atcommand_gm_only: no
 gm_all_skill: 0
+player_skillfree: no
 weapon_produce_rate: 100
 monster_active_enable: yes
 monster_damage_delay_rate: 100

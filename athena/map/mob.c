@@ -1,10 +1,11 @@
-// $Id: mob.c,v 1.12 2004/01/19 21:36:59 rovert Exp $
+// $Id: mob.c,v 1.13 2004/01/20 16:25:56 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 
 #include "timer.h"
+#include "socket.h"
 #include "db.h"
 #include "map.h"
 #include "clif.h"
@@ -453,25 +454,20 @@ static int mob_timer(int tid,unsigned int tick,int id,int data)
 {
 	struct mob_data *md;
 
-	map_freeblock_lock();
 	md=(struct mob_data*)map_id2bl(id);
-	if(md==NULL || md->bl.type!=BL_MOB) {
-		map_freeblock_unlock();
+	if(md==NULL || md->bl.type!=BL_MOB)
 		return 1;
-	}
 
 	if(md->timer != tid){
 		if(battle_config.error_log)
 			printf("mob_timer %d != %d\n",md->timer,tid);
-		map_freeblock_unlock();
 		return 0;
 	}
 	md->timer=-1;
-	if(md->bl.prev == NULL || md->state.state == MS_DEAD) {
-		map_freeblock_unlock();
+	if(md->bl.prev == NULL || md->state.state == MS_DEAD)
 		return 1;
-	}
 
+	map_freeblock_lock();
 	switch(md->state.state){
 	case MS_WALK:
 		mob_walk(md,tick,data);
@@ -1546,7 +1542,7 @@ int mob_deleteslave_sub(struct block_list *bl,va_list ap)
 	int id;
 	id=va_arg(ap,int);
 	if(md->master_id > 0 && md->master_id == id )
-		mob_damage(NULL,md,md->hp);
+		mob_damage(NULL,md,md->hp,1);
 	return 0;
 }
 /*==========================================
@@ -1565,7 +1561,7 @@ int mob_deleteslave(struct mob_data *md)
  * mdにsdからdamageのダメージ
  *------------------------------------------
  */
-int mob_damage(struct block_list *src,struct mob_data *md,int damage)
+int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 {
 	int i,sum,count,minpos,mindmg;
 	struct map_session_data *sd = NULL,*tmpsd[DAMAGELOG_SIZE];
@@ -1586,7 +1582,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 //		printf("mob_damage %d %d %d\n",md->hp,mob_db[md->class].max_hp,damage);
 	if(md->bl.prev==NULL){
 		if(battle_config.error_log)
-			printf("mob_damage : BlockError!!\n");return 0;
+			printf("mob_damage : BlockError!!\n");
+		return 0;
 	}
 
 	if(md->state.state==MS_DEAD || md->hp<=0) {
@@ -1610,46 +1607,50 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 	if(damage>md->hp)
 		damage=md->hp;
 
-	if(sd!=NULL){
-		for(i=0,minpos=0,mindmg=30000;i<DAMAGELOG_SIZE;i++){
-			if(md->dmglog[i].id==sd->bl.id)
-				break;
-			if(md->dmglog[i].id==0){
-				minpos=i;
-				mindmg=0;
-			} else if(md->dmglog[i].dmg<mindmg){
-				minpos=i;
-				mindmg=md->dmglog[i].dmg;
+	if(!(type&2)) {
+		if(sd!=NULL){
+			for(i=0,minpos=0,mindmg=30000;i<DAMAGELOG_SIZE;i++){
+				if(md->dmglog[i].id==sd->bl.id)
+					break;
+				if(md->dmglog[i].id==0){
+					minpos=i;
+					mindmg=0;
+				}
+				else if(md->dmglog[i].dmg<mindmg){
+					minpos=i;
+					mindmg=md->dmglog[i].dmg;
+				}
 			}
-		}
-		if(i<DAMAGELOG_SIZE)
-			md->dmglog[i].dmg+=damage;
-		else {
-			md->dmglog[minpos].id=sd->bl.id;
-			md->dmglog[minpos].dmg=damage;
-		}
+			if(i<DAMAGELOG_SIZE)
+				md->dmglog[i].dmg+=damage;
+			else {
+				md->dmglog[minpos].id=sd->bl.id;
+				md->dmglog[minpos].dmg=damage;
+			}
 
-		if(md->attacked_id <= 0)
-			md->attacked_id = sd->bl.id;
-	}
-	if(src && src->type == BL_PET && battle_config.pet_attack_exp_to_master) {
-		struct pet_data *pd = (struct pet_data *)src;
-		for(i=0,minpos=0,mindmg=30000;i<DAMAGELOG_SIZE;i++){
-			if(md->dmglog[i].id==pd->msd->bl.id)
-				break;
-			if(md->dmglog[i].id==0){
-				minpos=i;
-				mindmg=0;
-			} else if(md->dmglog[i].dmg<mindmg){
-				minpos=i;
-				mindmg=md->dmglog[i].dmg;
-			}
+			if(md->attacked_id <= 0)
+				md->attacked_id = sd->bl.id;
 		}
-		if(i<DAMAGELOG_SIZE)
-			md->dmglog[i].dmg+=damage;
-		else {
-			md->dmglog[minpos].id=pd->msd->bl.id;
-			md->dmglog[minpos].dmg=damage;
+		if(src && src->type == BL_PET && battle_config.pet_attack_exp_to_master) {
+			struct pet_data *pd = (struct pet_data *)src;
+			for(i=0,minpos=0,mindmg=30000;i<DAMAGELOG_SIZE;i++){
+				if(md->dmglog[i].id==pd->msd->bl.id)
+					break;
+				if(md->dmglog[i].id==0){
+					minpos=i;
+					mindmg=0;
+				}
+				else if(md->dmglog[i].dmg<mindmg){
+					minpos=i;
+					mindmg=md->dmglog[i].dmg;
+				}
+			}
+			if(i<DAMAGELOG_SIZE)
+				md->dmglog[i].dmg+=damage;
+			else {
+				md->dmglog[minpos].id=pd->msd->bl.id;
+				md->dmglog[minpos].dmg=damage;
+			}
 		}
 	}
 
@@ -1661,6 +1662,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 	// ----- ここから死亡処理 -----
 
+	map_freeblock_lock();
 	mob_changestate(md,MS_DEAD,0);
 	mobskill_use(md,gettick(),-1);	// 死亡時スキル
 
@@ -1730,75 +1732,76 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 		party_exp_share(pt[i].p,md->bl.m,pt[i].base_exp,pt[i].job_exp);
 
 	// item drop
-    if(src)
-	for(i=0;i<8;i++){
-		struct delay_item_drop *ditem;
-		int drop_rate;
-
-		if(mob_db[md->class].dropitem[i].nameid <= 0)
-			continue;
-		drop_rate = mob_db[md->class].dropitem[i].p;
-		if(drop_rate <= 0 && battle_config.drop_rate0item)
-			drop_rate = 1;
-		if(drop_rate <= rand()%10000)
-			continue;
-
-		ditem=malloc(sizeof(*ditem));
-		if(ditem==NULL){
-			printf("out of memory : mob_damage\n");
-			exit(1);
-		}
-
-		ditem->nameid=mob_db[md->class].dropitem[i].nameid;
-		ditem->amount=1;
-		ditem->m=md->bl.m;
-		ditem->x=md->bl.x;
-		ditem->y=md->bl.y;
-		add_timer(gettick()+500+i,mob_delay_item_drop,(int)ditem,0);
-	}
-	if(sd && sd->state.attack_type == BF_WEAPON) {
-		for(i=0;i<sd->monster_drop_item_count;i++) {
+	if(!(type&1)) {
+		for(i=0;i<8;i++){
 			struct delay_item_drop *ditem;
-			int race = battle_get_race(&md->bl);
-			if(sd->monster_drop_itemid[i] <= 0)
+			int drop_rate;
+
+			if(mob_db[md->class].dropitem[i].nameid <= 0)
 				continue;
-			if(sd->monster_drop_race[i] & (1<<race) || 
-				(mob_db[md->class].mexp > 0 && sd->monster_drop_race[i] & 1<<10) ||
-				(mob_db[md->class].mexp <= 0 && sd->monster_drop_race[i] & 1<<11) ) {
-				if(sd->monster_drop_itemrate[i] <= rand()%10000)
-					continue;
-
-				ditem=malloc(sizeof(*ditem));
-				if(ditem==NULL){
-					printf("out of memory : mob_damage\n");
-					exit(1);
-				}
-
-				ditem->nameid=sd->monster_drop_itemid[i];
-				ditem->amount=1;
-				ditem->m=md->bl.m;
-				ditem->x=md->bl.x;
-				ditem->y=md->bl.y;
-				add_timer(gettick()+520+i,mob_delay_item_drop,(int)ditem,0);
-			}
-		}
-		if(sd->get_zeny_num > 0)
-			pc_getzeny(sd,mob_db[md->class].lv*10 + rand()%(sd->get_zeny_num+1));
-	}
-	if(md->lootitem) {
-		for(i=0;i<md->lootitem_count;i++) {
-			struct delay_item_drop2 *ditem;
+			drop_rate = mob_db[md->class].dropitem[i].p;
+			if(drop_rate <= 0 && battle_config.drop_rate0item)
+				drop_rate = 1;
+			if(drop_rate <= rand()%10000)
+				continue;
 
 			ditem=malloc(sizeof(*ditem));
 			if(ditem==NULL){
 				printf("out of memory : mob_damage\n");
 				exit(1);
 			}
-			memcpy(&ditem->item_data,&md->lootitem[i],sizeof(md->lootitem[0]));
+
+			ditem->nameid=mob_db[md->class].dropitem[i].nameid;
+			ditem->amount=1;
 			ditem->m=md->bl.m;
 			ditem->x=md->bl.x;
 			ditem->y=md->bl.y;
-			add_timer(gettick()+540+i,mob_delay_item_drop2,(int)ditem,0);
+			add_timer(gettick()+500+i,mob_delay_item_drop,(int)ditem,0);
+		}
+		if(sd && sd->state.attack_type == BF_WEAPON) {
+			for(i=0;i<sd->monster_drop_item_count;i++) {
+				struct delay_item_drop *ditem;
+				int race = battle_get_race(&md->bl);
+				if(sd->monster_drop_itemid[i] <= 0)
+					continue;
+				if(sd->monster_drop_race[i] & (1<<race) || 
+					(mob_db[md->class].mexp > 0 && sd->monster_drop_race[i] & 1<<10) ||
+					(mob_db[md->class].mexp <= 0 && sd->monster_drop_race[i] & 1<<11) ) {
+					if(sd->monster_drop_itemrate[i] <= rand()%10000)
+						continue;
+
+					ditem=malloc(sizeof(*ditem));
+					if(ditem==NULL){
+						printf("out of memory : mob_damage\n");
+						exit(1);
+					}
+
+					ditem->nameid=sd->monster_drop_itemid[i];
+					ditem->amount=1;
+					ditem->m=md->bl.m;
+					ditem->x=md->bl.x;
+					ditem->y=md->bl.y;
+					add_timer(gettick()+520+i,mob_delay_item_drop,(int)ditem,0);
+				}
+			}
+			if(sd->get_zeny_num > 0)
+				pc_getzeny(sd,mob_db[md->class].lv*10 + rand()%(sd->get_zeny_num+1));
+		}
+		if(md->lootitem) {
+			for(i=0;i<md->lootitem_count;i++) {
+				struct delay_item_drop2 *ditem;
+
+				ditem=malloc(sizeof(*ditem));
+				if(ditem==NULL){
+					printf("out of memory : mob_damage\n");
+					exit(1);
+				}
+				memcpy(&ditem->item_data,&md->lootitem[i],sizeof(md->lootitem[0]));
+				ditem->m=md->bl.m;
+				ditem->x=md->bl.x;
+				ditem->y=md->bl.y;
+				add_timer(gettick()+540+i,mob_delay_item_drop2,(int)ditem,0);
+			}
 		}
 	}
 
@@ -1839,13 +1842,28 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 	if(md->npc_event[0]){	// SCRIPT実行
 //		if(battle_config.battle_log)
 //			printf("mob_damage : run event : %s\n",md->npc_event);
-		npc_event(sd,md->npc_event,1);
+		if(src && src->type == BL_PET)
+			sd = ((struct pet_data *)src)->msd;
+		if(sd == NULL) {
+			struct map_session_data *tmpsd;
+			int i;
+			for(i=0;i<fd_max;i++){
+				if(session[i] && (tmpsd=session[i]->session_data) && tmpsd->state.auth) {
+					if(md->bl.m == tmpsd->bl.m) {
+						sd = tmpsd;
+						break;
+					}
+				}
+			}
+		}
+		if(sd) npc_event(sd,md->npc_event,1);
 	}
 
 	clif_clearchar_area(&md->bl,1);
 	map_delblock(&md->bl);
 	mob_deleteslave(md);
 	mob_setdelayspawn(md->bl.id);
+	map_freeblock_unlock();
 
 	return 0;
 }
