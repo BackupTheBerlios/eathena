@@ -1,4 +1,4 @@
-// $Id: npc_quest.txt,v 1.2 2004/01/09 20:24:22 rovert Exp $
+// $Id: quest.txt,v 1.1 2004/02/03 17:28:43 rovert Exp $
 //-------------------- 'Balmung & Lord Kaho's Horns' Quest --------------------
 
 prontera.gat,158,356,4	script	Royal Messenger	105,{

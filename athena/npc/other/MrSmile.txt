@@ -1,4 +1,4 @@
-// $Id: npc_MrSmile.txt,v 1.2 2004/01/13 18:01:18 rovert Exp $
+// $Id: MrSmile.txt,v 1.1 2004/02/03 17:28:43 rovert Exp $
 alberta.gat,113,53,3	script	Smile Assistance	92,{
 
 	mes "Hi.";

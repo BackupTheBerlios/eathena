@@ -1,4 +1,4 @@
-// $Id: npc_IceCream.txt,v 1.2 2004/01/09 20:24:22 rovert Exp $
+// $Id: IceCream.txt,v 1.1 2004/02/03 17:28:43 rovert Exp $
 //<--------------- Ice Cream Event [Update: Aug. 10, 2003] --------------->\\
 //EDITED BY KOOK SWU 09/10/2003
 

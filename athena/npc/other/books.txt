@@ -1,4 +1,4 @@
-// $Id: npc_books.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
+// $Id: books.txt,v 1.1 2004/02/03 17:28:43 rovert Exp $
 //<--------------- NPCs BOOKS [Update: Jun. 09, 2003] --------------->\\
 //<=========== Mage Guild - Begin ==========>\\
 geffen_in.gat,176,111,1	script	Book Shelf	111,{
