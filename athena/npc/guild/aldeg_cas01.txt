@@ -3,7 +3,7 @@
 //===================================================================
 //----alde_gld----
 alde_gld.gat,61,87,6	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -30,7 +30,7 @@ LStartg:
 		close;
 }
 alde_gld.gat,61,79,6	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -57,7 +57,7 @@ LStartg:
 		close;
 }
 alde_gld.gat,45,87,8	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -84,7 +84,7 @@ LStartg:
 		close;
 }
 alde_gld.gat,51,87,8	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -112,7 +112,7 @@ LStartg:
 }
 //----aldeg_cas01----
 aldeg_cas01.gat,30,248,4	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -139,7 +139,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,30,246,4	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -166,7 +166,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,37,248,4	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -193,7 +193,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,37,246,4	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -220,7 +220,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,95,80,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -247,7 +247,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,95,59,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -274,7 +274,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,62,75,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -301,7 +301,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,70,75,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -328,7 +328,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,74,75,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -355,7 +355,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,62,64,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -382,7 +382,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,66,64,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -409,7 +409,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,70,64,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -436,7 +436,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,74,64,2	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -463,7 +463,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,203,150,4	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -490,7 +490,7 @@ LStartg:
 		close;
 }
 aldeg_cas01.gat,210,150,4	script	Neuschwanstein	722,{
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (@GIDa1 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -519,7 +519,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 aldeg_cas01.gat,218,170,0	script	Kafra Service#alde1	117,{
 	cutin "kafra_01",2;
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (getcharid(2) == @GIDa1) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + GetGuildName(@GIDa1) + "^000000 members, please use different Kafra Service. thank you.";
@@ -623,7 +623,7 @@ aldeg_cas01.gat,123,223,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	set @GIDa1,getcastledata("aldeg_cas01.gat",1)
+	set @GIDa1,getcastledata("aldeg_cas01.gat",1);
 	if (getcharid(2) != @GIDa1) goto L1n;
 	warp "gld_dun02.gat",32,122;
 	end;
@@ -832,7 +832,7 @@ L5:
 
 	L_k_a:
 		mes "[ Arl Fredo ]";
-		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been canceld .";
+		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been cancelled .";
 		close;
 	L_k_0:
 		if (Zeny > 10000) goto L_k_1;

@@ -3,7 +3,7 @@
 //===================================================================
 //----gef_fild13----
 gef_fild13.gat,190,283,3	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -32,7 +32,7 @@ LStartg:
 		close;
 }
 gef_fild13.gat,199,274,3	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -62,7 +62,7 @@ LStartg:
 }
 //----gefg_cas04----
 gefg_cas04.gat,24,157,4	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -91,7 +91,7 @@ LStartg:
 		close;
 }
 gefg_cas04.gat,35,158,4	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -120,7 +120,7 @@ LStartg:
 		close;
 }
 gefg_cas04.gat,44,184,4	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -149,7 +149,7 @@ LStartg:
 		close;
 }
 gefg_cas04.gat,51,184,4	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -178,7 +178,7 @@ LStartg:
 		close;
 }
 gefg_cas04.gat,39,212,7	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -207,7 +207,7 @@ LStartg:
 		close;
 }
 gefg_cas04.gat,29,212,1	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -236,7 +236,7 @@ LStartg:
 		close;
 }
 gefg_cas04.gat,24,73,1	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -265,7 +265,7 @@ LStartg:
 		close;
 }
 gefg_cas04.gat,35,73,4	script	Bergel	722,{
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (@GIDg4 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -296,7 +296,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 gefg_cas04.gat,59,70,3	script	Kafra Service#gefg4	117,{
 	cutin "kafra_01",2;
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (getcharid(2) == @GIDg4) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + GetGuildName(@GIDg4) + "^000000 members, please use different Kafra Service. thank you.";
@@ -400,7 +400,7 @@ gefg_cas04.gat,58,75,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	set @GIDg4,getcastledata("gefg_cas04.gat",1)
+	set @GIDg4,getcastledata("gefg_cas04.gat",1);
 	if (getcharid(2) != @GIDg4) goto L1n;
 	warp "gld_dun04.gat",268,108;
 	end;
@@ -609,7 +609,7 @@ L5:
 	goto L_k_0;
 //check Kafraskill(OK -> L_k_0,NG -> -)
 		mes "[ Kelbany ]";
-		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been canceld .";
+		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been cancelled .";
 		close;
 	L_k_0:
 		if (Zeny > 10000) goto L_k_1;

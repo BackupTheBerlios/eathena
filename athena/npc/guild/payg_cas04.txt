@@ -2,7 +2,7 @@
 //pay_gld04         by kalen
 //===================================================================
 pay_gld.gat,137,160,0	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -31,7 +31,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,143,160,0	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -60,7 +60,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,133,151,2	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -89,7 +89,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,153,166,1	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -118,7 +118,7 @@ LStartg:
 		close;
 }
 payg_cas04.gat,255,259,0	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -147,7 +147,7 @@ LStartg:
 		close;
 }
 payg_cas04.gat,248,259,0	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -176,7 +176,7 @@ LStartg:
 		close;
 }
 payg_cas04.gat,248,168,6	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -205,7 +205,7 @@ LStartg:
 		close;
 }
 payg_cas04.gat,248,160,6	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -234,7 +234,7 @@ LStartg:
 		close;
 }
 payg_cas04.gat,232,181,4	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -263,7 +263,7 @@ LStartg:
 		close;
 }
 payg_cas04.gat,239,181,4	script	Scarlet Palace	722,{
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (@GIDf4 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -294,7 +294,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 payg_cas04.gat,40,235,1	script	Kafra Service#pay4	117,{
 	cutin "kafra_01",2;
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (getcharid(2) == @GIDf4) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + GetGuildName(@GIDf4) + "^000000 members, please use different Kafra Service. thank you.";
@@ -398,7 +398,7 @@ payg_cas04.gat,52,48,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	set @GIDf4,getcastledata("payg_cas04.gat",1)
+	set @GIDf4,getcastledata("payg_cas04.gat",1);
 	if (getcharid(2) != @GIDf4) goto L1n;
 	warp "gld_dun01.gat",186,39;
 	end;
@@ -607,7 +607,7 @@ L5:
 
 	L_k_a:
 		mes "[ DJ ]";
-		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been canceld .";
+		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been cancelled .";
 		close;
 	L_k_0:
 		if (Zeny > 10000) goto L_k_1;

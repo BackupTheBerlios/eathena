@@ -2,7 +2,7 @@
 //pay_gld02         by kalen
 //===================================================================
 pay_gld.gat,292,112,6	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -31,7 +31,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,292,120,6	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -60,7 +60,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,291,135,6	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -89,7 +89,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,271,163,0	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -118,7 +118,7 @@ LStartg:
 		close;
 }
 payg_cas02.gat,254,40,6	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -147,7 +147,7 @@ LStartg:
 		close;
 }
 payg_cas02.gat,254,48,6	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -176,7 +176,7 @@ LStartg:
 		close;
 }
 payg_cas02.gat,202,49,0	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -205,7 +205,7 @@ LStartg:
 		close;
 }
 payg_cas02.gat,209,49,0	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -234,7 +234,7 @@ LStartg:
 		close;
 }
 payg_cas02.gat,59,282,4	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -263,7 +263,7 @@ LStartg:
 		close;
 }
 payg_cas02.gat,70,282,4	script	Sacred Altar	722,{
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (@GIDf2 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -294,7 +294,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 payg_cas02.gat,22,275,5	script	Kafra Service#pay2	117,{
 	cutin "kafra_01",2;
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (getcharid(2) == @GIDf2) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + GetGuildName(@GIDf2) + "^000000 members, please use different Kafra Service. thank you.";
@@ -398,7 +398,7 @@ payg_cas02.gat,278,247,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	set @GIDf2,getcastledata("payg_cas02.gat",1)
+	set @GIDf2,getcastledata("payg_cas02.gat",1);
 	if (getcharid(2) != @GIDf2) goto L1n;
 	warp "gld_dun01.gat",54,165;
 	end;
@@ -607,7 +607,7 @@ L5:
 
 	L_k_a:
 		mes "[ Cherrios ]";
-		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been canceld .";
+		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been cancelled .";
 		close;
 	L_k_0:
 		if (Zeny > 10000) goto L_k_1;
