@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.20 2004/02/13 15:17:47 rovert Exp $
+// $Id: script.c,v 1.21 2004/02/13 15:21:59 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -3058,7 +3058,7 @@ int buildin_successremovecards(struct script_state *st)
 
 			if((flag=pc_additem(sd,&item_tmp,1))){	/* If there is a card in the slot, award it. */
 				clif_additem(sd,0,0,flag);
-				map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+				map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y,NULL,NULL,NULL,0);
 			}
 		}
 	}while(c--);
@@ -3072,7 +3072,7 @@ int buildin_successremovecards(struct script_state *st)
 		pc_delitem(sd,i,1,0);
 		if((flag=pc_additem(sd,&item_tmp,1))){
 			clif_additem(sd,0,0,flag);
-			map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+			map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y,NULL,NULL,NULL,0);
 		}
 		clif_misceffect(&sd->bl,3);
 		return 0;
@@ -3112,7 +3112,7 @@ int buildin_failedremovecards(struct script_state *st)
 				item_tmp.card[0]=0,item_tmp.card[1]=0,item_tmp.card[2]=0,item_tmp.card[3]=0;
 				if((flag=pc_additem(sd,&item_tmp,1))){
 					clif_additem(sd,0,0,flag);
-					map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+					map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y,NULL,NULL,NULL,0);
 				}
 			}
 		}
@@ -3134,7 +3134,7 @@ int buildin_failedremovecards(struct script_state *st)
 			pc_delitem(sd,i,1,0);
 			if((flag=pc_additem(sd,&item_tmp,1))){
 				clif_additem(sd,0,0,flag);
-				map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+				map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y,NULL,NULL,NULL,0);
 			}
 		}
 		clif_misceffect(&sd->bl,2);
