@@ -54,7 +54,7 @@
 603,Old_Blue_Box,Old Blue Box,2,10000,,200,,,,,10477567,2,,,,,{ getitem -1,1; },{}
 604,Dead_Branch,Branch of Dead tree,2,50,,50,,,,,10477567,2,,,,,{ monster "this",0,0,"--ja--",-1,1,""; },{}
 605,Anodyne,Anodyne,2,2000,,100,,,,,10477567,2,,,,,{ itemskill 8,1,"アンティペインメント"; },{}
-606,Aloebera,Aloevera,2,1500,,100,,,,,10477567,2,,,,,{ itemskill 6,1,"アロエベラ"; },{}
+606,Aloevera,Aloevera,2,1500,,100,,,,,10477567,2,,,,,{ itemskill 6,1,"アロエベラ"; },{}
 607,Yggdrasilberry,Yggdrasilberry,0,2,,300,,,,,10477567,2,,,,,{ percentheal 100,100; },{}
 608,Seed_of_Yggdrasil,Yggdrasil Seed,0,5000,,300,,,,,10477567,2,,,,,{ percentheal 50,50; },{}
 609,Amulet,Amulet,2,100,,100,,,,,10477567,2,,,,,{},{}
