@@ -717,7 +717,8 @@ int battle_get_dmotion(struct block_list *bl)
 	else
 		return 2000;
 
-	if(sc_data && sc_data[SC_ENDURE].timer!=-1 )
+	if((sc_data && sc_data[SC_ENDURE].timer!=-1) ||
+		(bl->type == BL_PC && ((struct map_session_data *)bl)->special_state.infinite_endure))
 		ret=0;
 
 	return ret;
@@ -2106,10 +2107,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 		int cardfix=100,i;
 		cardfix=cardfix*(100-tsd->subele[s_ele])/100;	// 属 性によるダメージ耐性
 		cardfix=cardfix*(100-tsd->subrace[s_race])/100;	// 種族によるダメージ耐性
-		if(flag&BF_LONG)
-			cardfix=cardfix*(100-tsd->long_attack_def_rate)/100;
-		if(flag&BF_SHORT)
-			cardfix=cardfix*(100-tsd->near_attack_def_rate)/100;
 		if(mob_db[md->class].mode & 0x20)
 			cardfix=cardfix*(100-tsd->subrace[10])/100;
 		else
@@ -2120,6 +2117,10 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			}
 		}
+		if(flag&BF_LONG)
+			cardfix=cardfix*(100-tsd->long_attack_def_rate)/100;
+		if(flag&BF_SHORT)
+			cardfix=cardfix*(100-tsd->near_attack_def_rate)/100;
 		damage=damage*cardfix/100;
 	}
 	if(t_sc_data) {
@@ -2385,40 +2386,36 @@ static struct Damage battle_calc_pc_weapon_attack(
 			damage += sd->arrow_atk;
 		type = 0x0a;
 
+/*		if(def1 < 1000000) {
 		if(sd->def_ratio_atk_ele & (1<<t_ele) || sd->def_ratio_atk_race & (1<<t_race)) {
-			if(def1 < 1000000)
 			damage = (damage * (def1 + def2))/100;
 			idef_flag = 1;
 		}
 		if(sd->def_ratio_atk_ele_ & (1<<t_ele) || sd->def_ratio_atk_race_ & (1<<t_race)) {
-			if(def1 < 1000000)
 			damage2 = (damage2 * (def1 + def2))/100;
 			idef_flag_ = 1;
 		}
-		if(tmd && mob_db[tmd->class].mode & 0x20) {
+			if(t_mode & 0x20) {
 			if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
-				if(def1 < 1000000)
 				damage = (damage * (def1 + def2))/100;
 				idef_flag = 1;
 			}
 			if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
-				if(def1 < 1000000)
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
 		}
 		else {
 			if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
-				if(def1 < 1000000)
 				damage = (damage * (def1 + def2))/100;
 				idef_flag = 1;
 			}
 			if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
-				if(def1 < 1000000)
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
 		}
+		}*/
 	}
 	else {
 		int vitbonusmax;
@@ -2442,37 +2439,31 @@ static struct Damage battle_calc_pc_weapon_attack(
 			hitrate += sd->arrow_hit;
 		}
 
-		if(skill_num != MO_INVESTIGATE) {
+		if(skill_num != MO_INVESTIGATE && def1 < 1000000) {
 			if(sd->def_ratio_atk_ele & (1<<t_ele) || sd->def_ratio_atk_race & (1<<t_race)) {
-				if(def1 < 1000000)
 				damage = (damage * (def1 + def2))/100;
 				idef_flag = 1;
 			}
 			if(sd->def_ratio_atk_ele_ & (1<<t_ele) || sd->def_ratio_atk_race_ & (1<<t_race)) {
-				if(def1 < 1000000)
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
-			if(tmd && mob_db[tmd->class].mexp & 0x20) {
+			if(t_mode & 0x20) {
 				if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
-				if(def1 < 1000000)
 					damage = (damage * (def1 + def2))/100;
 					idef_flag = 1;
 				}
 				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
-					if(def1 < 1000000)
 					damage2 = (damage2 * (def1 + def2))/100;
 					idef_flag_ = 1;
 				}
 			}
 			else {
 				if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
-					if(def1 < 1000000)
 					damage = (damage * (def1 + def2))/100;
 					idef_flag = 1;
 				}
 				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
-					if(def1 < 1000000)
 					damage2 = (damage2 * (def1 + def2))/100;
 					idef_flag_ = 1;
 				}
@@ -2827,7 +2818,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 					idef_flag = 1;
 				if(sd->ignore_def_ele_ & (1<<t_ele) || sd->ignore_def_race_ & (1<<t_race))
 					idef_flag_ = 1;
-				if(tmd && mob_db[tmd->class].mode & 0x20) {
+				if(t_mode & 0x20) {
 					if(sd->ignore_def_race & (1<<10))
 						idef_flag = 1;
 					if(sd->ignore_def_race_ & (1<<10))
@@ -2914,8 +2905,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		cardfix=cardfix*(100+sd->addele[t_ele]+sd->arrow_addele[t_ele])/100;	// 属 性によるダメージ修正
 		cardfix=cardfix*(100+sd->addsize[t_size]+sd->arrow_addsize[t_size])/100;	// サイズによるダメージ修正
 	}
-	if(tmd) {
-		if(mob_db[tmd->class].mode & 0x20) {
+	if(t_mode & 0x20) {
 			if(!sd->state.arrow_atk) {
 				if(!battle_config.left_cardfix_to_right)
 					cardfix=cardfix*(100+sd->addrace[10])/100;
@@ -2935,7 +2925,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 			else
 				cardfix=cardfix*(100+sd->addrace[11]+sd->arrow_addrace[11])/100;
 		}
-	}
 	t_class = battle_get_class(target);
 	for(i=0;i<sd->add_damage_class_count;i++) {
 		if(sd->add_damage_classid[i] == t_class) {
@@ -2950,13 +2939,11 @@ static struct Damage battle_calc_pc_weapon_attack(
 		cardfix=cardfix*(100+sd->addrace_[t_race])/100;	// 種族によるダメージ修正
 		cardfix=cardfix*(100+sd->addele_[t_ele])/100;	// 属 性によるダメージ修正
 		cardfix=cardfix*(100+sd->addsize_[t_size])/100;	// サイズによるダメージ修正
-		if(tmd) {
-			if(mob_db[tmd->class].mode & 0x20)
+		if(t_mode & 0x20)
 				cardfix=cardfix*(100+sd->addrace_[10])/100;
 			else
 				cardfix=cardfix*(100+sd->addrace_[11])/100;
 		}
-	}
 	for(i=0;i<sd->add_damage_class_count_;i++) {
 		if(sd->add_damage_classid_[i] == t_class) {
 			cardfix=cardfix*(100+sd->add_damage_classrate_[i])/100;
@@ -2969,16 +2956,20 @@ static struct Damage battle_calc_pc_weapon_attack(
 		cardfix=100;
 		cardfix=cardfix*(100-tsd->subrace[s_race])/100;	// 種族によるダメージ耐性
 		cardfix=cardfix*(100-tsd->subele[s_ele])/100;	// 属 性によるダメージ耐性
-		if(flag&BF_LONG)
-			cardfix=cardfix*(100-tsd->long_attack_def_rate)/100;
-		if(flag&BF_SHORT)
-			cardfix=cardfix*(100-tsd->near_attack_def_rate)/100;
+		if(battle_get_mode(src) & 0x20)
+			cardfix=cardfix*(100-tsd->subrace[10])/100;
+		else
+			cardfix=cardfix*(100-tsd->subrace[11])/100;
 		for(i=0;i<tsd->add_def_class_count;i++) {
 			if(tsd->add_def_classid[i] == sd->status.class) {
 				cardfix=cardfix*(100-tsd->add_def_classrate[i])/100;
 				break;
 			}
 		}
+		if(flag&BF_LONG)
+			cardfix=cardfix*(100-tsd->long_attack_def_rate)/100;
+		if(flag&BF_SHORT)
+			cardfix=cardfix*(100-tsd->near_attack_def_rate)/100;
 		damage=damage*cardfix/100;
 		damage2=damage2*cardfix/100;
 	}
@@ -3143,7 +3134,7 @@ struct Damage battle_calc_magic_attack(
 	struct Damage md;
 	int aflag;
 	int normalmagic_flag=1;
-	int ele=0,race=7,t_ele=0,t_race=7,cardfix,t_class,i;
+	int ele=0,race=7,t_ele=0,t_race=7,t_mode = 0,cardfix,t_class,i;
 	struct map_session_data *sd=NULL,*tsd=NULL;
 	struct mob_data *tmd = NULL;
 
@@ -3157,7 +3148,8 @@ struct Damage battle_calc_magic_attack(
 	ele = skill_get_pl(skill_num);
 	race = battle_get_race(bl);
 	t_ele = battle_get_elem_type(target);
-	t_race = battle_get_race( target );
+	t_race = battle_get_race(target);
+	t_mode = battle_get_mode(target);
 
 #define MATK_FIX( a,b ) { matk1=matk1*(a)/(b); matk2=matk2*(a)/(b); }
 	
@@ -3200,7 +3192,7 @@ struct Damage battle_calc_magic_attack(
 				if(thres > 700) thres = 700;
 //				if(battle_config.battle_log)
 //					printf("ターンアンデッド！ 確率%d ‰(千分率)\n", thres);
-				if(rand()%1000 < thres && !(battle_get_mode(target)&0x20))	// 成功
+				if(rand()%1000 < thres && !(t_mode&0x20))	// 成功
 					damage = hp;
 				else					// 失敗
 					damage = battle_get_lv(bl) + battle_get_int(bl) + skill_lv * 10;
@@ -3279,7 +3271,7 @@ struct Damage battle_calc_magic_attack(
 		if(sd) {
 			if(sd->ignore_mdef_ele & (1<<t_ele) || sd->ignore_mdef_race & (1<<t_race))
 				imdef_flag = 1;
-			if(tmd && mob_db[tmd->class].mode & 0x20) {
+			if(t_mode & 0x20) {
 				if(sd->ignore_mdef_race & (1<<10))
 					imdef_flag = 1;
 			}
@@ -3299,12 +3291,10 @@ struct Damage battle_calc_magic_attack(
 		cardfix=100;
 		cardfix=cardfix*(100+sd->magic_addrace[t_race])/100;
 		cardfix=cardfix*(100+sd->magic_addele[t_ele])/100;
-		if(tmd) {
-			if(mob_db[tmd->class].mode & 0x20)
+		if(t_mode & 0x20)
 				cardfix=cardfix*(100+sd->magic_addrace[10])/100;
 			else
 				cardfix=cardfix*(100+sd->magic_addrace[11])/100;
-		}
 		t_class = battle_get_class(target);
 		for(i=0;i<sd->add_magic_damage_class_count;i++) {
 			if(sd->add_magic_damage_classid[i] == t_class) {
@@ -3320,14 +3310,18 @@ struct Damage battle_calc_magic_attack(
 		cardfix=100;
 		cardfix=cardfix*(100-tsd->subele[ele])/100;	// 属 性によるダメージ耐性
 		cardfix=cardfix*(100-tsd->magic_subrace[race])/100;
-		cardfix=cardfix*(100-tsd->magic_def_rate)/100;
-		damage=damage*cardfix/100;
+		if(battle_get_mode(bl) & 0x20)
+			cardfix=cardfix*(100-tsd->magic_subrace[10])/100;
+		else
+			cardfix=cardfix*(100-tsd->magic_subrace[11])/100;
 		for(i=0;i<tsd->add_mdef_class_count;i++) {
 			if(tsd->add_mdef_classid[i] == s_class) {
 				cardfix=cardfix*(100-tsd->add_mdef_classrate[i])/100;
 				break;
 			}
 		}
+		cardfix=cardfix*(100-tsd->magic_def_rate)/100;
+		damage=damage*cardfix/100;
 	}
 	if(damage < 0) damage = 0;
 
@@ -3362,8 +3356,6 @@ struct Damage battle_calc_magic_attack(
 		damage=0;	// 黄 金蟲カード（魔法ダメージ０）
 
 	damage=battle_calc_damage(bl,target,damage,div_,skill_num,skill_lv,aflag);	// 最終修正
-
-
 
 	md.damage=damage;
 	md.div_=div_;
@@ -3541,6 +3533,7 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 	struct map_session_data *sd=NULL;
 	struct status_change *sc_data = battle_get_sc_data(src),*t_sc_data=battle_get_sc_data(target);
 	short *opt1;
+	int race = 7, ele = 0;
 	int damage,rdamage = 0;
 
 	if(src->type == BL_PC)
@@ -3558,6 +3551,8 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		battle_stopattack(src);
 		return 0;
 	}
+	race = battle_get_race(target);
+	ele = battle_get_elem_type(target);
 	if(battle_check_target(src,target,BCT_ENEMY) > 0 &&
 		battle_check_range(src,target,0)){
 		// 攻撃対象となりうるので攻撃
@@ -3650,8 +3645,23 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		map_freeblock_lock();
 		battle_damage(src,target,(wd.damage+wd.damage2));
 		if(!(target->prev == NULL || (target->type == BL_PC && pc_isdead((struct map_session_data *)target) ) ) ) {
-			if(wd.damage > 0 || wd.damage2 > 0)
+			if(wd.damage > 0 || wd.damage2 > 0) {
 				skill_additional_effect(src,target,0,0,BF_WEAPON,tick);
+				if(sd) {
+					if(sd->weapon_coma_ele[ele] > 0 && rand()%10000 < sd->weapon_coma_ele[ele])
+						skill_castend_nodamage_id(src,target,SA_COMA,7,tick,0);
+					if(sd->weapon_coma_race[race] > 0 && rand()%10000 < sd->weapon_coma_race[race])
+						skill_castend_nodamage_id(src,target,SA_COMA,7,tick,0);
+					if(battle_get_mode(target) & 0x20) {
+						if(sd->weapon_coma_race[10] > 0 && rand()%10000 < sd->weapon_coma_race[10])
+							skill_castend_nodamage_id(src,target,SA_COMA,7,tick,0);
+					}
+					else {
+						if(sd->weapon_coma_race[11] > 0 && rand()%10000 < sd->weapon_coma_race[11])
+							skill_castend_nodamage_id(src,target,SA_COMA,7,tick,0);
+					}
+				}
+			}
 		}
 		if(sc_data && sc_data[SC_AUTOSPELL].timer != -1 && rand()%100 < sc_data[SC_AUTOSPELL].val4) {
 			int skilllv=sc_data[SC_AUTOSPELL].val3,i,f=0;
@@ -3664,16 +3674,38 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 				if(sd->status.sp >= sp) {
 					if((i=skill_get_inf(sc_data[SC_AUTOSPELL].val2) == 2) || i == 32)
 						f = skill_castend_pos2(src,target->x,target->y,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
-					else
+					else {
+						switch( skill_get_nk(sc_data[SC_AUTOSPELL].val2) ) {
+							case 0:	case 2:
+								f = skill_castend_damage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+								break;
+							case 1:/* 支援系 */
+								if((sc_data[SC_AUTOSPELL].val2==AL_HEAL || (sc_data[SC_AUTOSPELL].val2==ALL_RESURRECTION && target->type != BL_PC)) && battle_check_undead(race,ele))
 						f = skill_castend_damage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+								else
+									f = skill_castend_nodamage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+								break;
+						}
+					}
 					if(!f) pc_heal(sd,0,-sp);
 				}
 			}
 			else {
 				if((i=skill_get_inf(sc_data[SC_AUTOSPELL].val2) == 2) || i == 32)
 					skill_castend_pos2(src,target->x,target->y,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
-				else
+				else {
+					switch( skill_get_nk(sc_data[SC_AUTOSPELL].val2) ) {
+						case 0:	case 2:
 					skill_castend_damage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+							break;
+						case 1:/* 支援系 */
+							if((sc_data[SC_AUTOSPELL].val2==AL_HEAL || (sc_data[SC_AUTOSPELL].val2==ALL_RESURRECTION && target->type != BL_PC)) && battle_check_undead(race,ele))
+								skill_castend_damage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+							else
+								skill_castend_nodamage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+							break;
+					}
+				}
 			}
 		}
 		if(sd) {
@@ -3687,8 +3719,19 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 			if(sd->status.sp >= sp) {
 				if((i=skill_get_inf(sd->autospell_id) == 2) || i == 32)
 					f = skill_castend_pos2(src,target->x,target->y,sd->autospell_id,skilllv,tick,flag);
-				else
+					else {
+						switch( skill_get_nk(sd->autospell_id) ) {
+							case 0:	case 2:
+								f = skill_castend_damage_id(src,target,sd->autospell_id,skilllv,tick,flag);
+								break;
+							case 1:/* 支援系 */
+								if((sd->autospell_id==AL_HEAL || (sd->autospell_id==ALL_RESURRECTION && target->type != BL_PC)) && battle_check_undead(race,ele))
 					f = skill_castend_damage_id(src,target,sd->autospell_id,skilllv,tick,flag);
+								else
+									f = skill_castend_nodamage_id(src,target,sd->autospell_id,skilllv,tick,flag);
+								break;
+						}
+					}
 				if(!f) pc_heal(sd,0,-sp);
 			}
 		}
@@ -4045,6 +4088,7 @@ int battle_config_read(const char *cfgName)
 		battle_config.pc_land_skill_limit = 1;
 	battle_config.monster_land_skill_limit = 1;
 	battle_config.party_skill_penaly = 1;
+	battle_config.monster_class_change_full_recover = 0;
 	battle_config.item_rate_common = 100;
 	battle_config.item_rate_equip = 100;
 	battle_config.item_rate_card = 100;
@@ -4065,7 +4109,7 @@ int battle_config_read(const char *cfgName)
 	}
 	while(fgets(line,1020,fp)){
 		const struct {
-			char str[32];
+			char str[128];
 			int *val;
 		} data[] ={
 			{ "warp_point_debug",		&battle_config.warp_point_debug		},
@@ -4182,6 +4226,10 @@ int battle_config_read(const char *cfgName)
 			{ "player_attack_direction_change" ,&battle_config.pc_attack_direction_change },
 			{ "monster_attack_direction_change" ,&battle_config.monster_attack_direction_change },			
 			{ "player_undead_nofreeze" ,&battle_config.pc_undead_nofreeze },
+			{ "player_land_skill_limit" ,&battle_config.pc_land_skill_limit },
+			{ "monster_land_skill_limit" ,&battle_config.monster_land_skill_limit },
+			{ "party_skill_penaly" ,&battle_config.party_skill_penaly },
+			{ "monster_class_change_full_recover" ,&battle_config.monster_class_change_full_recover },
 			{ "item_rate_common",	&battle_config.item_rate_common	},	// Added by RoVeRT
 			{ "item_rate_equip",	&battle_config.item_rate_equip	},
 			{ "item_rate_card",	&battle_config.item_rate_card	},	// End Addition

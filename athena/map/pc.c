@@ -927,6 +927,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 	memset(sd->addeff,0,sizeof(sd->addeff));
 	memset(sd->reseff,0,sizeof(sd->reseff));
 	memset(&sd->special_state,0,sizeof(sd->special_state));
+	memset(sd->weapon_coma_ele,0,sizeof(sd->weapon_coma_ele));
+	memset(sd->weapon_coma_race,0,sizeof(sd->weapon_coma_race));
 
 	sd->watk_ = 0;			//二刀流用(仮)
 	sd->watk_2 = 0;
@@ -2089,6 +2091,14 @@ int pc_bonus2(struct map_session_data *sd,int type,int type2,int val)
 			sd->sp_drain_rate_ += type2;
 			sd->sp_drain_per_ += val;
 		}
+		break;
+	case SP_WEAPON_COMA_ELE:
+		if(sd->state.lr_flag != 2)
+			sd->weapon_coma_ele[type2] += val;
+		break;
+	case SP_WEAPON_COMA_RACE:
+		if(sd->state.lr_flag != 2)
+			sd->weapon_coma_race[type2] += val;
 		break;
 	default:
 		if(battle_config.error_log)
@@ -3523,6 +3533,11 @@ int pc_gainexp(struct map_session_data *sd,int base_exp,int job_exp)
 	if(sd->bl.prev == NULL || pc_isdead(sd))
 		return 0;
 
+	if(sd->sc_data[SC_RICHMANKIM].timer != -1) {
+		base_exp += base_exp*(25 + sd->sc_data[SC_RICHMANKIM].val1*25)/100;
+		job_exp += job_exp*(25 + sd->sc_data[SC_RICHMANKIM].val1*25)/100;
+	}
+
 	if(sd->status.guild_id>0){	// ギルドに上納
 		base_exp-=guild_payexp(sd,base_exp);
 		if(base_exp < 0)
@@ -3989,7 +4004,7 @@ int pc_damage(struct block_list *src,struct map_session_data *sd,int damage)
 	skill_castcancel(&sd->bl,0);	// 詠唱の中止
 	clif_clearchar_area(&sd->bl,1);
 	skill_unit_out_all(&sd->bl,gettick(),1);
-	skill_status_change_clear(&sd->bl);	// ステータス異常を解除する
+	skill_status_change_clear(&sd->bl,0);	// ステータス異常を解除する
 	clif_updatestatus(sd,SP_HP);
 	pc_calcstatus(sd,0);
 
@@ -4896,7 +4911,7 @@ int pc_unequipitem(struct map_session_data *sd,int n,int type)
 		pc_calcstatus(sd,0);
 		if(!sd->special_state.infinite_endure && sd->sc_data[SC_ENDURE].timer != -1 && sd->sc_data[SC_ENDURE].val2)
 			skill_status_change_end(&sd->bl,SC_ENDURE,-1);
-		if(sd->sc_data[SC_SIGNUMCRUCIS].timer != -1 && !battle_check_undead(7,battle_get_elem_type(&sd->bl)))
+		if(sd->sc_data[SC_SIGNUMCRUCIS].timer != -1 && !battle_check_undead(7,sd->def_ele))
 			skill_status_change_end(&sd->bl,SC_SIGNUMCRUCIS,-1);
 	}
 	if(sd->sc_data[SC_AUTOSPELL].timer==-1 && sd->sc_data[SC_AUTOSPELL].val1){

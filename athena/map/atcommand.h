@@ -41,6 +41,7 @@ extern struct Atcommand_Config {
 	int model;
 	int go;
 	int monster;
+	int killmonster;
 	int refine;
 	int produce;
 	int memo;
@@ -88,7 +89,6 @@ extern struct Atcommand_Config {
 	int charskpoint;
 	int charreset;
 	int hatch;
-	int killmonster;
 
 } atcommand_config;
 

@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.58 2004/03/07 21:57:14 sara-chan Exp $
+// $Id: mob.c,v 1.59 2004/03/08 20:36:08 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -521,7 +521,7 @@ int mob_changestate(struct mob_data *md,int state,int type)
 		// 死んだのでこのmobへの攻撃者全員の攻撃を止める
 		clif_foreachclient(mob_stopattacked,md->bl.id);
 		skill_unit_out_all(&md->bl,gettick(),1);
-		skill_status_change_clear(&md->bl);	// ステータス異常を解除する
+		skill_status_change_clear(&md->bl,1);	// ステータス異常を解除する
 		skill_clear_unitgroup(&md->bl);	// 全てのスキルユニットグループを削除する
 		skill_cleartimerskill(&md->bl);
 		md->hp=md->target_id=md->attacked_id=0;
@@ -1568,7 +1568,7 @@ static int mob_delay_item_drop(int tid,unsigned int tick,int id,int data)
 	memset(&temp_item,0,sizeof(temp_item));
 	temp_item.nameid = ditem->nameid;
 	temp_item.amount = ditem->amount;
-	temp_item.identify = !itemdb_isequip(temp_item.nameid);
+	temp_item.identify = !itemdb_isequip3(temp_item.nameid);
 	map_addflooritem(&temp_item,1,ditem->m,ditem->x,ditem->y,ditem->first_sd,ditem->second_sd,ditem->third_sd,0);
 
 	free(ditem);
@@ -1600,6 +1600,9 @@ int mob_delete(struct mob_data *md)
 	mob_changestate(md,MS_DEAD,0);
 	clif_clearchar_area(&md->bl,1);
 	map_delblock(&md->bl);
+	if(mob_get_viewclass(md->class) <= 1000)
+		clif_clearchar_delay(gettick()+3000,&md->bl,0);
+	mob_deleteslave(md);
 	mob_setdelayspawn(md->bl.id);
 	return 0;
 }
@@ -1609,6 +1612,8 @@ int mob_catch_delete(struct mob_data *md)
 	mob_changestate(md,MS_DEAD,0);
 	clif_clearchar_area(&md->bl,0);
 	map_delblock(&md->bl);
+	if(mob_get_viewclass(md->class) <= 1000)
+		clif_clearchar_delay(gettick()+3000,&md->bl,0);
 	mob_setdelayspawn(md->bl.id);
 	return 0;
 }
@@ -1943,7 +1948,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 				continue;
 			memset(&item,0,sizeof(item));
 			item.nameid=mob_db[md->class].mvpitem[i].nameid;
-			item.identify=!itemdb_isequip(item.nameid);
+			item.identify=!itemdb_isequip3(item.nameid);
 			clif_mvp_item(mvp_sd,item.nameid);
 			if(mvp_sd->weight*2 > mvp_sd->max_weight)
 				map_addflooritem(&item,1,mvp_sd->bl.m,mvp_sd->bl.x,mvp_sd->bl.y,mvp_sd,second_sd,third_sd,1);
@@ -2022,6 +2027,11 @@ int mob_class_change(struct mob_data *md,int *value)
 	clif_mob_class_change(md,class);
 	md->class = class;
 	max_hp = battle_get_max_hp(&md->bl);
+	if(battle_config.monster_class_change_full_recover) {
+		md->hp = max_hp;
+		memset(md->dmglog,0,sizeof(md->dmglog));
+	}
+	else
 	md->hp = max_hp*hp_rate/100;
 	if(md->hp > max_hp) md->hp = max_hp;
 	else if(md->hp < 1) md->hp = 1;

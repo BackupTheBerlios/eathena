@@ -25,14 +25,9 @@ static char msg_table[200][1024];	/* Server message */
 
 struct Atcommand_Config atcommand_config;
 
-int kill_monster_sub(struct block_list *bl,va_list ap)
+static int atkillmonster_sub(struct block_list *bl,va_list ap)
 {
-	struct mob_data *md = (struct mob_data *)bl;
-	int id;
-	id=va_arg(ap,int);
-	if (strncasecmp(md->npc_event,"GM_MONSTER",10)==0)
-		mob_damage(NULL,md,md->hp,1);
-
+	mob_damage(NULL,(struct mob_data *)bl,((struct mob_data *)bl)->hp,2);
 	return 0;
 }
 
@@ -334,7 +329,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 */
 		if (strcmpi(command, "@jobchange") == 0 && gm_level >= atcommand_config.jobchange) {
 			sscanf(message, "%s%d", command, &x);
-			if (x >= 0 && x < MAX_PC_CLASS) {
+			if ((x >= 0 && x < MAX_PC_CLASS)) {
 				pc_jobchange(sd,x);
 				clif_displaymessage(fd,msg_table[12]);
 			}else{
@@ -760,8 +755,7 @@ z [0`4]•ž‚ÌF
 					else mx = x;
 					if(y<=0) my=(xy>>16)&0xffff;
 					else my = y;
-
-					count+=(mob_once_spawn(sd,"this",mx,my,temp1,i1,1,"GM_MONSTER")!=0)? 1:0;
+					count+=(mob_once_spawn(sd,"this",mx,my,temp1,i1,1,"")!=0)? 1:0;
 				}				
 				if(count != 0){
 					clif_displaymessage(fd,msg_table[39]);
@@ -769,6 +763,17 @@ z [0`4]•ž‚ÌF
 					clif_displaymessage(fd,msg_table[40]);
 				}
 			}
+			return 1;
+		}
+// @killmonster
+		if (strcmpi(command, "@killmonster") == 0 && gm_level >= atcommand_config.killmonster) {
+			sscanf(message, "%s%s", command, temp0);
+			if(strstr(temp0,".gat")==NULL && strlen(temp0)<16){
+				strcat(temp0,".gat");
+			}
+			if((x=map_mapname2mapid(temp0)) < 0 )
+				x = sd->bl.m;
+			map_foreachinarea(atkillmonster_sub,x,0,0,map[x].xs,map[x].ys,BL_MOB);
 			return 1;
 		}
 // ¸˜B @refine ‘•”õêŠID +”’l
@@ -1588,10 +1593,9 @@ z [0`4]•ž‚ÌF
  			return 1;
 		}
 
-		if(strcmpi(command, "@killmonster") == 0 && gm_level >= atcommand_config.killmonster){
-			map_foreachinarea(kill_monster_sub, sd->bl.m,
-				0,0,map[sd->bl.m].xs-1,map[sd->bl.m].ys-1,
-				BL_MOB);
+		if(strcmpi(command, "@test3") == 0){
+			sscanf(message, "%s %d", command, &x);
+			clif_emotion(&sd->bl,x);
 			return 1;
 		}
 
@@ -1706,6 +1710,7 @@ int atcommand_config_read(const char *cfgName)
 				{ "model",&atcommand_config.model },
 				{ "go",&atcommand_config.go },
 				{ "monster",&atcommand_config.monster },
+				{ "killmonster",&atcommand_config.killmonster },
 				{ "refine",&atcommand_config.refine },
 				{ "produce",&atcommand_config.produce },
 				{ "memo",&atcommand_config.memo },
@@ -1753,7 +1758,6 @@ int atcommand_config_read(const char *cfgName)
 			{ "charreset",		&atcommand_config.charreset },
 			{ "charzeny",		&atcommand_config.charzeny },
 			{ "hatch",		&atcommand_config.hatch },
-			{ "killmonster",	&atcommand_config.killmonster },
 			};
 		
 			if(line[0] == '/' && line[1] == '/')

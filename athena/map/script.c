@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.34 2004/03/07 21:57:14 sara-chan Exp $
+// $Id: script.c,v 1.35 2004/03/08 20:36:08 sara-chan Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -129,6 +129,7 @@ int buildin_produce(struct script_state *st);
 int buildin_monster(struct script_state *st);
 int buildin_areamonster(struct script_state *st);
 int buildin_killmonster(struct script_state *st);
+int buildin_killmonsterall(struct script_state *st);
 int buildin_doevent(struct script_state *st);
 int buildin_addtimer(struct script_state *st);
 int buildin_deltimer(struct script_state *st);
@@ -248,6 +249,7 @@ struct {
 	{buildin_monster,"monster","siisii*"},
 	{buildin_areamonster,"areamonster","siiiisii*"},
 	{buildin_killmonster,"killmonster","ss"},
+	{buildin_killmonsterall,"killmonster","s"},
 	{buildin_doevent,"doevent","s"},
 	{buildin_addtimer,"addtimer","is"},
 	{buildin_deltimer,"deltimer","s"},
@@ -2460,6 +2462,24 @@ int buildin_killmonster(struct script_state *st)
 		return 0;
 	map_foreachinarea(buildin_killmonster_sub,
 		m,0,0,map[m].xs,map[m].ys,BL_MOB, event ,allflag);
+	return 0;
+}
+
+int buildin_killmonsterall_sub(struct block_list *bl,va_list ap)
+{
+	mob_delete((struct mob_data *)bl);
+	return 0;
+}
+int buildin_killmonsterall(struct script_state *st)
+{
+	char *mapname;
+	int m;
+	mapname=conv_str(st,& (st->stack->stack_data[st->start+2]));
+
+	if( (m=map_mapname2mapid(mapname))<0 )
+		return 0;
+	map_foreachinarea(buildin_killmonsterall_sub,
+		m,0,0,map[m].xs,map[m].ys,BL_MOB);
 	return 0;
 }
 

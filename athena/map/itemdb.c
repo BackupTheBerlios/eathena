@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.12 2004/03/06 06:39:11 moonsoul Exp $
+// $Id: itemdb.c,v 1.13 2004/03/08 20:36:08 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -182,6 +182,17 @@ int itemdb_isequip2(struct item_data *data)
 	}
 	return 0;
 }
+/*==========================================
+ *
+ *------------------------------------------
+ */
+int itemdb_isequip3(int nameid)
+{
+	int type=itemdb_type(nameid);
+	if(type==4 || type==5)
+		return 1;
+	return 0;
+}
 
 //
 // ‰Šú‰»
@@ -238,7 +249,7 @@ static int itemdb_readdb(void)
 			if(i>0)
 				continue;
 			printf("can't read %s\n",filename[i]);
-			return -1;
+			exit(1);
 		}
 
 		while(fgets(line,1020,fp)){

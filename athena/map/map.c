@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.24 2004/02/26 00:50:33 sara-chan Exp $
+// $Id: map.c,v 1.25 2004/03/08 20:36:08 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,11 +42,11 @@ static int users;
 static struct block_list *object[MAX_FLOORITEM];
 static int first_free_object_id,last_object_id;
 
-#define block_free_max 262144
+#define block_free_max 1048576
 static void *block_free[block_free_max];
 static int block_free_count=0,block_free_lock=0;
 
-#define BL_LIST_MAX 262144
+#define BL_LIST_MAX 1048576
 static struct block_list *bl_list[BL_LIST_MAX];
 static int bl_list_count = 0;
 
@@ -802,7 +802,7 @@ int map_quit(struct map_session_data *sd)
 	storage_storage_quit(sd);	// 倉庫を開いてるなら保存する
 
 	skill_castcancel(&sd->bl,0);	// 詠唱を中断する
-	skill_status_change_clear(&sd->bl);	// ステータス異常を解除する
+	skill_status_change_clear(&sd->bl,1);	// ステータス異常を解除する
 	skill_clear_unitgroup(&sd->bl);	// スキルユニットグループの削除
 	skill_cleartimerskill(&sd->bl);
 	pc_stop_walking(sd,0);

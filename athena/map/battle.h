@@ -232,6 +232,7 @@ extern struct Battle_Config {
 	int pc_land_skill_limit;
 	int monster_land_skill_limit;
 	int party_skill_penaly;
+	int monster_class_change_full_recover;
 	int item_rate_common,item_rate_card,item_rate_equip;	// Added by RoVeRT
 	int item_drop_common_min,item_drop_common_max;	// Added by TyrNemesis^
 	int item_drop_card_min,item_drop_card_max;
