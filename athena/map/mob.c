@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.14 2004/01/21 04:55:57 rovert Exp $
+// $Id: mob.c,v 1.15 2004/01/23 05:13:59 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1846,18 +1846,23 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 		if(src && src->type == BL_PET)
 			sd = ((struct pet_data *)src)->msd;
 		if(sd == NULL) {
-			struct map_session_data *tmpsd;
-			int i;
-			for(i=0;i<fd_max;i++){
-				if(session[i] && (tmpsd=session[i]->session_data) && tmpsd->state.auth) {
-					if(md->bl.m == tmpsd->bl.m) {
-						sd = tmpsd;
-						break;
+			if(mvp_sd != NULL)
+				sd = mvp_sd;
+			else {
+				struct map_session_data *tmpsd;
+				int i;
+				for(i=0;i<fd_max;i++){
+					if(session[i] && (tmpsd=session[i]->session_data) && tmpsd->state.auth) {
+						if(md->bl.m == tmpsd->bl.m) {
+							sd = tmpsd;
+							break;
+						}
 					}
 				}
 			}
 		}
-		if(sd) npc_event(sd,md->npc_event,1);
+		if(sd)
+			npc_event(sd,md->npc_event,1);
 	}
 
 	clif_clearchar_area(&md->bl,1);

@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.9 2004/01/20 23:59:58 rovert Exp $
+// $Id: map.c,v 1.10 2004/01/23 05:13:56 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -771,6 +771,8 @@ int map_quit(struct map_session_data *sd)
 			intif_save_petdata(sd->status.account_id,&sd->pet);
 	}
 
+	if(pc_isdead(sd))
+		pc_setrestartvalue(sd,2);
 	pc_makesavestatus(sd);
 	chrif_save(sd);
 	storage_storage_save(sd);

@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.16 2004/01/21 04:55:57 rovert Exp $
+// $Id: clif.c,v 1.17 2004/01/23 05:13:52 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -2806,9 +2806,8 @@ int clif_skillinfoblock(struct map_session_data *sd)
 			WFIFOW(fd,len+8) = skill_get_sp(id,sd->status.skill[i].lv);
 			WFIFOW(fd,len+10)= skill_get_range(id,sd->status.skill[i].lv);
 			memset(WFIFOP(fd,len+12),0,24);
-			if(!(skill_get_inf2(id)&0x01) || battle_config.quest_skill_learn == 1 || (battle_config.gm_allskill > 0 && pc_isGM(sd) >= battle_config.gm_allskill) ) 
-				WFIFOB(fd,len+36)= 
-					(sd->status.skill[i].lv < skill_get_max(id) && sd->status.skill[i].flag ==0 )? 1:0;
+			if(!(skill_get_inf2(id)&0x01) || battle_config.quest_skill_learn == 1 || (battle_config.gm_allskill > 0 && pc_isGM(sd) >= battle_config.gm_allskill) )
+				WFIFOB(fd,len+36)= (sd->status.skill[i].lv < skill_get_max(id) && sd->status.skill[i].flag ==0 )? 1:0;
 			else
 				WFIFOB(fd,len+36) = 0;
 			len+=37;
@@ -3081,7 +3080,7 @@ int clif_skill_estimation(struct map_session_data *sd,struct block_list *dst)
 	md=(struct mob_data *)dst;
 
 	WBUFW(buf, 0)=0x18c;
-	WBUFW(buf, 2)=md->class;
+	WBUFW(buf, 2)=mob_get_viewclass(md);
 	WBUFW(buf, 4)=mob_db[md->class].lv;
 	WBUFW(buf, 6)=mob_db[md->class].size;
 	WBUFL(buf, 8)=md->hp;
