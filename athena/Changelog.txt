@@ -1,4 +1,6 @@
 Date	Added
+02/12
+	* added more mob skill conditions (friendstatuseq, mysyatuseq, friendhpltmaxrate) [RoVeRT]
 02/06
 	* dumped @skillall for @allskill
 02/05
