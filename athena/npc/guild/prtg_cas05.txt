@@ -2,7 +2,7 @@
 //prtg_cas05         by kalen
 //===================================================================
 prt_gld.gat,199,243,2	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -30,7 +30,7 @@ LStartg:
 		close;
 }
 prt_gld.gat,199,236,2	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -58,7 +58,7 @@ LStartg:
 		close;
 }
 prt_gld.gat,197,243,2	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -86,7 +86,7 @@ LStartg:
 		close;
 }
 prt_gld.gat,197,236,2	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -114,7 +114,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,19,247,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -142,7 +142,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,19,243,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -170,7 +170,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,26,247,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -198,7 +198,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,26,243,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -226,7 +226,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,249,289,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -254,7 +254,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,256,289,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -282,7 +282,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,253,271,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -310,7 +310,7 @@ LStartg:
 		close;
 }
 prtg_cas05.gat,273,257,4	script	Flag	722,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (@GIDp5 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -340,7 +340,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 prtg_cas05.gat,52,41,4	script	Kafra Service#prt5	117,{
 	cutin "kafra_01",2;
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (getcharid(2) == @GIDp5) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDp5) + " + "^000000 members, please use different Kafra Service. thank you.";
@@ -422,7 +422,7 @@ L_EXIT:
 }
 //-------------------------------Ž·Ž–---------------------------------
 prtg_cas05.gat,36,37,4	script	Reiner	55,{
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (getcharid(2) == @GIDp5) goto LStartg;
 	mes "NO MSG";
 	close;
@@ -454,7 +454,7 @@ prtg_cas05.gat,212,95,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	set @GIDp5,getcastledata("prtg_cas05.gat",1)
+	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (getcharid(2) != @GIDp5) goto L1n;
 	warp "gld_dun03",199,28;
 	end;

@@ -2,7 +2,7 @@
 //prtg_cas02         by kalen
 //===================================================================
 prt_gld.gat,244,126,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -30,7 +30,7 @@ LStartg:
 		close;
 }
 prt_gld.gat,244,128,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -58,7 +58,7 @@ LStartg:
 		close;
 }
 prt_gld.gat,236,126,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -86,7 +86,7 @@ LStartg:
 		close;
 }
 prt_gld.gat,236,128,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -114,7 +114,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,40,227,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -142,7 +142,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,46,227,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -170,7 +170,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,11,219,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -198,7 +198,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,11,214,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -226,7 +226,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,20,219,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -254,7 +254,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,20,214,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -282,7 +282,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,79,227,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -310,7 +310,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,70,227,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -338,7 +338,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,38,189,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -366,7 +366,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,34,189,8	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -394,7 +394,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,153,161,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -422,7 +422,7 @@ LStartg:
 		close;
 }
 prtg_cas02.gat,162,161,4	script	Flag	722,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (@GIDp2 != 0) goto LStartg;
 		mes "       [ Kingdom of Prontera ]";
 		mes " ";
@@ -452,7 +452,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 prtg_cas02.gat,71,36,4	script	Kafra Service#prt2	117,{
 	cutin "kafra_01",2;
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (getcharid(2) == @GIDp2) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDp2) + " + "^000000 members, please use different Kafra Service. thank you.";
@@ -534,7 +534,7 @@ L_EXIT:
 }
 //-------------------------------Ž·Ž–---------------------------------
 prtg_cas02.gat,94,61,4	script	Rhay	55,{
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (getcharid(2) == @GIDp2) goto LStartg;
 	mes "NO MSG";
 	close;
@@ -566,7 +566,7 @@ prtg_cas02.gat,84,72,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	set @GIDp2,getcastledata("prtg_cas02.gat",1)
+	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (getcharid(2) != @GIDp2) goto L1n;
 	warp "gld_dun03",164,268;
 	end;
