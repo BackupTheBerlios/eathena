@@ -95,7 +95,7 @@ int main(void)
 		exit(0);
 	}
 
-	printf("The eAthena webserver is up and listening on port %s.\n", PORT);
+	printf("The eAthena webserver is up and listening on port %i.\n", PORT);
 
 	while(1)
 	{
