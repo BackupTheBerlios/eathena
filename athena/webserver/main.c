@@ -16,8 +16,6 @@
  ***************************************************************************/
 
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -30,21 +28,44 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include "setup.h"
-
 #define BLOG 10
 
 char *header = "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n";
-char recvin[500];
-
+char recvin[500], password[25];
+int s_port;
 
 void sigchld_handler(int s)
 {
 	while(wait(NULL) > 0);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
+	if (argc < 3)
+	{
+		printf("eAthena Web Server\n");
+		printf("usage: %s [password] [port]\n", argv[0]);
+		exit(0);
+	}
+
+	s_port = atoi(argv[2]);
+
+	if ((s_port < 1) || (s_port > 65534))
+	{
+		printf("Error: The port you choose is not valid port.\n");
+		exit(0);
+	} 
+
+	if (strlen(argv[1]) > 25)
+	{
+		printf("Error: Your password is too long.\n");
+		printf("It must be shorter than 25 characters.\n");
+		exit(0);
+	}
+
+	memset(password, 0x0, 25);
+	memcpy(password, argv[1], strlen(argv[1]));
+
 	int sockfd, new_fd;
 	struct sockaddr_in my_addr;
 	struct sockaddr_in their_addr;
@@ -68,7 +89,7 @@ int main(void)
 	//Now we know we have a working socket. :-)
 
 	my_addr.sin_family = AF_INET;
-	my_addr.sin_port = htons(PORT);
+	my_addr.sin_port = htons(s_port);
 	my_addr.sin_addr.s_addr = INADDR_ANY;
 	memset(&(my_addr.sin_zero), '\0', 8);
 
@@ -95,7 +116,7 @@ int main(void)
 		exit(0);
 	}
 
-	printf("The eAthena webserver is up and listening on port %i.\n", PORT);
+	printf("The eAthena webserver is up and listening on port %i.\n", s_port);
 
 	while(1)
 	{
