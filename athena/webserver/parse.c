@@ -8,3 +8,8 @@ char *get_query(char *inquery)
 	sscanf(inquery, "GET %s %[$]", filtered_query);
 	return(filtered_query);
 }
+
+void web_send(int sockin, char *in_data)
+{
+	send(sockin, in_data, strlen(in_data), 0);
+}
