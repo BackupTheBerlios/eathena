@@ -73,6 +73,13 @@ int pc_isGM(struct map_session_data *sd)
 	return p->level;
 }
 
+int pc_getrefinebonus(int lv,int type)
+{
+	if(lv >= 0 && lv < 5 && type >= 0 && type < 3)
+		return refinebonus[lv][type];
+	return 0;
+}
+
 static int distance(int x0,int y0,int x1,int y1)
 {
 	int dx,dy;
@@ -2827,6 +2834,8 @@ int pc_stop_walking(struct map_session_data *sd,int type)
 		delete_timer(sd->walktimer,pc_walk);
 		sd->walktimer=-1;
 		sd->walkpath.path_len=0;
+		sd->to_x = sd->bl.x;
+		sd->to_y = sd->bl.y;
 		if(type&0x01)
 			clif_fixpos(&sd->bl);
 	}
@@ -3524,6 +3533,7 @@ int pc_damage(struct block_list *src,struct map_session_data *sd,int damage)
 	pc_stop_walking(sd,0);
 	skill_castcancel(&sd->bl,0);	// 詠唱の中止
 	clif_clearchar_area(&sd->bl,1);
+	skill_unit_out_all(&sd->bl,gettick(),1);
 	skill_status_change_clear(&sd->bl);	// ステータス異常を解除する
 	clif_updatestatus(sd,SP_HP);
 	pc_calcstatus(sd,0);

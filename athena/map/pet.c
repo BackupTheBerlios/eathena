@@ -168,6 +168,8 @@ static int pet_attack(struct pet_data *pd,unsigned int tick,int data)
 	}
 	pd->dir=map_calc_dir(&pd->bl, md->bl.x,md->bl.y );
 
+	pd->to_x = pd->bl.x;
+	pd->to_y = pd->bl.y;
 	clif_fixpetpos(pd);
 
 	battle_weapon_attack(&pd->bl,&md->bl,tick,0);
@@ -267,7 +269,8 @@ int pet_target_check(struct map_session_data *sd,struct block_list *bl,int type)
 	struct mob_data *md;
 	int rate,mode,race;
 
-	if(bl && bl->type == BL_MOB && battle_config.pet_support && sd->pet.intimate > 900 && pd->class != battle_get_class(bl)) {
+	if(bl && pd && bl->type == BL_MOB && battle_config.pet_support && sd->pet.intimate > 900 &&
+		pd->class != battle_get_class(bl) && pd->state.state != MS_DELAY) {
 		mode=mob_db[pd->class].mode;
 		race=mob_db[pd->class].race;
 		md=(struct mob_data *)bl;
@@ -412,8 +415,8 @@ int pet_stop_walking(struct pet_data *pd,int type)
 		if(type&0x01)
 			clif_fixpos(&pd->bl);
 	}
-	if(type&~0x1)
-		pet_changestate(pd,MS_DELAY,type>>1);
+	if(type&~0xff)
+		pet_changestate(pd,MS_DELAY,type>>8);
 	else
 		pet_changestate(pd,MS_IDLE,0);
 
@@ -527,7 +530,7 @@ int pet_remove_map(struct map_session_data *sd)
 
 int pet_performance(struct map_session_data *sd)
 {
-	pet_stop_walking(sd->pd,2000<<1);
+	pet_stop_walking(sd->pd,2000<<8);
 	clif_pet_performance(sd->pd,rand()%pet_performance_val(sd) + 1);
 
 	return 0;

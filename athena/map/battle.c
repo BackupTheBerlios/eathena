@@ -13,6 +13,7 @@
 #include "mob.h"
 #include "itemdb.h"
 #include "clif.h"
+#include "pet.h"
 
 
 int attr_fix_table[4][10][10];
@@ -269,7 +270,8 @@ int battle_get_atk_(struct block_list *bl)
 		if( battle_get_sc_data(bl)[SC_CURSE].timer!=-1 )		// 呪い
 			atk-= atk*25/100;
 		return atk;
-	}else
+	}
+	else
 		return 0;
 }
 int battle_get_atk2(struct block_list *bl)
@@ -488,34 +490,27 @@ int battle_get_attack_element(struct block_list *bl)
 }
 int battle_get_attack_element2(struct block_list *bl)
 {
-	int ret;
-	struct status_change *sc_data=battle_get_sc_data(bl);
+	if(bl->type==BL_PC) {
+		int ret = ((struct map_session_data *)bl)->atk_ele_;
+		struct status_change *sc_data = battle_get_sc_data(bl);
 
-	if(bl->type==BL_MOB)
-		ret=0;
-	else if(bl->type==BL_PC)
-		ret=((struct map_session_data *)bl)->atk_ele_;
-	else if(bl->type==BL_PET)
-		ret=0;
-	else
-		return 0;
-
-	if(sc_data) {
-		if( sc_data[SC_FROSTWEAPON].timer!=-1)	// フロストウェポン
-			ret=1;
-		if( sc_data[SC_SEISMICWEAPON].timer!=-1)	// サイズミックウェポン
-			ret=2;
-		if( sc_data[SC_FLAMELAUNCHER].timer!=-1)	// フレームランチャー
-			ret=3;
-		if( sc_data[SC_LIGHTNINGLOADER].timer!=-1)	// ライトニングローダー
-			ret=4;
-		if( sc_data[SC_ENCPOISON].timer!=-1)	// エンチャントポイズン
-			ret=5;
-		if( sc_data[SC_ASPERSIO].timer!=-1)		// アスペルシオ
-			ret=6;
+		if(sc_data) {
+			if( sc_data[SC_FROSTWEAPON].timer!=-1)	// フロストウェポン
+				ret=1;
+			if( sc_data[SC_SEISMICWEAPON].timer!=-1)	// サイズミックウェポン
+				ret=2;
+			if( sc_data[SC_FLAMELAUNCHER].timer!=-1)	// フレームランチャー
+				ret=3;
+			if( sc_data[SC_LIGHTNINGLOADER].timer!=-1)	// ライトニングローダー
+				ret=4;
+			if( sc_data[SC_ENCPOISON].timer!=-1)	// エンチャントポイズン
+				ret=5;
+			if( sc_data[SC_ASPERSIO].timer!=-1)		// アスペルシオ
+				ret=6;
+		}
+		return ret;
 	}
-
-	return ret;
+	return 0;
 }
 int battle_get_party_id(struct block_list *bl)
 {
@@ -733,6 +728,8 @@ int battle_stopattack(struct block_list *bl)
 		return mob_stopattack((struct mob_data*)bl);
 	else if(bl->type==BL_PC)
 		return pc_stopattack((struct map_session_data*)bl);
+	else if(bl->type==BL_PET)
+		return pet_stopattack((struct pet_data*)bl);
 	return 0;
 }
 // 移動停止
@@ -742,6 +739,8 @@ int battle_stopwalking(struct block_list *bl,int type)
 		return mob_stop_walking((struct mob_data*)bl,type);
 	else if(bl->type==BL_PC)
 		return pc_stop_walking((struct map_session_data*)bl,type);
+	else if(bl->type==BL_PET)
+		return pet_stop_walking((struct pet_data*)bl,type);
 	return 0;
 }
 
@@ -857,6 +856,7 @@ int battle_calc_damage(struct block_list *bl,int damage,int skill_num,int skill_
 					((struct mob_data *)bl)->canmove_tick = gettick() + 300;
 			}
 		}
+
 	}
 
 	if(	damage>0 && sc_data!=NULL && (
@@ -2149,6 +2149,15 @@ static struct Damage battle_calc_pc_weapon_attack(
 		damage += battle_get_atk2(src);
 		damage2 += battle_get_atk_2(src);
 	}
+	if(skill_num == CR_SHIELDBOOMERANG) {
+		if(sd->equip_index[8] >= 0) {
+			int index = sd->equip_index[8];
+			if(sd->inventory_data[index] && sd->inventory_data[index]->type == 5) {
+				damage += sd->inventory_data[index]->weight/10;
+				damage += sd->status.inventory[index].refine * pc_getrefinebonus(0,1);
+			}
+		}
+	}
 
 	// 0未満だった場合1に補正
 	if(damage<1) damage=1;
@@ -2822,12 +2831,14 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 				wd.damage, wd.div_ , wd.type, wd.damage2);
 		//二刀流左手とカタール追撃のミス表示(無理やり～)
 			if(src->type == BL_PC && sd->status.weapon >= 16 && wd.damage2 == 0)
-				clif_damage(src,target,tick+200, wd.amotion, wd.dmotion,0, 1, 0, 0);
+				clif_damage(src,target,tick+10, wd.amotion, wd.dmotion,0, 1, 0, 0);
 		}
 		map_freeblock_lock();
 		battle_damage(src,target,(wd.damage+wd.damage2));
-		if((wd.damage+wd.damage2)>0)
-			skill_additional_effect(src,target,0,0,BF_WEAPON,tick);
+		if(!(target->prev == NULL || (target->type == BL_PC && pc_isdead((struct map_session_data *)target) ) ) ) {
+			if(wd.damage > 0 || wd.damage2 > 0)
+				skill_additional_effect(src,target,0,0,BF_WEAPON,tick);
+		}
 		map_freeblock_unlock();
 	}
 	return 0;
@@ -2860,7 +2871,7 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 		else
 			return -1;
 	}
-
+	
 //	if( target->type==BL_SKILL )	// 対 象がスキルユニットなら無条件肯定
 //		return 0;
 

@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.10 2004/01/15 23:11:42 rovert Exp $
+// $Id: clif.c,v 1.11 2004/01/18 02:33:11 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -689,7 +689,7 @@ static int clif_mob0078(struct mob_data *md,unsigned char *buf)
 	WBUFW(buf,8)=md->opt1;
 	WBUFW(buf,10)=md->opt2;
 	WBUFW(buf,12)=md->option;
-	WBUFW(buf,14)=md->class;
+	WBUFW(buf,14)=mob_get_viewclass(md);
 	WBUFPOS(buf,46,md->bl.x,md->bl.y);
 	WBUFB(buf,48)|=md->dir&0x0f;
 	WBUFB(buf,49)=5;
@@ -712,7 +712,7 @@ static int clif_mob007b(struct mob_data *md,unsigned char *buf)
 	WBUFW(buf,8)=md->opt1;
 	WBUFW(buf,10)=md->opt2;
 	WBUFW(buf,12)=md->option;
-	WBUFW(buf,14)=md->class;
+	WBUFW(buf,14)=mob_get_viewclass(md);
 	WBUFL(buf,22)=gettick();
 	WBUFPOS2(buf,50,md->bl.x,md->bl.y,md->to_x,md->to_y);
 	WBUFB(buf,56)=5;
@@ -6240,7 +6240,7 @@ void clif_parse_Recall(int fd,struct map_session_data *sd)	// Added by RoVeRT
 
 void clif_parse_GMHide(int fd,struct map_session_data *sd)	// Added by RoVeRT
 {
-	if (pc_isGM(sd) >= atcommand_config.hide) {
+	if(pc_isGM(sd) >= atcommand_config.hide) {
 		if(sd->status.option&0x40){
 			sd->status.option&=~0x40;
 			clif_displaymessage(fd,"Invisible: Off.");
@@ -6286,6 +6286,30 @@ void clif_parse_PMIgnoreAll(int fd,struct map_session_data *sd)		// Added by RoV
 }
 
 
+int sendtalky(int fd,char *mes,int x,int y)
+{
+	// not working
+	WFIFOW(fd,0)=0x191;
+	WFIFOL(fd,2)=10002047;
+	memcpy(WFIFOP(fd,6),mes,80);
+	WFIFOSET(fd,packet_len_table[0x191]);
+
+	return 0;
+}
+
+int monk(struct map_session_data *sd,struct block_list *target,int type)
+{
+//R 01d1 <Monk id>L <Target monster id>L <Bool>L
+	int fd=sd->fd;
+	WFIFOW(fd,0)=0x1d1;
+	WFIFOL(fd,2)=sd->bl.id;
+	WFIFOL(fd,6)=target->id;
+	WFIFOL(fd,10)=type;
+	WFIFOSET(fd,packet_len_table[0x1d1]);
+
+	return 0;
+}
+
 void clif_parse_skillMessage(int fd,struct map_session_data *sd)	// Added by RoVeRT
 {
 	int skillid,skilllv,x,y;
@@ -6299,17 +6323,10 @@ void clif_parse_skillMessage(int fd,struct map_session_data *sd)	// Added by RoV
 
 	mes = RFIFOP(fd,10);
 
-// skill 125 = talky box
+if (skillid== 125)
+	sendtalky(fd,mes,x,y);	// or whatever
+
 // skill 220 = graffiti
-
-// Process here or in another function
-
-
-//send talkybox (not working)
-	WFIFOW(fd,0)=0x191;
-	WFIFOL(fd,2)=100000001;
-	memcpy(WFIFOP(fd,6),mes,80);
-	WFIFOSET(fd,packet_len_table[0x191]);
 
 
 //printf("skill: %d %d location: %3d %3d message: %s\n",skillid,skilllv,x,y,(char*)mes);

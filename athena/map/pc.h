@@ -1,4 +1,4 @@
-// $Id: pc.h,v 1.4 2004/01/16 16:36:32 rovert Exp $
+// $Id: pc.h,v 1.5 2004/01/18 02:33:11 rovert Exp $
 
 #ifndef _PC_H_
 #define _PC_H_
@@ -25,6 +25,7 @@
 
 void pc_set_gm_account_fname(char *str);
 int pc_isGM(struct map_session_data *sd);
+int pc_getrefinebonus(int lv,int type);
 
 int pc_setrestartvalue(struct map_session_data *sd,int type);
 int pc_makesavestatus(struct map_session_data *);

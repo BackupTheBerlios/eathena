@@ -407,7 +407,6 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 				}
 			}
 		}
-		break;
 
 //		case RG_SNATCHER:	//ƒXƒiƒbƒ`ƒƒ[
 //			if( sd->status.weapon != 0 && sd->status.weapon != 1 && sd->status.weapon != 2 && sd->status.weapon != 6 ) {
@@ -597,18 +596,28 @@ int skill_blown( struct block_list *src, struct block_list *target,int count)
 	int moveblock;
 	struct map_session_data *sd=NULL;
 	struct mob_data *md=NULL;
-	
+	struct pet_data *pd=NULL;
+
 	if (target->type==BL_PC)
 		sd=(struct map_session_data *)target;
 	else if (target->type==BL_MOB)
 		md=(struct mob_data *)target;
+	else if (target->type==BL_PET)
+		pd=(struct pet_data *)target;
+	else return 0;
 
-	if(!(count&0x10000 && (sd||md))){	/* w’è‚È‚µ‚È‚çˆÊ’uŠÖŒW‚©‚ç•ûŒü‚ğ‹‚ß‚é */
+	if(!(count&0x10000 && (sd||md||pd))){	/* w’è‚È‚µ‚È‚çˆÊ’uŠÖŒW‚©‚ç•ûŒü‚ğ‹‚ß‚é */
 		dx=target->x-src->x; dx=(dx>0)?1:((dx<0)?-1: 0);
 		dy=target->y-src->y; dy=(dy>0)?1:((dy<0)?-1: 0);
 	}
 	if(dx==0 && dy==0){
-		int dir=(sd)?sd->dir:md->dir;
+		int dir=0;
+		if(sd)
+			dir = sd->dir;
+		else if(md)
+			dir = md->dir;
+		else if(pd)
+			dir = pd->dir;
 		if(dir>=0 && dir<8){
 			dx=-dirx[dir];
 			dy=-diry[dir];
@@ -621,11 +630,10 @@ int skill_blown( struct block_list *src, struct block_list *target,int count)
 	moveblock=( x/BLOCK_SIZE != nx/BLOCK_SIZE || y/BLOCK_SIZE != ny/BLOCK_SIZE);
 
 	if(count&0x20000) {
+		battle_stopwalking(target,1);
 		if(sd){
 			sd->to_x=nx;
 			sd->to_y=ny;
-			if(sd->walktimer != -1)
-				pc_stop_walking(sd,1);
 			sd->walktimer = 1;
 			clif_walkok(sd);
 			clif_movechar(sd);
@@ -633,11 +641,16 @@ int skill_blown( struct block_list *src, struct block_list *target,int count)
 		else if(md) {
 			md->to_x=nx;
 			md->to_y=ny;
-			if(md->state.state == MS_WALK)
-				mob_stop_walking(md,1);
 			prev_state = md->state.state;
 			md->state.state = MS_WALK;
 			clif_fixmobpos(md);
+		}
+		else if(pd) {
+			pd->to_x=nx;
+			pd->to_y=ny;
+			prev_state = pd->state.state;
+			pd->state.state = MS_WALK;
+			clif_fixpetpos(pd);
 		}
 	}
 	else
@@ -647,13 +660,11 @@ int skill_blown( struct block_list *src, struct block_list *target,int count)
 	dy = ny - y;
 
 	if(sd)	/* ‰æ–ÊŠO‚Éo‚½‚Ì‚ÅÁ‹ */
-		map_foreachinmovearea(clif_pcoutsight,
-			target->m,x-AREA_SIZE,y-AREA_SIZE,
-			x+AREA_SIZE,y+AREA_SIZE,dx,dy,0,sd);
-	if(md)
-		map_foreachinmovearea(clif_moboutsight,
-			target->m,x-AREA_SIZE,y-AREA_SIZE,
-			x+AREA_SIZE,y+AREA_SIZE,dx,dy,BL_PC,md);
+		map_foreachinmovearea(clif_pcoutsight,target->m,x-AREA_SIZE,y-AREA_SIZE,x+AREA_SIZE,y+AREA_SIZE,dx,dy,0,sd);
+	else if(md)
+		map_foreachinmovearea(clif_moboutsight,target->m,x-AREA_SIZE,y-AREA_SIZE,x+AREA_SIZE,y+AREA_SIZE,dx,dy,BL_PC,md);
+	else if(pd)
+		map_foreachinmovearea(clif_petoutsight,target->m,x-AREA_SIZE,y-AREA_SIZE,x+AREA_SIZE,y+AREA_SIZE,dx,dy,BL_PC,pd);
 
 	if(moveblock) map_delblock(target);
 	target->x=nx;
@@ -661,18 +672,19 @@ int skill_blown( struct block_list *src, struct block_list *target,int count)
 	if(moveblock) map_addblock(target);
 
 	if(sd) {	/* ‰æ–Ê“à‚É“ü‚Á‚Ä‚«‚½‚Ì‚Å•\¦ */
-		map_foreachinmovearea(clif_pcinsight,
-			target->m,nx-AREA_SIZE,ny-AREA_SIZE,
-			nx+AREA_SIZE,ny+AREA_SIZE,-dx,-dy,0,sd);
+		map_foreachinmovearea(clif_pcinsight,target->m,nx-AREA_SIZE,ny-AREA_SIZE,nx+AREA_SIZE,ny+AREA_SIZE,-dx,-dy,0,sd);
 		if(count&0x20000)
 			sd->walktimer = -1;
 	}
-	if(md) {
-		map_foreachinmovearea(clif_mobinsight,
-			target->m,nx-AREA_SIZE,ny-AREA_SIZE,
-			nx+AREA_SIZE,ny+AREA_SIZE,-dx,-dy,BL_PC,md);
+	else if(md) {
+		map_foreachinmovearea(clif_mobinsight,target->m,nx-AREA_SIZE,ny-AREA_SIZE,nx+AREA_SIZE,ny+AREA_SIZE,-dx,-dy,BL_PC,md);
 		if(count&0x20000)
 			md->state.state = prev_state;
+	}
+	else if(pd) {
+		map_foreachinmovearea(clif_petinsight,target->m,nx-AREA_SIZE,ny-AREA_SIZE,nx+AREA_SIZE,ny+AREA_SIZE,-dx,-dy,BL_PC,pd);
+		if(count&0x20000)
+			pd->state.state = prev_state;
 	}
 
 	skill_unit_move(target,gettick(),(count&0xffff)+7);	/* ƒXƒLƒ‹ƒ†ƒjƒbƒg‚Ì”»’è */
@@ -766,6 +778,12 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 		damage, dmg.div_, skillid, (lv!=0)?lv:skilllv, type );
 	if(dmg.blewcount > 0) {	/* ‚«”ò‚Î‚µˆ—‚Æ‚»‚ÌƒpƒPƒbƒg */
 		skill_blown(dsrc,bl,dmg.blewcount);
+		if(bl->type == BL_MOB)
+			clif_fixmobpos((struct mob_data *)bl);
+		else if(bl->type == BL_PET)
+			clif_fixpetpos((struct pet_data *)bl);
+		else
+			clif_fixpos(bl);
 	}
 
 //FIX change Ugly Dance to sp from hp somewhere
@@ -773,14 +791,13 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 	/* ÀÛ‚Éƒ_ƒ[ƒWˆ—‚ğs‚¤ */
 	battle_damage(src,bl,damage);
 	/* ƒ_ƒ[ƒW‚ª‚ ‚é‚È‚ç’Ç‰ÁŒø‰Ê”»’è */
-	if(damage > 0)
-		skill_additional_effect(src,bl,skillid,skilllv,attack_type,tick);
+	if(!(bl->prev == NULL || (bl->type == BL_PC && pc_isdead((struct map_session_data *)bl) ) ) ) {
+		if(damage > 0)
+			skill_additional_effect(src,bl,skillid,skilllv,attack_type,tick);
 
-	if(bl->type==BL_MOB && src!=bl)	/* ƒXƒLƒ‹g—pğŒ‚ÌMOBƒXƒLƒ‹ */
-		mobskill_use((struct mob_data *)bl,tick,MSC_SKILLUSED|(skillid<<16));
-
-	if(dmg.blewcount > 0)
-		clif_fixpos(bl);
+		if(bl->type==BL_MOB && src!=bl)	/* ƒXƒLƒ‹g—pğŒ‚ÌMOBƒXƒLƒ‹ */
+			mobskill_use((struct mob_data *)bl,tick,MSC_SKILLUSED|(skillid<<16));
+	}
 
 	map_freeblock_unlock();
 
@@ -1175,7 +1192,12 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 				int i;	/* ‘¼l‚©‚ç•·‚¢‚½“®‚«‚È‚Ì‚ÅŠÔˆá‚Á‚Ä‚é‰Â”\«‘å•Œø—¦‚ªˆ«‚¢‚Á‚·„ƒ */
 				for(i=0;i<4;i++){
 					skill_blown(src,bl,1);
-					clif_fixpos(bl);
+					if(bl->type == BL_MOB)
+						clif_fixmobpos((struct mob_data *)bl);
+					else if(bl->type == BL_PET)
+						clif_fixpetpos((struct pet_data *)bl);
+					else
+						clif_fixpos(bl);
 					skill_area_temp[0]=0;
 					map_foreachinarea(skill_area_sub,
 						bl->m,bl->x-1,bl->y-1,bl->x+1,bl->y+1,0,
@@ -1508,7 +1530,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case AM_CP_ARMOR:
 	case AM_CP_HELM:
 	case CR_PROVIDENCE:		/* ƒvƒƒ”ƒBƒfƒ“ƒX */
-	case MO_BLADESTOP:
 	case SA_FLAMELAUNCHER:	/* ƒtƒŒƒCƒ€ƒ‰ƒ“ƒ`ƒƒ[ */
 	case SA_FROSTWEAPON:	/* ƒtƒƒXƒgƒEƒFƒ|ƒ“ */
 	case SA_LIGHTNINGLOADER:/* ƒ‰ƒCƒgƒjƒ“ƒOƒ[ƒ_[ */
@@ -1516,6 +1537,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case SA_SPELLBREAKER:
 	case MO_EXPLOSIONSPIRITS:	// ”š—ô”g“®
 	case MO_STEELBODY:		// ‹à„
+	case MO_BLADESTOP:
 #if 0
 	case SA_VOLCANO:		/* ƒ{ƒ‹ƒP[ƒm */
 	case SA_DELUGE:			/* ƒfƒŠƒ…[ƒW */
@@ -1527,8 +1549,9 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		skill_status_change_start( bl,
 			SkillStatusChangeTable[skillid], skilllv, 0 );
 		if(skillid==SM_PROVOKE && bl->type==BL_MOB)
-		mob_target((struct mob_data *)bl,src,skill_get_range(skillid, skilllv));
+			mob_target((struct mob_data *)bl,src,skill_get_range(skillid, skilllv));
 		break;
+
 	case CR_REFLECTSHIELD:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		break;
@@ -1974,6 +1997,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;
 
 	case SA_CASTCANCEL:
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		skill_castcancel(src,1);
 		if(sd) {
 			int sp = skill_get_sp(sd->skillid_old,sd->skilllv_old);
@@ -2634,9 +2658,9 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		target=BCT_ALL;
 		break;
 
-	case MO_BLADESTOP:	/* ƒT[ƒrƒXƒtƒH[ƒ† */
-		target=BCT_ALL;
-		break;
+//	case MO_BLADESTOP:	/* ƒT[ƒrƒXƒtƒH[ƒ† */
+//		target=BCT_ALL;
+//		break;
 
 	case SA_VOLCANO:			/* ƒ{ƒ‹ƒP[ƒm */
 	case SA_DELUGE:				/* ƒfƒŠƒ…[ƒW */
@@ -4976,7 +5000,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 				tick = 300*1000;
 				for(i=val2=0;i<val1;i++) {
 					t = 5-(i>>1);
-					val2 += (t < 0)? 0:t;
+					val2 += (t < 0)? 1:t;
 				}
 			}
 			break;
@@ -4990,6 +5014,12 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			tick = 1000 * (90 + 30 * val1); /* SC_AUTOSPELL); */
 			val1 = (5 + 2 * val1) * 10;
 			break;
+
+		case SC_BLADESTOP:
+			tick = 100 * (val1 * 2 + 3);
+			pc_stop_walking(sd,1);	/* Blade Stop */
+			break;
+
 		default:
 			printf("UnknownStatusChange [%d]\n", type);
 			return 0;
@@ -5045,9 +5075,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		case SC_RUWACH:
 			*option|=8192;
 			opt_flag=1;
-			break;
-		case SC_BLADESTOP:
-			pc_stop_walking(sd,1);	/* Blade Stop */
 			break;
 	}
 

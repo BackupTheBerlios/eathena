@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.8 2004/01/17 05:35:59 rovert Exp $
+// $Id: mob.c,v 1.9 2004/01/18 02:33:11 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -196,6 +196,15 @@ int mob_once_spawn_area(struct map_session_data *sd,char *mapname,
 }
 
 /*==========================================
+ * mobの見かけ所得
+ *------------------------------------------
+ */
+int mob_get_viewclass(struct mob_data *md)
+{
+	return mob_db[md->class].view_class;
+}
+
+/*==========================================
  * mobのadelay所得
  *------------------------------------------
  */
@@ -362,6 +371,8 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 	}
 	md->dir=map_calc_dir(&md->bl, sd->bl.x,sd->bl.y );	// 向き設定
 
+	md->to_x = md->bl.x;
+	md->to_y = md->bl.y;
 	clif_fixmobpos(md);
 
 	if( mobskill_use(md,tick,-2) )	// スキル使用
@@ -1590,11 +1601,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 		return 0;
 	}
 
-	if(md->state.state==MS_WALK){
-//		mob_changestate(md,MS_IDLE,0);
-//		clif_fixpos(&md->bl);
+	if(md->sc_data[SC_ENDURE].timer == -1)
 		mob_stop_walking(md,3);
-	}
 
 	if(md->hp>mob_db[md->class].max_hp)
 		md->hp=mob_db[md->class].max_hp;
@@ -1839,6 +1847,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 
 	skill_castcancel(&md->bl,0);
 	clif_clearchar_area(&md->bl,1);
+	skill_unit_out_all(&md->bl,gettick(),1);
 	skill_status_change_clear(&md->bl);
 	map_delblock(&md->bl);
 	mob_deleteslave(md);
@@ -2433,6 +2442,7 @@ static int mob_readdb(void)
 			if(class<=1000 || class>2000)
 				continue;
 	
+			mob_db[class].view_class=class;
 			memcpy(mob_db[class].name,str[1],24);
 			memcpy(mob_db[class].jname,str[2],24);
 			mob_db[class].lv=atoi(str[3]);
@@ -2501,6 +2511,52 @@ static int mob_readdb(void)
 	}
 	return 0;
 }
+
+/*==========================================
+ * MOB表示グラフィックの変更
+ *------------------------------------------
+ */
+static int mob_readdb_mobavail(void)
+{
+	FILE *fp;
+	char line[1024];
+	int ln=0;
+	int class,j,k;
+	char *str[10],*p;
+	
+	if( (fp=fopen("db/mob_avail.txt","r"))==NULL ){
+		printf("can't read db/mob_avail.txt\n");
+		return -1;
+	}
+	
+	while(fgets(line,1020,fp)){
+		if(line[0]=='/' && line[1]=='/')
+			continue;
+		memset(str,0,sizeof(str));
+		for(j=0,p=line;j<2 && p;j++){
+			str[j]=p;
+			p=strchr(p,',');
+			if(p) *p++=0;
+		}
+
+		if(str[0]==NULL)
+			continue;
+
+		class=atoi(str[0]);
+		
+		if(class<=1000 || class>2000)	// 値が異常なら処理しない。
+			continue;
+		k=atoi(str[1]);
+		if(k >= 0) {
+			mob_db[class].view_class=k;
+		}
+		ln++;
+	}
+	fclose(fp);
+	printf("read db/mob_avail.txt done (count=%d)\n",ln);
+	return 0;
+}
+
 /*==========================================
  * ランダムモンスターデータの読み込み
  *------------------------------------------
@@ -2648,6 +2704,7 @@ static int mob_readskilldb(void)
 int do_init_mob(void)
 {
 	mob_readdb();
+	mob_readdb_mobavail();
 	mob_read_randommonster();
 	mob_readskilldb();
 

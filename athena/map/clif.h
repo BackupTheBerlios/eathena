@@ -236,6 +236,7 @@ int clif_foreachclient(int (*)(struct map_session_data*,va_list),...);
 
 
 int clif_skill_list_send(struct map_session_data *sd,int skills[],int limit);
+int monk(struct map_session_data *sd,struct block_list *target,int type);
 
 int do_init_clif(void);
 

@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.6 2004/01/16 02:17:23 rovert Exp $
+// $Id: script.c,v 1.7 2004/01/18 02:33:11 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -2879,7 +2879,7 @@ int buildin_mobcount(struct script_state *st)	// Added by RoVeRT
 	map_foreachinarea(buildin_mobcount_sub,
 		m,0,0,map[m].xs,map[m].ys,BL_MOB, event,&c );
 
-	push_val(st->stack,C_INT,c);
+	push_val(st->stack,C_INT, (c - 1));
 
 	return 0;
 }

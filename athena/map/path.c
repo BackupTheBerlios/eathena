@@ -1,4 +1,4 @@
-// $Id: path.c,v 1.2 2004/01/09 03:00:19 rovert Exp $
+// $Id: path.c,v 1.3 2004/01/18 02:33:11 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -190,9 +190,9 @@ int path_blownpos(int m,int x0,int y0,int dx,int dy,int count)
 		return -1;
 	md=&map[m];
 
-	if(count>10){	// 最大10マスに制限
+	if(count>15){	// 最大10マスに制限
 		printf("path_blownpos: count too many %d !\n",count);
-		count=10;
+		count=15;
 	}
 	if(dx>1 || dx<-1 || dy>1 || dy<-1){
 		printf("path_blownpos: illeagal dx=%d or dy=%d !\n",dx,dy);
