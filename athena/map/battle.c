@@ -684,7 +684,7 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 			skill_status_change_end(target,SC_STONE,-1);
 		if(sc_data[SC_SLEEP].timer!=-1)
 			skill_status_change_end(target,SC_SLEEP,-1);
-		if(sc_data[SC_SPELLBREAKER].timer!=-1)		// AppleGirl
+		if(sc_data[SC_SPELLBREAKER].timer!=-1)		// Added by AppleGirl
 			skill_castcancel(target);
 	}
 
@@ -811,7 +811,7 @@ int battle_calc_damage(struct block_list *bl,int damage,int flag)
 			damage=0;
 		}
 		
-		if(sc_data[SC_DEFENDER].timer!=-1 && damage>0 &&	// AppleGirl
+		if(sc_data[SC_DEFENDER].timer!=-1 && damage>0 &&	// Added by AppleGirl
 			flag&BF_WEAPON && flag&BF_LONG ){
 			// ニューマ
 			damage-=damage*sc_data[SC_DEFENDER].val2/100;
@@ -1432,7 +1432,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 				damage = damage*(100+ 50*skill_lv)/100;
 				//blewcount=4;skill.cで吹き飛ばしやってみた
 				break;
-			case AS_SPLASHER:		// AppleGirl
+			case AS_SPLASHER:		// Added by AppleGirl
 				damage = damage*(200+ 20*skill_lv)/100;
 				div_=6;
 				break;
@@ -1918,7 +1918,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				damage = damage*(300+ 50*skill_lv)/100;
 				div_=8;
 				break;
-			case AS_SPLASHER:		// AppleGirl
+			case AS_SPLASHER:		// Added by AppleGirl
 				damage = damage*(200+ 20*skill_lv)/100;
 				div_=6;
 				break;
@@ -2609,6 +2609,10 @@ struct Damage  battle_calc_misc_attack(
 	case TF_THROWSTONE:	// 石投げ
 		damage=30;
 		damagefix=0;
+		break;
+
+	case BA_DISSONANCE:	// 不協和音
+		damage=(skill_lv+3)*10;
 		break;
 
 	case NPC_SELFDESTRUCTION:	// 自爆

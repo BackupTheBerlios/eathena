@@ -18,8 +18,7 @@
 #define SKILLUNITTIMER_INVERVAL	100
 
 
-/* ƒXƒLƒ‹”Ô†„ƒXƒe
-[ƒ^ƒXˆÙí”Ô†•ÏŠ·ƒe[ƒuƒ‹ */
+/* ƒXƒLƒ‹”Ô†„ƒXƒe[ƒ^ƒXˆÙí”Ô†•ÏŠ·ƒe[ƒuƒ‹ */
 int SkillStatusChangeTable[]={	/* skill.h‚Ìenum‚ÌSC_***‚Æ‚ ‚í‚¹‚é‚±‚Æ */
 /* 0- */
 	-1,-1,-1,-1,-1,-1,
@@ -1623,13 +1622,8 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;
 
 	case BD_ADAPTATION:			/* ƒAƒhƒŠƒu */
-		{
-			struct skill_unit_group *group=skill_check_dancing(src);
-			if(group){
-				skill_delunitgroup(group);
-				pc_calcstatus(sd,0);
-			}
-		} break;
+		skill_stop_dancing(src);
+		 break;
 
 	case TF_STEAL:			// ƒXƒeƒB[ƒ‹
 		if(pc_steal_item(sd,bl)) {
@@ -2638,21 +2632,13 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		count=81;
 		limit=120000;
 		val1=skilllv;
-		target=BCT_NOENEMY;
+		target=BCT_ENEMY;
 		break;
 
 	case BA_POEMBRAGI:	/* ƒCƒhƒDƒ“‚Ì—ÑŒç */
 		count=81;
 		limit=180000;
-		val1=skilllv;
-		target=BCT_NOENEMY;
-		break;
-
-	case BA_ASSASSINCROSS:	/* ƒCƒhƒDƒ“‚Ì—ÑŒç */
-	case DC_FORTUNEKISS:		/* K‰^‚ÌƒLƒX */
-		count=81;
-		limit=120*1000;
-		val1=skilllv;
+		range=5;
 		target=BCT_NOENEMY;
 		break;
 
@@ -2662,6 +2648,14 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		limit=180*1000;
 		range=skilllv+skilllv%2+3;
 		target=BCT_PARTY;
+		break;
+
+	case BA_ASSASSINCROSS:	/* ƒCƒhƒDƒ“‚Ì—ÑŒç */
+	case DC_FORTUNEKISS:		/* K‰^‚ÌƒLƒX */
+		count=81;
+		limit=120*1000;
+		val1=skilllv;
+		target=BCT_NOENEMY;
 		break;
 
 	case 336:	/* ƒ[ƒvƒ|[ƒ^ƒ‹ */
@@ -3962,14 +3956,14 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 	}
 
 	/* ‰‰‘t/ƒ_ƒ“ƒX’† */
-	if( skill_check_dancing(&sd->bl) && skill_num!=BD_ADAPTATION &&
+	if( sd->sc_data[SC_DANCING].timer!=-1 && skill_num!=BD_ADAPTATION &&
 		skill_num!=BA_MUSICALSTRIKE && skill_num!=DC_THROWARROW ){
-		printf("dancing! %d\n",skill_num);
+		//printf("dancing! %d\n",skill_num);
 		return 0;
 	}
 
 	/* ‘é‚ª‚¢‚È‚¢ */
-	if( skill_num==HT_BLITZBEAT && !(sd->status.option&0x10) ){	/* ‘é‚ª‚¢‚È‚¢ */
+	if( skill_num==HT_BLITZBEAT && !(sd->status.option&0x10) ){
 		return 0;
 	}
 
@@ -4102,7 +4096,7 @@ int skill_use_pos( struct map_session_data *sd,
 		return 0;	/* ˆÙí‚â’¾–Ù‚È‚Ç */
 
 	/* ‰‰‘t/ƒ_ƒ“ƒX’†‚©ƒ`ƒFƒbƒN */
-	if( skill_check_dancing(&sd->bl) )
+	if( sd->sc_data[SC_DANCING].timer!=-1 )
 		return 0;
 
 	/* ŽË’ö‚ÆáŠQ•¨ƒ`ƒFƒbƒN */
@@ -4267,8 +4261,9 @@ int skill_status_change_end( struct block_list* bl , int type,int tid )
 		sc_data[type].timer=-1;
 		(*sc_count)--;
 
-		if(bl->type==BL_PC){
-			int ii = -1;
+		if(bl->type==BL_PC && type<SC_SENDMAX)
+			clif_status_change(bl,type,0);	/* ƒAƒCƒRƒ“Á‹Ž */
+/*			int ii = -1;
 			if (type < 64) ii=type;
 			else if (type == SC_EXPLOSIONSPIRITS)	ii = 0x56;
 			else if (type == SC_STEELBODY)			ii = 0x57;
@@ -4278,8 +4273,8 @@ int skill_status_change_end( struct block_list* bl , int type,int tid )
 			else if (type == SC_LIGHTNINGLOADER)	ii = 0x5c;
 			else if (type == SC_SEISMICWEAPON)		ii = 0x5d;
 			if (ii != -1)
-				clif_status_change(bl,ii,0);	/* ƒAƒCƒRƒ“Á‹Ž */
-		}
+				clif_status_change(bl,ii,0);	// ƒAƒCƒRƒ“Á‹Ž
+		}*/
 
 		switch(type){	/* ³í‚É–ß‚é‚Æ‚«‚È‚É‚©ˆ—‚ª•K—v */
 		case SC_STONE:
@@ -4427,13 +4422,17 @@ int skill_status_change_timer(int tid, unsigned int tick, int id, int data)
 
 	case SC_DISSONANCE:	/* •s‹¦˜a‰¹ */
 		if( (--sc_data[type].val2)>0){
-			struct skill_unit_group *group=
-				(struct skill_unit_group *)sc_data[type].val4;
-			if(!group)
+			struct skill_unit *unit=
+				(struct skill_unit *)sc_data[type].val4;
+			struct block_list *src;
+			
+			if(!unit || !unit->group)
 				break;
-			skill_attack(BF_MISC,(struct block_list *)&group->unit[0],
-				(struct block_list *)&group->unit[0],
-				bl,group->skill_id,sc_data[type].val1,tick,0);			
+			src=map_id2bl(unit->group->src_id);
+			if(!src)
+				break;
+			skill_attack(BF_MISC,src,&unit->bl,bl,
+				unit->group->skill_id,sc_data[type].val1,tick,0);
 			if(sc_data[type].timer==tid)
 				sc_data[type].timer=add_timer( 3000+tick,
 					skill_status_change_timer, bl->id, data );			
@@ -4441,6 +4440,10 @@ int skill_status_change_timer(int tid, unsigned int tick, int id, int data)
 		
 	case SC_LULLABY:	/* ŽqŽç‰S */
 		if( (--sc_data[type].val2)>0){
+			struct skill_unit *unit=
+				(struct skill_unit *)sc_data[type].val4;
+			if(!unit || !unit->group || unit->group->src_id==bl->id)
+				break;
 			skill_additional_effect(bl,bl,
 				BD_LULLABY,sc_data[type].val1,BF_LONG|BF_SKILL|BF_MISC,tick);
 			if(sc_data[type].timer==tid)
@@ -4705,7 +4708,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		case SC_DISSONANCE:			/* •s‹¦˜a‰¹ */
 			tick = 1000 * 3;
 			val2 = 10;
-			val3 = (val1+3)*10;
 			break;
 		case SC_WHISTLE:			/* Œû“J */
 			tick = 1000 * 60;
@@ -4741,27 +4743,12 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		case SC_SERVICE4U:			/* ƒT[ƒrƒXƒtƒH[ƒ†[ */
 			tick = 1000 * 60 * 3;
 			val2 = val1+10;
+			val3 = val1*3+10;
+			break;
+		case SC_DANCING:			/* ƒ_ƒ“ƒX/‰‰‘t’† */
+			tick = 1000 * 181;
 			break;
 
-//----		case SC_ETERNALCHAOS:		/* ƒGƒ^[ƒiƒ‹ƒJƒIƒX */
-//			tick = 1000* 60;
-//			break;
-//		case SC_NIBELUNGEN:			/* ƒj[ƒxƒ‹ƒ“ƒO‚ÌŽw—Ö */
-//			tick = 1000 * 60;
-//			val2 = (val1+2)*50;
-//			break;
-//		case SC_SIEGFRIED:			/* •sŽ€g‚ÌƒW[ƒNƒtƒŠ[ƒh */
-//			tick = 1000 * 60;
-//			val2 = (val1+3)*10;
-//			break;
-//		case SC_DISSONANCE:
-//			tick = 1000 * 30;
-//			val2 = 30 + val1*10;
-//			break;
-//		case SC_UGLYDANCE:
-//			tick = 1000 * 30;
-//			val2 = 30 + val1*10;
-//			break;
 		case SC_EXPLOSIONSPIRITS:	// ”š—ô”g“®
 			tick = 1000 * 60 * 3;
 			val2 = 75 + 25*val1;
@@ -4924,8 +4911,9 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			return 0;
 	}
 
-	if(bl->type==BL_PC){
-		int ii = -1;
+	if(bl->type==BL_PC && type<SC_SENDMAX)
+		clif_status_change(bl,type,1);	/* ƒAƒCƒRƒ“•\Ž¦ */
+/*		int ii = -1;
 		if (type < 64) ii=type;
 		else if (type == SC_EXPLOSIONSPIRITS)	ii = 0x56;
 		else if (type == SC_STEELBODY)			ii = 0x57;
@@ -4935,21 +4923,14 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		else if (type == SC_LIGHTNINGLOADER)	ii = 0x5c;
 		else if (type == SC_SEISMICWEAPON)		ii = 0x5d;
 		if (ii != -1)
-			clif_status_change(bl,ii,1);	/* ƒAƒCƒRƒ“•\Ž¦ */
-	}
+			clif_status_change(bl,ii,1);	// ƒAƒCƒRƒ“•\Ž¦
+	}*/
 
 	/* option‚Ì•ÏX */
 	switch(type){
 		case SC_STONE:	case SC_FREEZE:	case SC_STAN:	case SC_SLEEP:
 			battle_stopattack(bl);	/* UŒ‚’âŽ~ */
-			battle_stopattack(bl);	/* UŒ‚’âŽ~ */
-			if(sd){	/* ‰‰‘t/ƒ_ƒ“ƒX‚Ì’†’f */
-				struct skill_unit_group *group=skill_check_dancing(bl);
-				if(group){
-					skill_delunitgroup(group);
-					pc_calcstatus(sd,0);
-				}
-			}
+			skill_stop_dancing(bl);	/* ‰‰‘t/ƒ_ƒ“ƒX‚Ì’†’f */
 			{	/* “¯Žž‚ÉŠ|‚©‚ç‚È‚¢ƒXƒe[ƒ^ƒXˆÙí‚ð‰ðœ */
 				int i;
 				for(i = SC_STONE; i <= SC_SLEEP; i++){
@@ -5025,19 +5006,9 @@ int skill_status_change_clear(struct block_list *bl)
 		if(sc_data[i].timer != -1){	/* ˆÙí‚ª‚ ‚é‚È‚çƒ^ƒCƒ}[‚ðíœ‚·‚é */
 			delete_timer(sc_data[i].timer, skill_status_change_timer);
 			sc_data[i].timer = -1;
-			if(bl->type==BL_PC){
-				int ii = -1;
-				if (i < 64) ii=i;
-				else if (i == SC_EXPLOSIONSPIRITS)	ii = 0x56;
-				else if (i == SC_STEELBODY)			ii = 0x57;
-				else if (i == SC_SPEARSQUICKEN)		ii = 0x44;
-				else if (i == SC_FLAMELAUNCHER)		ii = 0x5a;
-				else if (i == SC_FROSTWEAPON)		ii = 0x5b;
-				else if (i == SC_LIGHTNINGLOADER)	ii = 0x5c;
-				else if (i == SC_SEISMICWEAPON)		ii = 0x5d;
-				if (ii != -1)
-					clif_status_change(bl,ii,0);	/* ƒAƒCƒRƒ“Á‹Ž */
-			}
+
+			if(bl->type==BL_PC && i<SC_SENDMAX)
+				clif_status_change(bl,i,0);	/* ƒAƒCƒRƒ“Á‹Ž */
 		}
 	}
 	*sc_count = 0;
@@ -5071,42 +5042,31 @@ int skill_check_cloaking(struct block_list *bl)
 
 
 
-
-
 /*
  *----------------------------------------------------------------------------
  * ƒXƒLƒ‹ƒ†ƒjƒbƒg
  *----------------------------------------------------------------------------
  */
 
-/* ‰‰‘t/ƒ_ƒ“ƒX’†‚©‚Ç‚¤‚©i‚»‚ÌƒOƒ‹[ƒv‚ð•Ô‚·j */
-struct skill_unit_group *skill_check_dancing(struct block_list *src)
+/* ‰‰‘t/ƒ_ƒ“ƒXƒXƒLƒ‹‚©‚Ç‚¤‚©”»’è */
+int skill_is_danceskill(int id)
 {
-	int i;
-	struct skill_unit_group *list=NULL;
-	int maxsug=0;
-
-	if(src->type==BL_PC){
-		list=((struct map_session_data *)src)->skillunit;
-		maxsug=MAX_SKILLUNITGROUP;
-	}else if(src->type==BL_MOB){
-		list=((struct mob_data *)src)->skillunit;
-		maxsug=MAX_MOBSKILLUNITGROUP;
-	}
-	if(!list) return NULL;
-	
-	for(i=0;i<maxsug;i++){	/* ŒŸõ */
-		int id;
-		if(list[i].group_id==0)
-			continue;
-		id=list[i].skill_id;
-		if( (id>=BD_LULLABY && id<=BD_RAGNAROK) ||
-			(id>=BA_DISSONANCE && id<=BA_APPLEIDUN && id!=BA_FROSTJOKE ) ||
-			(id>=DC_UGLYDANCE && id<=DC_SERVICEFORYOU && id!=DC_SCREAM) )
-			return &list[i];
-	}
-	return NULL;
+	return ( (id>=BD_LULLABY && id<=BD_RAGNAROK) ||
+		(id>=BA_DISSONANCE && id<=BA_APPLEIDUN && id!=BA_FROSTJOKE ) ||
+		(id>=DC_UGLYDANCE && id<=DC_SERVICEFORYOU && id!=DC_SCREAM) );
 }
+
+/* ‰‰‘t/ƒ_ƒ“ƒX‚ð‚â‚ß‚é */
+void skill_stop_dancing(struct block_list *src)
+{
+	struct status_change* sc_data=battle_get_sc_data(src);
+	if(sc_data[SC_DANCING].timer==-1)
+		return;
+	skill_delunitgroup((struct skill_unit_group *)sc_data[SC_DANCING].val2);
+	if(src->type==BL_PC)
+		pc_calcstatus((struct map_session_data *)src,0);
+}
+
 
 /*==========================================
  * ƒXƒLƒ‹ƒ†ƒjƒbƒg‰Šú‰»
@@ -5252,6 +5212,9 @@ struct skill_unit_group *skill_initunitgroup(struct block_list *src,
 	memset(group->vallist,0,sizeof(group->vallist));
 	group->valstr=NULL;
 
+	if( skill_is_danceskill(skillid) )
+		skill_status_change_start(src,SC_DANCING,skillid,(int)group);
+
 	return group;
 }
 
@@ -5267,6 +5230,12 @@ int skill_delunitgroup(struct skill_unit_group *group)
 		return 0;
 
 /*	printf("delunitgroup %d\n",group->group_id); */
+
+	if( skill_is_danceskill(group->skill_id) ){
+		struct block_list *src=map_id2bl(group->src_id);
+		if(src)
+			skill_status_change_end(src,SC_DANCING,-1);
+	}
 
 	group->alive_count=0;
 	if(group->unit!=NULL){
