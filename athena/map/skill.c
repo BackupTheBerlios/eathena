@@ -1643,7 +1643,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case AM_CP_SHIELD:
 	case AM_CP_ARMOR:
 	case AM_CP_HELM:
-	case SA_SPELLBREAKER:
 	case MO_EXPLOSIONSPIRITS:	// îöóÙîgìÆ
 	case MO_STEELBODY:		// ã‡çÑ
 	case MO_BLADESTOP:

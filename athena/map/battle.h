@@ -211,6 +211,7 @@ extern struct Battle_Config {
 	int gvg_long_damage_rate;
 	int gvg_magic_damage_rate;
 	int gvg_misc_damage_rate;
+	int gvg_ghost_time;
 	int item_rate_equip;	// Modified by RoVeRT
 	int item_rate_card;
 	int prevent_logout;	// End Modification

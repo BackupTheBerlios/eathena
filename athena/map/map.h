@@ -170,6 +170,7 @@ struct map_session_data {
 	short sg_count;
 
 	int ghost_timer;
+	int gvg_ghost_timer;
 	unsigned int canact_tick;
 	unsigned int canmove_tick;
 	unsigned int canlog_tick;
