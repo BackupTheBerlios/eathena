@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.3 2004/01/28 21:26:00 rovert Exp $
+// $Id: login.c,v 1.4 2004/02/13 18:34:56 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -45,6 +45,20 @@ char GM_account_filename[1024] = "conf/GM_account.txt";
 
 struct mmo_char_server server[MAX_SERVERS];
 int server_fd[MAX_SERVERS];
+
+enum {
+	ACO_DENY_ALLOW=0,
+	ACO_ALLOW_DENY,
+	ACO_MUTUAL_FAILTURE,
+	ACO_STRSIZE=128,
+};
+
+int access_order=ACO_DENY_ALLOW;
+int access_allownum=0;
+int access_denynum=0;
+char *access_allow=NULL;
+char *access_deny=NULL;
+
 
 #define AUTH_FIFO_SIZE 256
 struct {
@@ -128,6 +142,48 @@ int read_gm_account()
 //	printf("gm_account: %s read done (%d gm account ID)\n",gm_account_txt,c);
 	return 0;
 }
+
+int check_ip(unsigned int ip)
+{
+	char buf[64];
+	int i;
+	unsigned char *p=(unsigned char *)&ip;
+	enum { ACF_DEF, ACF_ALLOW, ACF_DENY } flag = ACF_DEF;
+
+	if( access_allownum==0 && access_denynum==0 )
+		return 1;		// §ŒÀ‚ğg‚í‚È‚¢ê‡‚Íí‚É‹–‰Â
+
+	// + Œ»İ‚Í 012.345. Œ`®‚Ì‘O•ûˆê’v‚Æ all ‚Ì‚İ‘Î‰B
+	// + 012.345.678.901/24 Œ`®‚Ìƒlƒbƒgƒ}ƒXƒN•t‚«•\‹L‚Í‘Î‰‚µ‚Ä‚È‚¢‚ªA
+	//   ‘Î‰‚µ‚½‚Ù‚¤‚ª‚¢‚¢‚Æv‚í‚ê‚éB
+	// + .ne.jp‚È‚Ç‚ÌDNSŒã•ûˆê’v‚ÍƒzƒXƒg–¼‹tˆø‚«‚ÌƒRƒXƒg‚ğl‚¦‚é‚Æ
+	//   ‘Î‰‚µ‚È‚¢‚Ù‚¤‚ª‚¢‚¢‚Æv‚í‚ê‚éB(’Z‚¢ŠÔ‚ÅDNS‚ªˆø‚¯‚é•Ûá‚Í‚È‚¢‚µA
+	//   ÀÛ‚Éƒ^ƒCƒ€ƒAƒEƒg‚Ü‚Å1•ª‹ß‚­‘Ò‚½‚³‚ê‚éƒP[ƒX‚ª‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚¢‚é)
+	//   ‘Î‰‚³‚¹‚é‚È‚ç”ñ“¯Šú‚ÉDNS‚ğˆø‚­‚©A‹É’Z‚¢ŠÔ‚Åƒ^ƒCƒ€ƒAƒEƒg‚ğ‚Æ‚é‚×‚«.
+	sprintf(buf,"%d.%d.%d.%d",p[0],p[1],p[2],p[3]);
+	
+	for(i=0;i<access_allownum;i++){
+		if( memcmp(access_allow+i*ACO_STRSIZE,buf,
+			strlen(access_allow+i*ACO_STRSIZE))==0){
+			flag=ACF_ALLOW;
+			if( access_order==ACO_DENY_ALLOW )
+				return 1;	// deny,allow ‚È‚çallow‚É‚ ‚Á‚½“_‚Å‹–‰Â
+			break;
+		}
+	}
+	for(i=0;i<access_denynum;i++){
+		if( memcmp(access_deny+i*ACO_STRSIZE,buf,
+			strlen(access_deny+i*ACO_STRSIZE))==0){
+			flag=ACF_DENY;
+			return 0;		// deny‚É‚ ‚é‚Æ•s‹–‰Â
+			break;
+		}
+	}
+	return (flag==ACF_ALLOW || access_order==ACO_ALLOW_DENY)? 1:0;
+		// allow,deny‚Ì‚Æ‚«‚Í–³ğŒ‚ÅidenyˆÈŠO‚µ‚©‚±‚±‚Ü‚Å‚±‚È‚¢j‚Í‹–‰Â
+		// mutual-failture‚Ì‚Æ‚«‚ÍA‹Lq‚È‚µ‚È‚ç•s‹–‰Â
+}
+
 
 // ƒAƒJƒEƒ“ƒgƒf[ƒ^ƒx[ƒX‚Ì“Ç‚İ‚İ
 int mmo_auth_init(void)
@@ -629,7 +685,8 @@ int parse_login(int fd)
     return 0;
   }
   if(RFIFOW(fd,0)<30000)
-	  printf("parse_login : %d %d %d\n",fd,RFIFOREST(fd),RFIFOW(fd,0));
+	  printf("parse_login : %d %d %d %s\n",fd,RFIFOREST(fd),RFIFOW(fd,0),RFIFOP(fd,6));
+
   while(RFIFOREST(fd)>=2){
 	switch(RFIFOW(fd,0)){
 	case 0x64:		// ƒNƒ‰ƒCƒAƒ“ƒgƒƒOƒCƒ“—v‹
@@ -637,14 +694,21 @@ int parse_login(int fd)
 		if(RFIFOREST(fd)< ((RFIFOW(fd,0)==0x64)?55:47))
 			return 0;
 		{
-			FILE *logfp=fopen("login.log","a");
-			if(logfp){
-				unsigned char *p=(unsigned char *)&session[fd]->client_addr.sin_addr;
-				fprintf(logfp,"client connection request %s from %d.%d.%d.%d" RETCODE,
-				RFIFOP(fd,6),p[0],p[1],p[2],p[3]);
-				fclose(logfp);
-			}
+			unsigned char *p=(unsigned char *)&session[fd]->client_addr.sin_addr;
+			login_log("client connection request %s from %d.%d.%d.%d" RETCODE,
 		}
+		
+		if( !check_ip(session[fd]->client_addr.sin_addr.s_addr) ){
+			char tmpstr[256];
+			gettimeofday(&tv,NULL);
+			strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
+			sprintf(tmpstr+19,".%03d",(int)tv.tv_usec/1000);
+			login_log("access denied %s" RETCODE, tmpstr);
+			WFIFOW(fd,0)=0x6a;
+			WFIFOB(fd,2)=0x03;
+			WFIFOSET(fd,3);
+		}
+		
 		account.userid = RFIFOP(fd,6);
 		account.passwd = RFIFOP(fd,30);
 #ifdef PASSWORDENC
@@ -688,7 +752,7 @@ int parse_login(int fd)
 		} else {
 			WFIFOW(fd,0)=0x6a;
 			WFIFOB(fd,2)=result;
-			WFIFOSET(fd,23);
+			WFIFOSET(fd,3);
 		}
 		RFIFOSKIP(fd,(RFIFOW(fd,0)==0x64)?55:47);
 		break;
@@ -870,6 +934,33 @@ int login_config_read(const char *cfgName)
 		}
 		else if(strcmpi(w1,"gm_account_filename")==0){
 			strcpy(GM_account_filename,w2);
+		}
+
+		else if(strcmpi(w1,"order")==0){
+			access_order=atoi(w2);
+			if(strcmpi(w2,"deny,allow")==0) access_order=ACO_DENY_ALLOW;
+			if(strcmpi(w2,"allow,deny")==0) access_order=ACO_ALLOW_DENY;
+			if(strcmpi(w2,"mutual-failture")==0) access_order=ACO_MUTUAL_FAILTURE;
+		}
+		else if(strcmpi(w1,"allow")==0){
+			if(access_allow)
+				access_allow=realloc( access_allow, (access_allownum+1)*ACO_STRSIZE);
+			else
+				access_allow=malloc( ACO_STRSIZE );
+			if(strcmpi(w2,"all")==0)
+				access_allow[(access_allownum++)*ACO_STRSIZE]=0;
+			else if(w2[0])
+				strcpy( access_allow+(access_allownum++)*ACO_STRSIZE,w2 );
+		}
+		else if(strcmpi(w1,"deny")==0){
+			if(access_deny)
+				access_deny=realloc( access_deny,(access_denynum+1)*ACO_STRSIZE);
+			else
+				access_deny=malloc( ACO_STRSIZE );
+			if(strcmpi(w2,"all")==0)
+				access_deny[(access_denynum++)*ACO_STRSIZE]=0;
+			else if(w2[0])
+				strcpy( access_deny+(access_denynum++)*ACO_STRSIZE,w2 );
 		}
 	}
 	fclose(fp);
