@@ -1,4 +1,47 @@
 --------------
+//0730 by ぴざまん
+
+・ストームガストの凍結時間を本鯖にあわせて修正(スキルレベルに関係なく一定の凍結時間(10秒)になります)
+・スタン、暗闇、沈黙、毒の状態異常時間の「継ぎ足し」ができないように修正
+・状態異常が掛かりにくすぎてたのでMOBの状態異常耐性を緩和(また調整するかも)
+	(map/)
+	skill.c
+		skill_castend_nodamage_id()、skill_addisional_effect()修正
+		skill_status_change_start()修正
+
+--------------
+//0729 by DRG
+
+・カートレボリューションがカートなしで使えた不具合の修正
+・カートレボリューションがJOBLV30で覚えれたのを修正
+	(conf/)
+	npc_event_skillget.txt
+		カートレボリューション項修正
+	(map/)
+	skill.c
+		skill_check_condition()修正
+
+--------------
+//0728 by ぽぽぽ
+
+・職が変わってもギルドの職業欄が更新されない不具合の修正。
+
+	(char/)
+	inter.c
+		パケット長リスト修正。
+	int_guild.c
+		mapif_guild_memberinfoshort()、mapif_parse_GuildChangeMemberInfoShort()、
+		inter_guild_parse_frommap()修正
+	(map/)
+	intif.h
+	intif.c
+		intif_guild_memberinfoshort()、intif_parse_GuildMemberInfoShort()
+		intif_parse()修正
+	guild.h
+		guild_send_memberinfoshort()、guild_recv_memberinfoshort()修正
+	
+
+--------------
 //0727 by 聖
 
 ・武器研究スキルによってホルグレンなどの精錬NPCが
