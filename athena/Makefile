@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 2004/01/09 03:00:18 rovert Exp $
+# $Id: Makefile,v 1.3 2004/01/10 07:24:22 rovert Exp $
 
 CC = gcc -pipe
 PACKETDEF = -DPACKETVER=4 -DNEW_006b
@@ -35,6 +35,12 @@ clean:
 	cd tool && make $(MKDEF) $@ && cd ..
 	rm -f setupwizard
 	rm -f *.exe
+	cd mysql_login && rm -f *.o && cd ..
+	cd mysql_char && rm -f *.o && cd ..
+
+sql:
+	cd mysql_login && sh make.sh && cd ..
+	cd mysql_char && sh make.sh && cd ..	
 
 common/GNUmakefile: common/Makefile
 	sed -e 's/$$>/$$^/' common/Makefile > common/GNUmakefile
