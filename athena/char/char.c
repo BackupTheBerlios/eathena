@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.4 2004/01/23 15:52:11 rovert Exp $
+// $Id: char.c,v 1.5 2004/01/27 21:53:26 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -44,7 +44,7 @@ int char_ip;
 int char_port = 6121;
 int char_maintenance;
 int char_new;
-char char_txt[256];
+char char_txt[1024];
 char lan_map_ip[128]; 
 int subneti[4]; 
 int subnetmaski[4]; 
