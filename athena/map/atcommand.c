@@ -29,7 +29,7 @@ int kill_monster_sub(struct block_list *bl,va_list ap)
 	int id;
 	id=va_arg(ap,int);
 	if (strncasecmp(md->npc_event,"GM_MONSTER",10)==0)
-		mob_damage(NULL,md,md->hp);
+		mob_damage(NULL,md,md->hp,1);
 
 	return 0;
 }

@@ -2940,7 +2940,7 @@ int pc_checkskill(struct map_session_data *sd,int skill_id)
 		return 0;
 	}
 
-	if(sd->status.skill[skill_id].id == skill_id || (pc_isGM(sd) < battle_config.pc_skillflee && sd->status.skill[skill_id].id == 0 && sd->status.skill[skill_id].lv > 0))
+	if(sd->status.skill[skill_id].id == skill_id)
 		return (sd->status.skill[skill_id].lv);
 
 	return 0;

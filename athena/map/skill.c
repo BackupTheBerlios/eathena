@@ -388,7 +388,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 						break;
 					case 10:
 						max = 1;
-					break;
+						break;
 				}
 
 				do{ skilllv=levels[rand()%21]; } while(skilllv>max && skilllv>pc_checkskill(sd,skillid) );
@@ -1122,6 +1122,10 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
 		break;
 	case MO_EXTREMITYFIST:	/* 阿修羅覇鳳拳 */
+		if (bl->type==BL_MOB && mob_db[((struct mob_data*)bl)->class].mexp > 0) {
+			clif_skill_fail(sd,sd->skillid,0,0);
+			break;
+		}
 		if(sd) {
 			struct walkpath_data wpd;
 			int dx,dy;
@@ -1233,6 +1237,10 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	case MG_FROSTDIVER:			/* フロストダイバー */
 	case WZ_JUPITEL:			/* ユピテルサンダー */
 	case NPC_MAGICALATTACK:		/* MOB:魔法打撃攻撃 */
+		if ((skillid==ALL_RESURRECTION || skillid==PR_TURNUNDEAD) && bl->type==BL_MOB && mob_db[((struct mob_data*)bl)->class].mexp > 0) {
+			clif_skill_fail(sd,sd->skillid,0,0);
+			break;
+		}
 		skill_attack(BF_MAGIC,src,src,bl,skillid,skilllv,tick,flag);
 		break;
 
@@ -1744,6 +1752,10 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;*/
 
 	case MG_STONECURSE:			/* ストーンカース */
+		if (bl->type==BL_MOB && mob_db[dstmd->class].mexp > 0) {
+			clif_skill_fail(sd,sd->skillid,0,0);
+			break;
+		}
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		if( rand()%100 < skilllv*4+20 )
 			skill_status_change_start(bl,SC_STONE,skilllv,0);
@@ -1925,15 +1937,20 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 
 			if(bl->type==BL_PC)
 				pc_setpos(dstsd,sd->mapname,mx,my,3);
-			else
-				mob_warp(dstmd,mx,my,3);
-
+			else if(bl->type==BL_MOB) {
+				if (mob_db[dstmd->class].mexp > 0){
+					clif_skill_fail(sd,sd->skillid,0,0);
+					break;
+				}
+				else
+					mob_warp(dstmd,mx,my,3);
+			}
 		}else if( src->type==BL_MOB ) {
 			mob_warp(md,mx,my,3);
 	
 			if(bl->type==BL_PC)
 				pc_setpos(dstsd,sd->mapname,mx,my,3);
-			else
+			else if(bl->type==BL_MOB)
 				mob_warp(dstmd,mx,my,3);
 
 		}
@@ -2049,7 +2066,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case NPC_SUICIDE:			/* 自決 */
 		if(md){
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
-			mob_damage(NULL,md,md->hp);
+			mob_damage(NULL,md,md->hp,0);
 		}
 		break;
 
@@ -3816,7 +3833,7 @@ int skill_check_condition( struct map_session_data *sd )
 			break;
 
 		case MO_EXTREMITYFIST:					// 阿修羅覇鳳拳
-			if( sd->sc_data[SC_EXPLOSIONSPIRITS].timer == -1) {
+			if( sd->sc_data[SC_EXPLOSIONSPIRITS].timer == -1 ) {
 				clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
 			}

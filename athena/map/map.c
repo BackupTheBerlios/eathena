@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.8 2004/01/20 16:25:56 rovert Exp $
+// $Id: map.c,v 1.9 2004/01/20 23:59:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -286,7 +286,7 @@ void map_foreachinarea(int (*func)(struct block_list*,va_list),int m,int x0,int 
 			}
 		}
 	
-	if(blockcount>=block_list_max) {
+	if(bl_list_count>=BL_LIST_MAX) {
 		if(battle_config.error_log)
 			printf("map_foreachinarea: *WARNING* block count too many!\n");
 	}
