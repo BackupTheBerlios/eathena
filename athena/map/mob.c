@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.37 2004/02/10 04:39:07 rovert Exp $
+// $Id: mob.c,v 1.38 2004/02/10 14:26:02 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -2747,10 +2747,6 @@ static int mob_readdb(void)
 				mob_db[class].mvpitem[i].nameid=atoi(str[49+i*2]);
 				mob_db[class].mvpitem[i].p=atoi(str[50+i*2])*battle_config.mvp_item_rate/100;
 			}
-			if(battle_config.mvp_hp_rate!=100 && mob_db[class].mexp)
-				if((mob_db[class].max_hp=mob_db[class].max_hp*
-					battle_config.mvp_hp_rate/100)<=0)
-					mob_db[class].max_hp=1;
 			for(i=0;i<MAX_RANDOMMONSTER;i++)
 				mob_db[class].summonper[i]=0;
 			mob_db[class].maxskill=0;
