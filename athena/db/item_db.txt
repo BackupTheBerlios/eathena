@@ -1044,6 +1044,69 @@
 4146,Maya_Card,Maya Card,6,20,,10,,,,,,,32,,,,{},{ bonus bNoMagicDamage,30; }
 4147,Baphomet_Card,Baphomet Card,6,20,,10,,,,,,,2,,,,{},{ bonus bHit,-10; }
 4148,Pharaoh_Card,Pharaoh Card,6,20,,10,,,,,,,769,,,,{},{ bonus bUseSPrate,-30; }
+4149,Bon_Gun_Card,Bon Gun Card,6,20,,10,,,,,,,32,,,,{},{ bonus bInt,2; },,,
+4150,Orc_Archer_Card,Orc Archer Card,6,20,,10,,,,,,,136,,,,{},{ bonus bRange,1; },,,
+4151,Mimic_Card,Mimic Card,6,20,,10,,,,,,,769,,,,{},{ bonus bAgi,1; bonus bDex,2; bonus bLuk,3; },,,
+4152,Wraith_Card,Wraith Card,6,20,,10,,,,,,,769,,,,{},{ bonus bMatk,8; },,,
+4153,Alarm_Card,Alarm Card,6,20,,10,,,,,,,136,,,,{},{ bonus bCastrate,-10; },,,
+4154,Arclouse_Card,Arclouse Card,6,20,,10,,,,,,,64,,,,{},{ bonus bStr,2; },,,
+4155,Rideword_Card,Rideword Card,6,20,,10,,,,,,,32,,,,{},{ bonus bDex,6; },,,
+4156,Skeleton_Prisoner_Card,Skel Prisoner Card,6,20,,10,,,,,,,136,,,,{},{ skill 45,3; },,,
+4157,Zombie_Prisoner_Card,Zombie Prisoner Card,6,20,,10,,,,,,,16,,,,{},{ bonus bMaxHPrate,10; },,,
+4158,Dark_Priest_Card,Dark Priest Card,6,20,,10,,,,,,,4,,,,{},{ bonus bUseSPrate,-15; },,,
+4159,Punk_Card,Punk Card,6,20,,10,,,,,,,4,,,,{},{ bonus bUseSPrate,-15; },,,
+4160,Zherlthsh_Card,Zherlthsh Card,6,20,,10,,,,,,,4,,,,{},{ bonus bUseSPrate,-15; },,,
+4161,Mysteltainn_Card,Mysteltainn Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtk,30; bonus bMaxHPrate,-22; bonus bCastrate,-10; },,,
+4162,Tirfing_Card,Tirfing Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAgi,3; bonus bFlee,10; },,,
+4163,Executioner_Card,Executioner Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtk,300; },,,
+4164,Anolian_Card,Anolian Card,6,20,,10,,,,,,,16,,,,{},{ bonus bStr,2; },,,
+4165,Sting_Card,Sting Card,6,20,,10,,,,,,,136,,,,{},{ bonus bDex,4; },,,
+4166,Wander_Man_Card,Wander Man Card,6,20,,10,,,,,,,2,,,,{},{ bonus bHit,30; bonus bCritical,6; },,,
+4167,Cramp_Card,Cramp Card,6,20,,10,,,,,,,4,,,,{},{ bonus bAgi,3; },,,
+4168,Filamentous_Card,Filamentous Card,6,20,,10,,,,,,,769,,,,{},{ bonus2 bResEff,Eff_Stone,100; bonus2 bResEff,Eff_Freeze,100; bonus2 bResEff,Eff_Stan,100; bonus2 bResEff,Eff_Sleep,100; bonus2 bResEff,Eff_Poison,100; bonus2 bResEff,Eff_Curse,100; bonus2 bResEff,Eff_Silence,100; bonus2 bResEff,Eff_Confusion,100; bonus2 bResEff,Eff_Blind,100; },,,
+4169,Brilight_Card,Brilight Card,6,20,,10,,,,,,,32,,,,{},{ bonus bAgi,2; bonus bLuk,3; },,,
+4170,Iron_Fist_Card,Iron Fist Card,6,20,,10,,,,,,,769,,,,{},{ bonus bVit,2; },,,
+4171,High_Orc_Card,High Orc Card,6,20,,10,,,,,,,16,,,,{},{ bonus bStr,2; },,,
+4172,Choco_Card,Choco Card,6,20,,10,,,,,,,2,,,,{},{ bonus bStr,100; bonus bAgi,100; bonus bVit,100; bonus bInt,100; bonus bDex,100; bonus bLuk,100; },,,
+4173,Stem_Worm_Card,Stem Worm Card,6,20,,10,,,,,,,2,,,,{},{ bonus bDex,2; },,,
+4174,Penonema_Card,Penomena Card,6,20,,10,,,,,,,32,,,,{},{ bonus bMaxHPrate, 15; },,,
+4175,Marin_Card,Marin Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,1,20; },,,
+4176,Sasquatch_Card,Sasquatch Card,6,20,,10,,,,,,,4,,,,{},{ bonus2 bAddSize,1,50; bonus bAtk,-10; },,,
+4177,Antonio_Card,Antonio Card,6,20,,10,,,,,,,136,,,,{},{ skill 50,5; skill 210,5; },,,
+4178,Cruiser_Card,Cruiser Card,6,20,,10,,,,,,,2,,,,{},{ bonus2 bAddEff,Eff_Stone,50; },,,
+4179,Mystcase_Card,Mystcase Card,6,20,,10,,,,,,,64,,,,{},{ bonus bCastrate,-50; bonus bAtk,+50; },,,
+4180,Chepet_Card,Chepet Card,6,20,,10,,,,,,,4,,,,{},{ bonus bLuk,5; },,,
+4181,Knight_of_Windstorm_Card,Knight Of Windstorm Card,6,20,,10,,,,,,,2,,,,{},{ bonus2 bAddEff,Eff_Freeze,25; bonus bAtk,25; },,,
+4182,Garm_Card,Garm Card,6,20,,10,,,,,,,4,,,,{},{ bonus2 bAddSize,2,50; bonus bAtk,-10; },,,
+4183,Gargoyle_Card,Gargoyle Card,6,20,,10,,,,,,,136,,,,{},{ bonus bRange,5; },,,
+4184,Raggler_Card,Raggler Card,6,20,,10,,,,,,,2,,,,{},{ bonus2 bAddEff,Eff_Sleep,50; },,,
+4185,Neraid_Card,Neraid Card,6,20,,10,,,,,,,4,,,,{},{ bonus2 bAddSize,0,50; bonus bAtk,-10; },,,
+4186,Pest_Card,Pest Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,0,20; },,,
+4187,Injustice_Card,Injustice Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,9,20; },,,
+4188,Goblin_Archer_Card,Goblin Archer Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,2,20; },,,
+4189,Gryphon_Card,Gryphon Card,6,20,,10,,,,,,,2,,,,{},{ bonus2 bAddEff,Eff_Silence,25; bonus bAtk,25; },,,
+4190,Dark_Frame_Card,Dark Frame Card,6,20,,10,,,,,,,769,,,,{},{ skill 32,2; },,,
+4191,Wind_Ghost_Card,Wind Ghost Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtkEle,4; },,,
+4192,Merman_Card,Merman Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtkEle,1; },,,
+4193,Cookie_Card,Cookie Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtkEle,7; },,,
+4194,Aster_Card,Aster Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,3,20; },,,
+4195,Carat_Card,Carat Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,6,20; },,,
+4196,Bloody_Knight_Card,Bloody Knight Card,6,20,,10,,,,,,,2,,,,{},{ bonus2 bAddEff,Eff_Blind,25; bonus bAtk,25; },,,
+4197,Clock_Card,Clock Card,6,20,,10,,,,,,,4,,,,{},{ bonus bLuk,10; },,,
+4198,Clock_Tower_Manager_Card,C Tower Manager Card,6,20,,10,,,,,,,2,,,,{},{ bonus2 bAddEff,Eff_Curse,50; },,,
+4199,Alligator_Card,Alligator Card,6,20,,10,,,,,,,2,,,,{},{ bonus2 bAddEff,Eff_Poison,50;},,,
+4200,Dark_Lord_Card,Dark Lord Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtkEle,9; },,,
+4201,Orc_Lady_Card,Orc Lady Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,4,20; },,,
+4202,Megalith_Card,Megalith Card,6,20,,10,,,,,,,4,,,,{},{ skill 9,1; },,,
+4203,Alice_Card,Alice Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtkEle,6; },,,
+4204,Raydric_Archer_Card,Raydric Archer Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtkEle,3; },,,
+4205,Greatest_General_Card,Greatest General Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,5,20; },,,
+4206,Stalatic_Golem_Card,Stalactic Golem Card,6,20,,10,,,,,,,32,,,,{},{ bonus bMaxHP,500; bonus bDex,-3; },,,
+4207,Tri_Joint_Card,Tri Joint Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,7,20; },,,
+4208,Steamrider_Goblin_Card,Steam Goblin Card,6,20,,10,,,,,,,64,,,,{},{ bonus2 bSubEle,8,20; },,,
+4209,Sage_Worm_Card,Sage Worm Card,6,20,,10,,,,,,,2,,,,{},{ bonus bAtkEle,8; },,,
+4210,Kobold_Archer_Card,Kobold archer Card,6,20,,10,,,,,,,2,,,,{},{ bonus bHit,25; bonus bAtk,25; },,,
+4211,Chimera_Card,Chimera Card,6,20,,10,,,,,,,2,,,,{},{  bonus2 bAddEff,Eff_Stan,25; bonus bAtk,25; },,,
 5001,Headset,Headset,5,20,,200,,3,,0,2088958,2,256,,0,87,{},{ bonus2 bResEff,Eff_Curse,1000; }
 5002,Gemmed_Crown,Jewel Crown,5,20,,600,,4,,0,414946,2,256,,60,88,{},{ bonus bMdef,3; bonus bInt,2; bonus bLuk,1; }
 5003,Joker_Jester,Joker Jester,5,20,,100,,1,,0,2088958,2,256,,0,89,{},{ bonus bMdef,5; bonus bLuk,2; }
@@ -1311,14 +1374,14 @@
 10018,Monkey_Circlet,Monkey Circlet,8,20,,0,,,,,,,,,,,{},{}
 10019,Red_Muffler,Red Muffler,8,20,,0,,,,,,,,,,,{},{}
 10020,Sword_of_Grave_Keeper,Sword of Chinese Exorcist,8,20,,0,,,,,,,,,,,{},{}
-
+//
 //Ep6 items by Akaru - Working like official servers
 664,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
 665,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
 666,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
 667,Gift_Box,Gift Box,2,2,,200,,,,,10477567,2,,,,,{ getitem -4,1; },{},
 668,Angpow,Angpow,0,1,,2,,,,,10477567,2,,,,,{ set Zeny,Zeny+rand(100,10000); },{}
-
+//
 //Not sure of functions in official servers
 2634,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,0,136,,,0,{},{},
 2635,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,1,136,,,0,{},{},
