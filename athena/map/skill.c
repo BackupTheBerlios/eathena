@@ -121,7 +121,7 @@ int SkillStatusChangeTable[]={	/* skill.h‚Ìenum‚ÌSC_***‚Æ‚ ‚í‚¹‚é‚±‚Æ */
 	-1,
 /* 220- */
 	-1,-1,-1,
-	SC_GANGSTER,
+	-1,	//SC_GANGSTER,
 	-1,-1,-1,-1,-1,-1,
 /* 230- */
 	-1,-1,
