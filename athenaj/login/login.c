@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.6 2004/02/13 18:23:55 rovert Exp $
+// $Id: login.c,v 1.7 2004/02/13 21:03:05 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -640,6 +640,7 @@ int parse_login(int fd)
 {
   struct mmo_account account;
   int result,i;
+  struct timeval tv;
 
   if(session[fd]->eof){
     for(i=0;i<MAX_SERVERS;i++)
