@@ -161,6 +161,7 @@ struct map_session_data {
 	short skillx,skilly;
 	short skillid,skilllv;
 	short skillitem,skillitemlv;
+	short skillid_old,skilllv_old;
 	struct skill_unit_group skillunit[MAX_SKILLUNITGROUP];
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL];

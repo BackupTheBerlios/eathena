@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.4 2004/01/14 19:35:42 rovert Exp $
+// $Id: map.c,v 1.5 2004/01/15 23:11:42 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -735,7 +735,7 @@ int map_quit(struct map_session_data *sd)
 
 	storage_storage_quit(sd);	// 倉庫を開いてるなら保存する
 
-	skill_castcancel(&sd->bl);	// 詠唱を中断する
+	skill_castcancel(&sd->bl,0);	// 詠唱を中断する
 	skill_status_change_clear(&sd->bl);	// ステータス異常を解除する
 	skill_clear_unitgroup(&sd->bl);	// スキルユニットグループの削除
 	skill_cleartimerskill(&sd->bl);

@@ -85,7 +85,7 @@ struct skill_unit_group *skill_check_dancing( struct block_list *src );
 void skill_stop_dancing(struct block_list *src);
 
 // 詠唱キャンセル
-int skill_castcancel( struct block_list *sd );
+int skill_castcancel(struct block_list *bl,int type);
 
 #define skill_calc_heal(bl,skill_lv)	\
 	(( battle_get_lv(bl)+battle_get_int(bl) )/8 *(4+ skill_lv*8))
@@ -228,14 +228,14 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_SPEEDPOTION2			=39,
 
 // Used by English Team
-	SC_BROKNARMOR			=32,
-	SC_BROKNWEAPON			=33,
+//	SC_BROKNARMOR			=32,
+//	SC_BROKNWEAPON			=33,
 
 	SC_SIGHTTRASHER			=73,
 
-	SC_CALLSPIRITS			=100,
-	SC_FREECAST			=101,
-	SC_ABSORBSPIRIT			=102,
+//	SC_CALLSPIRITS			=100,
+//	SC_FREECAST			=101,
+//	SC_ABSORBSPIRIT			=102,
 	SC_BLADESTOP			=180,
 	SC_VIOLENTGALE			=181,
 	SC_LANDPROTECTOR		=182,
@@ -246,8 +246,8 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	
 	SC_CANNIBALIZE			=186,
 	SC_SPHEREMINE			=187,
-	SC_METEOSTORM			=189,
-	SC_CASTCANCEL			=190,
+//	SC_METEOSTORM			=189,
+//	SC_CASTCANCEL			=190,
 	SC_SPELLBREAKER			=191,
 	SC_AUTOSPELL			=103,
 

@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.9 2004/01/15 22:43:04 rovert Exp $
+// $Id: clif.c,v 1.10 2004/01/15 23:11:42 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -4718,7 +4718,9 @@ int clif_guild_broken(struct map_session_data *sd,int flag)
 	WFIFOL(fd,2)=flag;
 	WFIFOSET(fd,packet_len_table[0x15e]);
 	return 0;
-}/*==========================================
+}
+
+/*==========================================
  * ƒGƒ‚[ƒVƒ‡ƒ“
  *------------------------------------------
  */
@@ -5589,15 +5591,21 @@ void clif_parse_UseSkillToId(int fd,struct map_session_data *sd)
 	unsigned int tick=gettick();
 
 	if(sd->npc_id!=0 || sd->vender_id != 0) return;
-	if(DIFF_TICK(tick , sd->canact_tick) < 0) {
+
+	skillnum = RFIFOW(fd,4);
+	skilllv = RFIFOW(fd,2);
+
+	if(sd->skilltimer != -1) {
+		if(skillnum != SA_CASTCANCEL)
+			return;
+	}
+	else if(DIFF_TICK(tick , sd->canact_tick) < 0) {
 		clif_skill_fail(sd,RFIFOW(fd,4),4,0);
 		return;
 	}
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
-	skillnum = RFIFOW(fd,4);
-	skilllv = RFIFOW(fd,2);
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
 		if(skillnum == MO_EXTREMITYFIST) {
@@ -5636,16 +5644,22 @@ void clif_parse_UseSkillToPos(int fd,struct map_session_data *sd)
 {
 	int skillnum,skilllv,lv;
 	unsigned int tick=gettick();
+
 	if(sd->npc_id!=0 || sd->vender_id != 0) return;
-	if(DIFF_TICK(tick , sd->canact_tick) < 0) {
+
+	skillnum = RFIFOW(fd,4);
+	skilllv = RFIFOW(fd,2);
+
+	if(sd->skilltimer != -1)
+		return;
+	else if(DIFF_TICK(tick , sd->canact_tick) < 0) {
 		clif_skill_fail(sd,RFIFOW(fd,4),4,0);
 		return;
 	}
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
-	skillnum = RFIFOW(fd,4);
-	skilllv = RFIFOW(fd,2);
+
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
 		if( (lv = pc_checkskill(sd,skillnum)) > 0) {

@@ -498,12 +498,6 @@ int pc_authok(int id,struct mmo_charstatus *st)
 	sd->attackabletime = tick;
 
 	sd->spiritball = 0;
-	sd->combo_flag = 0;
-	sd->combo_delay1 = 0;
-	sd->combo_delay2 = 0;
-	sd->combo_delay3 = 0;
-	sd->triple_delay = 0;
-	sd->skill_old = 0;
 	for(i=0;i<10;i++)
 		sd->spirit_timer[i] = -1;
 	for(i=0;i<MAX_SKILLTIMERSKILL;i++)
@@ -1261,18 +1255,17 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->def = 90;
 			sd->mdef = 90;
 			aspd_rate += 25;
-			sd->speed = sd->speed * 125 / 100;
+			sd->speed = (sd->speed * 125) / 100;
 		}
 		if(sd->sc_data[SC_POISON].timer!=-1){		// Added by AppleGirl
 			sd->status.hp -= sd->hprate /100;
 		}
-/*		if(sd->sc_data[SC_DEFENDER].timer!=-1)	// Defender
-			sd->def2 += ((sd->status.vit+20)*skill*10)/100;
-		if(sd->sc_data[SC_CASTCANCEL].timer!=-1){	// Cast Cancel
-			skill_castcancel(&sd->bl);
-			sd->status.sp -= ((100)-(skill*15))/100;
+		if(sd->sc_data[SC_DEFENDER].timer != -1) {
+			sd->long_attack_def_rate += 5 + sd->sc_data[SC_DEFENDER].val1*15;
+			aspd_rate += 20;
+			sd->speed = (sd->speed * 120) / 100;
 		}
-		if(sd->sc_data[SC_SPELLBREAKER].timer!=-1){	// Spellbreaker
+/*	if(sd->sc_data[SC_SPELLBREAKER].timer!=-1){	// Spellbreaker
 			skill_castcancel(&sd->bl);
 			sd->status.sp = ((skill*25-25)/sd->status.max_sp)/100;
 		}
@@ -2438,7 +2431,7 @@ int pc_setpos(struct map_session_data *sd,char *mapname_org,int x,int y,int clrt
 	if(sd->guild_alliance>0)	// ƒMƒ‹ƒh“¯–¿Š©—U‚ğ‹‘”Û‚·‚é
 		guild_reply_reqalliance(sd,sd->guild_alliance_account,0);
 
-	skill_castcancel(&sd->bl);	// ‰r¥’†’f
+	skill_castcancel(&sd->bl,0);	// ‰r¥’†’f
 	skill_stop_dancing(&sd->bl);// ƒ_ƒ“ƒX/‰‰‘t’†’f
 	pc_stop_walking(sd,0);		// •às’†’f
 	pc_stopattack(sd);			// UŒ‚’†’f
@@ -3504,7 +3497,7 @@ int pc_damage(struct block_list *src,struct map_session_data *sd,int damage)
 	}
 
 	pc_stop_walking(sd,0);
-	skill_castcancel(&sd->bl);	// ‰r¥‚Ì’†~
+	skill_castcancel(&sd->bl,0);	// ‰r¥‚Ì’†~
 	clif_clearchar_area(&sd->bl,1);
 	skill_status_change_clear(&sd->bl);	// ƒXƒe[ƒ^ƒXˆÙí‚ğ‰ğœ‚·‚é
 	clif_updatestatus(sd,SP_HP);

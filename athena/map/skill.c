@@ -1536,7 +1536,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		if(skillid==SM_PROVOKE && bl->type==BL_MOB)
 		mob_target((struct mob_data *)bl,src,skill_get_range(skillid, skilllv));
 		break;
-	case CR_AUTOGUARD:
 	case CR_REFLECTSHIELD:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		break;
@@ -1658,6 +1657,8 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case NV_TRICKDEAD:		/* 死んだふり */
 	case TF_HIDING:			/* ハイディング */
 	case AS_CLOAKING:		/* クローキング */
+	case CR_DEFENDER:		/* ディフェンダー */
+	case CR_AUTOGUARD:		/* オートガード */
 		if(skillid != AS_CLOAKING)
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		{
@@ -1979,6 +1980,16 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		skill_addtimerskill(src,tick + 200,src->id,0,0,skillid,skilllv,0,flag);
 		break;
 
+	case SA_CASTCANCEL:
+		skill_castcancel(src,1);
+		if(sd) {
+			int sp = skill_get_sp(sd->skillid_old,sd->skilllv_old);
+			sp = sp * (90 - (skilllv-1)*20) / 100;
+			if(sp < 0) sp = 0;
+			pc_heal(sd,0,-sp);
+		}
+		break;
+
 	/* ランダム属性変化、水属性変化、地、火、風 */
 	case NPC_ATTRICHANGE:
 	case NPC_CHANGEWATER:
@@ -2024,11 +2035,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		sd->last_skillid = BD_ENCORE;
 		break;
 
-	case SA_CASTCANCEL:			// Added by RoVeRT
-		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		skill_castcancel(src);
-		break;
-
 	case SA_AUTOSPELL:			// Added by RoVeRT
 		{
 		int limit,skills[]={MG_NAPALMBEAT,MG_COLDBOLT,MG_FIREBOLT,MG_LIGHTNINGBOLT,MG_SOULSTRIKE,MG_FIREBALL,MG_FROSTDIVER};
@@ -2054,14 +2060,15 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 
 	if( (sd=map_id2sd(id))==NULL || sd->bl.prev == NULL)
 		return 0;
-	
-	if( sd->skilltimer != tid )	/* タイマIDの確認 */
+
+	if(sd->skillid != SA_CASTCANCEL && sd->skilltimer != tid )	/* タイマIDの確認 */
 		return 0;
-	if(sd->skilltimer != -1 && pc_checkskill(sd,SA_FREECAST) > 0) {
+	if(sd->skillid != SA_CASTCANCEL && sd->skilltimer != -1 && pc_checkskill(sd,SA_FREECAST) > 0) {
 		sd->speed = sd->prev_speed;
 		clif_updatestatus(sd,SP_SPEED);
 	}
-	sd->skilltimer=-1;
+	if(sd->skillid != SA_CASTCANCEL)
+		sd->skilltimer=-1;
 	bl=map_id2bl(sd->skilltarget);
 	if(bl==NULL || bl->prev==NULL)
 		return 0;
@@ -3517,6 +3524,7 @@ int skill_check_condition( struct map_session_data *sd )
 		case SA_ABRACADABRA:
 			item_amount[0]+=1;
 			break;
+
 		case SA_VOLCANO:
 		case SA_DELUGE:
 		case SA_VIOLENTGALE:
@@ -3528,6 +3536,14 @@ int skill_check_condition( struct map_session_data *sd )
 			item_id[1]=715;		//	yellow_gem = 715;
 			item_amount[1]+=1;
 			break;
+
+		case SA_CASTCANCEL:
+			if(sd->skilltimer == -1) {
+				clif_skill_fail(sd,sd->skillid,0,0);
+				return 0;
+			}
+			break;
+
 		case MG_STONECURSE:		// ストーンカース
 		case AS_VENOMDUST:		// ベナムダスト
 			item_id[0]=716;		//	red_gem = 716;
@@ -4025,6 +4041,11 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 		return 0;
 	}
 
+	if(skill_num == SA_CASTCANCEL) {
+		sd->skillid_old = sd->skillid;
+		sd->skilllv_old = sd->skilllv;
+	}
+
 	/* 射程と障害物チェック */
 	if(!battle_check_range(&sd->bl,bl->x,bl->y,skill_get_range(skill_num, skill_lv)))
 		return 0;
@@ -4106,8 +4127,8 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 				md->state.targettype = ATTACKABLE;
 				md->min_chase=13;
 		}
-		sd->cast_skillid = skill_num;
-		sd->cast_skilllv = skill_lv;
+//		sd->cast_skillid = skill_num;
+//		sd->cast_skilllv = skill_lv;
 	}
 
 	if( casttime<=0 )	/* 詠唱の無いものはキャンセルされない */
@@ -4132,7 +4153,8 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 			pc_stop_walking(sd,0);
 	}
 	else {
-		sd->skilltimer = -1;
+		if(skill_num != SA_CASTCANCEL)
+			sd->skilltimer = -1;
 		skill_castend_id(sd->skilltimer,tick,sd->bl.id,0);
 	}
 
@@ -4215,7 +4237,7 @@ int skill_use_pos( struct map_session_data *sd,
  * スキル詠唱キャンセル
  *------------------------------------------
  */
-int skill_castcancel( struct block_list *bl )
+int skill_castcancel(struct block_list *bl,int type)
 {
 	if(bl->type==BL_PC){
 		struct map_session_data *sd=(struct map_session_data *)bl;
@@ -4227,10 +4249,18 @@ int skill_castcancel( struct block_list *bl )
 				sd->speed = sd->prev_speed;
 				clif_updatestatus(sd,SP_SPEED);
 			}
-			if( skill_get_inf( sd->skillid )&2 )
-				delete_timer( sd->skilltimer, skill_castend_pos );
-			else
-				delete_timer( sd->skilltimer, skill_castend_id );
+			if(!type) {
+				if( skill_get_inf( sd->skillid )&2 )
+					delete_timer( sd->skilltimer, skill_castend_pos );
+				else
+					delete_timer( sd->skilltimer, skill_castend_id );
+			}
+			else {
+				if( skill_get_inf( sd->skillid_old )&2 )
+					delete_timer( sd->skilltimer, skill_castend_pos );
+				else
+					delete_timer( sd->skilltimer, skill_castend_id );
+			}
 			sd->skilltimer=-1;
 			clif_skillcastcancel(bl);
 		}

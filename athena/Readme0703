@@ -1,4 +1,32 @@
 --------------
+//0708 by 死神
+
+・スキルキャストキャンセル、ディフェンダー、オートガード実装。
+・オートガードの場合ガードしてもエフェクトは出ません。ミスになるだけです。本鯖の方は表示されるかどうかもわからないしパケット情報もないので...
+・ディフェンダーは未テスト。bLongAtkDefを使ってるのでホルンカードのようにbLongAtkDefを上げる物を装備して使うと遠距離物理攻撃は全て無効にできます。(これも本鯖の仕様がどうなのかはわかりません。)
+・その他細かい修正。
+	(db/)
+	cast_db.txt 修正。
+	(map/)
+	map.h 修正。
+	map.c
+		map_quit() 修正。
+	skill.h 修正。
+	skill.c
+		skill_castend_nodamage_id()、skill_use_id()、skill_check_condition() 修正。
+		skill_castend_id()、skill_castend_nodamage_id()、skill_castcancel() 修正。
+	pc.c
+		pc_calcstatus()、pc_setpos()、pc_damage() 修正。
+	battle.c
+		battle_calc_damage()、battle_damage() 修正。
+	clif.c
+		clif_parse_UseSkillToId()、clif_parse_UseSkillToPos() 修正。
+	mob.c
+		mob_damage() 修正。
+	itemdb.c
+		itemdb_searchrandomid() 修正。
+
+--------------
 //0707 by 死神
 
 ・0705の阿修羅覇鳳拳のバグ修正。

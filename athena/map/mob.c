@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.6 2004/01/12 23:55:41 rovert Exp $
+// $Id: mob.c,v 1.7 2004/01/15 23:11:42 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -372,11 +372,11 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 		skill_status_change_end(&sd->bl,SC_AUTOCOUNTER,-1);
 		return 0;
 	}
-	if(sd->sc_data[SC_AUTOGUARD].timer != -1){
+/*	if(sd->sc_data[SC_AUTOGUARD].timer != -1){
 		pc_attack(sd,md->bl.id,0);
 		skill_status_change_end(&sd->bl,SC_AUTOGUARD,-1);
 		return 0;
-	}
+	}*/
 	if(sd->sc_data[SC_REFLECTSHIELD].timer != -1){
 		pc_attack(sd,md->bl.id,0);
 		skill_status_change_end(&sd->bl,SC_AUTOCOUNTER,-1);
@@ -719,7 +719,7 @@ int mob_stopattack(struct mob_data *md)
 int mob_stop_walking(struct mob_data *md,int type)
 {
 	if(md->state.state == MS_WALK) {
-//	  printf("stop walking\n");
+//	printf("stop walking\n");
 		md->walkpath.path_len=0;
 		md->to_x=md->bl.x;
 		md->to_y=md->bl.y;
@@ -790,7 +790,7 @@ int mob_target(struct mob_data *md,struct block_list *bl,int dist)
 			if(sd->ghost_timer != -1 || pc_isinvisible(sd))
 				return 0;
 		}
-
+	
 		md->target_id=bl->id;	// 妨害がなかったのでロック
 		if(bl->type == BL_PC || bl->type == BL_MOB)
 			md->state.targettype = ATTACKABLE;
@@ -999,7 +999,7 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 				(sd->sc_data[SC_TRICKDEAD].timer == -1 &&
 				(!pc_ishiding(sd) || race==4 || race==6)
 				) ){	// 妨害がないか判定
-
+			
 				md->target_id=sd->bl.id;
 				md->state.targettype = ATTACKABLE;
 				md->min_chase=5+distance(md->bl.x,md->bl.y,sd->bl.x,sd->bl.y);
@@ -1018,14 +1018,14 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 				(sd->sc_data[SC_TRICKDEAD].timer == -1 &&
 				(!(sd->status.option&0x06) || race==4 || race==6)
 				) ){	// 妨害がないか判定
-
+			
 				mmd->target_id=sd->bl.id;
 				mmd->state.targettype = ATTACKABLE;
 				mmd->min_chase=5+distance(mmd->bl.x,mmd->bl.y,sd->bl.x,sd->bl.y);
 			}
 		}
 	}*/
-
+	
 	return 0;
 }
 
@@ -1202,13 +1202,13 @@ static int mob_ai_sub_hard(struct block_list *bl,va_list ap)
 					mob_unlocktarget(md,tick);
 					return 0;
 				}
-
+							
 				if( !mob_can_move(md) )	// 動けない状態にある
 					return 0;
 
 				md->state.skillstate=MSS_CHASE;	// 突撃時スキル
 				mobskill_use(md,tick,-1);
-
+					
 //				if(md->timer != -1 && (DIFF_TICK(md->next_walktime,tick)<0 || distance(md->to_x,md->to_y,sd->bl.x,sd->bl.y)<2) )
 				if(md->timer != -1 && md->state.state!=MS_ATTACK && (DIFF_TICK(md->next_walktime,tick)<0 || distance(md->to_x,md->to_y,sd->bl.x,sd->bl.y)<2) )
 					return 0; // 既に移動中
@@ -1275,7 +1275,7 @@ static int mob_ai_sub_hard(struct block_list *bl,va_list ap)
 		}
 		else {	// ルートモンスター処理
 			bl_item = map_id2bl(md->target_id);
-
+		
 			if(bl_item == NULL || bl_item->type != BL_ITEM ||bl_item->m != md->bl.m ||
 				 (dist=distance(md->bl.x,md->bl.y,bl_item->x,bl_item->y))>=md->min_chase || !md->lootitem){
 				 // 遠すぎるかアイテムがなくなった
@@ -1318,7 +1318,7 @@ static int mob_ai_sub_hard(struct block_list *bl,va_list ap)
 				if(md->state.state==MS_WALK){	// 歩行中なら停止
 					mob_stop_walking(md,1);
 				}
-
+			
 				fitem = (struct flooritem_data *)bl_item;
 				if(md->lootitem_count < LOOTITEM_SIZE)
 					memcpy(&md->lootitem[md->lootitem_count++],&fitem->item_data,sizeof(md->lootitem[0]));
@@ -1335,7 +1335,7 @@ static int mob_ai_sub_hard(struct block_list *bl,va_list ap)
 				}
 				map_clearflooritem(bl_item->id);
 				mob_unlocktarget(md,tick);
-
+			
 			}
 			return 0;
 		}
@@ -1418,24 +1418,24 @@ static int mob_ai_sub_lazy(void * key,void * data,va_list app)
 
 		if( map[md->bl.m].users>0 ){
 			// 同じマップにPCがいるので、少しましな手抜き処理をする
-
+	
 			// 時々移動する
 			if(rand()%1000<MOB_LAZYMOVEPERC)
 				mob_randomwalk(md,tick);
-
+		
 			// 召喚MOBでなく、BOSSでもないMOBは時々、沸きなおす
 			else if( rand()%1000<MOB_LAZYWARPPERC && md->x0<=0 &&
 				mob_db[md->class].mexp<=0 )
 				mob_spawn(md->bl.id);
-
+			
 		}else{
 			// 同じマップにすらPCがいないので、とっても適当な処理をする
-
+		
 			// 召喚MOBでない場合、時々移動する（歩行ではなくワープで処理軽減）
 			if( md->x0<=0 && rand()%1000<MOB_LAZYWARPPERC )
 				mob_warp(md,-1,-1,-1);
 		}
-
+	
 		md->next_walktime = tick+rand()%10000+5000;
 	}
 	return 0;
@@ -1757,7 +1757,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 			int race = battle_get_race(&md->bl);
 			if(sd->monster_drop_itemid[i] <= 0)
 				continue;
-			if(sd->monster_drop_race[i] & (1<<race) ||
+			if(sd->monster_drop_race[i] & (1<<race) || 
 				(mob_db[md->class].mexp > 0 && sd->monster_drop_race[i] & 1<<10) ||
 				(mob_db[md->class].mexp <= 0 && sd->monster_drop_race[i] & 1<<11) ) {
 				if(sd->monster_drop_itemrate[i] <= rand()%10000)
@@ -1836,7 +1836,9 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage)
 		npc_event(sd,md->npc_event,1);
 	}
 
+	skill_castcancel(&md->bl,0);
 	clif_clearchar_area(&md->bl,1);
+	skill_status_change_clear(&md->bl);
 	map_delblock(&md->bl);
 	mob_deleteslave(md);
 	mob_setdelayspawn(md->bl.id);
@@ -1972,7 +1974,7 @@ int mob_summonslave(struct mob_data *md2,int class,int amount,int flag)
 			x=bx;
 			y=by;
 		}
-
+	
 		mob_spawn_dataset(md,"--ja--",class);
 		md->bl.m=m;
 		md->bl.x=x;
@@ -2117,7 +2119,7 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 	// 沈黙や異常
 	if( md->opt1>0 || md->option&6 || md->sc_data[SC_DIVINA].timer!=-1 )
 		return 0;
-
+	
 	// 射程と障害物チェック
 	if(!battle_check_range(&md->bl,target->x,target->y,skill_get_range(skill_id, skill_lv)))
 		return 0;
@@ -2137,7 +2139,7 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 		struct mob_data *md2;
 		clif_skillcasting( &md->bl,
 			md->bl.id, target->id, 0,0, skill_id,casttime);
-
+	
 		// 詠唱反応モンスター
 		if( target->type==BL_MOB && mob_db[(md2=(struct mob_data *)target)->class].mode&0x10 &&
 			md2->state.state!=MS_ATTACK){
@@ -2597,7 +2599,7 @@ static int mob_readskilldb(void)
 		}
 		if( (mob_id=atoi(sp[0]))<=0 )
 			continue;
-
+	
 		for(i=0;i<MAX_MOBSKILL;i++)
 			if( (ms=&mob_db[mob_id].skill[i])->skill_id == 0)
 				break;
@@ -2606,7 +2608,7 @@ static int mob_readskilldb(void)
 				sp[1],mob_id,mob_db[mob_id].jname);
 			continue;
 		}
-
+	
 		ms->state=atoi(sp[2]);
 		if( strcmp(sp[2],"any")==0 ) ms->state=-1;
 		if( strcmp(sp[2],"idle")==0 ) ms->state=MSS_IDLE;

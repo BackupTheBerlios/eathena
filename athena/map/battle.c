@@ -685,7 +685,7 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 		if(sc_data[SC_SLEEP].timer!=-1)
 			skill_status_change_end(target,SC_SLEEP,-1);
 		if(sc_data[SC_SPELLBREAKER].timer!=-1)		// Added by AppleGirl
-			skill_castcancel(target);
+			skill_castcancel(target,0);
 	}
 
 
@@ -693,7 +693,7 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 
 		struct mob_data *md=(struct mob_data *)target;
 		if(md->skilltimer!=-1 && md->state.skillcastcancel)	// 詠唱妨害
-			skill_castcancel(target);
+			skill_castcancel(target,0);
 		return mob_damage(bl,md,damage);
 
 	}else if(target->type==BL_PC){	// PC
@@ -703,7 +703,7 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 				// フェンカードや妨害されないスキルかの検査
 			if( (!tsd->special_state.no_castcancel || map[bl->m].flag.gvg) && tsd->state.skillcastcancel &&
 				!tsd->special_state.no_castcancel2)
-				skill_castcancel(target);
+				skill_castcancel(target,0);
 		}
 		return pc_damage(bl,tsd,damage);
 
@@ -783,7 +783,7 @@ int battle_calc_damage(struct block_list *bl,int damage,int flag)
 	sc_count=battle_get_sc_count(bl);
 
 	if(sc_count!=NULL && *sc_count>0){
-	
+
 		if(sc_data[SC_SAFETYWALL].timer!=-1 && damage>0 &&
 			flag&BF_WEAPON && flag&BF_SHORT ){
 			// セーフティウォール
@@ -846,6 +846,17 @@ int battle_calc_damage(struct block_list *bl,int damage,int flag)
 			if((--sc->val1)<=0 || (sc->val2<=0))
 				skill_status_change_end(bl, SC_KYRIE, -1);
 		}
+
+		if(sc_data[SC_AUTOGUARD].timer != -1 && damage > 0 && flag&BF_WEAPON) {
+			if(rand()%100 < sc_data[SC_AUTOGUARD].val2) {
+				damage = 0;
+				if(bl->type == BL_PC)
+					((struct map_session_data *)bl)->canmove_tick = gettick() + 300;
+				else if(bl->type == BL_MOB)
+					((struct mob_data *)bl)->canmove_tick = gettick() + 300;
+			}
+		}
+
 	}
 
 	if(	damage>0 && sc_data!=NULL && (

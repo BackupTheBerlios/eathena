@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.4 2004/01/11 21:27:42 rovert Exp $
+// $Id: itemdb.c,v 1.5 2004/01/15 23:11:42 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -79,7 +79,7 @@ int itemdb_searchrandomid(int flags)
 		list=data[flags].list;
 
 		if(count > 0) {
-			for(i=0;i<MAX_RANDITEM;i++) {
+			for(i=0;i<count;i++) {
 				index = rand()%count;
 				if(	rand()%1000000 < list[index].per) {
 					nameid = list[index].nameid;
@@ -239,7 +239,7 @@ static int itemdb_readdb(void)
 			printf("can't read %s\n",filename[i]);
 			return -1;
 		}
-		
+
 		while(fgets(line,1020,fp)){
 			if(line[0]=='/' && line[1]=='/')
 				continue;
@@ -256,7 +256,7 @@ static int itemdb_readdb(void)
 			if(nameid<=0 || nameid>=20000)
 				continue;
 			ln++;
-	
+
 			//ID,Name,Jname,Type,Price,Sell,Weight,ATK,DEF,Range,Slot,Job,Gender,Loc,wLV,eLV,View
 			id=itemdb_search(nameid);
 			memcpy(id->name,str[1],24);
@@ -288,10 +288,10 @@ static int itemdb_readdb(void)
 			id->flag.value_notdc=0;
 			id->flag.value_notoc=0;
 			id->view_id=0;
-	
+
 			id->use_script=NULL;
 			id->equip_script=NULL;
-	
+
 			if((p=strchr(np,'{'))==NULL)
 				continue;
 			id->use_script = parse_script(p,0);
@@ -464,7 +464,7 @@ static int itemdb_read_randomitem()
 		int *pc=data[i].pcount;
 		int *pdefault=data[i].pdefault;
 		char *fn=data[i].filename;
-	
+
 		*pdefault = 0;
 		if( (fp=fopen(fn,"r"))==NULL ){
 			printf("can't read %s\n",fn);
@@ -483,7 +483,7 @@ static int itemdb_read_randomitem()
 
 			if(str[0]==NULL)
 				continue;
-	
+
 			nameid=atoi(str[0]);
 			if(nameid<0 || nameid>=20000)
 				continue;
