@@ -14,7 +14,7 @@
 #include "itemdb.h"
 #include "clif.h"
 #include "pet.h"
-
+#include "guild.h"
 
 int attr_fix_table[4][10][10];
 
@@ -1111,6 +1111,28 @@ int battle_calc_damage(struct block_list *bl,int damage,int skill_num,int skill_
 
 	if( md!=NULL && md->hp>0 && damage > 0 )	// ”½Œ‚‚È‚Ç‚ÌMOBƒXƒLƒ‹”»’è
 		mobskill_event(md,flag);
+
+	if(md){
+		if(map[md->bl.m].flag.gvg){//GvG‚Ìƒ_ƒ[ƒW•â³
+			if(flag&BF_MAGIC)
+				damage=damage/2;	//–‚–@‚Í50%
+			if(flag&BF_WEAPON && flag&BF_LONG)
+				damage=damage*75/100;	//‰“‹——£UŒ‚‚Í75%
+			if(skill_num==HT_LANDMINE || skill_num==HT_BLASTMINE || skill_num==HT_CLAYMORETRAP || skill_num==HT_FREEZINGTRAP)
+				damage=damage*60/100;	//ã©‚Í60%
+			if(md && md->class == 1288 && flag&BF_SKILL)
+				damage=0;		//ƒGƒ“ƒyƒŠƒEƒ€‚É‚ÍƒXƒLƒ‹–³Œø
+		}
+	}else if(sd){
+		if(map[sd->bl.m].flag.gvg){
+			if(flag&BF_MAGIC)
+				damage=damage/2;
+			if(flag&BF_WEAPON && flag&BF_LONG)
+				damage=damage*75/100;
+			if(skill_num==HT_LANDMINE || skill_num==HT_BLASTMINE || skill_num==HT_CLAYMORETRAP || skill_num==HT_FREEZINGTRAP)
+				damage=damage*60/100;
+		}
+	}
 
 	return damage;
 }
@@ -2825,6 +2847,13 @@ struct Damage battle_calc_weapon_attack(
 	struct block_list *src,struct block_list *target,int skill_num,int skill_lv,int wflag)
 {
 	struct Damage wd;
+	struct map_session_data *sd=NULL;
+	struct mob_data *md=NULL;
+
+	if(src->type == BL_PC)
+		sd=(struct map_session_data*)src;
+	if(target->type == BL_MOB)
+		md=(struct mob_data*)target;
 
 	if(target->type == BL_PET)
 		memset(&wd,0,sizeof(wd));
@@ -2836,6 +2865,19 @@ struct Damage battle_calc_weapon_attack(
 		wd = battle_calc_pet_weapon_attack(src,target,skill_num,skill_lv,wflag);
 	else
 		memset(&wd,0,sizeof(wd));
+
+	//GvG‚Ì³‹KƒMƒ‹ƒh³”F‚Í‚±‚±‚Åˆ—
+	if(sd && md){
+		struct guild *g=NULL;
+		if(md->class == 1288 && map[sd->bl.m].flag.gvg){
+
+			if((g=guild_search(sd->status.guild_id))==NULL)
+				wd.damage=0;//ƒMƒ‹ƒh–¢‰Á“ü‚È‚çƒ_ƒ[ƒW–³‚µ
+
+			if(guild_checkskill(g,GD_APPROVAL)!=1)
+				wd.damage=0;//³‹KƒMƒ‹ƒh³”F‚ª‚È‚¢‚Æƒ_ƒ[ƒW–³‚µ
+		}
+	}
 
 	return wd;
 }
@@ -3228,6 +3270,11 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		return 0;
 	if(target->type == BL_PC && pc_isdead((struct map_session_data *)target))
 		return 0;
+	if(map[src->m].flag.gvg){
+		if(src->type == BL_PC && target->type == BL_PC
+			&& (sd->ghost_timer!=-1 || ((struct map_session_data *)target)->ghost_timer!=-1))
+			return 0;
+	}
 
 	opt1=battle_get_opt1(src);
 	if(opt1 && *opt1 > 0) {
@@ -3411,10 +3458,24 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 			return 0;
 		}
 		if(map[src->m].flag.gvg) {
-			if(s_g > 0 && s_g == t_g)
+			int i;
+			struct guild *g=guild_search(s_g);
+
+			if( s_g > 0 && s_g == t_g)
 				return 1;
-			else if(map[src->m].flag.gvg_noparty && s_p > 0 && t_p > 0 && s_p == t_p)
+			if (g){
+				for(i=0;i<MAX_GUILDALLIANCE;i++){
+					if(g->alliance[i].guild_id > 0){
+						if(g->alliance[i].opposition && g->alliance[i].guild_id == t_g)
+							return 0;//“G‘ÎƒMƒ‹ƒh‚È‚ç–³ğŒ‚É“G
+						if(!(g->alliance[i].opposition) && g->alliance[i].guild_id == t_g)
+							return 1;//“¯–¿ƒMƒ‹ƒh‚È‚ç–³ğŒ‚É–¡•û
+					}
+				}
+			}
+			if(map[src->m].flag.gvg_noparty && s_p > 0 && t_p > 0 && s_p == t_p)
 				return 1;
+
 			return 0;
 		}
 	}
