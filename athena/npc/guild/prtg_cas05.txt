@@ -343,7 +343,7 @@ prtg_cas05.gat,52,41,4	script	Kafra Service#prt5	117,{
 	set @GIDp5,getcastledata("prtg_cas05.gat",1);
 	if (getcharid(2) == @GIDp5) goto LStartg;
 	mes "[Kafra Service]";
-	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDp5) + " + "^000000 members, please use different Kafra Service. thank you.";
+	mes "I am here to help only ^ff0000" + GetGuildName(@GIDp5) + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
 	mes "[Kafra Service]";

@@ -455,7 +455,7 @@ prtg_cas02.gat,71,36,4	script	Kafra Service#prt2	117,{
 	set @GIDp2,getcastledata("prtg_cas02.gat",1);
 	if (getcharid(2) == @GIDp2) goto LStartg;
 	mes "[Kafra Service]";
-	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDp2) + " + "^000000 members, please use different Kafra Service. thank you.";
+	mes "I am here to help only ^ff0000" + GetGuildName(@GIDp2) + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
 	mes "[Kafra Service]";
