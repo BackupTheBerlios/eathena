@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.39 2004/02/10 21:46:22 rovert Exp $
+// $Id: mob.c,v 1.40 2004/02/13 02:57:04 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -2199,6 +2199,62 @@ int mob_counttargeted(struct mob_data *md,struct block_list *src)
 	return c;
 }
 
+/*==========================================
+ * friendhpltmaxrate sub
+ *------------------------------------------
+ */
+static int mob_checkslavehp_sub(struct block_list *bl,va_list ap)
+{
+	int id,*c,pcnt;
+	id=va_arg(ap,int);
+	c=va_arg(ap,int*);
+	pcnt=va_arg(ap,int);
+	if( ((struct mob_data *)bl)->master_id==id )
+		if (md->hp < battle_get_max_hp(&md->bl)*pcnt/100)
+			(*c)++;
+	return 0;
+}
+/*==========================================
+ * friendhpltmaxrate
+ *------------------------------------------
+ */
+int mob_checkslavehp(struct mob_data *md,int pcnt)
+{
+	int c=0;
+	map_foreachinarea(mob_counttargeted_sub, md->bl.m,
+		md->bl.x-AREA_SIZE,md->bl.y-AREA_SIZE,
+		md->bl.x+AREA_SIZE,md->bl.y+AREA_SIZE,BL_MOB,md->bl.id,&c,pcnt);
+	return c;
+}
+
+/*==========================================
+ * friendstatuseq sub
+ *------------------------------------------
+ */
+static int mob_checkslaveoption_sub(struct block_list *bl,va_list ap)
+{
+	int id,*c,pcnt;
+	id=va_arg(ap,int);
+	c=va_arg(ap,int*);
+	option=va_arg(ap,int);
+	if( ((struct mob_data *)bl)->master_id==id )
+		if (md->opt2 == option)
+			(*c)++;
+	return 0;
+}
+/*==========================================
+ * friendstatuseq
+ *------------------------------------------
+ */
+int mob_checkslaveoption(struct mob_data *md,int option)
+{
+	int c=0;
+	map_foreachinarea(mob_counttargeted_sub, md->bl.m,
+		md->bl.x-AREA_SIZE,md->bl.y-AREA_SIZE,
+		md->bl.x+AREA_SIZE,md->bl.y+AREA_SIZE,BL_MOB,md->bl.id,&c,option);
+	return c;
+}
+
 //
 // MOBÉXÉLÉã
 //
@@ -2509,6 +2565,12 @@ int mobskill_use(struct mob_data *md,unsigned int tick,int event)
 				flag=1; break;
 			case MSC_MYHPLTMAXRATE:		// HP< maxhp%
 				flag=( md->hp < max_hp*c2/100 ); break;
+			case MSC_FRIENDHPLTMAXRATE:
+				flag=( mob_checkslavehp(md, c2) > 0 ); break;	// any slave HP< maxhp%
+			case MSC_MYSTATUSEQ:
+				flag=( ms->opt2 == c2 ); break;	// opt2 = num
+			case MSC_FRIENDSTATUSEQ:
+				flag=( mob_checkslaveoption(md, c2) > 0 ); break;	// any slave opt2 = num			
 			case MSC_SLAVELT:		// slave < num
 				flag=( mob_countslave(md) < c2 ); break;
 			case MSC_ATTACKPCGT:	// attack pc > num
