@@ -244,6 +244,8 @@ struct map_session_data {
 	char eventqueue[MAX_EVENTQUEUE][50];
 	int eventtimer[MAX_EVENTTIMER];
 
+	int sg_count;
+
 	int last_skillid,last_skilllv;		// Added by RoVeRT
 	int skill_limit[350];
 	struct{
@@ -335,6 +337,9 @@ struct mob_data {
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL/2];
 	char npc_event[50];
+
+	int sg_count;
+
 	int skill_limit[350];			// Added by RoVeRT
 };
 struct pet_data {

@@ -1,4 +1,36 @@
 --------------
+//0738 by ぴざまん
+・ストームガストを完全に本鯖仕様に修正(3回で絶対凍結＆凍結状態の敵はSGをくらわない)
+・サフラギウムが自分にかけられるバグ修正
+	(map/)
+	skill.c
+		skill_additional_effect()、skill_attack()修正
+		skill_castend_nodamage_id()修正
+	map.h 修正
+--------------
+//0737 by ぽぽぽ
+・アンクルが歩いている敵に効かない&複数の敵に効くのを修正。
+	(map/)
+	skill.c
+		skill_unit_onplace()、skill_unit_onout()修正
+	mob.c
+		mob_stop_walking()修正
+
+--------------
+//0736 by ぴざまん
+・状態異常耐性が効果時間にも及ぶ様に修正。発動率と同率で効果時間が割り引かれます
+・ストーンカースの効果時間を永久からマジスレテンプレ準拠に
+・攻撃を受けた時にペットの支援攻撃を受けられないよう修正(コメントアウトしただけ)
+　これはVIT型にペットを付けて放置するだけで自動でレベル上げができるのを
+　防ぐための暫定的な処置です
+	(map/)
+	skill.c
+		skill_castend_nodamage_id()、skill_addisional_effect()修正
+		skill_status_change_start()修正
+	pc.c
+		pc_damage() 修正
+
+--------------
 //0735 by ぽぽぽ
 
 ・敵を倒してレベルが上がったときPT公平範囲のチェックをするようにした。

@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.18 2004/01/23 15:53:59 rovert Exp $
+// $Id: clif.c,v 1.19 2004/01/25 04:18:01 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -877,6 +877,9 @@ int clif_spawnmob(struct mob_data *md)
 	int len;
 
 	len = clif_mob0078(md,buf);
+	clif_send(buf,len,&md->bl,AREA);
+
+	len = clif_mob_hp(md,buf);
 	clif_send(buf,len,&md->bl,AREA);
 
 	return 0;
@@ -2482,6 +2485,8 @@ void clif_getareachar_mob(struct map_session_data* sd,struct mob_data* md)
 		len = clif_mob0078(md,WFIFOP(sd->fd,0));
 		WFIFOSET(sd->fd,len);
 	}
+	len = clif_mob_hp(md,WFIFOP(sd->fd,0));
+	WFIFOSET(sd->fd,len);
 }
 /*==========================================
  *
@@ -3922,6 +3927,22 @@ int clif_party_hp(struct party *p,struct map_session_data *sd)
 	WBUFW(buf,6)=(sd->status.hp > 0x7fff)? 0x7fff:sd->status.hp;
 	WBUFW(buf,8)=(sd->status.max_hp > 0x7fff)? 0x7fff:sd->status.max_hp;
 	clif_send(buf,packet_len_table[0x106],&sd->bl,PARTY_AREA_WOS);
+//	if(battle_config.etc_log)
+//		printf("clif_party_hp %d\n",sd->status.account_id);
+	return 0;
+}
+/*==========================================
+ * パーティHP通知
+ *------------------------------------------
+ */
+int clif_mob_hp(struct mob_data *md,unsigned char *buf)
+{
+	WBUFW(buf,0)=0x106;
+	WBUFL(buf,2)=md->bl.id;
+	WBUFW(buf,6)=(md->hp > 0x7fff)? 0x7fff:md->hp;
+	WBUFW(buf,8)=(mob_db[md->class].max_hp > 0x7fff)? 0x7fff:mob_db[md->class].max_hp;
+
+	return packet_len_table[0x106];
 //	if(battle_config.etc_log)
 //		printf("clif_party_hp %d\n",sd->status.account_id);
 	return 0;

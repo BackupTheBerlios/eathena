@@ -351,6 +351,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 			sc_def_vit=50;
 		if(sc_def_int<50)
 			sc_def_int=50;
+
 	}
 	if(sc_def_mdef<0)
 		sc_def_mdef=0;
@@ -457,9 +458,21 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		break;
 
 	case WZ_STORMGUST:		/* ストームガスト */
-		rate=skilllv*3+35;
-		if(battle_get_elem_type(bl)!=9 && rand()%100 < rate*sc_def_mdef/100)
-			skill_status_change_start(bl,SC_FREEZE,skilllv,10000);/* SG用凍結 */
+		if(sd2){
+			sd2->sg_count++;
+			if(battle_get_elem_type(bl)!=9 && sd2->sg_count==3){
+				sd2->sg_count=0;
+				skill_status_change_start(bl,SC_FREEZE,skilllv,13000*sc_def_mdef/100);
+			}
+			break;
+		}else if(md){
+			md->sg_count++;
+			if(battle_get_elem_type(bl)!=9 && md->sg_count==3){
+				md->sg_count=0;
+				skill_status_change_start(bl,SC_FREEZE,skilllv,13000*sc_def_mdef/100);
+			}
+			break;
+		}
 		break;
 
 	case HT_LANDMINE:		/* ランドマイン */
@@ -514,7 +527,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 			skill_status_change_start(bl,SC_BLIND,1,0);
 		break;
 
-	case CR_SHIELDCHARGE:		/* グランドクロス */
+	case CR_SHIELDCHARGE:		/* シールドチャージ */
 		if( rand()%100 < (15 + skilllv*5)*sc_def_vit/100 )
 			skill_status_change_start(bl,SC_STAN,skilllv,5000);
 		break;
@@ -542,7 +555,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	case NPC_PETRIFYATTACK:
 		if(rand()%100 < sc_def_mdef)
-			skill_status_change_start(bl,sc[skillid-NPC_POISON],skilllv,sc2[skillid-NPC_POISON]*skilllv);
+			skill_status_change_start(bl,sc[skillid-NPC_POISON],0,sc2[skillid-NPC_POISON]*skilllv);
 		break;
 	case NPC_POISON:
 	case NPC_SILENCEATTACK:
@@ -720,6 +733,7 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 	struct Damage dmg;
 	int type,lv,damage;
 
+
 	if(src == NULL || dsrc == NULL || bl == NULL)
 		return 0;
 	if(src->prev == NULL || dsrc->prev == NULL || bl->prev == NULL)
@@ -730,6 +744,11 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 		return 0;
 	if(bl->type == BL_PC && pc_isdead((struct map_session_data *)bl))
 		return 0;
+	if(skillid == WZ_STORMGUST){
+			struct status_change *sc_data = battle_get_sc_data(bl);
+			if(sc_data && sc_data[SC_FREEZE].timer != -1)
+				return 0;
+		}
 
 	type=-1;
 	lv=(flag>>20)&0xf;
@@ -1404,6 +1423,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	struct mob_data *dstmd=NULL;
 	int i;
 	int sc_def_vit=100;
+	int sc_def_mdef=100;
 
 	if(src->type==BL_PC)
 		sd=(struct map_session_data *)src;
@@ -1413,15 +1433,21 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	if(bl->type==BL_PC){
 		dstsd=(struct map_session_data *)bl; 
 		sc_def_vit=100-(dstsd->paramc[2]+dstsd->paramc[5]/3);
+		sc_def_mdef=100-dstsd->mdef;
 	}
 	else if(bl->type==BL_MOB){
 		dstmd=(struct mob_data *)bl;
 		sc_def_vit=100-(mob_db[dstmd->class].vit+mob_db[dstmd->class].luk/3);
+		sc_def_mdef=100-(mob_db[dstmd->class].mdef);
 		if(sc_def_vit<50)
 			sc_def_vit=50;
+		if(sc_def_mdef<50)
+			sc_def_mdef=50;
 	}
 	if(sc_def_vit<0)
 		sc_def_vit=0;
+	if(sc_def_mdef<0)
+		sc_def_mdef=0;
 
 	if(bl == NULL || bl->prev == NULL)
 		return 0;
@@ -1540,7 +1566,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case MG_ENERGYCOAT:		/* エナジーコート */
 	case SM_PROVOKE:		/* プロボック */
 	case SM_ENDURE:			/* インデュア */
-	case PR_SUFFRAGIUM:		/* サフラギウム */
 	case MG_SIGHT:			/* サイト */
 	case AL_RUWACH:			/* ルアフ */
 	case PR_BENEDICTIO:		/* 聖体降福 */
@@ -1572,14 +1597,18 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			mob_target((struct mob_data *)bl,src,skill_get_range(skillid, skilllv));
 		break;
 
-	case CR_REFLECTSHIELD:
-		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		break;
-	case KN_AUTOCOUNTER:	/* オートカウンター */
+	case PR_SUFFRAGIUM:		/* サフラギウム */
+		if(bl==src)
+			break;/*自分にかけることはできない*/
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		skill_status_change_start( bl,
 			SkillStatusChangeTable[skillid], skilllv, 0 );
-			break;
+		break;
+
+case CR_REFLECTSHIELD:
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		break;
+
 	case MO_CALLSPIRITS:	// 気功
 		if(sd) {
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
@@ -1775,7 +1804,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			break;
 		}
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		if( rand()%100 < skilllv*4+20 )
+		if( rand()%100 < (skilllv*4+20)*sc_def_mdef/100 )
 			skill_status_change_start(bl,SC_STONE,skilllv,0);
 		break;
 
@@ -3202,9 +3231,16 @@ int skill_unit_onplace(struct skill_unit *src,struct block_list *bl,unsigned int
 	case 0x95:	/* サンドマン */
 	case 0x96:	/* フラッシャー */
 	case 0x94:	/* ショックウェーブトラップ */
-	case 0x91:	/* アンクルスネア */
 		skill_additional_effect(ss,bl,sg->skill_id,sg->skill_lv,BF_MISC,tick);
 		if(sg->val2==0){
+			sg->limit=DIFF_TICK(tick,sg->tick)
+				+((sg->unit_id==0x91)?sg->val1/((battle_get_mode(bl)&0x20)?5:1):500);
+			sg->val2=bl->id;
+		}
+		break;
+	case 0x91:	/* アンクルスネア */
+		if(sg->val2==0){
+			skill_additional_effect(ss,bl,sg->skill_id,sg->skill_lv,BF_MISC,tick);
 			sg->limit=DIFF_TICK(tick,sg->tick)
 				+((sg->unit_id==0x91)?sg->val1/((battle_get_mode(bl)&0x20)?5:1):500);
 			sg->val2=bl->id;
@@ -3331,7 +3367,8 @@ int skill_unit_onout(struct skill_unit *src,struct block_list *bl,unsigned int t
 			}
 		} break;
 
-	case 0x91:	/* アンクルスネア */
+	/*
+	case 0x91:	// アンクルスネア
 		{
 			struct block_list *target=map_id2bl(sg->val2);
 			if( target==bl )
@@ -3339,6 +3376,8 @@ int skill_unit_onout(struct skill_unit *src,struct block_list *bl,unsigned int t
 			sg->limit=DIFF_TICK(tick,sg->tick)+1000;
 		}
 		break;
+		*/
+	
 
 	/* Volcano, Deluge, Gale, Land */
 	case 0x9a:
@@ -4981,13 +5020,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			break;
 		case SC_STRIPSHIELD:				/* Strip Shield */
 			tick = 1000 * 60;
-			break;
-		case SC_AUTOCOUNTER:
-			tick = 300 * val1;
-			if(val1 == 4)
-				tick = 1500;
-			if(val1 == 5)
-				tick = 2000;
 			break;
 
 		case SC_REFLECTSHIELD:

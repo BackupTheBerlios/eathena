@@ -182,6 +182,8 @@ int clif_party_move(struct party *p,struct map_session_data *sd,int online);
 int clif_party_xy(struct party *p,struct map_session_data *sd);
 int clif_party_hp(struct party *p,struct map_session_data *sd);
 
+int clif_mob_hp(struct mob_data *md,unsigned char *buf);
+
 // guild
 int clif_guild_created(struct map_session_data *sd,int flag);
 int clif_guild_belonginfo(struct map_session_data *sd,struct guild *g);
