@@ -21,6 +21,8 @@
 #include "guild.h"
 #include "atcommand.h"
 
+static char msg_table[200][1024];	/* Server message */
+
 struct Atcommand_Config atcommand_config;
 
 int kill_monster_sub(struct block_list *bl,va_list ap)
@@ -68,18 +70,18 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				if(gm_level > pc_isGM(pl_sd)) {
 					if (x >= 0 && x < 400 && y >= 0 && y < 400) {
 						if(pc_setpos(pl_sd, temp1, x, y, 3)==0){
-							clif_displaymessage(pl_sd->fd,"They've been warped,");
+							clif_displaymessage(pl_sd->fd,msg_table[0]);
 						}else{
-							clif_displaymessage(fd,"Map not found.");
+							clif_displaymessage(fd,msg_table[1]);
 						}
 					}else{
-						clif_displaymessage(fd,"Coordinates out of range.");
+						clif_displaymessage(fd,msg_table[2]);
 					}
 				}else{
 					clif_displaymessage(fd,"You don't have athority to warp this person.");
 				}
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[3]);
 			}
 			return 1;
 		}
@@ -89,12 +91,12 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			sscanf(message, "%s%s%d%d", command, temp0, &x, &y);
 			if (x >= 0 && x < 400 && y >= 0 && y < 400) {
 				if(pc_setpos(sd, temp0, x, y, 3)==0){
-					clif_displaymessage(fd,"Warped.");
+					clif_displaymessage(fd,msg_table[0]);
 				}else{
-					clif_displaymessage(fd,"Map not found.");
+					clif_displaymessage(fd,msg_table[1]);
 				}
 			}else{
-				clif_displaymessage(fd,"Coordinates out of range.");
+				clif_displaymessage(fd,msg_table[2]);
 			}
 			return 1;
 		}
@@ -106,7 +108,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				sprintf(moji, "%s %s %d %d", temp1, pl_sd->mapname, pl_sd->bl.x, pl_sd->bl.y);
 				clif_displaymessage(fd,moji);
 			}else{
-//				clif_displaymessage(fd,"Character does not exist.");
+//				clif_displaymessage(fd,msg_table[4]);
 				sprintf(moji, "%s %d %d", sd->mapname, sd->bl.x, sd->bl.y);
 				clif_displaymessage(fd,moji);
 			}
@@ -118,10 +120,10 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			sscanf(message, "%s %[^\n]", command, temp1);
 			if ((pl_sd=map_nick2sd(temp1))!=NULL) {
 				pc_setpos(sd, pl_sd->mapname, pl_sd->bl.x, pl_sd->bl.y, 3);
-				sprintf(moji,"Jump to %s",temp1);
+				sprintf(moji,msg_table[4],temp1);
 				clif_displaymessage(fd,moji);
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[3]);
 			}
 			return 1;
 		}
@@ -131,10 +133,10 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			sscanf(message, "%s%d%d", command, &x, &y);
 			if (x >= 0 && x < 400 && y >= 0 && y < 400) {
 				pc_setpos(sd, sd->mapname, x, y, 3);
-				sprintf(moji, "Jump to %d %d now)", x, y);
+				sprintf(moji, msg_table[5], x, y);
 				clif_displaymessage(fd,moji);
 			}else{
-				clif_displaymessage(fd,"Command failed.");
+				clif_displaymessage(fd,msg_table[2]);
 			}
 			return 1;
 		}
@@ -208,8 +210,6 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			}
 			return 1;
 		}
-
-
 //現在位置を含め、冒険の記録をセーブする
 //「@save」と入力
 		if (strcmpi(command, "@save") == 0 && gm_level >= atcommand_config.save) {
@@ -219,14 +219,14 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			pc_makesavestatus(sd);
 			chrif_save(sd);
 			storage_storage_save(sd);
-			clif_displaymessage(fd,"Character data respawn point saved.");
+			clif_displaymessage(fd,msg_table[6]);
 			return 1;
 		}
 //セーブ地点にワープする
 //「@load」と入力
 		if (strcmpi(command, "@load") == 0 && gm_level >= atcommand_config.load) {
 			pc_setpos(sd,sd->status.save_point.map , sd->status.save_point.x , sd->status.save_point.y, 0);
-			clif_displaymessage(fd,"Warping to respawn point..");
+			clif_displaymessage(fd,msg_table[7]);
 			return 1;
 		}
 //歩行スピード変更
@@ -238,7 +238,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				//sd->walktimer = x;
 				//この文を追加 by れあ
 				clif_updatestatus(sd,SP_SPEED);
-				clif_displaymessage(fd,"Speed changed.");
+				clif_displaymessage(fd,msg_table[8]);
 			}
 			return 1;
 		}
@@ -290,7 +290,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			}
 			sd->status.option=z;
 			clif_changeoption(&sd->bl);
-			clif_displaymessage(fd,"Options changed.");
+			clif_displaymessage(fd,msg_table[9]);
 			return 1;
 		}
 //消える
@@ -298,10 +298,10 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 		if (strcmpi(command, "@hide") == 0 && gm_level >= atcommand_config.hide) {
 			if(sd->status.option&0x40){
 				sd->status.option&=~0x40;
-				clif_displaymessage(fd,"Invidible: Off.");
+				clif_displaymessage(fd,msg_table[10]);
 			}else{
 				sd->status.option|=0x40;
-				clif_displaymessage(fd,"Invisible: On.");
+				clif_displaymessage(fd,msg_table[11]);
 			}
 			clif_changeoption(&sd->bl);
 			return 1;
@@ -336,7 +336,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			sscanf(message, "%s%d", command, &x);
 			if (x >= 0 && x < MAX_PC_CLASS) {
 				pc_jobchange(sd,x);
-				clif_displaymessage(fd,"Your job has been changed.");
+				clif_displaymessage(fd,msg_table[12]);
 			}else{
 				clif_displaymessage(fd,"Invalid job ID");
 			}
@@ -346,7 +346,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 //「@die」と入力する。
 		if (strcmpi(command, "@die") == 0 && gm_level >= atcommand_config.die) {
 			pc_damage(NULL,sd,sd->status.hp+1);
-			clif_displaymessage(fd,"A pity! You've died.");
+			clif_displaymessage(fd,msg_table[13]);
 			return 1;
 		}
 //他殺
@@ -358,11 +358,11 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			if ((pl_sd=map_nick2sd(temp1))!=NULL) {
 				if(gm_level > pc_isGM(pl_sd)) {
 					pc_damage(NULL,pl_sd,pl_sd->status.hp+1);
-					clif_displaymessage(pl_sd->fd,"A pity! You've died.");
-					clif_displaymessage(fd,"Character Killed.");
+					clif_displaymessage(pl_sd->fd,msg_table[13]);
+					clif_displaymessage(fd,msg_table[14]);
 				}
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[15]);
 			}
 			return 1;
 		}
@@ -375,7 +375,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				pc_setghosttimer(sd,battle_config.ghost_time);
 			clif_updatestatus(sd,SP_HP);
 			clif_resurrection(&sd->bl,1);
-			clif_displaymessage(fd,"You've been revived! It's a miracle!");
+			clif_displaymessage(fd,msg_table[16]);
 			return 1;
 		}
 //天の声
@@ -404,15 +404,15 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			clif_heal(fd,SP_HP,(x > 0x7fff)? 0x7fff:x);
 			clif_heal(fd,SP_SP,(y > 0x7fff)? 0x7fff:y);
 			pc_heal(sd,x,y);
-			clif_displaymessage(fd,"HP,SP Recovered.");
+			clif_displaymessage(fd,msg_table[17]);
 			return 1;
 		}
 //アイテムゲット
 //「@item アイテムの名前orID 個数」と入力
 		if (strcmpi(command, "@item") == 0 && gm_level >= atcommand_config.item) {
-			sscanf(message, "%s%s%d", command, temp0, &y);
 			struct item item_tmp;
 			struct item_data *item_data;
+			sscanf(message, "%s%s%d", command, temp0, &y);
 			if(y==0) y=1;	//個数指定が無かったら１個にするbyれあ
 			
 			if( (x=atoi(temp0))>0 ){
@@ -437,9 +437,9 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 					if((flag = pc_additem(sd,&item_tmp,a2)))
 						clif_additem(sd,0,0,flag);
 				}
-//				clif_displaymessage(fd,"Item Created.");
+//				clif_displaymessage(fd,msg_table[18]);
 			} else {
-				clif_displaymessage(fd,"Invalid Item ID.");
+				clif_displaymessage(fd,msg_table[19]);
 			}
 			return 1;
 		}
@@ -450,7 +450,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				if (sd->status.inventory[i].amount && sd->status.inventory[i].equip ==0)
 					pc_delitem(sd,i,sd->status.inventory[i].amount,0);
 			}
-			clif_displaymessage(fd,"All of your items have been removed..");
+			clif_displaymessage(fd,msg_table[20]);
 			return 1;
 		}
 //所持アイテムのチェック
@@ -475,13 +475,13 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				pc_calcstatus(sd,0);
 				pc_heal(sd,sd->status.max_hp,sd->status.max_sp);
 				clif_misceffect(&sd->bl,0);
-				clif_displaymessage(fd,"Base Level Raised.");
+				clif_displaymessage(fd,msg_table[21]);
 			}else if(x<0 && sd->status.base_level+x>0){
 				sd->status.base_level+=x;
 				clif_updatestatus(sd,SP_BASELEVEL);
 				clif_updatestatus(sd,SP_NEXTBASEEXP);
 				pc_calcstatus(sd,0);
-				clif_displaymessage(fd,"Base Level Lowered.");
+				clif_displaymessage(fd,msg_table[22]);
 			}
 			return 1;
 		}
@@ -493,7 +493,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			if(sd->status.class == 0)
 				y -= 40;
 			if(sd->status.job_level == y){
-				clif_displaymessage(fd,"Job level can't go any higher.");
+				clif_displaymessage(fd,msg_table[23]);
 			}else if(x >= 1){
 				if(sd->status.job_level + x > y)
 					x = y - sd->status.job_level;
@@ -504,13 +504,13 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				clif_updatestatus(sd,SP_SKILLPOINT);
 				pc_calcstatus(sd,0);
 				clif_misceffect(&sd->bl,1);
-				clif_displaymessage(fd,"Job Level Raised.");
+				clif_displaymessage(fd,msg_table[24]);
 			}else if(x<0 && sd->status.job_level+x>0 ){
 				sd->status.job_level+=x;
 				clif_updatestatus(sd,SP_JOBLEVEL);
 				clif_updatestatus(sd,SP_NEXTJOBEXP);
 				pc_calcstatus(sd,0);
-				clif_displaymessage(fd,"Job Level Lowered.");
+				clif_displaymessage(fd,msg_table[25]);
 			}
 			return 1;
 		}
@@ -520,7 +520,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			char moji[400];
 			FILE *file;
 			if(	(file = fopen("help.txt", "r"))!=NULL){
-				clif_displaymessage(fd,"ヘルプコマンド");
+				clif_displaymessage(fd,msg_table[26]);
 				while (fgets(moji, 380, file) != NULL) {
 					{
 						int i;
@@ -534,7 +534,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 				}
 				fclose(file);
 			}else
-				clif_displaymessage(fd,"Help.txt not found.");
+				clif_displaymessage(fd,msg_table[27]);
 			return 1;
 		}
 //GMになる！ 同垢の全キャラはPTから抜け、倉庫は空にして下さい。
@@ -543,16 +543,16 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			moji[0]=0;
 			sscanf(message, "%s %[^\n]", command,moji);
 			if(sd->status.party_id)
-				clif_displaymessage(fd,"You must leave your party first.");
+				clif_displaymessage(fd,msg_table[28]);
 			else if(sd->status.guild_id)
-				clif_displaymessage(fd,"You must leave your guild first.");
+				clif_displaymessage(fd,msg_table[29]);
 			else{
 				if(sd->status.pet_id > 0 && sd->pd)
 					intif_save_petdata(sd->status.account_id,&sd->pet);
 				pc_makesavestatus(sd);
 				chrif_save(sd);
 				storage_storage_save(sd);
-				clif_displaymessage(fd,"Command completed successfully.");
+				clif_displaymessage(fd,msg_table[30]);
 				chrif_changegm(sd->status.account_id,moji,strlen(moji)+1);
 			}
 			return 1;
@@ -575,7 +575,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 						}
 					}
 				}
-				clif_displaymessage(fd,"PvP: Off.");
+				clif_displaymessage(fd,msg_table[31]);
 			}
 			return 1;
 		}
@@ -596,7 +596,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 						}
 					}
 				}
-				clif_displaymessage(fd,"PvP: On!!");
+				clif_displaymessage(fd,msg_table[32]);
 			}
 			return 1;
 		}
@@ -606,7 +606,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			if(map[sd->bl.m].flag.gvg) {
 				map[sd->bl.m].flag.gvg = 0;
 				clif_send0199(sd->bl.m,0);
-				clif_displaymessage(fd,"GvG: Off.");
+				clif_displaymessage(fd,msg_table[33]);
 			}
 			return 1;
 		}
@@ -616,7 +616,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			if(!map[sd->bl.m].flag.gvg) {
 				map[sd->bl.m].flag.gvg = 1;
 				clif_send0199(sd->bl.m,3);
-				clif_displaymessage(fd,"GvG: On!!");
+				clif_displaymessage(fd,msg_table[34]);
 			}
 			return 1;
 		}
@@ -635,16 +635,16 @@ z [0～4]服の色
 			if (x >= 0 && x < 20 && y >= 0 && y < 9 && z >= 0 && z <= 4) {
 				//服の色変更
 				if ((sd->status.class == 12 || sd->status.class >= 14) && z != 0) {
-					//アサシンは服の色未実装
-					clif_displaymessage(fd,"You can't use this command with this class.");
+					//服の色未実装職の判定
+					clif_displaymessage(fd,msg_table[35]);
 				} else {
 					pc_changelook(sd,LOOK_HAIR,x);
 					pc_changelook(sd,LOOK_HAIR_COLOR,y);
 					pc_changelook(sd,LOOK_CLOTHES_COLOR,z);
-					clif_displaymessage(fd,"Appearence Changed.");
+					clif_displaymessage(fd,msg_table[36]);
 				}
 			} else {
-				clif_displaymessage(fd,"An invalid number was specified.");
+				clif_displaymessage(fd,msg_table[37]);
 			}
 			return 1;
 		}
@@ -672,7 +672,7 @@ z [0～4]服の色
 			if (x >= 0 && x<sizeof(data)/sizeof(data[0])) {
 				pc_setpos(sd, data[x].map, data[x].x, data[x].y, 3);
 			} else {
-				clif_displaymessage(fd,"Invalid location number.");
+				clif_displaymessage(fd,msg_table[38]);
 			}
 			return 1;
 		}
@@ -687,28 +687,28 @@ z [0～4]服の色
 				if( (i1=atoi(temp0))==0 )
 					i1=mobdb_searchname(temp0);
 				if( i2 <= 0 ) i2 = 1;
-				printf("%s name=\"%s\" id=%d count=%d (%d,%d)\n", command, temp1, i1, i2, x, y);
-		
+				if(battle_config.etc_log)
+					printf("%s name=%s id=%d count=%d (%d,%d)\n", command, temp1, i1, i2, x, y);
+
 				for(i=z=0;i<i2;i++,z++) {
 					int mx,my,xy=map_searchrandfreecell(sd->bl.m, sd->bl.x, sd->bl.y, 5);
 
-					mx=xy&0xffff;
-					my=(xy>>16)&0xffff;
 
-					if(x>0) mx = x;
-					if(y>0) my = y;
+					if(x>0) mx=xy&0xffff;
+					else mx = x;
+					if(y<=0) my=(xy>>16)&0xffff;
+					else my = y;
 
 					count+=(mob_once_spawn(sd,"this",mx,my,temp1,i1,1,"GM_MONSTER")!=0)? 1:0;
 				}				
 				if(count != 0){
-					clif_displaymessage(fd,"Monster Summoned !!");
+					clif_displaymessage(fd,msg_table[39]);
 				}else{
-					clif_displaymessage(fd,"Invalid monster ID.");
+					clif_displaymessage(fd,msg_table[40]);
 				}
 			}
 			return 1;
 		}
-
 // 精錬 @refine 装備場所ID +数値
 // 右手=2 左手=32 両手=34 頭=256/257/768/769 体=16 肩=4 足=64
 		if(strcmpi(command,"@refine")==0 && gm_level >= atcommand_config.refine){
@@ -735,7 +735,6 @@ z [0～4]服の色
 			}
 			return 1;
 		}
-		
 // 武器製造 @produce アイテムIDor名前 属性 星のかけらの数
 // 属性 0=無し 1=水 2=地 3=炎 4=風
 // 別に属性＋星のかけら３個でもつかえます。
@@ -751,7 +750,6 @@ z [0～4]服の色
 					(i1<=500 || i1>1099) && (i1<4001 || i1>4148) &&
 					(i1<7001 || i1>10019) && itemdb_isequip(i1)){
 					struct item tmp_item;
-
 					if(i2<0 || i2>4) i2=0;	// 属性範囲
 					if(i3<0 || i3>3 ) i3=0;	// 星のかけら個数
 					memset(&tmp_item,0,sizeof(tmp_item));
@@ -765,8 +763,11 @@ z [0～4]服の色
 					clif_misceffect(&sd->bl,3); // 他人にも成功を通知（精錬成功エフェクトと同じでいいの？）
 					if((flag = pc_additem(sd,&tmp_item,1)))
 						clif_additem(sd,0,0,flag);
-				}else
-					printf("@produce NOT WEAPON [%d]\n",i1);
+				}
+				else {
+					if(battle_config.error_log)
+						printf("@produce NOT WEAPON [%d]\n",i1);
+				}
 			}
 			return 1;
 		}
@@ -806,7 +807,7 @@ z [0～4]服の色
 				clif_updatestatus(sd,SP_STATUSPOINT);
 				clif_displaymessage(fd,"Status Point(s) given.");
 			}else
-				clif_displaymessage(fd,"Invalid number.");
+				clif_displaymessage(fd,msg_table[41]);
 			return 1;
 		}
 
@@ -818,7 +819,7 @@ z [0～4]服の色
 				clif_updatestatus(sd,SP_SKILLPOINT);
 				clif_displaymessage(fd,"Skill Point(s) given.");
 			}else
-				clif_displaymessage(fd,"Invalid number.");
+				clif_displaymessage(fd,msg_table[41]);
 			return 1;
 		}
 
@@ -830,7 +831,7 @@ z [0～4]服の色
 				clif_updatestatus(sd,SP_ZENY);
 				clif_displaymessage(fd,"Zeny given.");
 			}else
-				clif_displaymessage(fd,"Invalid number.");
+				clif_displaymessage(fd,msg_table[41]);
 			return 1;
 		}
 
@@ -855,7 +856,7 @@ z [0～4]服の色
 			clif_updatestatus(sd,SP_STR+i2);
 			clif_updatestatus(sd,SP_USTR+i2);
 			pc_calcstatus(sd,0);
-			clif_displaymessage(fd,"Stat Changed.");
+			clif_displaymessage(fd,msg_table[42]);
 			return 1;
 		}
 
@@ -864,11 +865,11 @@ z [0～4]服の色
 			struct guild *g;
 			sscanf(message,"%s%d",command,&i1);
 			if( sd->status.guild_id<=0 || (g=guild_search(sd->status.guild_id))==NULL){
-				clif_displaymessage(fd,"You're not in a guild.");
+				clif_displaymessage(fd,msg_table[43]);
 				return 1;
 			}
 			if( strcmp(sd->status.name,g->master)!=0 ){
-				clif_displaymessage(fd,"You're not the master of your guild.");
+				clif_displaymessage(fd,msg_table[44]);
 				return 1;
 			}
 			
@@ -876,7 +877,7 @@ z [0～4]服の色
 				intif_guild_change_basicinfo(g->guild_id,GBI_GUILDLV,&i1,2);
 				clif_displaymessage(fd,"Guild Level changed.");
 			}else
-				clif_displaymessage(fd,"Guild Level change failed.");
+				clif_displaymessage(fd,msg_table[45]);
 			return 1;
 		}
 
@@ -949,11 +950,11 @@ z [0～4]服の色
 			if ((pl_sd=map_nick2sd(temp1))!=NULL) {
 				if(gm_level > pc_isGM(pl_sd)) {
 					pc_setpos(pl_sd, sd->mapname, sd->bl.x, sd->bl.y, 2);
-					sprintf(moji,"Recalled %s!!",temp1);
+					sprintf(moji,msg_table[46],temp1);
 					clif_displaymessage(fd,moji);
 				}
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[47]);
 			}
 			return 1;
 		}
@@ -967,13 +968,13 @@ z [0～4]服の色
 					if (x >= 0 && x < MAX_PC_CLASS) {
 						pc_jobchange(pl_sd,x);
 						clif_displaymessage(pl_sd->fd,"Job changed");
-						clif_displaymessage(fd,"Character's Job changed");
+						clif_displaymessage(fd,msg_table[48]);
 					}else{
-						clif_displaymessage(fd,"Invalid Job ID.");
+						clif_displaymessage(fd,msg_table[49]);
 					}
 				}
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[50]);
 			}
 		return 1;
 		}
@@ -989,9 +990,9 @@ z [0～4]服の色
 					pc_setghosttimer(sd,battle_config.ghost_time);
 				clif_updatestatus(pl_sd,SP_HP);
 				clif_resurrection(&pl_sd->bl,1);
-				clif_displaymessage(fd,"Character Revived.");
+				clif_displaymessage(fd,msg_table[51]);
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[52]);
 			}
 			return 1;
 		}
@@ -1001,7 +1002,7 @@ z [0～4]服の色
 		if (strcmpi(command, "@charstats") == 0 && gm_level >= atcommand_config.charstats) {
 			sscanf(message, "%s %[^\n]", command, temp1);
 			if ((pl_sd=map_nick2sd(temp1))!=NULL) {
-				sprintf(moji,"%s Stats", pl_sd->status.name);
+				sprintf(moji,msg_table[53], pl_sd->status.name);
 				clif_displaymessage(fd,moji);
 				sprintf(moji,"Base Level - %3d          Job Level - %3d", pl_sd->status.base_level, pl_sd->status.job_level);
 				clif_displaymessage(fd,moji);
@@ -1018,7 +1019,7 @@ z [0～4]服の色
 				sprintf(moji,"Zeny - %d", pl_sd->status.zeny);
 				clif_displaymessage(fd,moji);
 			}else{
-				clif_displaymessage(fd,"Character does not exist.");
+				clif_displaymessage(fd,msg_table[54]);
 			}
 			return 1;
 		}
@@ -1040,10 +1041,10 @@ z [0～4]服の色
 					pl_sd->opt2=y;
 					pl_sd->status.option=z;
 					clif_changeoption(&pl_sd->bl);
-					clif_displaymessage(fd,"Character's options changed.");
+					clif_displaymessage(fd,msg_table[55]);
 				}
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[56]);
 			}
 			return 1;
 		}
@@ -1055,10 +1056,10 @@ z [0～4]服の色
 			if ((pl_sd=map_nick2sd(temp1))!=NULL) {
 				if(gm_level > pc_isGM(pl_sd)) {
 					pc_setsavepoint(pl_sd,temp0,x,y);
-					clif_displaymessage(fd,"Character's respawn point changed.");
+					clif_displaymessage(fd,msg_table[57]);
 				}
 			}else{
-				clif_displaymessage(fd,"Character not found.");
+				clif_displaymessage(fd,msg_table[58]);
 			}
 			return 1;
 		}
@@ -1071,7 +1072,7 @@ z [0～4]服の色
 				if(session[i] && (pl_sd=session[i]->session_data) && pl_sd->state.auth){
 					pl_sd->opt2 |= 0x10;
 					clif_changeoption(&pl_sd->bl);
-					clif_displaymessage(pl_sd->fd,"Night has fallen.");
+					clif_displaymessage(pl_sd->fd,msg_table[59]);
 				}
 			}
 			return 1;
@@ -1085,7 +1086,7 @@ z [0～4]服の色
 				if(session[i] && (pl_sd=session[i]->session_data) && pl_sd->state.auth){
 					pl_sd->opt2 &= !0x10;
 					clif_changeoption(&pl_sd->bl);
-					clif_displaymessage(pl_sd->fd,"Day has arrived.");
+					clif_displaymessage(pl_sd->fd,msg_table[60]);
 				}
 			}
 			return 1;
@@ -1100,11 +1101,11 @@ z [0～4]服の色
 			if(session[i] && (pl_sd=session[i]->session_data) && pl_sd->state.auth){
 				if(gm_level > pc_isGM(pl_sd)) {
 					pc_damage(NULL,pl_sd,pl_sd->status.hp+1);
-					clif_displaymessage(pl_sd->fd,"The holy messenger has given judgement.");
+					clif_displaymessage(pl_sd->fd,msg_table[61]);
 				}
 			}
 		}
-		clif_displaymessage(fd,"Judgement was made.");
+		clif_displaymessage(fd,msg_table[62]);
 		return 1;
 	}
 //October 6, 2003
@@ -1117,12 +1118,12 @@ z [0～4]服の色
 				if(sd->bl.m == pl_sd->bl.m){
 					if(gm_level > pc_isGM(pl_sd)) {
 						pc_damage(NULL,pl_sd,pl_sd->status.hp+1);
-						clif_displaymessage(pl_sd->fd,"The holy messenger has given judgement.");
+						clif_displaymessage(pl_sd->fd,msg_table[61]);
 					}
 				}
 			}
 		}
-		clif_displaymessage(fd,"Judgement was made on the map.");
+		clif_displaymessage(fd,msg_table[62]);
 		return 1;
 	}
 //September 21, 2003
@@ -1138,10 +1139,10 @@ z [0～4]服の色
 				pc_setstand(pl_sd);
 				clif_updatestatus(pl_sd,SP_HP);
 				clif_resurrection(&pl_sd->bl,1);
-				clif_displaymessage(pl_sd->fd,"Mercy has been shown.");
+				clif_displaymessage(pl_sd->fd,msg_table[63]);
 			}
 		}
-		clif_displaymessage(fd,"Mercy has been granted.");
+		clif_displaymessage(fd,msg_table[64]);
 		return 1;
 	}
 //October 6, 2003
@@ -1156,11 +1157,11 @@ z [0～4]服の色
 					pc_setstand(pl_sd);
 					clif_updatestatus(pl_sd,SP_HP);
 					clif_resurrection(&pl_sd->bl,1);
-					clif_displaymessage(pl_sd->fd,"You've been granted mercy.");
+					clif_displaymessage(pl_sd->fd,msg_table[63]);
 				}
 			}
 		}
-		clif_displaymessage(fd,"Mercy was granted on the map.");
+		clif_displaymessage(fd,msg_table[64]);
 		return 1;
 	}
 //@charbaselvl <#> <nickname>
@@ -1183,13 +1184,13 @@ z [0～4]服の色
 						pc_calcstatus(pl_sd,0);
 						pc_heal(pl_sd,pl_sd->status.max_hp,pl_sd->status.max_sp);
 						clif_misceffect(&pl_sd->bl,0);
-						clif_displaymessage(fd,"Character's Base Level Raised");
+						clif_displaymessage(fd,msg_table[65]);
 					}else if(x<0 && pl_sd->status.base_level+x>0){
 						pl_sd->status.base_level+=x;
 						clif_updatestatus(pl_sd,SP_BASELEVEL);
 						clif_updatestatus(pl_sd,SP_NEXTBASEEXP);
 						pc_calcstatus(pl_sd,0);
-						clif_displaymessage(fd,"character's Base Level Lowered");
+						clif_displaymessage(fd,msg_table[66]);
 					}
 				}
 			}
@@ -1204,7 +1205,7 @@ z [0～4]服の色
 					if(pl_sd->status.class == 0)
 						y -= 40;
 					if(pl_sd->status.job_level == y){
-						clif_displaymessage(fd,"Character's Job Level can't go any higher.");
+						clif_displaymessage(fd,msg_table[67]);
 					}else if(x >= 1){
 						if(pl_sd->status.job_level + x > y)
 							x = y - pl_sd->status.job_level;
@@ -1215,13 +1216,13 @@ z [0～4]服の色
 						clif_updatestatus(pl_sd,SP_SKILLPOINT);
 						pc_calcstatus(pl_sd,0);
 						clif_misceffect(&pl_sd->bl,1);
-						clif_displaymessage(fd,"Character's Job Level Raised");
+						clif_displaymessage(fd,msg_table[68]);
 					}else if(x<0 && sd->status.job_level+x>0 ){
 						pl_sd->status.job_level+=x;
 						clif_updatestatus(pl_sd,SP_JOBLEVEL);
 						clif_updatestatus(pl_sd,SP_NEXTJOBEXP);
 						pc_calcstatus(pl_sd,0);
-						clif_displaymessage(fd,"Character's Job Level Lowered");
+						clif_displaymessage(fd,msg_table[69]);
 					}
 				}
 			}
@@ -1434,7 +1435,7 @@ z [0～4]服の色
 			sscanf(message, "%s %d", command, &x);
 			if(skill_get_inf2(x)&0x01){
 				pc_skill(sd,x,1,0);
-				clif_displaymessage(fd,"ou have learned the skill.");
+				clif_displaymessage(fd,msg_table[70]);
 			}
 			return 1;
 		}
@@ -1445,11 +1446,10 @@ z [0～4]服の色
 				sd->status.skill[x].lv=0;
 				sd->status.skill[x].flag=0;
 				clif_skillinfoblock(sd);
-				clif_displaymessage(fd,"You have forgotten the skill.");
+				clif_displaymessage(fd,msg_table[71]);
 			}
 			return 1;
 		}
-
 		if(strcmpi(command, "@spiritball") == 0 && gm_level >= atcommand_config.spiritball){
 			sscanf(message, "%s %d", command, &x);
 			if(x>=0 && x<=0x7FFF){
@@ -1527,6 +1527,32 @@ z [0～4]服の色
  		return 1;
 
 	}
+	return 0;
+}
+
+/* Read Message Data */
+int msg_config_read(const char *cfgName)
+{
+	int i,msg_number;
+	char line[1024],msg[1024];
+	FILE *fp;
+
+	fp=fopen(cfgName,"r");
+	if(fp==NULL){
+		printf("file not found: %s\n",cfgName);
+		return 1;
+	}
+	while(fgets(line,1020,fp)){
+		if(line[0] == '/' && line[1] == '/')
+			continue;
+		i=sscanf(line,"%d: %[^\r\n]",&msg_number,msg);
+		if(i!=2)
+			continue;
+		if(msg_number>=0&&msg_number<=200)
+			strcpy(msg_table[msg_number],msg);
+		//printf("%d:%s\n",msg_number,msg);
+	}	
+	fclose(fp);
 	return 0;
 }
 
