@@ -658,7 +658,13 @@ int pc_calc_skilltree(struct map_session_data *sd)
 					f = 0;
 					if(pc_isGM(sd) < battle_config.pc_skillflee)
 					{
-						if(id >=  2 && id <= 53 && sd->status.skill[1].lv < 9)f = 1;
+						if(id >=  2 && id <= 53)
+						{
+							if(sd->status.skill[1].lv < 9)f = 1;
+							if((id == 2 || id == 44 || id == 46) && c == 17 && sd->status.skill_point >= sd->status.job_level)f = 1;
+							if((id == 28 || id == 22 || id == 23 || id == 35) && c == 14 && sd->status.skill_point >= sd->status.job_level)f = 1;
+							if((id == 9 || id == 12) && c == 8 && sd->status.skill_point >= sd->status.job_level)f = 1;
+						}
 						if(id >= 54 && id <= 330)
 						{
 							if(sd->status.skill[1].lv < 9)f = 1;
