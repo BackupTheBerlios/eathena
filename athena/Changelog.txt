@@ -1,4 +1,6 @@
 Date	Added
+02/03   * Improved the prontera.gat map fallback.
+	  Improved the way guild emblems act when logging in. [Sara-chan]
 01/25
 	* added poison hp reduction [AppleGirl]
 01/20
