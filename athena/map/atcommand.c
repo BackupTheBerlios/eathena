@@ -413,15 +413,17 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			struct item item_tmp;
 			struct item_data *item_data;
 			sscanf(message, "%s%s%d", command, temp0, &y);
-			if(y==0) y=1;	//ŒÂ”w’è‚ª–³‚©‚Á‚½‚ç‚PŒÂ‚É‚·‚éby‚ê‚ 
+			if(y<=0) y=1;	//ŒÂ”w’è‚ª–³‚©‚Á‚½‚ç‚PŒÂ‚É‚·‚éby‚ê‚ 
 			
 			if( (x=atoi(temp0))>0 ){
 				if(battle_config.item_check){
 					x=(( (item_data=itemdb_exists(x)) && itemdb_available(x))?x:0);
-				}else{
+				}
+				else{
 					item_data=itemdb_search(x);
 				}
-			}else if( (item_data=itemdb_searchname(temp0))!=NULL ){
+			}
+			else if( (item_data=itemdb_searchname(temp0))!=NULL ){
 				x=(!battle_config.item_check ||
 				 itemdb_available(item_data->nameid))?item_data->nameid:0;
 			}
@@ -439,9 +441,65 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 					if((flag = pc_additem(sd,&item_tmp,a2)))
 						clif_additem(sd,0,0,flag);
 				}
-//				clif_displaymessage(fd,msg_table[18]);
+				clif_displaymessage(fd,msg_table[18]);
 			} else {
 				clif_displaymessage(fd,msg_table[19]);
+			}
+			return 1;
+		}
+// @item2
+		if (strcmpi(command, "@item2") == 0 && gm_level >= atcommand_config.item) {
+			struct item item_tmp;
+			struct item_data *item_data;
+			int iden,ref,attr,c1,c2,c3,c4;
+			if(sscanf(message, "%s%s%d%d%d%d%d%d%d%d", command, temp0, &y, &iden, &ref, &attr, &c1, &c2, &c3, &c4) >= 10) {
+				if(y<=0) y=1;	//ŒÂ”w’è‚ª–³‚©‚Á‚½‚ç‚PŒÂ‚É‚·‚éby‚ê‚ 
+
+				if( (x=atoi(temp0))>0 ){
+					if(battle_config.item_check){
+						x=(( (item_data=itemdb_exists(x)) && itemdb_available(x))?x:0);
+					}
+					else{
+						item_data=itemdb_search(x);
+					}
+				}
+				else if( (item_data=itemdb_searchname(temp0))!=NULL ){
+					x=(!battle_config.item_check ||
+					 itemdb_available(item_data->nameid))?item_data->nameid:0;
+				}
+
+				if( x>0 ) {
+					int a1=1,a2=y,i;
+					if(item_data->type==4 || item_data->type==5 || item_data->type==7){
+						a1=y;
+						a2=1;
+						if(item_data->type==7) {
+							iden = 1;
+							ref = 0;
+						}
+						if(ref > 10) ref = 10;
+					}
+					else {
+						iden = 1;
+						ref = attr = 0;
+					}
+					for(i=0;i<a1;i++){
+						memset(&item_tmp,0,sizeof(item_tmp));
+						item_tmp.nameid=x;
+						item_tmp.identify=iden;
+						item_tmp.refine=ref;
+						item_tmp.attribute=attr;
+						item_tmp.card[0]=c1;
+						item_tmp.card[1]=c2;
+						item_tmp.card[2]=c3;
+						item_tmp.card[3]=c4;
+						if((flag = pc_additem(sd,&item_tmp,a2)))
+							clif_additem(sd,0,0,flag);
+					}
+					clif_displaymessage(fd,msg_table[18]);
+			} else {
+				clif_displaymessage(fd,msg_table[19]);
+			}
 			}
 			return 1;
 		}
@@ -969,7 +1027,7 @@ z [0`4]•‚ÌF
 			sscanf(message, "%s%d %[^\n]", command, &x, temp1);
 			if ((pl_sd=map_nick2sd(temp1))!=NULL) {
 				if(gm_level > pc_isGM(pl_sd)) {
-					if (x >= 0 && x < MAX_PC_CLASS) {
+					if ((x >= 0 && x < MAX_PC_CLASS)) {
 						pc_jobchange(pl_sd,x);
 						clif_displaymessage(pl_sd->fd,"Job changed");
 						clif_displaymessage(fd,msg_table[48]);

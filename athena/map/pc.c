@@ -990,7 +990,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			continue;
 		if(sd->inventory_data[index]) {
 			if(sd->inventory_data[index]->type == 4) {
-				if(sd->status.inventory[index].card[0]!=0x00ff && sd->status.inventory[index].card[0]!=(short)0xff00) {
+				if(sd->status.inventory[index].card[0]!=0x00ff && sd->status.inventory[index].card[0]!=0x00fe && sd->status.inventory[index].card[0]!=(short)0xff00) {
 					int j;
 					for(j=0;j<sd->inventory_data[index]->slot;j++){	// カード
 						int c=sd->status.inventory[index].card[j];
@@ -1004,7 +1004,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 				}
 			}
 			else if(sd->inventory_data[index]->type==5){ // 防具
-				if(sd->status.inventory[index].card[0]!=0x00ff && sd->status.inventory[index].card[0]!=(short)0xff00) {
+				if(sd->status.inventory[index].card[0]!=0x00ff && sd->status.inventory[index].card[0]!=0x00fe && sd->status.inventory[index].card[0]!=(short)0xff00) {
 					int j;
 					for(j=0;j<sd->inventory_data[index]->slot;j++){	// カード
 						int c=sd->status.inventory[index].card[j];
@@ -1276,16 +1276,22 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		sd->status.max_sp = battle_config.max_sp;
 
 	sd->nhealhp = 1 + (sd->paramc[2]/5) + (sd->status.max_hp/200);
-	if((skill=pc_checkskill(sd,SM_RECOVERY)) > 0)
+	if((skill=pc_checkskill(sd,SM_RECOVERY)) > 0) {
 		sd->nshealhp = skill*5 + (sd->status.max_hp*skill/500);
+		if(sd->nshealhp > 0x7fff) sd->nshealhp = 0x7fff;
+	}
 	sd->nhealsp = 1 + (sd->paramc[3]/6) + (sd->status.max_sp/100);
 	if(sd->paramc[3] >= 120)
 		sd->nhealsp += ((sd->paramc[3]-120)>>1) + 4;
-	if((skill=pc_checkskill(sd,MG_SRECOVERY)) > 0)
+	if((skill=pc_checkskill(sd,MG_SRECOVERY)) > 0) {
 		sd->nshealsp = skill*3 + (sd->status.max_sp*skill/500);
+		if(sd->nshealsp > 0x7fff) sd->nshealsp = 0x7fff;
+	}
 	if((skill = pc_checkskill(sd,MO_SPIRITSRECOVERY)) > 0) {
 		sd->nsshealhp = skill*4 + (sd->status.max_hp*skill/500);
 		sd->nsshealsp = skill*2 + (sd->status.max_sp*skill/500);
+		if(sd->nsshealhp > 0x7fff) sd->nsshealhp = 0x7fff;
+		if(sd->nsshealsp > 0x7fff) sd->nsshealsp = 0x7fff;
 	}
 
 // -- moonsoul (for High Priest Meditatio SP recovery and bonus SP, as well as
@@ -1383,8 +1389,12 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		if(sd->sc_data[SC_TWOHANDQUICKEN].timer != -1 && sd->sc_data[SC_QUAGMIRE].timer == -1 && sd->sc_data[SC_DONTFORGETME].timer == -1)	// 2HQ
 			aspd_rate -= 30;
 		if(sd->sc_data[SC_ADRENALINE].timer != -1 && sd->sc_data[SC_TWOHANDQUICKEN].timer == -1 &&
-			sd->sc_data[SC_QUAGMIRE].timer == -1 && sd->sc_data[SC_DONTFORGETME].timer == -1)	// アドレナリンラッシュ
+			sd->sc_data[SC_QUAGMIRE].timer == -1 && sd->sc_data[SC_DONTFORGETME].timer == -1) {	// アドレナリンラッシュ
+			if(sd->sc_data[SC_ADRENALINE].val2 || !battle_config.party_skill_penaly)
 			aspd_rate -= 30;
+			else
+				aspd_rate -= 25;
+		}
 		if(sd->sc_data[SC_SPEARSQUICKEN].timer != -1 && sd->sc_data[SC_ADRENALINE].timer == -1 &&
 			sd->sc_data[SC_TWOHANDQUICKEN].timer == -1 && sd->sc_data[SC_QUAGMIRE].timer == -1 && sd->sc_data[SC_DONTFORGETME].timer == -1)	// スピアクィッケン
 			aspd_rate -= sd->sc_data[SC_SPEARSQUICKEN].val2;
@@ -2172,6 +2182,7 @@ int pc_insert_card(struct map_session_data *sd,int idx_card,int idx_equip)
 			(sd->inventory_data[idx_equip]->type!=4 && sd->inventory_data[idx_equip]->type!=5)||	// 装 備じゃない
 			( sd->status.inventory[idx_equip].identify==0 ) ||		// 未鑑定
 			( sd->status.inventory[idx_equip].card[0]==0x00ff) ||		// 製造武器
+			( sd->status.inventory[idx_equip].card[0]==0x00fe) ||
 			( (sd->inventory_data[idx_equip]->equip&ep)==0 ) ||					// 装 備個所違い
 			( sd->inventory_data[idx_equip]->type==4 && ep==32) ||			// 両 手武器と盾カード
 			( sd->status.inventory[idx_equip].card[0]==(short)0xff00) || sd->status.inventory[idx_equip].equip){
@@ -2343,24 +2354,28 @@ int pc_additem(struct map_session_data *sd,struct item *item_data,int amount)
 	struct item_data *data;
 	int i,w;
 
-	if(amount <= 0)
+	if(item_data->nameid <= 0 || amount <= 0)
 		return 1;
 	data = itemdb_search(item_data->nameid);
 	if((w = data->weight*amount) + sd->weight > sd->max_weight)
 		return 2;
 
-	i = -1;
+	i = MAX_INVENTORY;
+
 	if(!itemdb_isequip2(data)){
 		// 装 備品ではないので、既所有品なら個数のみ変化させる
-		i = pc_search_inventory(sd,item_data->nameid);
-		if(i >= 0) {
+		for(i=0;i<MAX_INVENTORY;i++)
+		if(sd->status.inventory[i].nameid == item_data->nameid &&
+			sd->status.inventory[i].card[0] == item_data->card[0] && sd->status.inventory[i].card[1] == item_data->card[1] &&
+			sd->status.inventory[i].card[2] == item_data->card[2] && sd->status.inventory[i].card[3] == item_data->card[3]) {
 			if(sd->status.inventory[i].amount+amount > MAX_AMOUNT)
 				return 5;
 			sd->status.inventory[i].amount+=amount;
 			clif_additem(sd,i,amount,0);
+			break;
 		}
 	}
-	if(i < 0){
+	if(i >= MAX_INVENTORY){
 		// 装 備品か未所有品だったので空き欄へ追加
 		i = pc_search_inventory(sd,0);
 		if(i >= 0) {
@@ -2534,16 +2549,23 @@ int pc_useitem(struct map_session_data *sd,int n)
  */
 int pc_cart_additem(struct map_session_data *sd,struct item *item_data,int amount)
 {
-	int i;
+	struct item_data *data;
+	int i,w;
 
-	if(itemdb_weight(item_data->nameid)*amount + sd->cart_weight > sd->cart_max_weight)
+	if(item_data->nameid <= 0 || amount <= 0)
+		return 1;
+	data = itemdb_search(item_data->nameid);
+
+	if((w=data->weight*amount) + sd->cart_weight > sd->cart_max_weight)
 		return 1;
 
 	i=MAX_CART;
-	if(!itemdb_isequip(item_data->nameid)){
+	if(!itemdb_isequip2(data)){
 		// 装 備品ではないので、既所有品なら個数のみ変化させる
 		for(i=0;i<MAX_CART;i++){
-			if(sd->status.cart[i].nameid==item_data->nameid){
+			if(sd->status.cart[i].nameid==item_data->nameid &&
+				sd->status.cart[i].card[0] == item_data->card[0] && sd->status.cart[i].card[1] == item_data->card[1] &&
+				sd->status.cart[i].card[2] == item_data->card[2] && sd->status.cart[i].card[3] == item_data->card[3]){
 				if(sd->status.cart[i].amount+amount > MAX_AMOUNT)
 					return 1;
 				sd->status.cart[i].amount+=amount;
@@ -2552,11 +2574,10 @@ int pc_cart_additem(struct map_session_data *sd,struct item *item_data,int amoun
 			}
 		}
 	}
-	if(i==MAX_CART){
+	if(i >= MAX_CART){
 		// 装 備品か未所有品だったので空き欄へ追加
-		for(i=MAX_CART-1;i>=0;i--){
-			if(sd->status.cart[i].nameid==0 &&
-			   (i==0 || sd->status.cart[i-1].nameid)){
+		for(i=0;i<MAX_CART;i++){
+			if(sd->status.cart[i].nameid==0){
 				memcpy(&sd->status.cart[i],item_data,sizeof(sd->status.cart[0]));
 				sd->status.cart[i].amount=amount;
 				sd->cart_num++;
@@ -2564,10 +2585,10 @@ int pc_cart_additem(struct map_session_data *sd,struct item *item_data,int amoun
 				break;
 			}
 		}
-		if(i<0)
+		if(i >= MAX_CART)
 			return 1;
 	}
-	sd->cart_weight += itemdb_weight(item_data->nameid)*amount ;
+	sd->cart_weight += w;
 	clif_updatestatus(sd,SP_CARTINFO);
 
 	return 0;

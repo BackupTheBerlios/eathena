@@ -123,6 +123,8 @@ struct map_session_data {
 		unsigned attack_type : 3;
 		unsigned skill_flag : 1;
 		unsigned gangsterparadise : 1;
+		unsigned produce_flag : 1;
+		unsigned make_arrow_flag : 1;
 	} state;
 	struct {
 		unsigned restart_full_recover : 1;
@@ -207,17 +209,17 @@ struct map_session_data {
 	int add_damage_class_count,add_damage_class_count_,add_magic_damage_class_count;
 	short add_damage_classid[10],add_damage_classid_[10],add_magic_damage_classid[10];
 	int add_damage_classrate[10],add_damage_classrate_[10],add_magic_damage_classrate[10];
-	int add_def_class_count,add_mdef_class_count;
-	int add_def_classid[10],add_mdef_classid[10];
+	short add_def_class_count,add_mdef_class_count;
+	short add_def_classid[10],add_mdef_classid[10];
 	int add_def_classrate[10],add_mdef_classrate[10];
-	int monster_drop_item_count;
+	short monster_drop_item_count;
 	short monster_drop_itemid[10];
 	int monster_drop_race[10],monster_drop_itemrate[10];
-	int double_add_rate,speed_add_rate,aspd_add_rate,perfect_hit_add,get_zeny_add_num;
-	int splash_range,splash_add_range;
-	int autospell_id,autospell_lv,autospell_rate;
-	int hp_drain_rate,hp_drain_per,sp_drain_rate,sp_drain_per;
-	int hp_drain_rate_,hp_drain_per_,sp_drain_rate_,sp_drain_per_;
+	int double_add_rate,speed_add_rate,aspd_add_rate,perfect_hit_add, get_zeny_add_num;
+	short splash_range,splash_add_range;
+	short autospell_id,autospell_lv,autospell_rate;
+	short hp_drain_rate,hp_drain_per,sp_drain_rate,sp_drain_per;
+	short hp_drain_rate_,hp_drain_per_,sp_drain_rate_,sp_drain_per_;
 	int short_weapon_damage_return,long_weapon_damage_return;
 	short spiritball, spiritball_old;
 	int spirit_timer[MAX_SKILL_LEVEL];

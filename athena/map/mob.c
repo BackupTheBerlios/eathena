@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.57 2004/03/06 21:24:55 sara-chan Exp $
+// $Id: mob.c,v 1.58 2004/03/07 21:57:14 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -2460,6 +2460,7 @@ int mobskill_castend_pos( int tid, unsigned int tick, int id,int data )
 		}
 	}
 
+	if(battle_config.monster_land_skill_limit) {
 	maxcount = skill_get_maxcount(md->skillid);
 	if(maxcount > 0) {
 		int i,c;
@@ -2469,6 +2470,7 @@ int mobskill_castend_pos( int tid, unsigned int tick, int id,int data )
 		}
 		if(c >= maxcount)
 			return 0;
+	}
 	}
 
 	range = skill_get_range(md->skillid,md->skilllv);

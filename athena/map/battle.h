@@ -229,6 +229,9 @@ extern struct Battle_Config {
 	int pc_attack_direction_change;
 	int monster_attack_direction_change;
 	int pc_undead_nofreeze;
+	int pc_land_skill_limit;
+	int monster_land_skill_limit;
+	int party_skill_penaly;
 	int item_rate_common,item_rate_card,item_rate_equip;	// Added by RoVeRT
 	int item_drop_common_min,item_drop_common_max;	// Added by TyrNemesis^
 	int item_drop_card_min,item_drop_card_max;

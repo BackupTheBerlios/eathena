@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.13 2004/02/29 22:39:37 sara-chan Exp $
+// $Id: login.c,v 1.14 2004/03/07 21:57:14 sara-chan Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -42,6 +42,7 @@ int subnetmaski[4];
 
 char account_filename[1024] = "account.txt";
 char GM_account_filename[1024] = "conf/GM_account.txt";
+char login_log_filename[1024] = "login.log";
 
 struct mmo_char_server server[MAX_SERVERS];
 int server_fd[MAX_SERVERS];
@@ -93,7 +94,7 @@ int login_log(char *fmt,...)
 	va_list ap;
 	va_start(ap,fmt);
 	
-	logfp=fopen("login.log","a");
+	logfp=fopen(login_log_filename,"a");
 	if(logfp){
 		vfprintf(logfp,fmt,ap);
 		fclose(logfp);
@@ -693,8 +694,12 @@ int parse_login(int fd)
     delete_session(fd);
     return 0;
   }
-  if(RFIFOW(fd,0)<30000)
+  if(RFIFOW(fd,0)<30000) {
+  	if(RFIFOW(fd,0) == 0x64 || RFIFOW(fd,0) == 0x01dd)
 	  printf("parse_login : %d %d %d %s\n",fd,RFIFOREST(fd),RFIFOW(fd,0),RFIFOP(fd,6));
+		else
+		  printf("parse_login : %d %d %d\n",fd,RFIFOREST(fd),RFIFOW(fd,0));
+	}
   while(RFIFOREST(fd)>=2){
 	switch(RFIFOW(fd,0)){
 	case 0x64:		// クライアントログイン要求
@@ -803,7 +808,7 @@ int parse_login(int fd)
 		if(RFIFOREST(fd)<76)
 			return 0;
 		{
-			FILE *logfp=fopen("login.log","a");
+			FILE *logfp=fopen(login_log_filename,"a");
 			if(logfp){
 				unsigned char *p=(unsigned char *)&session[fd]->client_addr.sin_addr;
 				fprintf(logfp,"server connection request %s @ %d.%d.%d.%d:%d (%d.%d.%d.%d)" RETCODE,
@@ -1021,6 +1026,9 @@ int login_config_read(const char *cfgName)
 				access_deny[(access_denynum++)*ACO_STRSIZE]=0;
 			else if(w2[0])
 				strcpy( access_deny+(access_denynum++)*ACO_STRSIZE,w2 );
+		}
+		else if(strcmpi(w1,"login_log_filename")==0){
+			strcpy(login_log_filename,w2);
 		}
 	}
 	fclose(fp);

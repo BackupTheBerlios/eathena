@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.12 2004/03/06 20:14:07 akitasha Exp $
+// $Id: char.c,v 1.13 2004/03/07 21:57:14 sara-chan Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -45,6 +45,8 @@ int char_port = 6121;
 int char_maintenance;
 int char_new;
 char char_txt[1024];
+char unknown_char_name[1024]="Unknown";
+char char_log_filename[1024]="char.log";
 char lan_map_ip[128]; 
 int subneti[4]; 
 int subnetmaski[4]; 
@@ -68,10 +70,11 @@ struct mmo_charstatus *char_dat;
 int char_num,char_max;
 int max_connect_user=0;
 int autosave_interval=DEFAULT_AUTOSAVE_INTERVAL;
+int party_share_level = 10;
+int start_zeny = 500;
 
 // 初期位置（confファイルから再設定可能）
 struct point start_point={"new_1-1.gat",53,111};
-int start_zeny;
 
 int mmo_char_tostr(char *str,struct mmo_charstatus *p)
 {
@@ -353,7 +356,7 @@ int make_new_char(int fd,unsigned char *dat)
      dat[30]>=9 ||
      dat[33]==0 || dat[33]>=20 ||
      dat[31]>=9){
-    logfp=fopen("char.log","a");
+    logfp=fopen(char_log_filename,"a");
     if(logfp){
       fprintf(logfp,"make new char error %d-%d %s %d,%d,%d,%d,%d,%d %d,%d" RETCODE,
 	      fd,dat[30],dat,dat[24],dat[25],dat[26],dat[27],dat[28],dat[29],dat[33],dat[31]);
@@ -361,7 +364,7 @@ int make_new_char(int fd,unsigned char *dat)
     }
     return -1;
   }
-  logfp=fopen("char.log","a");
+  logfp=fopen(char_log_filename,"a");
   if(logfp){
     fprintf(logfp,"make new char %d-%d %s" RETCODE,fd,dat[30],dat);
     fclose(logfp);
@@ -862,7 +865,7 @@ int parse_frommap(int fd)
 			if(i!=char_num)
 				memcpy(WFIFOP(fd,6),char_dat[i].name,24);
 			else
-				memcpy(WFIFOP(fd,6),UNKNOWN_CHAR_NAME,24);
+				memcpy(WFIFOP(fd,6),unknown_char_name,24);
 			WFIFOSET(fd,30);
 			
 			RFIFOSKIP(fd,6);
@@ -1037,7 +1040,7 @@ int parse_char(int fd)
 			if(ch!=9){
 				FILE *logfp;
 
-				logfp=fopen("char.log","a");
+				logfp=fopen(char_log_filename,"a");
 				if(logfp){
 					fprintf(logfp,"char select %d-%d %s" RETCODE,sd->account_id,RFIFOB(fd,2),char_dat[sd->found_char[ch]].name);
 					fclose(logfp);
@@ -1391,11 +1394,14 @@ int char_config_read(const char *cfgName)
 			continue;
 		if(strcmpi(w1,"userid")==0){
 			memcpy(userid,w2,24);
-		} else if(strcmpi(w1,"passwd")==0){
+		}
+		else if(strcmpi(w1,"passwd")==0){
 			memcpy(passwd,w2,24);
-		} else if(strcmpi(w1,"server_name")==0){
+		}
+		else if(strcmpi(w1,"server_name")==0){
 			memcpy(server_name,w2,16);
-		} else if(strcmpi(w1,"login_ip")==0){
+		}
+		else if(strcmpi(w1,"login_ip")==0){
 			h = gethostbyname (w2);
 			if(h != NULL) { 
 				printf("Login server IP address : %s -> %d.%d.%d.%d\n",w2,(unsigned char)h->h_addr[0],(unsigned char)h->h_addr[1],(unsigned char)h->h_addr[2],(unsigned char)h->h_addr[3]);
@@ -1403,9 +1409,11 @@ int char_config_read(const char *cfgName)
 			}
 			else
 				memcpy(login_ip_str,w2,16);
-		} else if(strcmpi(w1,"login_port")==0){
+		}
+		else if(strcmpi(w1,"login_port")==0){
 			login_port=atoi(w2);
-		} else if(strcmpi(w1,"char_ip")==0){
+		}
+		else if(strcmpi(w1,"char_ip")==0){
 			h = gethostbyname (w2);
 			if(h != NULL) { 
 				printf("Character server IP address : %s -> %d.%d.%d.%d\n",w2,(unsigned char)h->h_addr[0],(unsigned char)h->h_addr[1],(unsigned char)h->h_addr[2],(unsigned char)h->h_addr[3]);
@@ -1413,21 +1421,28 @@ int char_config_read(const char *cfgName)
 			}
 			else
 				memcpy(char_ip_str,w2,16);
-		} else if(strcmpi(w1,"char_port")==0){
+		}
+		else if(strcmpi(w1,"char_port")==0){
 			char_port=atoi(w2);
-		} else if(strcmpi(w1,"char_maintenance")==0){
+		}
+		else if(strcmpi(w1,"char_maintenance")==0){
 			char_maintenance=atoi(w2);
-		} else if(strcmpi(w1,"char_new")==0){
+		}
+		else if(strcmpi(w1,"char_new")==0){
 			char_new=atoi(w2);
-		} else if(strcmpi(w1,"char_txt")==0){
+		}
+		else if(strcmpi(w1,"char_txt")==0){
 			strcpy(char_txt,w2);
-		} else if(strcmpi(w1,"max_connect_user")==0){
+		}
+		else if(strcmpi(w1,"max_connect_user")==0){
 			max_connect_user=atoi(w2);
-		} else if(strcmpi(w1,"autosave_time")==0){
+		}
+		else if(strcmpi(w1,"autosave_time")==0){
 			autosave_interval=atoi(w2)*1000;
 			if(autosave_interval <= 0)
 				autosave_interval = DEFAULT_AUTOSAVE_INTERVAL;
-		} else if(strcmpi(w1,"start_point")==0){
+		}
+		else if(strcmpi(w1,"start_point")==0){
 			char map[32];
 			int x,y;
 			if( sscanf(w2,"%[^,],%d,%d",map,&x,&y)<3 )
@@ -1435,8 +1450,21 @@ int char_config_read(const char *cfgName)
 			memcpy(start_point.map,map,16);
 			start_point.x=x;
 			start_point.y=y;
-		} else if(strcmpi(w1,"start_zeny")==0){
+		}
+		else if(strcmpi(w1,"party_share_level")==0){
+			party_share_level=atoi(w2);
+			if(party_share_level < 0) party_share_level = 0;
+		}
+		else if(strcmpi(w1,"start_zeny")==0){
 			start_zeny=atoi(w2);
+			if(start_zeny < 0) start_zeny = 0;
+		}
+		else if(strcmpi(w1,"unknown_char_name")==0){
+			strcpy(unknown_char_name,w2);
+			unknown_char_name[24] = 0;
+		}
+		else if(strcmpi(w1,"char_log_filename")==0){
+			strcpy(char_log_filename,w2);
 		}
 	}
 	fclose(fp);
