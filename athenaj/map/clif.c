@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.16 2004/02/05 14:30:58 rovert Exp $
+// $Id: clif.c,v 1.17 2004/02/05 17:47:27 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -675,6 +675,23 @@ static int clif_set007b(struct map_session_data *sd,unsigned char *buf)
 
 	return packet_len_table[0x1da];
 #endif
+}
+
+/*==========================================
+ *
+ *------------------------------------------
+ */
+int clif_mob_class_change(struct mob_data *md,int class)
+{
+	char buf[16];
+
+	WBUFW(buf,0)=0x1b0;
+	WBUFL(buf,2)=md->bl.id;
+	WBUFB(buf,6)=1;
+	WBUFL(buf,7)=class;
+
+	clif_send(buf,packet_len_table[0x1b0],&md->bl,AREA);
+	return 0;
 }
 
 /*==========================================
