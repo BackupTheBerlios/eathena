@@ -865,16 +865,22 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 	if(src->type == BL_PC && dmg.flag&BF_WEAPON && src != bl && src == dsrc && damage > 0) {
 		struct map_session_data *sd = (struct map_session_data *)src;
 		int hp = 0,sp = 0;
-		if(sd->hp_drain_rate > 0 && sd->hp_drain_per > 0 && dmg.damage > 0 && rand()%100 < sd->hp_drain_rate)
+		if(sd->hp_drain_rate > 0 && sd->hp_drain_per > 0 && dmg.damage > 0 && rand()%100 < sd->hp_drain_rate) {
 			hp += (dmg.damage * sd->hp_drain_per)/100;
-		if(sd->hp_drain_rate_ > 0 && sd->hp_drain_per_ > 0 && dmg.damage2 > 0 && rand()%100 < sd->hp_drain_rate_)
+			if(hp < 1) hp = 1;
+		}
+		if(sd->hp_drain_rate_ > 0 && sd->hp_drain_per_ > 0 && dmg.damage2 > 0 && rand()%100 < sd->hp_drain_rate_) {
 			hp += (dmg.damage2 * sd->hp_drain_per_)/100;
 			if(hp < 1) hp = 1;
-		if(sd->sp_drain_rate > 0 && sd->sp_drain_per > 0 && dmg.damage > 0 && rand()%100 < sd->sp_drain_rate)
+		}
+		if(sd->sp_drain_rate > 0 && sd->sp_drain_per > 0 && dmg.damage > 0 && rand()%100 < sd->sp_drain_rate) {
 			sp += (dmg.damage * sd->sp_drain_per)/100;
-		if(sd->sp_drain_rate_ > 0 && sd->sp_drain_per_ > 0 && dmg.damage2 > 0 && rand()%100 < sd->sp_drain_rate_)
+			if(sp < 1) sp = 1;
+		}
+		if(sd->sp_drain_rate_ > 0 && sd->sp_drain_per_ > 0 && dmg.damage2 > 0 && rand()%100 < sd->sp_drain_rate_) {
 			sp += (dmg.damage2 * sd->sp_drain_per_)/100;
 			if(sp < 1) sp = 1;
+		}
 		if(hp > 0 || sp > 0) pc_heal(sd,hp,sp);
 	}
 
