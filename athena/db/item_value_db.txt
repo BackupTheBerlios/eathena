@@ -823,7 +823,7 @@
 2332,Silver_Robe,Silver Robe,7000,,,
 2333,Silver_Robe_,Silver Robe,7000,,,
 2334,Mage_Coat,Mage Coat,20,,,
-2335,Thief_Clothes,Thief Clothes,7400,,,
+2335,Thief_Clothes,Thief Clothes,74000,,,
 2336,Thief_Clothes_,Thief Clothes,74000,,,
 2337,Ninja_Suit,Ninja Suit,20,,,
 2338,Wedding_Dress,Wedding Dress,43000,,,
