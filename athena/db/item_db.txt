@@ -422,9 +422,9 @@
 1201,Knife,Knife,4,50,,400,17,,1,3,10444527,2,2,1,1,1,{},{}
 1202,Knife_,Knife,4,50,,400,17,,1,4,10444527,2,2,1,1,1,{},{}
 1203,Knife__,Knife,4,50,,400,17,,1,0,10444527,2,2,1,1,1,{},{}
-1204,Cutter,Cutter,4,1250,,500,30,,1,3,10444527,2,2,1,1,1,{},{ bonus2 bAddEff,Eff_Sleep,10000; }
-1205,Cutter_,Cutter,4,1250,,500,30,,1,4,10444527,2,2,1,1,1,{},{ bonus2 bAddEff,Eff_Sleep,10000; }
-1206,Cutter__,Cutter,4,1250,,500,30,,1,0,10444527,2,2,1,1,1,{},{ bonus2 bAddEff,Eff_Sleep,10000; }
+1204,Cutter,Cutter,4,1250,,500,30,,1,3,10444527,2,2,1,1,1,{},{}
+1205,Cutter_,Cutter,4,1250,,500,30,,1,4,10444527,2,2,1,1,1,{},{}
+1206,Cutter__,Cutter,4,1250,,500,30,,1,0,10444527,2,2,1,1,1,{},{}
 1207,Main_gauche,Main Gauche,4,2400,,600,43,,1,3,10444527,2,2,1,1,1,{},{}
 1208,Main_gauche_,Main Gauche,4,2400,,600,43,,1,4,10444527,2,2,1,1,1,{},{}
 1209,Main_gauche__,Main Gauche,4,2400,,600,43,,1,0,10444527,2,2,1,1,1,{},{}
@@ -1320,10 +1320,10 @@
 668,Angpow,Angpow,0,1,,2,,,,,10477567,2,,,,,{ set Zeny,Zeny+rand(100,10000); },{}
 
 //Not sure of functions in official servers
-2634,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,0,136,,,0,{},{,},
-2635,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,1,136,,,0,{},{,},
-2636,Gold Christmas Ring,Gold Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{,},
-2637,Silver Christmas Ring,Silver Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{,},
+2634,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,0,136,,,0,{},{},
+2635,Wedding Ring,Wedding Ring,5,500,,0,,0,,0,10477567,1,136,,,0,{},{},
+2636,Gold Christmas Ring,Gold Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{},
+2637,Silver Christmas Ring,Silver Christmas Ring,5,500,,0,,0,,0,10477567,2,136,,,0,{},{},
 552,Ketupat,Ketupat,0,50,,10,,,,,10477567,2,,,,,{ itemheal rand(100,200),0; },{}
 553,Dumpling,Dumpling,0,50,,50,,,,,10477567,2,,,,,{ itemheal rand(100,200),0; },{}
 554,Mochi,Mochi,0,50,,80,,,,,10477567,2,,,,,{ itemheal rand(100,200),0; },{}
