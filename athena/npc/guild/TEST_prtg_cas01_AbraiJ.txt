@@ -16,7 +16,7 @@ LStart:
 // -------- マスターじゃない ------------------------------
 LStart2:
 //check Guildmaster?(Master -> LStart3, Other -> -)
-	mes "[執事アルプレド]";
+	mes "[Arl Fredo]";
 	mes "あなた方がいくら脅そうとも、";
 	mes "私は私のマスターである";
 	mes "^ff0000 $[$@GUILDMASTER] ^000000様にのみ";
@@ -216,7 +216,7 @@ L5:
 		mes "カプラとの契約が完了しました";
 		next;
 		cutin "kafra_01",2;
-		mes "[カプラ職員]";
+		mes "[Kafra Service]";
 		mes "初めまして、カプラディフォルテと申します。";
 		mes "最善を尽くしますので宜しくおねがいします！";
 		next;
@@ -238,11 +238,11 @@ L_k_e:
 	next;
 	menu "解雇する",-,"キャンセル",L_D_1;
 		cutin "kafra_01",2;
-		mes "[カプラ職員]";
+		mes "[Kafra Service]";
 		mes "私が何か間違っていましたか？そうならば、許してはもらえませんか…";
 		next;
 		menu "解雇する",-,"キャンセル",L_D_2;
-				mes "[カプラ職員]";
+				mes "[Kafra Service]";
 				mes "ああ、解雇なさるんですね、、、TT";
 				next;
 				disablenpc "カプラ職員";
@@ -253,7 +253,7 @@ L_k_e:
 				mes "カプラとの契約が破棄されました。";
 				close;
 			L_D_2:
-				mes "[カプラ職員]";
+				mes "[Kafra Service]";
 				mes "ありがとうございます。全力を尽くして執務につきます！";
 				cutin "kafra_01",255;
 				close;

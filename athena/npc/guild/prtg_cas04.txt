@@ -1,501 +1,439 @@
 //===================================================================
 //prtg_cas04         by kalen
 //===================================================================
-prt_gld.gat,120,243,6	script	ギルドフラッグ	722,{
+prt_gld.gat,120,243,6	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prt_gld.gat,120,236,6	script	ギルドフラッグ	722,{
+prt_gld.gat,120,236,6	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prt_gld.gat,122,243,6	script	ギルドフラッグ	722,{
+prt_gld.gat,122,243,6	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prt_gld.gat,122,236,6	script	ギルドフラッグ	722,{
+prt_gld.gat,122,236,6	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,82,29,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,82,29,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,75,29,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,75,29,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,75,27,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,75,27,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,82,27,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,82,27,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,59,29,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,59,29,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,67,29,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,67,29,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,258,25,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,258,25,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,258,20,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,258,20,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,263,20,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,263,20,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
-prtg_cas04.gat,263,27,4	script	ギルドフラッグ	722,{
+prtg_cas04.gat,263,27,4	script	Flag	722,{
 //チェック
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "ギルド ^ff0000 GUILDNAME ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    ^ff0000GUILDNAME^000000 guild's guild";
+		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 GUILDNAME ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "2. ^ff0000GUILDNAME^000000 Guild master is";
+		mes "    ^ff0000GUILDMASTER^000000, and if any of you";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
 //------------------------------カプラ--------------------------------
-prtg_cas04.gat,258,247,4	script	カプラ職員	117,{
+prtg_cas04.gat,258,247,4	script	Kafra Service	117,{
 	cutin "kafra_01",2;
 //Kafraチェック
-	mes "[カプラ職員]";
-	mes "私は、ギルド";
-	mes " ^ff0000GUILDNAME^000000";
-	mes "の皆様にだけお仕えするように";
-	mes "契約されております。";
-	mes "他のカプラサービスを";
-	mes "ご利用くださいませ。";
+	mes "[Kafra Service]";
+	mes "I am here to help only ^ff0000" + guildName + "^000000 members, please use different Kafra Service. thank you.";
 	goto L_EXIT;
 LStartg:
-	mes "[カプラ職員]";
-	mes "いらっしゃいませ ^ff0000GUILDNAME^000000 の皆さん";
-	mes "カプラサービスは";
-	mes "いつも皆様のそばにいます。";
+	mes "[Kafra Service]";
+	mes "Welcome. ^ff0000GUILDNAME^000000 members";
+	mes "Kafra Service is always with you guys";
 	next;
-	menu "倉庫サービス",L2,"空間移動サービス",L3,"カートサービス",L4,"終了",L7;
+	menu "Open Storage",L2,"Teleport Service",L3,"Use Cart Service",L4,"Cancel",L7;
 L2:
 	if(getskilllv(1) < 6) goto Lerror2_1;
 	if (Zeny < 40) goto Lerror2_2;
@@ -503,47 +441,40 @@ L2:
 		openstorage;
 		goto L_EXIT;
 	Lerror2_1:
-		mes "[カプラ職員]";
-		mes "倉庫は基本スキルレベル6を";
-		mes "習得してから利用可能となります。";
+		mes "[Kafra Service]";
+		mes "You must have lvl 6 or higher novice skill.";
 		goto L_EXIT;
 	Lerror2_2:
-		mes "[カプラ職員]";
-		mes "お客様、お金が足りません。";
-		mes "倉庫利用料金は 40 Zenyです。";
+		mes "[Kafra Service]";
+		mes "Sorry, you don't have enough Zeny to use the storage service.";
 		goto L_EXIT;
 L3:
-	mes "[カプラ職員]";
-	mes "目的地をお選び下さい。";
+	mes "[Kafra Service]";
+	mes "Please choose a city.";
 	next;
-	menu "プロンテラ -> 200 z",L3_1,"取り消し",L3_2;
+	menu "プロンテラ -> 200 z",L3_1,"Cancle",L3_2;
 		L3_1:
 			if (Zeny < 200) goto Lerror3;
 			set Zeny,Zeny-200;set KF_PIT,KF_PIT+20;warp "prontera.gat",278,211;end;
 		L3_2:
-				mes "[カプラ職員]";
-				mes "ありがとうございました。";
-				mes "またご利用くださいませ。";
+//				mes "[Kafra Service]";
+//				mes "ありがとうございました。";
+//				mes "またご利用くださいませ。";
 				goto L_EXIT;
 		Lerror3:
-				mes "[カプラ職員]";
-  				mes "お客様、お金が足りません。";
-   				mes "所持金をお確かめください。";
+				mes "[Kafra Service]";
+  				mes "Sorry, you don't have enough Zeny to use the teleport service.";
 				goto L_EXIT;
 L4:
 	if (!((Class == 5) || (Class == 10) || (Class == 18))) goto Lerror4_1;
-	mes "[カプラ職員]";
-	mes "カート利用料金は 800 Zenyです。";
-	mes "また、カートを利用するには";
-	mes "｢プッシュカート｣スキルが必要です。";
-	mes "そのスキルがないとカートを利用";
-	mes "できずにお金だけ消えてしまいます。";
-	mes "準備はよろしいですか？";
+	mes "[Kafra Service]";
+	mes "Cart Rental is  800 Zeny and the [Pushcart] skill is neccessary.";
+	mes "Would you like to rental?";
 	next;
-	menu "利用する",L4_1,"取り消し",-;
-		mes "[カプラ職員]";
-		mes "ありがとうございました。";
-		mes "またご利用くださいませ。";
+	menu "Rent Cart",L4_1,"Cancle",-;
+//		mes "[Kafra Service]";
+//		mes "ありがとうございました。";
+//		mes "またご利用くださいませ。";
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 800) goto Lerror4_2;
@@ -551,77 +482,63 @@ L4:
 		setcart;
 		goto L_EXIT;
 	Lerror4_1:
-		mes "[カプラ職員]";
-		mes "申し訳ございません。";
-		mes "カートは商人とブラックスミス、";
-		mes "そしてアルケミスト専用の";
-		mes "サービスです。";
+		mes "[Kafra Service]";
+		mes "Sorry, Cart Renting Service is only for Merchant/Blacksmith/Alchemist.";
 		goto L_EXIT;
 	Lerror4_2:
-		mes "[カプラ職員]";
-		mes "お客様、お金が足りません。";
-		mes "カート利用料金は 800 Zenyです。";
+		mes "[Kafra Service]";
+		mes "Sorry, you must have at least 800 zeny.";
 		goto L_EXIT;
 //Cart already have
 //Lerror4_3:
-//mes "[カプラ職員]";
+//mes "[Kafra Service]";
 //mes "お客様は現在カートを";
 //mes "利用されています。";
 //goto L_EXIT;
 L7:
-	mes "[カプラ職員]";
-	mes "我々カプラサービスは、より完璧な";
-	mes "サービスと管理業務を目指し";
-	mes "お客様が安心してご利用いただけるよう";
-	mes "いつも最善を尽くしています。";
-	mes "（株）カプラサービスをご利用いただき";
-	mes "ありがとうございました。";
+	mes "[Kafra Service]";
+	mes "Kafra Service always trying to offer best service for you.";
+	mes "Thank you for using our service.";";
 L_EXIT:
 	cutin "kafra_01",255;
 	close;
 }
 //-------------------------------執事---------------------------------
-prtg_cas04.gat,259,265,4	script	バンドレッド	55,{
+prtg_cas04.gat,259,265,4	script	Bandred	55,{
 //sチェック
-	mes "[執事バンドレッド]";
-	mes "あなた方がいくら脅そうとも、";
-	mes "私は私のマスターである";
-	mes "^ff0000GUILDMASTER^000000様にのみ";
-	mes "お仕えする身である。";
-	mes "ガーディアンたちはどこか！";
-	mes "早くこの無礼な者等を追放しなさい！";
+	mes "[ Bandred ]";
+	mes "I am here to follow ^ff0000GUILDMASTER^000000 's command! Where are you guardians! Destroy these bastards!";
 	close;
 LStartg:
-	mes "執事機能は未実装です。";
+	mes "Function not yet coded";
 	close;
 }
-//-----------------------------スイッチ-------------------------------
+//-----------------------------Switch-------------------------------
 prtg_cas04.gat,274,161,0	script	 	111,{
-	mes "小さなレバーがあります。";
-	mes "引きますか？";
+	mes " ";
+	mes "There is little switch over here would you like to pull the switch down?";
 	next;
-	menu "引く",-,"引かない",L2;
+	menu "Yes",-,"No",L2;
 	warp "prtg_cas04",259,265;
 	end;
 L2:
 	close;
 }
-//-----------------------------スイッチ2------------------------------
+//-----------------------------Switch 2------------------------------
 prtg_cas04.gat,56,283,0	script	 	111,{
-	mes "[声]";
-	mes "試練に挑むならば先へ進むがよい";
+	mes "[ Vibration of Man's Voice ]";
+	mes " ' Only brave man get to lead the guild base.. '";
 	next;
 	mes " ";
-	mes "小さなレバーがあります。";
-	mes "引きますか？";
+	mes "There is little switch over here would you like to pull the switch down?";
 	next;
-	menu "引く",-,"引かない",L2;
+	menu "Yes",-,"No",L2;
 //G員↓無関係者L1n
 	warp "gld_dun03",268,203;
 	end;
 L1n:
-	mes " ";
-	mes "しかし何も起こらなかった。";
+	mes "[ Vibration of Man's Voice ]";
+	mes " ' LOOOOOOOOSER...... ' ";
 L2:
 	close;
 }

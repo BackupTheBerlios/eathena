@@ -65,35 +65,32 @@ prtg_cas01.gat,104,27,0	script	mobdes	-1,{
 
 prontera.gat,151,187,4	script	テストギルドフラッグ	722,{
 	if ($prtg01 == 1) goto LStartg;
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
-		mes "正式所有者がないアジトであることを";
-		mes "公表する。";
-		next;
+		mes "    any guild yet.";
 		mes " ";
-		mes "2.";
-		mes "こちらを守っている凄じい";
-		mes "試練に勝って、エンペリウムを";
-		mes "破壊する勇者には国王が";
-		mes "認定するアジト所有権が附与される";
+		mes "2. In order to take this guild base,";
+		mes "    you must defeat all the guardians";
+		mes "    that protecting guild base and";
+		mes "    eliminate the emperium to";
+		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "[ ルーンミッドガッツ王国領 ]";
+		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
 		mes "1.";
 		mes "こちらはルーンミッドガッツ王国に";
 		mes "よって";
 		mes "ギルド ^ff0000 " + getguildname($prtg01id) + " ^000000の";
-		mes "所有であることを認められている。";
-		next;
+		mes "    base.";
 		mes " ";
 		mes "2.";
 		mes "^ff0000 " + getguildname($prtg01id) + " ^000000 のマスターは";
 		mes "^ff0000 GUILDMASTER ^000000である。";
-		mes "これに異議のある者は、剣を取り";
-		mes "力を以って名誉を勝ち取りなさい。";
+		mes "    have a beef, raise your sword to";
+		mes "    honor yourself.";
 		close;
 }
