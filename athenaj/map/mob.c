@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.6 2004/01/23 15:35:11 RoVeRT Exp $
+// $Id: mob.c,v 1.7 2004/01/25 04:08:53 RoVeRT Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -694,7 +694,7 @@ int mob_stopattack(struct mob_data *md)
  */
 int mob_stop_walking(struct mob_data *md,int type)
 {
-	if(md->state.state == MS_WALK) {
+	if(md->state.state == MS_WALK || md->state.state == MS_IDLE) {
 		md->walkpath.path_len=0;
 		md->to_x=md->bl.x;
 		md->to_y=md->bl.y;
@@ -930,6 +930,7 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 	// 主との距離を測る
 	old_dist=md->master_dist;
 	md->master_dist=distance(md->bl.x,md->bl.y,mmd->bl.x,mmd->bl.y);
+	
 
 	// 直前まで主が近くにいたのでテレポートして追いかける
 	if( old_dist<10 && md->master_dist>18){
