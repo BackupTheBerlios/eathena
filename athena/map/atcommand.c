@@ -1517,32 +1517,6 @@ z [0`4]•ž‚ÌF
 			return 1;
 		}
 
-		if(strcmpi(command, "@randmon") == 0 && gm_level >= atcommand_config.randmon){
- 			int range,min,max,randn,xy;
- 			min = 1000;
- 			max = 1491;
- 		
- 			range=max-min+1;
- 			sscanf(message, "%s %d", command, &i);
- 			for (;i;i--)
- 			{
- 				randn = 0;
-				xy=map_searchrandfreecell(sd->bl.m, sd->bl.x, sd->bl.y, 5);
-
-				x=xy&0xffff;
-				y=(xy>>16)&0xffff;
-
- 				while (mob_db[randn].max_hp == 0)
- 				{
- 					randn = rand()%range+min;
- 				}
- 		
- 				mob_once_spawn(sd,"this",x,y,"--en--",randn,1,"");
- 			}
- 			
- 			return 1;
- 		}
- 		
  		if(strcmpi(command,"@refineall")==0 && gm_level >= atcommand_config.refine)
 		{
 			for(i=0;i< MAX_INVENTORY;i++)
@@ -1671,8 +1645,6 @@ int atcommand_config_read(const char *cfgName)
 			{ "hatch",		&atcommand_config.hatch },
 			{ "skillall",		&atcommand_config.skillall },
 			{ "killmonster",	&atcommand_config.killmonster },
-			{ "randmon",		&atcommand_config.randmon },
-
 			};
 		
 			if(line[0] == '/' && line[1] == '/')

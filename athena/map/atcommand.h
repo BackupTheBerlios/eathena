@@ -85,7 +85,6 @@ extern struct Atcommand_Config {
 	int hatch;
 	int skillall;
 	int killmonster;
-	int randmon;
 
 } atcommand_config;
 
