@@ -3528,7 +3528,7 @@ int pc_nextjobexp(struct map_session_data *sd)
 //	else i=7;
 //
 	if(sd->status.class==0 || sd->status.class==4001) i=4;
-	else if(sd->status.class<=6 || (sd->status.class > 4001 && sd->status.class <=4007) i=5;
+	else if(sd->status.class<=6 || (sd->status.class > 4001 && sd->status.class <=4007)) i=5;
 	else if(sd->status.class<23) i=6;
 	else if(sd->status.class == 23 || sd->status.class > 4007) i=8;
 	else i=7;
