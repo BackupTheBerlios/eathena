@@ -682,8 +682,10 @@ z [0～4]服の色
 // x座標 y座標 は省略可（ランダム）
 		if ((strcmpi(command, "@monster") == 0 || strcmpi(command, "@spawn") == 0) && gm_level >= atcommand_config.monster) {
 			i1 = i2 = x = y = 0;
-			if (sscanf(message, "%s \"%[^\"]\" %s %d%d%d", command, temp1, temp0, &i2, &x, &y) >= 4 ||
-			    sscanf(message, "%s %s %s %d%d%d", command, temp1, temp0, &i2, &x, &y) >= 4) {
+			sprintf(temp1,"--ja--");
+			if (sscanf(message, "%s %s %d%d%d", command, temp0, &i2, &x, &y) >= 2 ||
+			    sscanf(message, "%s \"%[^\"]\" %s %d%d%d", command, temp1, temp0, &i2, &x, &y) >= 3 ||
+			    sscanf(message, "%s %s %s %d%d%d", command, temp1, temp0, &i2, &x, &y) >= 3) {
 				int count=0;
 				if( (i1=atoi(temp0))==0 )
 					i1=mobdb_searchname(temp0);
