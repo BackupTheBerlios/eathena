@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.30 2004/02/23 17:17:22 rovert Exp $
+// $Id: clif.c,v 1.31 2004/02/23 17:20:10 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -4290,6 +4290,24 @@ int clif_combo_delay(struct block_list *bl,int wait)
 	WBUFL(buf,2)=bl->id;
 	WBUFL(buf,6)=wait;
 	clif_send(buf,packet_len_table[0x1d2],bl,AREA);
+
+	return 0;
+}
+/*==========================================
+ *”’nŽæ‚è
+ *------------------------------------------
+ */
+int clif_bladestop(struct block_list *src,struct block_list *dst,
+	int bool)
+{
+	unsigned char buf[32];
+
+	WBUFW(buf,0)=0x1d1;
+	WBUFL(buf,2)=src->id;
+	WBUFL(buf,6)=dst->id;
+	WBUFL(buf,10)=bool;
+	
+	clif_send(buf,packet_len_table[0x1d1],src,AREA);
 
 	return 0;
 }
