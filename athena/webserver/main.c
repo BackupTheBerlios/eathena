@@ -35,7 +35,7 @@
 #define BLOG 10
 
 char *header = "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n";
-char recvin[2000];
+char recvin[500];
 
 
 void sigchld_handler(int s)
@@ -107,11 +107,11 @@ int main(void)
 		if (!fork())
 		{
 			close(sockfd);
-			memset(recvin, 0x0, 2000);
-			recv(new_fd, recvin, 2000, 0);
+			memset(recvin, 0x0, 500);
+			recv(new_fd, recvin, 500, 0);
 			send(new_fd, header, strlen(header), 0);
 			generate_page(new_fd, get_query(recvin), inet_ntoa(their_addr.sin_addr));
-
+printf("|%s|\n", recvin); 
 			close(new_fd);
 			exit(0);
 		}
