@@ -1,5 +1,6 @@
-// $Id: script.c,v 1.9 2004/01/19 17:47:49 rovert Exp $
+// $Id: script.c,v 1.10 2004/01/22 06:38:07 rovert Exp $
 //#define DEBUG_FUNCIN
+//#define DEBUG_DISP
 //#define DEBUG_RUN
 
 //following by RoVeRT
@@ -87,6 +88,9 @@ int buildin_viewpoint(struct script_state *st);
 int buildin_countitem(struct script_state *st);
 int buildin_checkweight(struct script_state *st);
 int buildin_readparam(struct script_state *st);
+int buildin_getcharid(struct script_state *st);
+int buildin_getpartyname(struct script_state *st);
+int buildin_getguildname(struct script_state *st);
 int buildin_strcharinfo(struct script_state *st);
 int buildin_getequipname(struct script_state *st);
 int buildin_getequipisequiped(struct script_state *st);
@@ -191,6 +195,9 @@ struct {
 	{buildin_countitem,"countitem","s"},		// Modified by RoVeRT
 	{buildin_checkweight,"checkweight","si"},	// Modified by RoVeRT
 	{buildin_readparam,"readparam","i"},
+	{buildin_getcharid,"getcharid","i"},
+	{buildin_getpartyname,"getpartyname","i"},
+	{buildin_getguildname,"getguildname","i"},
 	{buildin_strcharinfo,"strcharinfo","i"},
 	{buildin_getequipname,"getequipname","i"},
 	{buildin_getequipisequiped,"getequipisequiped","i"},
@@ -1587,46 +1594,125 @@ int buildin_readparam(struct script_state *st)
 
 	return 0;
 }
+/*==========================================
+ *キャラ関係のID取得
+ *------------------------------------------
+ */
+int buildin_getcharid(struct script_state *st)
+{
+	int num;
+	struct map_session_data *sd;
+
+	num=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	sd=map_id2sd(st->rid);
+	if(num==1)
+		push_val(st->stack,C_INT,sd->status.party_id);
+	if(num==2)
+		push_val(st->stack,C_INT,sd->status.guild_id);
+	return 0;
+}
+/*==========================================
+ *指定IDのPT名取得
+ *------------------------------------------
+ */
+char *buildin_getpartyname_sub(int party_id)
+{
+	struct party *p;
+	
+	p=NULL;		
+	p=party_search(party_id);
+	
+	if(p!=NULL){
+		char *buf;
+		buf=malloc(24);
+		if(buf==NULL){
+			if(battle_config.error_log)
+				printf("out of memory : buildin_getguildname_sub\n");
+			exit(1);
+		}
+		strcpy(buf,p->name);
+		return buf;
+	}
+
+	return 0;
+}
+int buildin_getpartyname(struct script_state *st)
+{
+	char *name;
+	int party_id;
+	
+	party_id=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	name=buildin_getpartyname_sub(party_id);
+	if(name!=0)
+		push_str(st->stack,C_STR,name);
+	return 0;
+}
+/*==========================================
+ *指定IDのギルド名取得
+ *------------------------------------------
+ */
+char *buildin_getguildname_sub(int guild_id)
+{
+	struct guild *g=NULL;
+	g=guild_search(guild_id);
+	
+	if(g!=NULL){
+		char *buf;
+		buf=malloc(24);
+		if(buf==NULL){
+			if(battle_config.error_log)
+				printf("out of memory : buildin_getguildname_sub\n");
+			exit(1);
+		}
+		strcpy(buf,g->name);
+		return buf;
+	}
+
+	return 0;
+}
+int buildin_getguildname(struct script_state *st)
+{
+	char *name;
+	int guild_id=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	name=buildin_getguildname_sub(guild_id);
+	if(name!=0)
+		push_str(st->stack,C_STR,name);
+	return 0;
+}
 
 /*==========================================
  * キャラクタの名前
  *------------------------------------------
  */
-int buildin_strcharinfo(struct script_state *st)	// Modified by RoVeRT
+int buildin_strcharinfo(struct script_state *st)
 {
 	struct map_session_data *sd;
 	int num;
 
 	sd=map_id2sd(st->rid);
 	num=conv_num(st,& (st->stack->stack_data[st->start+2]));
-
-	char *buf;
-	buf=malloc(24);
-	if(buf==NULL){
-		if(battle_config.error_log)
-			printf("out of memory : buildin_strcharinfo\n");
-		exit(1);
-	}
 	if(num==0){
+		char *buf;
+		buf=malloc(24);
+		if(buf==NULL){
+			printf("out of memory : buildin_strcharinfo\n");
+			exit(1);
+		}
 		strcpy(buf,sd->status.name);
+		push_str(st->stack,C_STR,buf);
 	}
-	else if (num==1) {
-		struct party *p=party_search(sd->status.party_id);
-		if(p==NULL){
-			strcpy(buf, "None");
-		}else{
-			strcpy(buf, p->name);
-		}
+	if(num==1){
+		char *buf;
+		buf=buildin_getpartyname_sub(sd->status.party_id);
+		if(buf!=0)
+			push_str(st->stack,C_STR,buf);
 	}
-	else if (num==2) {
-		struct guild *g=guild_search(sd->status.guild_id);
-		if(g==NULL){
-			strcpy(buf, "None");
-		}else{
-			strcpy(buf, g->name);
-		}
+	if(num==2){
+		char *buf;
+		buf=buildin_getguildname_sub(sd->status.guild_id);
+		if(buf!=0)
+			push_str(st->stack,C_STR,buf);
 	}
-	push_str(st->stack,C_STR,buf);
 
 	return 0;
 }

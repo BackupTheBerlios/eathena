@@ -3277,6 +3277,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.save_log = 0;
 	battle_config.error_log = 1;
 	battle_config.etc_log = 1;
+	battle_config.save_clothcolor = 1;
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 	fp=fopen(cfgName,"r");
 	if(fp==NULL){
@@ -3365,6 +3366,7 @@ int battle_config_read(const char *cfgName)
 			{ "save_log", &battle_config.save_log },
 			{ "error_log", &battle_config.error_log },
 			{ "etc_log", &battle_config.etc_log },
+			{ "save_clothcolor", &battle_config.save_clothcolor },
 		{ "item_rate_equip",	&battle_config.item_rate_equip },		// Added by RoVeRT
 		{ "item_rate_card",	&battle_config.item_rate_card },
 		{ "prevent_logout", 	&battle_config.prevent_logout },		/// End Addition
