@@ -9,10 +9,11 @@ all:
 	#Generate "pages"...
 	cd pages && $(cc) -c about.c && cd ..
 	cd pages && $(cc) -c sample.c && cd ..
+	cd pages && $(cc) -c notdone.c && cd ..
 
 	#Building the server...
 	$(cc) -o webserver main.c parse.o generate.o htmlstyle.o \
-	pages/about.o pages/sample.o
+	pages/about.o pages/sample.o pages/notdone.o
 	
 
 
