@@ -1353,7 +1353,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
 	struct Damage wd;
-	int damage,damage2=0,type,div_,blewcount=0;
+	int damage,damage2=0,type,div_,blewcount=skill_get_blewcount(skill_num,skill_lv);
 	int flag;
 	int t_mode=0,t_race=0,t_size=1,s_race=0,s_ele=0;
 	struct status_change *t_sc_data;
@@ -1448,7 +1448,6 @@ static struct Damage battle_calc_pet_weapon_attack(
 				break;
 			case SM_MAGNUM:		// マグナムブレイク
 				damage = damage*(5*skill_lv +(wflag)?65:115 )/100;
-				blewcount=2;
 				break;
 			case MC_MAMMONITE:	// メマーナイト
 				damage = damage*(100+ 50*skill_lv)/100;
@@ -1460,12 +1459,10 @@ static struct Damage battle_calc_pet_weapon_attack(
 				break;
 			case AC_SHOWER:	// アローシャワー
 				damage = damage*(75 + 5*skill_lv)/100;
-				blewcount=2;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case AC_CHARGEARROW:	// チャージアロー
 				damage = damage*150/100;
-				blewcount=6;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case KN_PIERCE:	// ピアース
@@ -1476,7 +1473,6 @@ static struct Damage battle_calc_pet_weapon_attack(
 				break;
 			case KN_SPEARSTAB:	// スピアスタブ
 				damage = damage*(100+ 15*skill_lv)/100;
-				blewcount=6;
 				break;
 			case KN_SPEARBOOMERANG:	// スピアブーメラン
 				damage = damage*(100+ 50*skill_lv)/100;
@@ -1491,9 +1487,11 @@ static struct Damage battle_calc_pet_weapon_attack(
 				if(skill_lv>9 && wflag==2) damage2+=damage/4;
 				if(skill_lv>9 && wflag==3) damage2+=damage/2;
 				damage +=damage2;
+				blewcount=0;
 				break;
 			case KN_BOWLINGBASH:	// ボウリングバッシュ
 				damage = damage*(100+ 50*skill_lv)/100;
+				blewcount=0;
 				break;
 			case AS_SONICBLOW:	// ソニックブロウ
 				damage = damage*(300+ 50*skill_lv)/100;
@@ -1504,7 +1502,6 @@ static struct Damage battle_calc_pet_weapon_attack(
 				break;
 			case MC_CARTREVOLUTION:	// カートレボリューション
 				damage = (damage*150)/100;
-				blewcount=2;
 				break;
 			// 以下MOB
 			case NPC_COMBOATTACK:	// 多段攻撃
@@ -1546,7 +1543,6 @@ static struct Damage battle_calc_pet_weapon_attack(
 				break;
 			case CR_SHIELDCHARGE:	// シールドチャージ
 				damage = damage*(100+ 20*skill_lv)/100;
-				blewcount=4+skill_lv;
 				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
 				s_ele = 0;
 				break;
@@ -1582,7 +1578,6 @@ static struct Damage battle_calc_pet_weapon_attack(
 				div_=4;
 				break;
 			case MO_COMBOFINISH:	// 猛龍拳
-				blewcount=5;
 				damage = damage*(240+ 60*skill_lv)/100;
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
@@ -1698,7 +1693,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
 	struct Damage wd;
-	int damage,damage2=0,type,div_,blewcount=0;
+	int damage,damage2=0,type,div_,blewcount=skill_get_blewcount(skill_num,skill_lv);
 	int flag,skill,ac_flag = 0;
 	int t_mode=0,t_race=0,t_size=1,s_race=0,s_ele=0;
 	struct status_change *sc_data,*t_sc_data;
@@ -1837,7 +1832,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case SM_MAGNUM:		// マグナムブレイク
 				damage = damage*(5*skill_lv +(wflag)?65:115 )/100;
-				blewcount=2;
 				break;
 			case MC_MAMMONITE:	// メマーナイト
 				damage = damage*(100+ 50*skill_lv)/100;
@@ -1849,12 +1843,10 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case AC_SHOWER:	// アローシャワー
 				damage = damage*(75 + 5*skill_lv)/100;
-				blewcount=2;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case AC_CHARGEARROW:	// チャージアロー
 				damage = damage*150/100;
-				blewcount=6;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case KN_PIERCE:	// ピアース
@@ -1865,7 +1857,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case KN_SPEARSTAB:	// スピアスタブ
 				damage = damage*(100+ 15*skill_lv)/100;
-				blewcount=6;
 				break;
 			case KN_SPEARBOOMERANG:	// スピアブーメラン
 				damage = damage*(100+ 50*skill_lv)/100;
@@ -1880,9 +1871,11 @@ static struct Damage battle_calc_mob_weapon_attack(
 				if(skill_lv>9 && wflag==2) damage2+=damage/4;
 				if(skill_lv>9 && wflag==3) damage2+=damage/2;
 				damage +=damage2;
+				blewcount=0;
 				break;
 			case KN_BOWLINGBASH:	// ボウリングバッシュ
 				damage = damage*(100+ 50*skill_lv)/100;
+				blewcount=0;
 				break;
 			case KN_AUTOCOUNTER:
 				if(battle_config.monster_auto_counter_type&1)
@@ -1904,7 +1897,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case MC_CARTREVOLUTION:	// カートレボリューション
 				damage = (damage*150)/100;
-				blewcount=2;
 				break;
 			// 以下MOB
 			case NPC_COMBOATTACK:	// 多段攻撃
@@ -1946,7 +1938,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case CR_SHIELDCHARGE:	// シールドチャージ
 				damage = damage*(100+ 20*skill_lv)/100;
-				blewcount=4+skill_lv;
 				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
 				s_ele = 0;
 				break;
@@ -1982,7 +1973,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 				div_=4;
 				break;
 			case MO_COMBOFINISH:	// 猛龍拳
-				blewcount=5;
 				damage = damage*(240+ 60*skill_lv)/100;
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
@@ -2131,7 +2121,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 	int def2 = battle_get_def2(target);
 	int t_vit = battle_get_vit(target);
 	struct Damage wd;
-	int damage,damage2,damage3=0,damage4=0,type,div_,blewcount=0;
+	int damage,damage2,damage3=0,damage4=0,type,div_,blewcount=skill_get_blewcount(skill_num,skill_lv);
 	int flag,skill;
 	int t_mode=0,t_race=0,t_size=1,s_race=7,s_ele=0;
 	struct status_change *sc_data,*t_sc_data;
@@ -2440,7 +2430,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 			case SM_MAGNUM:		// マグナムブレイク
 				damage = damage*(5*skill_lv +(wflag)?65:115 )/100;
 				damage2 = damage2*(5*skill_lv +(wflag)?65:115 )/100;
-				blewcount=2;
 				break;
 			case MC_MAMMONITE:	// メマーナイト
 				damage = damage*(100+ 50*skill_lv)/100;
@@ -2470,7 +2459,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 				}
 				damage = damage*(75 + 5*skill_lv)/100;
 				damage2 = damage2*(75 + 5*skill_lv)/100;
-				blewcount=2;
 				if(sd->arrow_ele > 0) {
 					s_ele = sd->arrow_ele;
 					s_ele_ = sd->arrow_ele;
@@ -2486,7 +2474,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 				}
 				damage = damage*150/100;
 				damage2 = damage2*150/100;
-				blewcount=6;
 				if(sd->arrow_ele > 0) {
 					s_ele = sd->arrow_ele;
 					s_ele_ = sd->arrow_ele;
@@ -2505,7 +2492,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 			case KN_SPEARSTAB:	// スピアスタブ
 				damage = damage*(100+ 15*skill_lv)/100;
 				damage2 = damage2*(100+ 15*skill_lv)/100;
-				blewcount=6;
 				break;
 			case KN_SPEARBOOMERANG:	// スピアブーメラン
 				damage = damage*(100+ 50*skill_lv)/100;
@@ -2529,11 +2515,12 @@ static struct Damage battle_calc_pc_weapon_attack(
 				if(skill_lv>9 && wflag==2) damage4+=damage2/4;
 				if(skill_lv>9 && wflag==3) damage4+=damage2/2;
 				damage2 +=damage4;
+				blewcount=0;
 				break;
 			case KN_BOWLINGBASH:	// ボウリングバッシュ
 				damage = damage*(100+ 50*skill_lv)/100;
 				damage2 = damage2*(100+ 50*skill_lv)/100;
-				//blewcount=4;skill.cで吹き飛ばしやってみた
+				blewcount=0;
 				break;
 			case KN_AUTOCOUNTER:
 				if(battle_config.pc_auto_counter_type&1)
@@ -2564,7 +2551,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 					damage = (damage*150)/100;
 					damage2 = (damage2*150)/100;
 				}
-				blewcount=2;
 				break;
 			// 以下MOB
 			case NPC_COMBOATTACK:	// 多段攻撃
@@ -2613,7 +2599,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 			case CR_SHIELDCHARGE:	// シールドチャージ
 				damage = damage*(100+ 20*skill_lv)/100;
 				damage2 = damage2*(100+ 20*skill_lv)/100;
-				blewcount=4+skill_lv;
 				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
 				s_ele = 0;
 				break;
@@ -2669,7 +2654,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 			case MO_COMBOFINISH:	// 猛龍拳
 				damage = damage*(240+ 60*skill_lv)/100;
 				damage2 = damage2*(240+ 60*skill_lv)/100;
-				blewcount=5;
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
 				if(!sd->state.arrow_atk && sd->arrow_atk > 0) {
@@ -3044,7 +3028,7 @@ struct Damage battle_calc_magic_attack(
 {
 	int mdef1=battle_get_mdef(target);
 	int mdef2=battle_get_mdef2(target);
-	int matk1,matk2,damage=0,div_=1,blewcount=0;
+	int matk1,matk2,damage=0,div_=1,blewcount=skill_get_blewcount(skill_num,skill_lv);
 	struct Damage md;
 	int aflag;
 	int normalmagic_flag=1;
@@ -3091,7 +3075,7 @@ struct Damage battle_calc_magic_attack(
 		case PR_SANCTUARY:	// サンクチュアリ
 			damage = (skill_lv>6)?388:skill_lv*50;
 			normalmagic_flag=0;
-			blewcount=2|0x10000;
+			blewcount|=0x10000;
 			break;
 		case ALL_RESURRECTION:
 		case PR_TURNUNDEAD:	// 攻撃リザレクションとターンアンデッド
@@ -3133,7 +3117,7 @@ struct Damage battle_calc_magic_attack(
 			break;
 		case MG_FIREWALL:	// ファイヤーウォール
 			if( t_ele!=3 && !battle_check_undead(t_race,t_ele) )
-				blewcount=2|0x10000;
+				blewcount|=0x10000;
 			MATK_FIX( 1,2 );
 			break;
 		case MG_THUNDERSTORM:	// サンダーストーム
@@ -3151,12 +3135,9 @@ struct Damage battle_calc_magic_attack(
 			break;
 		case WZ_SIGHTRASHER:
 			MATK_FIX( 100+skill_lv*20, 100);
-			blewcount=5;
 			break;
 		case WZ_METEOR:
-			break;
 		case WZ_JUPITEL:	// ユピテルサンダー
-			blewcount=2+(skill_lv>>1);
 			break;
 		case WZ_VERMILION:	// ロードオブバーミリオン
 			MATK_FIX( skill_lv*20+80, 100 );
@@ -3167,7 +3148,7 @@ struct Damage battle_calc_magic_attack(
 			break;
 		case WZ_STORMGUST:	// ストームガスト
 			MATK_FIX( skill_lv*40+100 ,100 );
-			blewcount=2|0x10000;
+			blewcount|=0x10000;
 			break;
 		case AL_HOLYLIGHT:	// ホーリーライト
 			MATK_FIX( 125,100 );
@@ -3284,7 +3265,7 @@ struct Damage  battle_calc_misc_attack(
 	int dex=battle_get_dex(bl);
 	int skill,ele,cardfix;
 	struct map_session_data *sd=NULL,*tsd=NULL;
-	int damage=0,div_=1,blewcount=0;
+	int damage=0,div_=1,blewcount=skill_get_blewcount(skill_num,skill_lv);
 	struct Damage md;
 	int damagefix=1;
 
@@ -3498,17 +3479,17 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		}
 
 		if (wd.div_ == 255 && src->type == BL_PC)	{ //三段掌
-			int delay = 300;
+			int delay = 300,skilllv;
 			if(wd.damage+wd.damage2 < battle_get_hp(target)) {
 				delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
 				if(delay < sd->aspd*2) delay = sd->aspd*2;
 				if(battle_config.combo_delay_rate != 100)
 					delay = delay * battle_config.combo_delay_rate /100;
-				if(pc_checkskill(sd, MO_CHAINCOMBO) > 0)
+				if((skilllv = pc_checkskill(sd, MO_CHAINCOMBO)) > 0)
 					delay += 300;
 				else
 					delay = 300;
-				skill_status_change_start(src,SC_COMBO,MO_TRIPLEATTACK,0,0,0,delay,0);
+				skill_status_change_start(src,SC_COMBO,MO_TRIPLEATTACK,skilllv,0,0,delay,0);
 			}
 			sd->attackabletime = sd->canmove_tick = tick + delay;
 			clif_combo_delay(src,delay);
