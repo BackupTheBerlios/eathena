@@ -65,6 +65,13 @@ bonus bAtkEle,n;		Attack with element n
 					0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
 bonus bDefEle,n;		Guard against element n
 					0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
+bonus bHitRate,n;		on-target hit ratio +n%
+bonus bFleeRate,n;		evasion ratio +n%
+bonus bFlee2Rate,n;		complete evasion ratio +n%
+bonus bDefRate,n;		earned-run average +n% (equipment)
+bonus bDef2Rate,n;		earned-run average +n% (those due to vit)
+bonus bMdefRate,n;		magical earned-run average +n% (equipment)
+bonus bMdef2Rate,n;		magical earned-run average +n% (those due to int)
 
 bonus bInfiniteEndure,n;	Unlimited Endure (n is meaningless) 
 bonus bRestartFullRecover,n;	When reviving, HP and SP all recoveries (non mind there is no n)

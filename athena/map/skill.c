@@ -517,7 +517,6 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 			skill_status_change_start(bl,SC_SLEEP,skilllv,30000);
 		break;
 
-
 	/* MOBの追加効果付きスキル */
 	case NPC_POISON:
 	case NPC_BLINDATTACK:
@@ -543,13 +542,13 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		int i;
 		for(i=SC_STONE;i<=SC_BLIND;i++){
 			if(!sd->state.arrow_atk) {
-				if(rand()%100 < sd->addeff[i-SC_STONE] ){
+				if(rand()%10000 < sd->addeff[i-SC_STONE] ){
 					printf("PC %d skill_addeff: cardによる異常発動 %d %d\n",sd->bl.id,i,sd->addeff[i-SC_STONE]);
 					skill_status_change_start(bl,i,1,5);
 				}
 			}
 			else {
-				if(rand()%100 < sd->addeff[i-SC_STONE]+sd->arrow_addeff[i-SC_STONE] ){
+				if(rand()%10000 < sd->addeff[i-SC_STONE]+sd->arrow_addeff[i-SC_STONE] ){
 					printf("PC %d skill_addeff: cardによる異常発動 %d %d\n",sd->bl.id,i,sd->addeff[i-SC_STONE]);
 					skill_status_change_start(bl,i,1,5);
 				}
@@ -4522,7 +4521,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		sd=(struct map_session_data *)bl;
 
 		if(SC_STONE<=type && type<=SC_BLIND){	/* カードによる耐性 */
-			if(sd->reseff[type-SC_STONE] && rand()%100<sd->reseff[type-SC_STONE]){
+			if(sd->reseff[type-SC_STONE] > 0 && rand()%10000<sd->reseff[type-SC_STONE]){
 				printf("PC %d skill_sc_start: cardによる異常耐性発動\n",sd->bl.id);
 				return 0;
 			}
@@ -4531,7 +4530,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		printf("skill_status_change_start: neither MOB nor PC !\n");
 		return 0;
 	}
-	if(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP) {
+	if(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP)
 		battle_stopwalking(bl,1);
 		skill_castcancel(bl);
 	}
@@ -4932,6 +4931,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		case SC_STONE:	case SC_FREEZE:	case SC_STAN:	case SC_SLEEP:
 			battle_stopattack(bl);	/* 攻撃停止 */
 			skill_stop_dancing(bl);	/* 演奏/ダンスの中断 */
+			
 			{	/* 同時に掛からないステータス異常を解除 */
 				int i;
 				for(i = SC_STONE; i <= SC_SLEEP; i++){

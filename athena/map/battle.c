@@ -1008,7 +1008,8 @@ static struct Damage battle_calc_pet_weapon_attack(
 	int hitrate,cri = 0,atkmin,atkmax;
 	int str,luk;
 	int def1 = battle_get_def(target);
-	int def2 = battle_get_def2(target);
+	int def2 = battle_get_def2(target)*8/10;
+	int t_vit = battle_get_vit(target);
 	struct Damage wd;
 	int damage,type,div_,blewcount=0;
 	int flag;
@@ -1065,7 +1066,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 		type = 0x0a;
 	}
 	else {
-		int vitbonusmax, t_vit=0;
+		int vitbonusmax;
 	
 		if(atkmax > atkmin)
 			damage += atkmin + rand() % (atkmax-atkmin + 1);
@@ -1223,11 +1224,10 @@ static struct Damage battle_calc_pet_weapon_attack(
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
 			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST) {	//DEF, VIT無視
-				t_vit = def2*8/10;
 
 				vitbonusmax = (t_vit/20)*(t_vit/20)-1;
 				damage = damage * (100 - def1) /100
-					- t_vit - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+					- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 			}
 		}
 	}
@@ -1301,7 +1301,8 @@ static struct Damage battle_calc_mob_weapon_attack(
 	int hitrate,cri = 0,atkmin,atkmax;
 	int str,luk;
 	int def1 = battle_get_def(target);
-	int def2 = battle_get_def2(target);
+	int def2 = battle_get_def2(target)*8/10;
+	int t_vit = battle_get_vit(target);
 	struct Damage wd;
 	int damage,type,div_,blewcount=0;
 	int flag,skill;
@@ -1371,7 +1372,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		type = 0x0a;
 	}
 	else {
-		int vitbonusmax, t_vit=0;
+		int vitbonusmax;
 	
 		if(atkmax > atkmin)
 			damage += atkmin + rand() % (atkmax-atkmin + 1);
@@ -1535,14 +1536,13 @@ static struct Damage battle_calc_mob_weapon_attack(
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
 			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST) {	//DEF, VIT無視
-				t_vit = def2*8/10;
 				if(s_race==1 || s_race==6)
 					if(target->type==BL_PC && (skill=pc_checkskill(tsd,AL_DP)) > 0 )
-						t_vit+=skill*3;
+						def2 += skill*3;
 
 				vitbonusmax = (t_vit/20)*(t_vit/20)-1;
 				damage = damage * (100 - def1) /100
-					- t_vit - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+					- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 			}
 		}
 	}
@@ -1646,7 +1646,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 	int hitrate,cri = 0,atkmin,atkmax;
 	int str,dex,luk;
 	int def1 = battle_get_def(target);
-	int def2 = battle_get_def2(target);
+	int def2 = battle_get_def2(target)*8/10;
+	int t_vit = battle_get_vit(target);
 	struct Damage wd;
 	int damage,damage2,type,div_,blewcount=0;
 	int flag,skill;
@@ -1703,7 +1704,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 	if(sd->status.weapon == 11) {
 		atkmin = watk * ((dex<watk)? dex:watk);
 		flag=(flag&~BF_RANGEMASK)|BF_LONG;
-		s_ele = sd->arrow_ele;
+		if(sd->arrow_ele > 0)
+			s_ele = sd->arrow_ele;
 		sd->state.arrow_atk = 1;
 	}
 	if(sd->equip_index[9] >= 0 && sd->inventory_data[sd->equip_index[9]])
@@ -1800,6 +1802,37 @@ static struct Damage battle_calc_pc_weapon_attack(
 		if(sd->state.arrow_atk)
 			damage += sd->arrow_atk;
 		type = 0x0a;
+
+		if(sd->def_ratio_atk_ele & (1<<t_ele) || sd->def_ratio_atk_race & (1<<t_race)) {
+			damage = (damage * (def1 + def2))/100;
+			idef_flag = 1;
+		}
+		if(sd->def_ratio_atk_ele_ & (1<<t_ele) || sd->def_ratio_atk_race_ & (1<<t_race)) {
+			damage2 = (damage2 * (def1 + def2))/100;
+			idef_flag_ = 1;
+		}
+		if(tmd) {
+			if(mob_db[tmd->class].mexp > 0) {
+				if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
+					damage = (damage * (def1 + def2))/100;
+					idef_flag = 1;
+				}
+				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
+					damage2 = (damage2 * (def1 + def2))/100;
+					idef_flag_ = 1;
+				}
+			}
+			else {
+				if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
+					damage = (damage * (def1 + def2))/100;
+					idef_flag = 1;
+				}
+				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
+					damage2 = (damage2 * (def1 + def2))/100;
+					idef_flag_ = 1;
+				}
+			}
+		}
 	}
 	else {
 		int vitbonusmax, t_vit=0;
@@ -1888,13 +1921,15 @@ static struct Damage battle_calc_pc_weapon_attack(
 					damage += rand()%(sd->arrow_atk+1);
 				damage = damage*(180+ 20*skill_lv)/100;
 				div_=2;
-				s_ele = sd->arrow_ele;
+				if(sd->arrow_ele > 0)
+					s_ele = sd->arrow_ele;
 				sd->state.arrow_atk = 1;
 				break;
 			case AC_SHOWER:	// アローシャワー
 				damage = damage*(75 + 5*skill_lv)/100;
 				blewcount=2;
-				s_ele = sd->arrow_ele;
+				if(sd->arrow_ele > 0)
+					s_ele = sd->arrow_ele;
 				sd->state.arrow_atk = 1;
 				break;
 			case KN_PIERCE:	// ピアース
@@ -1930,7 +1965,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 					damage += rand()%(sd->arrow_atk+1);
 				damage = damage*150/100;
 				blewcount=6;
-				s_ele = sd->arrow_ele;
+				if(sd->arrow_ele > 0)
+					s_ele = sd->arrow_ele;
 				sd->state.arrow_atk = 1;
 				break;
 			case TF_SPRINKLESAND:	// 砂まき
@@ -2025,7 +2061,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 				if(!sd->state.arrow_atk && sd->arrow_atk > 0)
 					damage += rand()%(sd->arrow_atk+1);
 				damage = damage*(100+ 50 * skill_lv)/100;
-				s_ele = sd->arrow_ele;
+				if(sd->arrow_ele > 0)
+					s_ele = sd->arrow_ele;
 				sd->state.arrow_atk = 1;
 				break;
 			case BA_DISSONANCE:	// 不協和音
@@ -2035,7 +2072,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 				if(!sd->state.arrow_atk && sd->arrow_atk > 0)
 					damage += rand()%(sd->arrow_atk+1);
 				damage = damage*(100+ 50 * skill_lv)/100;
-				s_ele = sd->arrow_ele;
+				if(sd->arrow_ele > 0)
+					s_ele = sd->arrow_ele;
 				sd->state.arrow_atk = 1;
 				break;
 			}
@@ -2050,7 +2088,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
 			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST) {	//DEF, VIT無視
-				t_vit = def2*8/10;
 				vitbonusmax = (t_vit/20)*(t_vit/20)-1;
 				if(sd->ignore_def_ele & (1<<t_ele) || sd->ignore_def_race & (1<<t_race))
 					idef_flag = 1;
@@ -2073,10 +2110,10 @@ static struct Damage battle_calc_pc_weapon_attack(
 
 				if(!idef_flag)
 					damage = damage * (100 - def1) /100
-						- t_vit - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+						- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 				if(!idef_flag_)
 					damage2 = damage2 * (100 - def1) /100
-						- t_vit - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
+						- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
 			}
 		}
 	}
@@ -2203,7 +2240,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		damage2 = 0;
 	}
 	// 右手、左手修練の適用
-	if(sd->status.weapon > 16 && pc_checkskill(sd,AS_LEFT) > 0) {// 二刀流か?
+	if(sd->status.weapon > 16) {// 二刀流か?
 		int dmg = damage, dmg2 = damage2;
 		// 右手修練(60% ～ 100%) 右手全般
 		skill = pc_checkskill(sd,AS_RIGHT);
@@ -2958,6 +2995,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.max_aspd = 199;
 	battle_config.max_hp = 32500;
 	battle_config.max_sp = 32500;
+	battle_config.max_parameter = 99;
 	battle_config.max_cart_weight = 8000;
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 	fp=fopen(cfgName,"r");
@@ -3037,6 +3075,7 @@ int battle_config_read(const char *cfgName)
 			{ "max_aspd", &battle_config.max_aspd },
 			{ "max_hp", &battle_config.max_hp },
 			{ "max_sp", &battle_config.max_sp },
+			{ "max_parameter", &battle_config.max_parameter },
 			{ "max_cart_weight", &battle_config.max_cart_weight },
 		{ "item_rate_equip",	&battle_config.item_rate_equip },		// Added by RoVeRT
 		{ "item_rate_card",	&battle_config.item_rate_card },
@@ -3088,6 +3127,10 @@ int battle_config_read(const char *cfgName)
 		battle_config.max_sp = 1000000;
 	if(battle_config.max_sp < 100)
 		battle_config.max_sp = 100;
+	if(battle_config.max_parameter < 10)
+		battle_config.max_parameter = 10;
+	if(battle_config.max_parameter > 10000)
+		battle_config.max_parameter = 10000;
 	if(battle_config.max_cart_weight > 1000000)
 		battle_config.max_cart_weight = 1000000;
 	if(battle_config.max_cart_weight < 100)

@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.2 2004/01/09 03:00:18 rovert Exp $
+// $Id: char.c,v 1.3 2004/01/11 18:25:59 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -513,12 +513,12 @@ int mmo_char_send006b(int fd,struct char_session_data *sd)
 
     memcpy( WFIFOP(fd,offset+(i*106)+74), char_dat[j].name, 24 );
 
-    WFIFOB(fd,offset+(i*106)+98) = char_dat[j].str;
-    WFIFOB(fd,offset+(i*106)+99) = char_dat[j].agi;
-    WFIFOB(fd,offset+(i*106)+100) = char_dat[j].vit;
-    WFIFOB(fd,offset+(i*106)+101) = char_dat[j].int_;
-    WFIFOB(fd,offset+(i*106)+102) = char_dat[j].dex;
-    WFIFOB(fd,offset+(i*106)+103) = char_dat[j].luk;
+    WFIFOB(fd,offset+(i*106)+98) = (char_dat[j].str > 255)? 255:char_dat[j].str;
+    WFIFOB(fd,offset+(i*106)+99) = (char_dat[j].agi > 255)? 255:char_dat[j].agi;
+    WFIFOB(fd,offset+(i*106)+100) = (char_dat[j].vit > 255)? 255:char_dat[j].vit;
+    WFIFOB(fd,offset+(i*106)+101) = (char_dat[j].int_ > 255)? 255:char_dat[j].int_;
+    WFIFOB(fd,offset+(i*106)+102) = (char_dat[j].dex > 255)? 255:char_dat[j].dex;
+    WFIFOB(fd,offset+(i*106)+103) = (char_dat[j].luk > 255)? 255:char_dat[j].luk;
     WFIFOB(fd,offset+(i*106)+104) = char_dat[j].char_num;
   }
 
@@ -1057,12 +1057,12 @@ int parse_char(int fd)
 
 			memcpy( WFIFOP(fd,2+74), char_dat[i].name, 24 );
 
-			WFIFOB(fd,2+98) = char_dat[i].str;
-			WFIFOB(fd,2+99) = char_dat[i].agi;
-			WFIFOB(fd,2+100) = char_dat[i].vit;
-			WFIFOB(fd,2+101) = char_dat[i].int_;
-			WFIFOB(fd,2+102) = char_dat[i].dex;
-			WFIFOB(fd,2+103) = char_dat[i].luk;
+			WFIFOB(fd,2+98) = (char_dat[i].str > 255)? 255:char_dat[i].str;
+			WFIFOB(fd,2+99) = (char_dat[i].agi > 255)? 255:char_dat[i].agi;
+			WFIFOB(fd,2+100) = (char_dat[i].vit > 255)? 255:char_dat[i].vit;
+			WFIFOB(fd,2+101) = (char_dat[i].int_ > 255)? 255:char_dat[i].int_;
+			WFIFOB(fd,2+102) = (char_dat[i].dex > 255)? 255:char_dat[i].dex;
+			WFIFOB(fd,2+103) = (char_dat[i].luk > 255)? 255:char_dat[i].luk;
 			WFIFOB(fd,2+104) = char_dat[i].char_num;
 
 			WFIFOSET(fd,108);

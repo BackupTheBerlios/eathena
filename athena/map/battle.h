@@ -173,6 +173,7 @@ extern struct Battle_Config {
 	int max_aspd;
 	int max_hp;
 	int max_sp;
+	int max_parameter;
 	int max_cart_weight;
 	int item_rate_equip;	// Modified by RoVeRT
 	int item_rate_card;

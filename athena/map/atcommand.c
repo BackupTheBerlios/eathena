@@ -40,7 +40,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 	int flag;
 	char s_flag=0;
 	//＠コマンドGM専用化
-	if (battle_config.atc_gmonly && !gm_level ) return 0;
+//	if (battle_config.atc_gmonly && !gm_level ) return 0;
 
 	message += strlen(sd->status.name);
 	while(*message && (isspace(*message) || (s_flag==0 && *message==':'))) {
@@ -212,7 +212,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 //「@save」と入力
 		if (strcmpi(command, "@save") == 0 && gm_level >= atcommand_config.save) {
 			pc_setsavepoint(sd,sd->mapname,sd->bl.x,sd->bl.y);
-			if(sd->status.pet_id && sd->pd)
+			if(sd->status.pet_id > 0 && sd->pd)
 				intif_save_petdata(sd->status.account_id,&sd->pet);
 			pc_makesavestatus(sd);
 			chrif_save(sd);
@@ -850,7 +850,7 @@ z [0～4]服の色
 			};
 			i=(int)(*p[i2])+i1;
 			if(i< 1)i1=1-*p[i2];
-			if(i>255)i1=255-*p[i2];
+			if(i>battle_config.max_parameter) i1=battle_config.max_parameter-*p[i2];
 			*p[i2]+=i1;
 			clif_updatestatus(sd,SP_STR+i2);
 			clif_updatestatus(sd,SP_USTR+i2);
@@ -897,11 +897,20 @@ z [0～4]服の色
 // ペット親密度変更
 		if(strcmpi(command,"@petfriendly")==0 && gm_level >= atcommand_config.petfriendly) {
 			sscanf(message,"%s%d",command,&i1);
-			if(sd->status.pet_id && sd->pd) {
+			if(sd->status.pet_id > 0 && sd->pd) {
 				if(i1 >= 0 && i1 <= 1000) {
+					int t = sd->pet.intimate;
 					sd->pet.intimate = i1;
 					clif_send_petstatus(sd);
 					clif_displaymessage(fd,"Pet friendship level changed.");
+					if(battle_config.pet_status_support) {
+						if((sd->pet.intimate > 0 && t <= 0) || (sd->pet.intimate <= 0 && t > 0) ) {
+							if(sd->bl.prev != NULL)
+								pc_calcstatus(sd,0);
+							else
+								pc_calcstatus(sd,2);
+						}
+					}
 				}
 			}
 			return 1;
@@ -910,7 +919,7 @@ z [0～4]服の色
 // ペット満腹度変更
 		if(strcmpi(command,"@pethungry")==0 && gm_level >= atcommand_config.pethungry) {
 			sscanf(message,"%s%d",command,&i1);
-			if(sd->status.pet_id && sd->pd) {
+			if(sd->status.pet_id > 0 && sd->pd) {
 				if(i1 >= 0 && i1 <= 100) {
 					sd->pet.hungry = i1;
 					clif_send_petstatus(sd);
@@ -922,7 +931,7 @@ z [0～4]服の色
 
 // ペット名前変更
 		if(strcmpi(command,"@petrename")==0 && gm_level >= atcommand_config.petrename) {
-			if(sd->status.pet_id && sd->pd) {
+			if(sd->status.pet_id > 0 && sd->pd) {
 				sd->pet.rename_flag = 0;
 				intif_save_petdata(sd->status.account_id,&sd->pet);
 				clif_send_petstatus(sd);

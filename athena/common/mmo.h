@@ -81,7 +81,7 @@ struct mmo_charstatus {
 
 	char name[24];
 	unsigned char base_level,job_level;
-	unsigned char str,agi,vit,int_,dex,luk,char_num,sex;
+	short str,agi,vit,int_,dex,luk,char_num,sex;
 
 	struct point last_point,save_point,memo_point[10];
 	struct item inventory[MAX_INVENTORY],cart[MAX_CART];

@@ -76,7 +76,6 @@ int clif_changechatstatus(struct chat_data*);	// chat
 
 void clif_emotion(struct block_list *bl,int type);
 
-
 // trade
 int clif_traderequest(struct map_session_data *sd,char *name);
 int clif_tradestart(struct map_session_data *sd,int type);
@@ -144,6 +143,9 @@ int clif_solved_charname(struct map_session_data *sd,int char_id);
 
 int clif_use_card(struct map_session_data *sd,int idx);
 int clif_insert_card(struct map_session_data *sd,int idx_equip,int idx_card,int flag);
+
+int clif_itemlist(struct map_session_data *sd);
+int clif_equiplist(struct map_session_data *sd);
 
 int clif_cart_additem(struct map_session_data*,int,int,int);
 int clif_cart_delitem(struct map_session_data*,int,int);
