@@ -443,27 +443,12 @@ payon_in01.gat,174,113,2	script	Marx Hansen	86,{
 				goto L00z;
 
 			L00z:
-				if((countitem(@fruit)>0) | (countitem(713)>0) | (Zeny>2)) goto L000z;
+				if((countitem(@fruit)>0) || (countitem(713)>0) || (Zeny>2)) goto L000z;
 					if (@fruit == 512) goto noL00;
 					if (@fruit == 513) goto noL01;
 					if (@fruit == 514) goto noL03;
 					if (@fruit == 515) goto noL02;
 					close;
-
-					inpL00b:
-						if(((countitem(l0)<@input) || (countitem(713)<@input)) || (Zeny<3*@input)) goto noL000;
-						delitem l0,@input;
-						delitem 713,@input;
-						set Zeny,zeny-3*@input;
-						getitem l1,@input;
-						goto GotMsg;
-
-						noL000:
-							if (l0 == 512) goto noL00;
-							if (l0 == 513) goto noL01;
-							if (l0 == 514) goto noL03;
-							if (l0 == 515) goto noL02;
-							goto L1;
 
 							noL00:
 								mes "[Merchant Marx Hansen]";
@@ -506,7 +491,7 @@ payon_in01.gat,174,113,2	script	Marx Hansen	86,{
 					close;
 
 					Linp:
-						if(((countitem(@fruit)<@input) || (countitem(713)<@input)) || (Zeny<3*@input)) goto Ltomuch;
+						if((countitem(@fruit)<@input) || (countitem(713)<@input) || (Zeny<3*@input)) goto Ltomuch;
 						delitem @fruit,@input;
 						delitem 713,@input;
 						set Zeny,zeny-3*@input;
