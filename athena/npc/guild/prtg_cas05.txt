@@ -655,7 +655,7 @@ L5:
 
 	L_k_a:
 		mes "[ Reiner ]";
-		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been canceld .";
+		mes "Master, you havn't contract with Kafra Service Company. In order to contract with Kafra Server is to have ^ff0000KAFRA SKILL^000000 employment has been cancelled .";
 		close;
 	L_k_0:
 		if (Zeny > 10000) goto L_k_1;
