@@ -78,8 +78,8 @@ extern struct Atcommand_Config {
 	int spiritball;
 	int party;
 	int guild;
-	int gvgstart;
-	int gvgend;
+	int agitstart;
+	int agitend;
 	int chardyeclothes;
 	int chardyehair;
 	int charstylehair;

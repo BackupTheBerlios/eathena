@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.4 2004/02/13 18:34:56 rovert Exp $
+// $Id: login.c,v 1.5 2004/02/13 21:42:03 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -699,6 +699,7 @@ int parse_login(int fd)
 		}
 		
 		if( !check_ip(session[fd]->client_addr.sin_addr.s_addr) ){
+			struct timeval tv;
 			char tmpstr[256];
 			gettimeofday(&tv,NULL);
 			strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));

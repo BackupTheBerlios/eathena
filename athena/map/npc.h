@@ -9,8 +9,8 @@
 
 int npc_event_dequeue(struct map_session_data *sd);
 int npc_event_timer(int tid,unsigned int tick,int id,int data);
+int npc_event(struct map_session_data *sd,const char *npcname);
 int npc_timer_event(const char *eventname);				// Added by RoVeRT
-int npc_event(struct map_session_data *sd,const char *npcname,int);
 int npc_command(struct map_session_data *sd,char *npcname,char *command);
 int npc_touch_areanpc(struct map_session_data *,int,int,int);
 int npc_click(struct map_session_data *,int);
@@ -29,6 +29,9 @@ void npc_addsrcfile(char *);
 int do_init_npc(void);
 int npc_event_do_oninit(void);
 int npc_do_ontimer(int,struct map_session_data *,int);
+
+int npc_event_doall(const char *name);
+int npc_event_do(const char *name);
 
 
 #endif

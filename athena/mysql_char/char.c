@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.3 2004/02/02 17:59:57 rovert Exp $
+// $Id: char.c,v 1.4 2004/02/13 21:42:04 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 //
 // original code from athena
@@ -1069,6 +1069,46 @@ int parse_tologin(int fd){
 //				printf("char -> map\n");
 				}*/
 				break;
+
+		case 0x2723:	// changesex reply
+		  {
+		  	int acc,sex,i,h,j;
+			unsigned char buf[64];
+		  	if(RFIFOREST(fd)<7)
+				return 0;
+	
+			acc=RFIFOL(fd,2);
+			sex=RFIFOB(fd,6);
+			RFIFOSKIP(fd,7);
+			if(acc>0){
+				for(i=0;i<char_num;i++){
+					if(char_dat[i].account_id==acc){
+						char_dat[i].sex=sex;
+						auth_fifo[i].sex=sex;
+						if(char_dat[i].class==19 || char_dat[i].class==20){
+							char_dat[i].class=(sex)?19:20;//雷鳥は職も変更
+							for(h=1901;h<1964;h++){//雷鳥専用装備を装備していた場合は外す
+								if(char_dat[i].inventory[h].equip)
+									char_dat[i].inventory[h].equip=0;
+							}
+							for(j=0;j<MAX_SKILL;j++){//スキルはリセット
+								if(char_dat[i].skill[j].id>0 && !char_dat[i].skill[j].flag){
+									char_dat[i].skill_point += char_dat[i].skill[j].lv;
+									char_dat[i].skill[j].lv = 0;
+								}
+							}
+						}
+					}
+				}
+			}
+			WBUFW(buf,0)=0x2b0d;
+			WBUFL(buf,2)=acc;
+			WBUFB(buf,6)=sex;
+	
+			mapif_sendall(buf,7);
+//			printf("char -> map\n");
+		  }break;
+
 			default:
 				printf("set eof.\n");
 				close(fd);
@@ -1328,6 +1368,22 @@ int parse_frommap(int fd){
 			WFIFOSET(login_fd,RFIFOW(fd,2));
 //			printf("char : change gm -> login %d %s %d\n", RFIFOL(fd, 4), RFIFOP(fd, 8), RFIFOW(fd, 2));
 			RFIFOSKIP(fd, RFIFOW(fd, 2));
+			break;
+
+		//性別変換要求
+		case 0x2b0c:
+			if(RFIFOREST(fd)<4)
+				return 0;
+			if(RFIFOREST(fd)<RFIFOW(fd,2)){
+				printf("char : changesex -> length error : %d : %d\n",RFIFOREST(fd),RFIFOW(fd,2));
+				return 0;}
+			WFIFOW(login_fd,0)=0x2722;
+			WFIFOW(login_fd,2)=RFIFOW(fd,2);
+			WFIFOL(login_fd,4)=RFIFOL(fd,4);
+			WFIFOB(login_fd,8)=RFIFOB(fd,8);
+			WFIFOSET(login_fd,RFIFOW(fd,2));
+//			printf("char : change sex -> login %d %d %d \n",RFIFOL(fd,4),RFIFOB(fd,8),RFIFOW(fd,2));
+			RFIFOSKIP(fd,RFIFOW(fd,2));
 			break;
 
 		default:
