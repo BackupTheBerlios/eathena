@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.52 2004/02/29 08:06:59 sara-chan Exp $
+// $Id: mob.c,v 1.53 2004/02/29 22:39:37 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -199,6 +199,38 @@ int mob_once_spawn_area(struct map_session_data *sd,char *mapname,
 	}
 	return id;
 }
+/*==========================================
+ * mobにタゲ無視IDを付加
+ *------------------------------------------
+ */
+int mob_exclusion_add(struct mob_data *md,int type,int id)
+{
+	if(md){
+		if(type==1)
+			md->exclusion_src=id;
+		if(type==2)
+			md->exclusion_party=id;
+		if(type==3)
+			md->exclusion_guild=id;
+	}
+	return 0;
+}
+/*==========================================
+ * mobのタゲ無視IDをチェック
+ *------------------------------------------
+ */
+int mob_exclusion_check(struct mob_data *md,struct map_session_data *sd)
+{
+	if(md && sd && sd->bl.type==BL_PC){
+		if(md->exclusion_src && md->exclusion_src==sd->bl.id)
+			return 1;
+		if(md->exclusion_party && md->exclusion_party==sd->status.party_id)
+			return 2;
+		if(md->exclusion_guild && md->exclusion_guild==sd->status.guild_id)
+			return 3;
+	}
+	return 0;
+}
 
 /*==========================================
  * mobの見かけ所得
@@ -375,7 +407,7 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 
 	sd=map_id2sd(md->target_id);
 	if(sd==NULL || pc_isdead(sd) || md->bl.m != sd->bl.m || sd->bl.prev == NULL || sd->invincible_timer != -1 ||
-		distance(md->bl.x,md->bl.y,sd->bl.x,sd->bl.y)>=13 || pc_isinvisible(sd)){
+		distance(md->bl.x,md->bl.y,sd->bl.x,sd->bl.y)>=13 || pc_isinvisible(sd) || mob_exclusion_check(md,sd)){
 		md->target_id=0;
 		md->state.targettype = NONE_ATTACKABLE;
 		return 0;
@@ -857,7 +889,7 @@ int mob_target(struct mob_data *md,struct block_list *bl,int dist)
 		 ( (option && !(*option&0x06) ) || race==4 || race==6) ) ){
 		if(bl->type == BL_PC) {
 			sd = (struct map_session_data *)bl;
-			if(sd->invincible_timer != -1 || pc_isinvisible(sd))
+			if(sd->invincible_timer != -1 || pc_isinvisible(sd) || mob_exclusion_check(md,sd))
 				return 0;
 			if(!(mode&0x20) && race!=4 && race!=6 && sd->state.gangsterparadise)
 				return 0;
@@ -890,7 +922,7 @@ static int mob_ai_sub_hard_activesearch(struct block_list *bl,va_list ap)
 	mode=mob_db[md->class].mode;
 
 	// アクティブでターゲット射程内にいるなら、ロックする
-	if( mode&0x04 ){
+	if( mode&0x04  && !mob_exclusion_check(md,sd)){
 		if( !pc_isdead(sd) && sd->bl.m == md->bl.m && sd->invincible_timer == -1 && !pc_isinvisible(sd) &&
 			(dist=distance(md->bl.x,md->bl.y,sd->bl.x,sd->bl.y))<9){
 
@@ -1049,7 +1081,7 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 	// 主がいて、主がロックしていて自分はロックしていない
 	if( (mmd->target_id>0 && mmd->state.targettype == ATTACKABLE) && (!md->target_id || md->state.targettype == NONE_ATTACKABLE) ){
 		struct map_session_data *sd=map_id2sd(mmd->target_id);
-		if(sd!=NULL && !pc_isdead(sd) && sd->invincible_timer == -1 && !pc_isinvisible(sd)){
+		if(sd!=NULL && !pc_isdead(sd) && sd->invincible_timer == -1 && !pc_isinvisible(sd) && !mob_exclusion_check(md,sd)){
 
 			race=mob_db[md->class].race;
 			if(mode&0x20 ||
@@ -1182,7 +1214,7 @@ static int mob_ai_sub_hard(struct block_list *bl,va_list ap)
 	if(md->attacked_id > 0 && mode&0x08){	// リンクモンスター
 		sd=map_id2sd(md->attacked_id);
 		if(sd) {
-			if(sd->invincible_timer == -1 && !pc_isinvisible(sd)) {
+			if(sd->invincible_timer == -1 && !pc_isinvisible(sd)  && !mob_exclusion_check(md,sd)) {
 				map_foreachinarea(mob_ai_sub_hard_linksearch,md->bl.m,
 					md->bl.x-13,md->bl.y-13,
 					md->bl.x+13,md->bl.y+13,
@@ -1195,7 +1227,7 @@ static int mob_ai_sub_hard(struct block_list *bl,va_list ap)
 	if( mode>0 && md->attacked_id>0 && (!md->target_id || md->state.targettype == NONE_ATTACKABLE
 		|| (mob_db[md->class].mode&0x04 && rand()%100<25 )  )){
 		sd=map_id2sd(md->attacked_id);
-		if(sd==NULL || md->bl.m != sd->bl.m || sd->bl.prev == NULL || sd->invincible_timer != -1 || pc_isinvisible(sd) ||
+		if(sd==NULL || md->bl.m != sd->bl.m || sd->bl.prev == NULL || sd->invincible_timer != -1 || pc_isinvisible(sd) || mob_exclusion_check(md,sd) ||
 			(dist=distance(md->bl.x,md->bl.y,sd->bl.x,sd->bl.y))>=32){
 			md->attacked_id=0;
 		}
@@ -1588,6 +1620,14 @@ int mob_catch_delete(struct mob_data *md)
 	return 0;
 }
 
+int mob_timer_delete(int tid, unsigned int tick, int id, int data)
+{
+	struct block_list *bl=map_id2bl(id);
+	struct mob_data *md = (struct mob_data *)bl;
+	if(md)	mob_catch_delete(md);
+	return 0;
+}
+
 /*==========================================
  *
  *------------------------------------------
@@ -1957,7 +1997,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 	clif_clearchar_area(&md->bl,1);
 	map_delblock(&md->bl);
 	if(mob_get_viewclass(md->class) <= 1000)
-		clif_clearchar_delay(tick+5000,&md->bl,0);
+		clif_clearchar_delay(tick+3000,&md->bl,0);
 	mob_deleteslave(md);
 	mob_setdelayspawn(md->bl.id);
 	map_freeblock_unlock();

@@ -1,7 +1,5 @@
 #!/usr/bin/perl
-
-##########################################################################
-# Athenaのログインサーバー保守ツール Ver.1.04
+########################################################################### Athenaのログインサーバー保守ツール Ver.1.05
 #
 # 　起動中のAthenaのlogin.exeに接続してアカウントの保守を行うツール.
 # 　アカウントの追加、削除、パスワードの変更、リスト表示ができます.
@@ -9,15 +7,13 @@
 ##########################################################################
 #----------------------------------説明書---------------------------------
 # 設定
-#   以下の変数を正しく設定します。
-# 　（ログイン鯖のIP、ポート、管理者パスワード）
+#   以下の変数を正しく設定します。#   （ログイン鯖のIP、ポート、管理者パスワード）
 #-------------------------------------------------------------------------
-
 my($loginserverip)="127.0.0.1";			#ログイン鯖のIP
 my($loginserverport)=6900;			#ログイン鯖のポート
 my($loginserveradminpassword)="admin";		#ログイン鯖の管理者パスワード
-
 my($connecttimeout)=10;				# 接続タイムアウト(秒)
+my($passenc)=2;					# パスワード暗号化タイプ
 
 #-------------------------------------------------------------------------
 # プロンプトによる作業
@@ -81,12 +77,16 @@ my($connecttimeout)=10;				# 接続タイムアウト(秒)
 #	stateaccount	userid newstate		バン状態変更
 #	<例> ./addaccount testname Male testpass
 #
+#-------------------------------------------------------------------------# 暗号化について
+# 　Digest::MD5モジュールが必要です。Digest::MD5が読み込めない場合、
+#   自動的に暗号化しないモード($passenc=0)になるので、モジュールがなくても
+#   ladmin自体は動作します。（暗号化は行われませんが）
+# 　ちなみにCygwinだとDigest::MD5は最初から入っているようです。
+#
 #-------------------------------------------------------------------------
 # UNIX系OSでの使用について
-# 　コマンドとして実行するにはファイルに実行権が必要です。また改行コードを
-# 　変更する必要があります。perlを直接起動するなら必要ありません
-# 　実行には関係ありませんが、説明やコメントはシフトJISで書いているので
-# 　日本語エンコードをEUC-JPにしてください。
+# 　コマンドとして実行するにはファイルに実行権が必要です。また改行コードを#   変更する必要があります。perlを直接起動するなら必要ありません。
+# 　実行には関係ありませんが、説明やコメントはシフトJISで書いているので#   日本語エンコードをEUC-JPにしてください。
 #   <コマンドの準備の例>
 #       $ mv ladmin ladmin_org
 #       $ nkf -eLu ladmin_org > ladmin
@@ -99,17 +99,13 @@ my($connecttimeout)=10;				# 接続タイムアウト(秒)
 
 
 
-
-
-
-
 use strict;
 use IO::Socket;
 use Term::ReadLine;
-eval {	use POSIX qw(:termios_h); };
+eval {	use POSIX qw(:termios_h); };eval { use Digest::MD5 qw(md5); } if $passenc;
+$passenc=0 if($@);
 
-my($ver)="1.04";
-
+my($ver)="1.05";
 
 
 # termiosの初期処理
@@ -121,7 +117,6 @@ eval{
 	$termlecho=ECHO | ECHOK | ICANON;
 	$termlnoecho=$orgterml & ~$termlecho;
 };
-
 # パスワード入力用
 sub cbreak(){
 	if($termios){
@@ -139,9 +134,7 @@ sub cooked(){
 	}
 }
 END{ cooked() }
-
 print "Athena login-server administration tool Ver.$ver\n";
-
 # シンボリックリンク作成
 if( $ARGV[0] eq "--makesymlink" ){
 	symlink $0,"addaccount";
@@ -166,9 +159,23 @@ if($er || $@){
 	print "\nCant connect to login server [${loginserverip}:$loginserverport] !\n";
 	exit(2);
 }
-
-print $so pack("v3a24",0x7918,30,0,$loginserveradminpassword);
-$so->flush();
+# ログイン要求
+if($passenc==0){
+	print $so pack("v3a24",0x7918,30,0,$loginserveradminpassword);
+	$so->flush();
+}else{
+	print $so pack("v",0x791a);
+	$so->flush();
+	my($buf)=readso(4);
+	if(unpack("v",$buf)!=0x01dc){
+		print "login error. (md5key creation failed)\n";
+	}
+	$buf=readso(unpack("x2v",$buf)-4);
+	my($md5bin)=md5( ($passenc==1)?$buf.$loginserveradminpassword:
+			$loginserveradminpassword.$buf );
+	print $so pack("v3a16",0x7918,22,$passenc,$md5bin);
+	$so->flush();
+}
 
 # 返答待ち
 my($buf)=readso(3);
@@ -177,9 +184,7 @@ if(unpack("v",$buf)!=0x7919 || unpack("x2c",$buf)!=0 ){
 	exit(4);
 }
 print "logged on.\n";
-
 # プロンプト無しの処理
-
 if( $0=~/addaccount$/ ||
     (($ARGV[0] eq "-a" || $ARGV[0] eq "--add") && ((shift @ARGV),1)) ){
 	my($r)=addaccount($ARGV[0],$ARGV[1],$ARGV[2]);
@@ -211,9 +216,7 @@ if( $0=~/addaccount$/ ||
 	quit();
 	exit($r);
 }
-
 my($term)= new Term::ReadLine "ladmin";
-
 # ログインできたのでプロンプトのループ
 while(1){
 	# プロンプト表示と入力
@@ -222,10 +225,8 @@ while(1){
 	$cmd=~s/\x1b\[\d*\w//g;
 	$cmd=~s/[\x00-\x1f]//g;
 	my(@cmdlist)=split /\s+/,$cmd;
-	
 	$cmdlist[0]="help" if( $cmdlist[0] eq "?" );
 	
-
 	# コマンド解析
 	eval{
 		if("help"=~/^\Q$cmdlist[0]/ ){
@@ -263,17 +264,12 @@ EOD
 		print "Error [".$cmdlist[0]."]\n$@";
 	}
 };
-
 # 終了処理
 quit();
-
 print "bye.\n";
 exit(0);
 
-
-
 #--------------------------------------------------------------------------
-
 # アカウントリスト表示
 sub listaccount(){
 	my($st,$ed)= @_;
@@ -475,7 +471,6 @@ sub changestate {
 		print "account [$userid] state changing failed. (".
 			(( "Normal","Banned" )[$dat[2]?1:0]) .")\n";
 	}
-
 }
 # 切断要求
 sub quit(){
@@ -496,7 +491,6 @@ sub flush_stdout {
 	$|=1;
 	$|=0;
 }
-
 # ソケットからデータを読み出す
 sub readso(){
 	my($len)=shift;
@@ -507,7 +501,6 @@ sub readso(){
 	}
 	return $buf;
 }
-
 
 # パスワード入力
 sub typepasswd {
