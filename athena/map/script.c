@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.5 2004/01/11 18:27:25 rovert Exp $
+// $Id: script.c,v 1.6 2004/01/16 02:17:23 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -154,6 +154,7 @@ int buildin_pvpon(struct script_state *st);
 int buildin_pvpoff(struct script_state *st);
 int buildin_gvgon(struct script_state *st);
 int buildin_gvgoff(struct script_state *st);
+int buildin_emotion(struct script_state *st);
 int buildin_mapwarp(struct script_state *st);
 int buildin_inittimer(struct script_state *st);
 int buildin_stoptimer(struct script_state *st);
@@ -256,6 +257,7 @@ struct {
 	{buildin_pvpoff,"pvpoff","s"},
 	{buildin_gvgon,"gvgon","s"},
 	{buildin_gvgoff,"gvgoff","s"},
+	{buildin_emotion,"emotion","i"},
 	{buildin_mapwarp,"mapwarp","ssii"},		// Added by RoVeRT
 	{buildin_inittimer,"inittimer",""},
 	{buildin_stoptimer,"stoptimer",""},
@@ -2142,7 +2144,7 @@ int buildin_monster(struct script_state *st)
 
 	if( st->end>st->start+8 )
 		event=conv_str(st,& (st->stack->stack_data[st->start+8]));
-	
+
 	mob_once_spawn(sd,map,x,y,str,class,amount,event);
 	return 0;
 }
@@ -2166,7 +2168,7 @@ int buildin_areamonster(struct script_state *st)
 	amount=conv_num(st,& (st->stack->stack_data[st->start+9]));
 	if( st->end>st->start+10 )
 		event=conv_str(st,& (st->stack->stack_data[st->start+10]));
-	
+
 	mob_once_spawn_area(sd,map,x0,y0,x1,y1,str,class,amount,event);
 	return 0;
 }
@@ -2525,7 +2527,12 @@ int buildin_changebase(struct script_state *st)
 	vclass = conv_num(st,& (st->stack->stack_data[st->start+2]));
 	if(vclass == 22 && !battle_config.wedding_modifydisplay)
 		return 0;
+	
+	if(vclass==22)
+				pc_unequipitem(sd,sd->equip_index[9],1);	// 装備外し
+		
 	sd->view_class = vclass;
+	
 	return 0;
 }
 
@@ -2766,6 +2773,22 @@ int buildin_gvgoff(struct script_state *st)
 
 	return 0;
 }
+/*==========================================
+ *	NPCエモーション
+ *------------------------------------------
+ */
+
+int buildin_emotion(struct script_state *st)
+{
+	int type;
+	type=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	if(type < 0 || type > 33)
+		return 0;
+	clif_emotion(map_id2bl(st->oid),type);
+
+	return 0;
+}
+
 
 int buildin_mapwarp(struct script_state *st)	// Added by RoVeRT
 {

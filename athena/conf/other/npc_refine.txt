@@ -684,8 +684,9 @@ REFINE5:
 	if (getequippercentrefinery(@part)<=rand(100)) goto REFINE6;
 		mes "[Hollgrehenn]";
 		mes "Clang! Clang! Clang!";
-		next;
 		successrefitem @part;
+		next;
+		emotion 21;
 		mes "[Hollgrehenn]";
 		mes "There you go.";
 		mes "It seems My skill doesn't have gotten a bit Rusty yet. It is my work, but still Splendid...";
@@ -693,8 +694,9 @@ REFINE5:
 REFINE6:
 	mes "[Hollgrehenn]";
 	mes "Clang! Clang! Clang!";
-	next;
 	failedrefitem @part;
+	next;
+	emotion 23;
 	mes "[Hollgrehenn]";
 	mes "Waaaaaaaaahhhh!!!!";
 	next;
@@ -916,8 +918,9 @@ REFINE5:
 	if (getequippercentrefinery(@part)<=rand(100)) goto REFINE6;
 		mes "[Aragham]";
 		mes "Clang! Clang! Clang!";
-		next;
 		successrefitem @part;
+		next;
+		emotion 30;
 		mes "[Aragham]";
 		mes "There you go.";
 		mes "It seems My skill doesn't have gotten a bit Rusty yet. It is my work, but still Splendid...";
@@ -925,8 +928,9 @@ REFINE5:
 REFINE6:
 	mes "[Aragham]";
 	mes "Clang! Clang! Clang!";
-	next;
 	failedrefitem @part;
+	next;
+	emotion 16;
 	mes "[Aragham]";
 	mes "Waaaaaaaaahhhh!!!!";
 	next;
@@ -1148,8 +1152,9 @@ REFINE5:
 	if (getequippercentrefinery(@part)<=rand(100)) goto REFINE6;
 		mes "[Antonio]";
 		mes "Clang! Clang! Clang!";
-		next;
 		successrefitem @part;
+		next;
+		emotion 0;
 		mes "[Antonio]";
 		mes "There you go.";
 		mes "It seems My skill doesn't have gotten a bit Rusty yet. It is my work, but still Splendid...";
@@ -1157,8 +1162,9 @@ REFINE5:
 REFINE6:
 	mes "[Antonio]";
 	mes "Clang! Clang! Clang!";
-	next;
 	failedrefitem @part;
+	next;
+	emotion 32;
 	mes "[Antonio]";
 	mes "Waaaaaaaaahhhh!!!!";
 	next;
@@ -1380,8 +1386,9 @@ REFINE5:
 	if (getequippercentrefinery(@part)<=rand(100)) goto REFINE6;
 		mes "[Fredrik]";
 		mes "Clang! Clang! Clang!";
-		next;
 		successrefitem @part;
+		next;
+		emotion 18;
 		mes "[Fredrik]";
 		mes "There you go.";
 		mes "It seems My skill doesn't have gotten a bit Rusty yet. It is my work, but still Splendid...";
@@ -1389,8 +1396,9 @@ REFINE5:
 REFINE6:
 	mes "[Fredrik]";
 	mes "Clang! Clang! Clang!";
-	next;
 	failedrefitem @part;
+	next;
+	emotion 4;
 	mes "[Fredrik]";
 	mes "Waaaaaaaaahhhh!!!!";
 	next;
@@ -1612,8 +1620,9 @@ REFINE5:
 	if (getequippercentrefinery(@part)<=rand(100)) goto REFINE6;
 		mes "[Disturb]";
 		mes "Clang! Clang! Clang!";
-		next;
 		successrefitem @part;
+		next;
+		emotion 9;
 		mes "[Disturb]";
 		mes "There you go.";
 		mes "It seems My skill doesn't have gotten a bit Rusty yet. It is my work, but still Splendid...";
@@ -1621,8 +1630,9 @@ REFINE5:
 REFINE6:
 	mes "[Disturb]";
 	mes "Clang! Clang! Clang!";
-	next;
 	failedrefitem @part;
+	next;
+	emotion 0;
 	mes "[Disturb]";
 	mes "Waaaaaaaaahhhh!!!!";
 	next;

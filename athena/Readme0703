@@ -1,4 +1,16 @@
 --------------
+//0709 by ぽぽぽ
+
+・スクリプトにemotion追加
+　emotion n;と使うとNPCがエモを出します。nは0～33が使用可能。
+・精錬と街ガイドのNPCを本鯖の台詞に合わせて修正。
+	(conf/)
+	npc_town_refine.txt、npc_town_guide.txt 修正。
+	(map/)
+	script.c
+		buildin_emotion() 追加。
+
+--------------
 //0708 by 死神
 
 ・スキルキャストキャンセル、ディフェンダー、オートガード実装。
