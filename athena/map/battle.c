@@ -1556,8 +1556,21 @@ static struct Damage battle_calc_mob_weapon_attack(
 	if(t_sc_data != NULL && t_sc_data[SC_SLEEP].timer!=-1 )	// 睡眠中はクリティカルが倍に
 		cri <<=1;
 
+	if(sc_data != NULL && sc_data[SC_AUTOCOUNTER].timer!=-1 && battle_config.autocounter_mode==0)
+	{// オートカウンターモード0
+		hitrate+=20;
+		cri<<=1;
+		def1=0;
+	}
+
 	if(tsd && tsd->critical_def)
 		cri = cri * (100 - tsd->critical_def);
+
+	//オートカウンターモード1
+	if(sc_data != NULL && sc_data[SC_AUTOCOUNTER].timer!=-1 && battle_config.autocounter_mode==1)
+	{	
+		cri=99999;
+	}
 
 	if(skill_num==0 && battle_config.enemy_critical && (rand() % 1000) < cri) 	// 判定（スキルの場合は無視）
 			// 敵の判定
@@ -1936,7 +1949,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 	}
 
 	if(sc_data != NULL && sc_data[SC_WEAPONPERFECTION].timer!=-1 ) {	// ウェポンパーフェクション
-		atkmax = watk;
+		hitrate+=20;
 		atkmax_ = watk_;
 	}
 
@@ -1982,8 +1995,19 @@ static struct Damage battle_calc_pc_weapon_attack(
 			cri <<=1;
 	}
 
+	if(sc_data != NULL && sc_data[SC_AUTOCOUNTER].timer!=-1 && battle_config.autocounter_mode==0)
+	{// オートカウンターモード0
+		hitrate+=20;
+		cri<<=1;
+		def1=0;
+	}
+
 	if(tsd && tsd->critical_def)
 		cri = cri * (100-tsd->critical_def);
+
+	//オートカウンターモード1
+	if(sc_data != NULL && sc_data[SC_AUTOCOUNTER].timer!=-1 && battle_config.autocounter_mode==1)
+		cri=99999;
 
 	if(da == 0 && skill_num==0 && //ダブルアタックが発動していない
 		(rand() % 1000) < cri) 	// 判定（スキルの場合は無視）
@@ -3160,7 +3184,7 @@ int battle_check_range(struct block_list *src,struct block_list *bl,int range)
 	if( arange<2 )	// 同じマスか隣接
 		return 1;
 
-//	if(bl->type == BL_SKILL && ((struct skill_unit *)bl)->group->skill_id == WZ_ICEWALL)
+//	if(bl->type == BL_SKILL && ((struct skill_unit *)bl)->group->unit_id == 0x8d)
 //		return 1;
 
 	// 障害物判定
@@ -3279,6 +3303,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.error_log = 1;
 	battle_config.etc_log = 1;
 	battle_config.save_clothcolor = 1;
+	battle_config.autocounter_mode = 0;
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 	fp=fopen(cfgName,"r");
 	if(fp==NULL){
@@ -3369,6 +3394,7 @@ int battle_config_read(const char *cfgName)
 			{ "error_log", &battle_config.error_log },
 			{ "etc_log", &battle_config.etc_log },
 			{ "save_clothcolor", &battle_config.save_clothcolor },
+			{ "autocounter_mode", &battle_config.autocounter_mode },
 		{ "item_rate_equip",	&battle_config.item_rate_equip },		// Added by RoVeRT
 		{ "item_rate_card",	&battle_config.item_rate_card },
 		{ "prevent_logout", 	&battle_config.prevent_logout },		/// End Addition

@@ -1575,6 +1575,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case CR_REFLECTSHIELD:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		break;
+
 	case MO_CALLSPIRITS:	// ‹CŒ÷
 		if(sd) {
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
@@ -4977,13 +4978,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		case SC_STRIPSHIELD:				/* Strip Shield */
 			tick = 1000 * 60;
 			break;
-		case SC_AUTOCOUNTER:
-			tick = 300 * val1;
-			if(val1 == 4)
-				tick = 1500;
-			if(val1 == 5)
-				tick = 2000;
-			break;
 
 		case SC_REFLECTSHIELD:
 			tick = 1000 * val1;
@@ -5080,6 +5074,10 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 					val2 += (t < 0)? 1:t;
 				}
 			}
+			break;
+		case SC_AUTOCOUNTER:
+			//0.4•b*SkillLv
+			tick = 400*val1;
 			break;
 
 		case SC_DEFENDER:

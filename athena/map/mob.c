@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.15 2004/01/23 05:13:59 rovert Exp $
+// $Id: mob.c,v 1.16 2004/01/23 15:54:16 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -351,11 +351,20 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 	if( mobskill_use(md,tick,-2) )	// スキル使用
 		return 0;
 
-	if(sd->sc_data[SC_AUTOCOUNTER].timer != -1){		// AppleGirl
+	//オートカウンター判定
+	if(sd->sc_data[SC_AUTOCOUNTER].timer != -1)
+	{
+		battle_weapon_attack(&sd->bl,&md->bl,tick,0);
+		skill_status_change_end( &sd->bl, SC_AUTOCOUNTER, -1);
+	}
+	else
+		battle_weapon_attack(&md->bl,&sd->bl,tick,0);
+
+/*	if(sd->sc_data[SC_AUTOCOUNTER].timer != -1){		// AppleGirl
 		pc_attack(sd,md->bl.id,0);
 		skill_status_change_end(&sd->bl,SC_AUTOCOUNTER,-1);
 		return 0;
-	}
+	}*/
 /*	if(sd->sc_data[SC_AUTOGUARD].timer != -1){
 		pc_attack(sd,md->bl.id,0);
 		skill_status_change_end(&sd->bl,SC_AUTOGUARD,-1);
@@ -367,7 +376,7 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 		return 0;
 	}
 
-	battle_weapon_attack(&md->bl,&sd->bl,tick,0);
+//	battle_weapon_attack(&md->bl,&sd->bl,tick,0);
 
 	md->attackabletime = tick + battle_get_adelay(&md->bl);
 

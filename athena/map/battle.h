@@ -188,6 +188,7 @@ extern struct Battle_Config {
 	int error_log;
 	int etc_log;
 	int save_clothcolor;
+	int autocounter_mode;
 	int item_rate_equip;	// Modified by RoVeRT
 	int item_rate_card;
 	int prevent_logout;	// End Modification
