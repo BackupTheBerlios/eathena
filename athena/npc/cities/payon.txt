@@ -391,7 +391,7 @@ payon_in01.gat,164,165,2	script	Monster Scholar	98,{
 }
 
 payon_in01.gat,174,113,2	script	Marx Hansen	86,{
-	if(mother_marienu==1) goto FJL0;
+	if(marx_hansen==1) goto FJL0;
 	mes "[Merchant Marx Hansen]";
 	mes "Welcome to my shop. What brings you here?";
 	next;
@@ -407,6 +407,8 @@ payon_in01.gat,174,113,2	script	Marx Hansen	86,{
 		mes "Nowadays as everything is getting flooded enough in the world, young people doesn't seem to enjoy fruits like the past.";
 		mes "So I wanted to let them realise how much fruits are good for thier health";
 		mes "And I figured out when we grind fruits to make them into liquid ones, they become more digestive and more tasty.";
+		mes "If you come again you can buy some of the juices i made";
+		set marx_hansen,1;
 		close;
 	L1:
 		mes "[Merchant Marx Hansen]";
@@ -426,49 +428,28 @@ payon_in01.gat,174,113,2	script	Marx Hansen	86,{
 			menu "Apple Juice",L00,"Banana Juice",L01,"Carrot Juice",L02,"Grape Juice",L03,"Nope, I'm fine.",LEnd;
 
 			L00:
-				set l0,512;
-				set l1,531;
+				set @fruit,512;
+				set @juice,531;
 				goto L00z;
 			L01:
-				set l0,513;
-				set l1,532;
+				set @fruit,513;
+				set @juice,532;
 				goto L00z;
 			L02:
-				set l0,515;
-				set l1,534;
+				set @fruit,515;
+				set @juice,534;
 				goto L00z;
 			L03:
-				set l0,514;
-				set l1,533;
+				set @fruit,514;
+				set @juice,533;
 				goto L00z;
 
 			L00z:
-				if((countitem(l0)<1) || (countitem(713)<1) || (Zeny<3)) goto noL000;
-				mes "[Merchant Marx Hansen]";
-				mes "How many?";
-				next;
-				set l2,0;
-				menu "As many as I can?",L00a,"Um I will set the Numbers.",L00b,"Nah, forget about it",L00c;
-			
-				L00a:
-					if((countitem(l0)<1) || (countitem(713)<1) || (Zeny<3)) goto L00ab;
-					goto L00aa;
-
-					L00aa:
-						delitem l0,1;
-						delitem 713,1;
-						set Zeny,zeny-3;
-						set l2,l2+1;
-						goto L00a;
-					L00ab:
-						if(l2 == 0) goto noL000;
-						getitem l1,l2;
-						goto GotMsg;
-				L00b:
-					input @input;
-					if(@input!=0) goto inpL00b;
-					mes "[Merchant Marx Hansen]";
-					mes "Deal canceled.";
+				if((countitem(@fruit)>0) | (countitem(713)>0) | (Zeny>2)) goto L000z;
+					if (@fruit == 512) goto noL00;
+					if (@fruit == 513) goto noL01;
+					if (@fruit == 514) goto noL03;
+					if (@fruit == 515) goto noL02;
 					close;
 
 					inpL00b:
@@ -514,6 +495,31 @@ payon_in01.gat,174,113,2	script	Marx Hansen	86,{
 								mes "Don't forget to bring me 3 zeny, the fee for one bottle of grape juice.";
 								mes "Bring me all necesary stuffs, I will serve you the best.";
 								close;
+				L000z:
+				mes "[Merchant Marx Hansen]";
+				mes "How many?";
+				next;
+				menu "Um I will set the Numbers.",Lget,"Nah, forget about it",L00c;
+				Lget:
+					input @input;
+					if(@input > 0) goto Linp;
+					mes "[Merchant Marx Hansen]";
+					mes "Deal canceled.";
+					close;
+
+					Linp:
+						if(((countitem(@fruit)<@input) || (countitem(713)<@input)) || (Zeny<3*@input)) goto Ltomuch;
+						delitem @fruit,@input;
+						delitem 713,@input;
+						set Zeny,zeny-3*@input;
+						getitem @juice,@input;
+						goto GotMsg;
+						
+
+						Ltomuch:
+							mes "[Merchant Marx Hansen]";
+							mes "You don't have enough bottles or apples for that many juice";
+							close;
 						GotMsg:
 							mes "[Merchant Marx Hansen]";
 							mes "Here you are. Take it.";
