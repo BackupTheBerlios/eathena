@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.47 2004/03/06 21:24:55 sara-chan Exp $
+// $Id: clif.c,v 1.48 2004/03/06 22:03:25 sara-chan Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -707,7 +707,7 @@ int clif_mob_class_change(struct mob_data *md,int class)
 	char buf[16];
 	int view = mob_get_viewclass(class);
 
-	if(view >= MAX_PC_CLASS) {
+	if(view >= 23 || view <= 4000) {
 	WBUFW(buf,0)=0x1b0;
 	WBUFL(buf,2)=md->bl.id;
 	WBUFB(buf,6)=1;
@@ -735,7 +735,7 @@ static int clif_mob0078(struct mob_data *md,unsigned char *buf)
 	WBUFW(buf,10)=md->opt2;
 	WBUFW(buf,12)=md->option;
 	WBUFW(buf,14)=mob_get_viewclass(md->class);
-	if(mob_get_viewclass(md->class) < MAX_PC_CLASS) {
+	if((mob_get_viewclass(md->class) < 23) || (mob_get_viewclass(md->class) > 4000)) {
 		WBUFW(buf,12)|=mob_db[md->class].option;
 		WBUFW(buf,16)=mob_get_hair(md->class);
 		WBUFW(buf,18)=mob_get_weapon(md->class);
@@ -773,7 +773,7 @@ static int clif_mob007b(struct mob_data *md,unsigned char *buf)
 	WBUFW(buf,10)=md->opt2;
 	WBUFW(buf,12)=md->option;
 	WBUFW(buf,14)=mob_get_viewclass(md->class);
-	if(mob_get_viewclass(md->class) < MAX_PC_CLASS) {
+	if((mob_get_viewclass(md->class) < 23) || (mob_get_viewclass(md->class) > 4000)) {
 		WBUFW(buf,12)|=mob_db[md->class].option;
 		WBUFW(buf,16)=mob_get_hair(md->class);
 		WBUFW(buf,18)=mob_get_weapon(md->class);
@@ -830,7 +830,7 @@ static int clif_pet0078(struct pet_data *pd,unsigned char *buf)
 	WBUFL(buf,2)=pd->bl.id;
 	WBUFW(buf,6)=pd->speed;
 	WBUFW(buf,14)=mob_get_viewclass(pd->class);
-	if(mob_get_viewclass(pd->class) < MAX_PC_CLASS) {
+	if((mob_get_viewclass(pd->class) < 23) || (mob_get_viewclass(pd->class) > 4000)) {
 		WBUFW(buf,12)=mob_db[pd->class].option;
 		WBUFW(buf,16)=mob_get_hair(pd->class);
 		WBUFW(buf,18)=mob_get_weapon(pd->class);
@@ -871,7 +871,7 @@ static int clif_pet007b(struct pet_data *pd,unsigned char *buf)
 	WBUFL(buf,2)=pd->bl.id;
 	WBUFW(buf,6)=pd->speed;
 	WBUFW(buf,14)=mob_get_viewclass(pd->class);
-	if(mob_get_viewclass(pd->class) < MAX_PC_CLASS) {
+	if((mob_get_viewclass(pd->class) < 23) || (mob_get_viewclass(pd->class) > 4000)) {
 		WBUFW(buf,12)=mob_db[pd->class].option;
 		WBUFW(buf,16)=mob_get_hair(pd->class);
 		WBUFW(buf,18)=mob_get_weapon(pd->class);
@@ -988,7 +988,7 @@ int clif_spawnmob(struct mob_data *md)
 	unsigned char buf[64];
 	int len;
 
-	if(mob_get_viewclass(md->class) >= MAX_PC_CLASS) {
+	if((mob_get_viewclass(md->class) < 23) || (mob_get_viewclass(md->class) > 4000)) {
 	memset(buf,0,packet_len_table[0x7c]);
 
 	WBUFW(buf,0)=0x7c;
@@ -1002,16 +1002,10 @@ int clif_spawnmob(struct mob_data *md)
 	WBUFPOS(buf,36,md->bl.x,md->bl.y);
 
 	clif_send(buf,packet_len_table[0x7c],&md->bl,AREA);
-
-	len = clif_mob0078(md,buf);
-	clif_send(buf,len,&md->bl,AREA);
 	}
-	else
-	{
+
 		len = clif_mob0078(md,buf);
 		clif_send(buf,len,&md->bl,AREA);
-	}
-
 
 	return 0;
 }
@@ -1027,7 +1021,7 @@ int clif_spawnpet(struct pet_data *pd)
 	unsigned char buf[64];
 	int len;
 
-	if(mob_get_viewclass(pd->class) >= MAX_PC_CLASS) {
+	if((mob_get_viewclass(pd->class) < 23) || (mob_get_viewclass(pd->class) > 4000)) {
 	memset(buf,0,packet_len_table[0x7c]);
 
 	WBUFW(buf,0)=0x7c;
