@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.2 2004/02/17 04:48:07 rovert Exp $
+// $Id: login.c,v 1.3 2004/02/22 06:04:38 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -56,6 +56,26 @@ int login_port = 6900;
 
 struct mmo_char_server server[MAX_SERVERS];
 int server_fd[MAX_SERVERS];
+
+//Added for Mugendai's I'm Alive mod
+int imalive_on=1;
+int imalive_time=60;
+//Added by Mugendai for GUI
+int flush_on=1;
+int flush_time=100;
+
+enum {
+	ACO_DENY_ALLOW=0,
+	ACO_ALLOW_DENY,
+	ACO_MUTUAL_FAILTURE,
+	ACO_STRSIZE=128,
+};
+
+int access_order=ACO_DENY_ALLOW;
+int access_allownum=0;
+int access_denynum=0;
+char *access_allow=NULL;
+char *access_deny=NULL;
 
 MYSQL mysql_handle;
 
@@ -151,6 +171,48 @@ int read_gm_account() {
 	
 	return 0;
 }
+
+int check_ip(unsigned int ip)
+{
+	char buf[64];
+	int i;
+	unsigned char *p=(unsigned char *)&ip;
+	enum { ACF_DEF, ACF_ALLOW, ACF_DENY } flag = ACF_DEF;
+
+	if( access_allownum==0 && access_denynum==0 )
+		return 1;		// 制限を使わない場合は常に許可
+
+	// + 現在は 012.345. 形式の前方一致と all のみ対応。
+	// + 012.345.678.901/24 形式のネットマスク付き表記は対応してないが、
+	//   対応したほうがいいと思われる。
+	// + .ne.jpなどのDNS後方一致はホスト名逆引きのコストを考えると
+	//   対応しないほうがいいと思われる。(短い時間でDNSが引ける保障はないし、
+	//   実際にタイムアウトまで1分近く待たされるケースがあることを確認している)
+	//   対応させるなら非同期にDNSを引くか、極短い時間でタイムアウトをとるべき.
+	sprintf(buf,"%d.%d.%d.%d",p[0],p[1],p[2],p[3]);
+	
+	for(i=0;i<access_allownum;i++){
+		if( memcmp(access_allow+i*ACO_STRSIZE,buf,
+			strlen(access_allow+i*ACO_STRSIZE))==0){
+			flag=ACF_ALLOW;
+			if( access_order==ACO_DENY_ALLOW )
+				return 1;	// deny,allow ならallowにあった時点で許可
+			break;
+		}
+	}
+	for(i=0;i<access_denynum;i++){
+		if( memcmp(access_deny+i*ACO_STRSIZE,buf,
+			strlen(access_deny+i*ACO_STRSIZE))==0){
+			flag=ACF_DENY;
+			return 0;		// denyにあると不許可
+			break;
+		}
+	}
+	return (flag==ACF_ALLOW || access_order==ACO_ALLOW_DENY)? 1:0;
+		// allow,denyのときは無条件で（deny以外しかここまでこない）は許可
+		// mutual-failtureのときは、記述なしなら不許可
+}
+
 //-----------------------------------------------------
 // Read Account database - mysql db
 //-----------------------------------------------------
@@ -230,7 +292,6 @@ int mmo_auth_sqldb_new( struct mmo_account* account,const char *tmpstr,char sex 
 //-----------------------------------------------------
 int mmo_auth_new( struct mmo_account* account,const char *tmpstr,char sex )
 {
-
 	return 0;
 }
 
@@ -244,6 +305,9 @@ int mmo_auth( struct mmo_account* account ){
 	struct timeval tv;
 	char tmpstr[256];
 	char t_uid[256], t_pass[256];
+	int len;
+
+	len=strlen(account->userid)-2;
 	
 	MYSQL_RES* 	sql_res ;
 	MYSQL_ROW	sql_row ;
@@ -258,7 +322,7 @@ int mmo_auth( struct mmo_account* account ){
 	jstrescapecpy (t_uid,account->userid);
 	jstrescapecpy (t_pass, account->passwd);
 	//make query
-	sprintf(tmpsql, "SELECT `account_id`,`userid`,`user_pass`,`lastlogin`,`logincount`,`sex`,`level` FROM `login` WHERE `userid`='%s'"
+	sprintf(tmpsql, "SELECT `account_id`,`userid`,`user_pass`,`lastlogin`,`logincount`,`sex`,`level` FROM `login` WHERE BINARY `userid`='%s'"
 		,t_uid);
 	//login {account_id/userid/user_pass/lastlogin/logincount/sex/level}
 	
@@ -269,10 +333,71 @@ int mmo_auth( struct mmo_account* account ){
 	sql_res = mysql_store_result(&mysql_handle) ;
 	sql_row = mysql_fetch_row(sql_res);	//row fetching
 	if (!sql_row)  {
-		//there's no id.
-		printf ("auth failed no account %s %s %s\n", tmpstr, account->userid, account->passwd);
-		mysql_free_result(sql_res);
-		return 0;
+		//printf("Account issue: passwdenc=%d userid=%s userid_=%c useridsex=%c new_account_flag=%d account_id_count=%d END_ACCOUNT_NUM=%d\n",account->passwdenc,account->userid,account->userid[len],account->userid[len+1],new_account_flag,account_id_count,END_ACCOUNT_NUM);
+		if(account->passwdenc==0 && account->userid[len]=='_' &&
+		(account->userid[len+1]=='F' || account->userid[len+1]=='M') &&
+		new_account_flag == 1 && account_id_count < END_ACCOUNT_NUM)
+		{
+			//If the account doesnt exist, lets see if we should create a new one
+			char newusername[256], tempstr2[256]; //These store the username without the _M or _F
+			strcpy (tempstr2,account->userid);
+			tempstr2[len] = '\0';		//Cut off the _ whatever
+			jstrescapecpy (newusername,tempstr2);	//Copy it properly formatted for SQL
+
+			printf("Attempt to make new account, %s\n", newusername);
+
+			//Dump the old result
+			mysql_free_result(sql_res);
+			//Get with just username portion
+			sprintf(tmpsql, "SELECT `account_id`,`userid`,`user_pass`,`lastlogin`,`logincount`,`sex`,`level` FROM `login` WHERE BINARY `userid`='%s'"
+				,newusername);
+			if(mysql_query(&mysql_handle, tmpsql) ) {
+					printf("Login server Error - %s\n", mysql_error(&mysql_handle) );
+			}
+			sql_res = mysql_store_result(&mysql_handle) ;
+			sql_row = mysql_fetch_row(sql_res);	//row fetching
+			//If it doesnt exist, then make it
+			if (!sql_row) 
+			{
+				//Create our query to insert the new login
+				sprintf(tmpsql, "INSERT INTO login (userid,user_pass,lastlogin,logincount,sex,level) VALUES('%s','%s','%s','%s','%c','%s');"
+					, newusername, t_pass, "-", "0", account->userid[len+1], "1");
+				//See if the query worked out
+				if(mysql_query(&mysql_handle, tmpsql) ) {
+						//Query failed, lets clean up and quit
+						printf("Error creating new account - %s\n", mysql_error(&mysql_handle) );
+						mysql_free_result(sql_res);
+						return 0;
+				}
+				else
+				{
+						//Query worked, lets clear the old result, and get a new one with the new account
+						printf("New account created - %s\n", tempstr2 );
+						mysql_free_result(sql_res);
+						strcpy(t_uid, newusername);
+
+						sprintf(tmpsql, "SELECT `account_id`,`userid`,`user_pass`,`lastlogin`,`logincount`,`sex`,`level` FROM `login` WHERE BINARY `userid`='%s'"
+							,t_uid);
+
+						if(mysql_query(&mysql_handle, tmpsql) ) {
+								printf("DB server Error - %s\n", mysql_error(&mysql_handle) );
+						}
+						sql_res = mysql_store_result(&mysql_handle) ;
+						sql_row = mysql_fetch_row(sql_res);	//row fetching
+				}
+			}
+			else
+			{
+				printf("Account found already, attempting login using supplied password\n");
+			}
+		}
+		else
+		{
+			//there's no id.
+			printf ("auth failed no account %s %s %s\n", tmpstr, account->userid, account->passwd);
+			mysql_free_result(sql_res);
+			return 0;
+		}
 	}
 	else {
 		if (atoi(sql_row[6]) == -1) {
@@ -342,8 +467,9 @@ int mmo_auth( struct mmo_account* account ){
 	memcpy(tmpstr,sql_row[3],19);
 	memcpy(account->lastlogin,tmpstr,24);
 	account->sex = sql_row[5][0] == 'S' ? 2 : sql_row[5][0]=='M';
-
-	sprintf(tmpsql, "UPDATE `login` SET `lastlogin` = NOW(), `logincount`=`logincount` +1  WHERE  `userid` = '%s'", sql_row[1]);
+	char t_rowid[256];
+	jstrescapecpy(t_rowid, sql_row[1]);
+	sprintf(tmpsql, "UPDATE `login` SET `lastlogin` = NOW(), `logincount`=`logincount` +1  WHERE BINARY  `userid` = '%s'", t_rowid);
 	mysql_free_result(sql_res) ; //resource free
 	if(mysql_query(&mysql_handle, tmpsql) ) {
 			printf("DB server Error - %s\n", mysql_error(&mysql_handle) );
@@ -424,26 +550,69 @@ int parse_fromchar(int fd){
 				RFIFOSKIP(fd,6);
 				break;
 			case 0x2720:	// GM
-				if(RFIFOREST(fd)<4)
-					return 0;
-				if(RFIFOREST(fd)<RFIFOW(fd,2))
-					return 0;
-				//oldacc=RFIFOL(fd,4);
-				printf("change GM isn't support in this login server version.\n");
-				printf("change GM error 0 %s\n", RFIFOP(fd, 8));
+				{
+					int newacc=0,oldacc,i=0,j;
+					if(RFIFOREST(fd)<4)
+						return 0;
+					if(RFIFOREST(fd)<RFIFOW(fd,2))
+						return 0;
+					oldacc=RFIFOL(fd,4);
+					printf("gm search %d\n",oldacc);
+					if(strcmp(RFIFOP(fd,8),gm_pass)==0 &&
+						(oldacc<gm_start || oldacc>gm_last)){
+						for(j=gm_start,i=0;j<gm_last && i<AUTH_FIFO_SIZE;j++){
+							for(i=0;i<AUTH_FIFO_SIZE;i++){
+								if(auth_fifo[i].account_id==j)
+									break;
+							}
+						}
+						if(i==AUTH_FIFO_SIZE){
+							newacc=j-1;
+							for(i=0;i<AUTH_FIFO_SIZE;i++){
+								if(auth_fifo[i].account_id==oldacc){
+									auth_fifo[i].account_id=newacc;
+								}
+							}
+							printf("change GM! %d=>%d\n",oldacc,newacc);
+						}else
+							printf("change GM error %d %s\n",oldacc,RFIFOP(fd,8));
+					}else
+						printf("change GM error %d %s\n",oldacc,RFIFOP(fd,8));
 
-				RFIFOSKIP(fd, RFIFOW(fd, 2));
-				WFIFOW(fd, 0) =0x2721;
-				WFIFOL(fd, 2) =RFIFOL(fd,4);//oldacc;
-				WFIFOL(fd, 6) =0;//newacc;
-				WFIFOSET(fd, 10);
+					RFIFOSKIP(fd, RFIFOW(fd, 2));
+					WFIFOW(fd, 0) =0x2721;
+					WFIFOL(fd, 2) =RFIFOL(fd,4);//oldacc;
+					WFIFOL(fd, 6) =0;//newacc;
+					WFIFOSET(fd, 10);
+				}
 				return 0;
-    default:
-      printf ("close session connection...\n");
-      close(fd);
-      session[fd]->eof=1;
-      return 0;
-    }
+
+			case 0x2722:	// changesex
+				{
+	  				int acc,sex,i=0,j=0;
+					acc=RFIFOL(fd,4);
+					sex=RFIFOB(fd,8);
+					for(i=0;i<AUTH_FIFO_SIZE;i++){
+			//			printf("%d,",auth_dat[i].account_id);
+						if(auth_fifo[i].account_id==acc){
+							auth_fifo[i].sex=sex;
+							j=1;
+						}
+					}
+					RFIFOSKIP(fd,RFIFOW(fd,2));
+					WFIFOW(fd,0)=0x2723;
+					WFIFOL(fd,2)=acc;
+					WFIFOB(fd,6)=sex;
+					WFIFOSET(fd,7);
+				}
+				return 0;
+
+			default:
+				printf ("close session connection...\n");
+				close(fd);
+				session[fd]->eof=1;
+				return 0;
+		}
   }
   return 0;
 }
@@ -512,7 +681,7 @@ int parse_login(int fd){
 	}
 
 	if(RFIFOW(fd,0)<30000)
-		printf("parse_login : %d %d packet case=%d\n",fd,RFIFOREST(fd),RFIFOW(fd,0));
+		printf("parse_login : %d %d %d %s\n",fd,RFIFOREST(fd),RFIFOW(fd,0),RFIFOP(fd,6));	//Modified by Mugendai via jap source 793
 	while(RFIFOREST(fd)>=2){
 		switch(RFIFOW(fd,0)){
 			case 0x64:		// request client login
@@ -522,6 +691,18 @@ int parse_login(int fd){
 			
 				printf("client connection request %s from %d.%d.%d.%d\n", RFIFOP(fd, 6), p[0], p[1], p[2], p[3]);
 				
+				if( !check_ip(session[fd]->client_addr.sin_addr.s_addr) ){
+					struct timeval tv;
+					char tmpstr[256];
+					gettimeofday(&tv,NULL);
+					strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
+					sprintf(tmpstr+19,".%03d",(int)tv.tv_usec/1000);
+					printf("access denied %s" RETCODE, tmpstr);
+					WFIFOW(fd,0)=0x6a;
+					WFIFOB(fd,2)=0x03;
+					WFIFOSET(fd,3);
+				}
+
 				account.userid = RFIFOP(fd, 6);
 				account.passwd = RFIFOP(fd, 30);
 #ifdef PASSWORDENC
@@ -675,7 +856,7 @@ int parse_login(int fd){
 					
 					jstrescapecpy(t_uid,server[account.account_id].name);
 					sprintf(tmpsql,"INSERT INTO `sstatus`(`index`,`name`,`user`) VALUES ( '%ld', '%s', '%d')", 
-						account.account_id, server[account.account_id].name,0);
+						account.account_id, t_uid,0);
 					//query
 					if(mysql_query(&mysql_handle, tmpsql) ) {
 							printf("DB server Error - %s\n", mysql_error(&mysql_handle) );
@@ -754,18 +935,55 @@ int login_config_read(const char *cfgName){
 		if(i!=2)
 			continue;
 
-		if(strcmpi(w1,"admin_pass")==0){	//leave admin_pass for special purpose.
-			strcpy(admin_pass, w2);
-			printf ("set admin_pass : %s\n",w2);
+		//Lets support the old stuff some
+		if(strcmpi(w1,"admin_pass")==0){
+			strcpy(admin_pass,w2);
+		}
+		else if(strcmpi(w1,"gm_pass")==0){
+			strcpy(gm_pass,w2);
+		}
+		else if(strcmpi(w1,"new_account")==0){
+			new_account_flag = atoi(w2);
 		}
 		else if(strcmpi(w1,"login_port")==0){
 			login_port=atoi(w2);
 			printf ("set login_port : %s\n",w2);
 		}
-		else if(strcmpi(w1,"gm_account_filename")==0){ 
-			strcpy(GM_account_filename,w2); 
+		else if(strcmpi(w1,"gm_account_filename")==0){
+			strcpy(GM_account_filename,w2);
 			printf ("set gm_account_filename : %s\n",w2);
 		}
+
+		else if(strcmpi(w1,"order")==0){
+			printf ("set order : %s\n",w2);
+			access_order=atoi(w2);
+			if(strcmpi(w2,"deny,allow")==0) access_order=ACO_DENY_ALLOW;
+			if(strcmpi(w2,"allow,deny")==0) access_order=ACO_ALLOW_DENY;
+			if(strcmpi(w2,"mutual-failture")==0) access_order=ACO_MUTUAL_FAILTURE;
+		}
+		else if(strcmpi(w1,"allow")==0){
+			printf ("set allow : %s\n",w2);
+			if(access_allow)
+				access_allow=realloc( access_allow, (access_allownum+1)*ACO_STRSIZE);
+			else
+				access_allow=malloc( ACO_STRSIZE );
+			if(strcmpi(w2,"all")==0)
+				access_allow[(access_allownum++)*ACO_STRSIZE]=0;
+			else if(w2[0])
+				strcpy( access_allow+(access_allownum++)*ACO_STRSIZE,w2 );
+		}
+		else if(strcmpi(w1,"deny")==0){
+			printf ("set deny : %s\n",w2);
+			if(access_deny)
+				access_deny=realloc( access_deny,(access_denynum+1)*ACO_STRSIZE);
+			else
+				access_deny=malloc( ACO_STRSIZE );
+			if(strcmpi(w2,"all")==0)
+				access_deny[(access_denynum++)*ACO_STRSIZE]=0;
+			else if(w2[0])
+				strcpy( access_deny+(access_denynum++)*ACO_STRSIZE,w2 );
+		}
+
 		else if(strcmpi(w1,"ipban")==0){
 			ipban=atoi(w2);
 			printf ("set ipban : %d\n",ipban);
@@ -816,10 +1034,37 @@ int login_config_read(const char *cfgName){
 		else if(strcmpi(w1,"db_server_logindb")==0){
 			strcpy(db_server_logindb, w2);
 			printf ("set db_server_logindb : %s\n",w2);
+		} else if(strcmpi(w1,"imalive_on")==0){		//Start Added by Mugendai for I'm Alive mod
+			imalive_on = atoi(w2);
+		} else if(strcmpi(w1,"imalive_time")==0){
+			imalive_time = atoi(w2);
+		} else if(strcmpi(w1,"flush_on")==0){
+			flush_on = atoi(w2);
+		} else if(strcmpi(w1,"flush_time")==0){
+			flush_time = atoi(w2);					//End Added by Mugendai for GUI
 		}
 	}
 	fclose(fp);
 	printf ("End reading configuration...\n");
+	return 0;
+}
+
+//-----------------------------------------------------
+//I'm Alive Alert
+//Used to output 'I'm Alive' every few seconds
+//Intended to let frontends know if the app froze
+//-----------------------------------------------------
+int imalive_timer(int tid, unsigned int tick, int id, int data){
+	printf("I'm Alive\n");
+	return 0;
+}
+
+//-----------------------------------------------------
+//Flush stdout
+//stdout buffer needs flushed to be seen in GUI
+//-----------------------------------------------------
+int flush_timer(int tid, unsigned int tick, int id, int data){
+	fflush(stdout);
 	return 0;
 }
 
@@ -863,6 +1108,17 @@ int do_init(int argc,char **argv){
 	// ban deleter timer - 1 minute term
 	printf("add interval tic (ip_ban_check)....\n");
 	i=add_timer_interval(gettick()+10, ip_ban_check,0,0,60*1000);
+
+	//Added for Mugendais I'm Alive mod
+	if (imalive_on)
+	{
+		add_timer_interval(gettick()+10, imalive_timer,0,0,imalive_time*1000);
+	}
+	//Added by Mugendai for GUI support
+	if (imalive_on)
+	{
+		add_timer_interval(gettick()+10, flush_timer,0,0,flush_time);
+	}
 	
 	return 0;
 }

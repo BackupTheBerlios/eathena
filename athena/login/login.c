@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.9 2004/02/20 21:52:41 rovert Exp $
+// $Id: login.c,v 1.10 2004/02/22 06:04:38 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -45,6 +45,13 @@ char GM_account_filename[1024] = "conf/GM_account.txt";
 
 struct mmo_char_server server[MAX_SERVERS];
 int server_fd[MAX_SERVERS];
+
+//Added for Mugendai's I'm Alive mod
+int imalive_on=0;
+int imalive_time=60;
+//Added by Mugendai for GUI
+int flush_on=0;
+int flush_time=100;
 
 enum {
 	ACO_DENY_ALLOW=0,
@@ -284,16 +291,17 @@ int mmo_auth( struct mmo_account* account )
 	char md5str[md5keylen+32],md5bin[32];
 
 	len=strlen(account->userid)-2;
-	// Re-added _M _F account creation - Sara
-	if(account->passwdenc==0 && account->userid[len]=='_' && (strncmp(account->userid,"\n",1) != 0) && (account->userid[len+1]=='F' || account->userid[len+1]=='M') && new_account_flag == 1 && account_id_count < END_ACCOUNT_NUM){
-		if(new_account_flag == 1){
-	  		newaccount=1;
-		} else {
-			newaccount=0;
-		}
-		account->userid[len]=0;
-	}
-    char *adm_pass=strchr(account->passwd,'@');
+	if(account->passwdenc==0 && account->userid[len]=='_' &&
+		(account->userid[len+1]=='F' || account->userid[len+1]=='M') &&
+		new_account_flag == 1 && account_id_count < END_ACCOUNT_NUM){
+
+    
+	//Enables _M _F account creation, added by Mugendai via AjSS15822's instructions
+	newaccount=1;
+	account->userid[len]=0;
+	//Enables _M _F account creation, added by Mugendai via AjSS15822's instructions
+
+	/*char *adm_pass=strchr(account->passwd,'@');
 	if(adm_pass==NULL)
 		adm_pass="";
 	else
@@ -302,12 +310,12 @@ int mmo_auth( struct mmo_account* account )
 	if(strcmp(adm_pass,admin_pass)==0){
 		if(adm_pass[0])
 			*(adm_pass-1)=0;
-/*		
+		
 		newaccount=1;
 	    account->userid[len]=0;
 	}else
-		account->userid[0]=0;
-*/
+		account->userid[0]=0;*/
+
 	}
 	gettimeofday(&tv,NULL);
 	strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
@@ -698,7 +706,7 @@ int parse_login(int fd)
 		}
 
 		if( !check_ip(session[fd]->client_addr.sin_addr.s_addr) ){
-		  struct timeval tv;
+			struct timeval tv;
 			char tmpstr[256];
 			gettimeofday(&tv,NULL);
 			strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
@@ -962,10 +970,38 @@ int login_config_read(const char *cfgName)
 				access_deny[(access_denynum++)*ACO_STRSIZE]=0;
 			else if(w2[0])
 				strcpy( access_deny+(access_denynum++)*ACO_STRSIZE,w2 );
+		} else if(strcmpi(w1,"imalive_on")==0){		//Added by Mugendai for I'm Alive mod
+			imalive_on = atoi(w2);					//Added by Mugendai for I'm Alive mod
+		} else if(strcmpi(w1,"imalive_time")==0){	//Added by Mugendai for I'm Alive mod
+			imalive_time = atoi(w2);				//Added by Mugendai for I'm Alive mod
+		} else if(strcmpi(w1,"flush_on")==0){		//Added by Mugendai for GUI
+			flush_on = atoi(w2);					//Added by Mugendai for GUI
+		} else if(strcmpi(w1,"flush_time")==0){		//Added by Mugendai for GUI
+			flush_time = atoi(w2);					//Added by Mugendai for GUI
 		}
 	}
 	fclose(fp);
 
+	return 0;
+}
+
+//-----------------------------------------------------
+//I'm Alive Alert
+//Used to output 'I'm Alive' every few seconds
+//Intended to let frontends know if the app froze
+//-----------------------------------------------------
+int imalive_timer(int tid, unsigned int tick, int id, int data){
+	printf("I'm Alive\n");
+
+	return 0;
+}
+
+//-----------------------------------------------------
+//Flush stdout
+//stdout buffer needs flushed to be seen in GUI
+//-----------------------------------------------------
+int flush_timer(int tid, unsigned int tick, int id, int data){
+	fflush(stdout);
 	return 0;
 }
 
@@ -994,6 +1030,17 @@ int do_init(int argc,char **argv)
 	read_gm_account();
   set_termfunc(mmo_auth_sync);
   set_defaultparse(parse_login);
+
+	//Added for Mugendais I'm Alive mod
+	if (imalive_on)
+	{
+		add_timer_interval(gettick()+10, imalive_timer,0,0,imalive_time*1000);
+	}
+	//Added by Mugendai for GUI support
+	if (imalive_on)
+	{
+		add_timer_interval(gettick()+10, flush_timer,0,0,flush_time);
+	}
 
   return 0;
 }

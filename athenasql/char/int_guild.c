@@ -37,6 +37,9 @@ int inter_guild_tosql(struct guild *g,int flag)
 	// 32 `guild_skill` (`guild_id`,`id`,`lv`)
 	
 	char t_name[100];  // temporay storage for guild name;
+	char t_master[100];  // temporay storage for guild master;
+	char t_mes1[1024];  // temporay storage for guild notice1;
+	char t_mes2[1024];  // temporay storage for guild notice2;
 	char emblem_data[4096];
 	int i=0;
 	int guild_exist=0,guild_member=0,guild_online_member=0;
@@ -46,6 +49,9 @@ int inter_guild_tosql(struct guild *g,int flag)
 	printf("Request save guild: %d.......\n",g->guild_id);
 	
 	jstrescapecpy(t_name, g->name);
+	jstrescapecpy(t_master, g->master);
+	jstrescapecpy(t_mes1, g->mes1);
+	jstrescapecpy(t_mes2, g->mes2);
 	
 	//printf("- Check if guild %d exists\n",g->guild_id);
 	sprintf(tmp_sql, "SELECT count(*) FROM `guild` WHERE `guild_id`='%d';",g->guild_id);
@@ -158,12 +164,14 @@ int inter_guild_tosql(struct guild *g,int flag)
 			//printf("%02x",(unsigned char)(g->emblem_data[i]));
 		}	
 		printf("- emblem_len = %d \n",g->emblem_len);
+		char t_emblem[4096];
+		jstrescapecpy(t_emblem,emblem_data);
 		sprintf(tmp_sql,"INSERT INTO `guild` "
 			"(`guild_id`, `name`,`master`,`guild_lv`,`connect_member`,`max_member`,`average_lv`,`exp`,`next_exp`,`skill_point`,`castle_id`,`mes1`,`mes2`,`emblem_len`,`emblem_id`,`emblem_data`) "
 			"VALUES ('%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%d', '%d', '%s');",
-			g->guild_id,t_name,jstrescape( g->master),
+			g->guild_id,t_name,t_master,
 			g->guild_lv,g->connect_member,g->max_member,g->average_lv,g->exp,g->next_exp,g->skill_point,g->castle_id,
-			jstrescape( g->mes1),jstrescape (g->mes2),g->emblem_len,g->emblem_id,jstrescape( emblem_data));
+			t_mes1,t_mes2,g->emblem_len,g->emblem_id,t_emblem);
 		//printf(" %s\n",tmp_sql);
 		if(mysql_query(&mysql_handle, tmp_sql) ) {
 			printf("DB server Error (insert `guild`)- %s\n", mysql_error(&mysql_handle) );
@@ -202,8 +210,10 @@ int inter_guild_tosql(struct guild *g,int flag)
 		printf("- Insert guild %d to guild_position\n",g->guild_id);
 		for(i=0;i<MAX_GUILDPOSITION;i++){
 			struct guild_position *p = &g->position[i];
+			char newstr[100];					//To support ' and \'s
+			jstrescapecpy(newstr, p->name);		//To support ' and \'s
 			sprintf(tmp_sql,"INSERT INTO `guild_position` (`guild_id`,`position`,`name`,`mode`,`exp_mode`) VALUES ('%d','%d', '%s','%d','%d');",
-				g->guild_id, i, jstrescape(p->name),p->mode,p->exp_mode);
+				g->guild_id, i, newstr,p->mode,p->exp_mode);
 			//printf(" %s\n",tmp_sql);
 			if(mysql_query(&mysql_handle, tmp_sql) ) {
 				printf("DB server Error (insert `guild_position`)- %s\n", mysql_error(&mysql_handle) );
@@ -216,9 +226,11 @@ int inter_guild_tosql(struct guild *g,int flag)
 		for(i=0;i<MAX_GUILDALLIANCE;i++){
 			struct guild_alliance *a=&g->alliance[i];
 			if(a->guild_id>0){
+				char newstr[100];					//To support ' and \'s
+				jstrescapecpy(newstr, a->name);		//To support ' and \'s
 				sprintf(tmp_sql,"INSERT INTO `guild_alliance` (`guild_id`,`opposition`,`alliance_id`,`name`) "
 					"VALUES ('%d','%d','%d','%s');",
-					g->guild_id,a->opposition,a->guild_id, jstrescape(a->name));
+					g->guild_id,a->opposition,a->guild_id,newstr);
 				//printf(" %s\n",tmp_sql);
 				if(mysql_query(&mysql_handle, tmp_sql) ) {
 					printf("DB server Error (insert `guild_alliance`)- %s\n", mysql_error(&mysql_handle) );
@@ -239,10 +251,16 @@ int inter_guild_tosql(struct guild *g,int flag)
 		for(i=0;i<MAX_GUILDEXPLUSION;i++){
 			struct guild_explusion *e=&g->explusion[i];
 			if(e->account_id>0){
+				char newstr[100];					//To support ' and \'s
+				jstrescapecpy(newstr, e->name);		//To support ' and \'s
+				char newstr2[100];					//To support ' and \'s
+				jstrescapecpy(newstr2, e->mes);		//To support ' and \'s
+				char t_acc[4096];
+				jstrescapecpy(t_acc,e->acc);
 				sprintf(tmp_sql,"INSERT INTO `guild_expulsion` (`guild_id`,`name`,`mes`,`acc`,`account_id`,`rsv1`,`rsv2`,`rsv3`) "
 					"VALUES ('%d','%s','%s','%s','%d','%d','%d','%d');",
 					g->guild_id,
-					jstrescape(e->name), jstrescape(e->mes), jstrescape(e->acc),e->account_id,e->rsv1,e->rsv2,e->rsv3 );
+					newstr,newstr2,t_acc,e->account_id,e->rsv1,e->rsv2,e->rsv3 );
 				//printf(" %s\n",tmp_sql);
 				if(mysql_query(&mysql_handle, tmp_sql) ) {
 					printf("DB server Error (insert `guild_expulsion`)- %s\n", mysql_error(&mysql_handle) );
@@ -607,9 +625,14 @@ struct guild* search_guildname(char *str)
 	struct guild *g=guild_pt;
 	int guild_id=0;
 	printf("search_guildname\n");
-	sprintf (tmp_sql , "SELECT `guild_id` FROM `guild` WHERE `name`='%s'", jstrescape(str));
+
+	char newstr[100];				//Support ' and \'s
+	jstrescapecpy(newstr, str);		//Support ' and \'s
+	
+	sprintf (tmp_sql , "SELECT `guild_id` FROM `guild` WHERE BINARY `name`='%s'",newstr);
 	if(mysql_query(&mysql_handle, tmp_sql) ) {
 		printf("DB server Error - %s\n", mysql_error(&mysql_handle) );
+		return g;
 	}
 	sql_res = mysql_store_result(&mysql_handle) ;
 	if (mysql_num_rows(sql_res)>0) {
@@ -1332,6 +1355,7 @@ int mapif_parse_GuildNotice(int fd,int guild_id,const char *mes1,const char *mes
 	
 	if(g==NULL||g->guild_id<=0)
 		return 0;
+
 	memcpy(g->mes1,mes1,60);
 	memcpy(g->mes2,mes2,120);
 	inter_guild_tosql(g,1); // Change mes of guild

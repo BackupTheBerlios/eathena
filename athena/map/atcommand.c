@@ -64,7 +64,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 
 //バシルーラ
 //「@charwarp 名前 マップファイル名 ｘ座標 y座標」と入力
-		if ((strcmpi(command, "@rura+") == 0 || strcmpi(command, "@send") == 0 || strcmpi(command, "@warp+") == 0 || strcmpi(command, "@charwarp")) == 0 && gm_level >= atcommand_config.rurap) {
+		if ((strcmpi(command, "@rura+") == 0 || strcmpi(command, "@send") == 0 || strcmpi(command, "@warp+") == 0 || strcmpi(command, "@charwarp") == 0) && gm_level >= atcommand_config.rurap) {
 			sscanf(message, "%s%s%d%d %[^\n]", command, temp1, &x, &y, temp0);
 			if ((pl_sd=map_nick2sd(temp0))!=NULL) {
 				if(gm_level > pc_isGM(pl_sd)) {
@@ -1254,7 +1254,7 @@ z [0～4]服の色
 			return 1;
 		}
 
-		if(strcmpi(command, "@skillall") == 0 && gm_level >= atcommand_config.skillall){
+		if((strcmpi(command, "@skillall") == 0 || strcmpi(command, "@allskill") == 0) && gm_level >= atcommand_config.skillall){
 			pc_allskillup(sd);
 			clif_displaymessage(fd,msg_table[76]);
 			return 1;

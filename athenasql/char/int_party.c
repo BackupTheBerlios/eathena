@@ -28,7 +28,6 @@ int inter_party_tosql(int party_id,struct party *p)
 	int leader_id = 0;
 	
 	printf("Request save party: %d.......\n",party_id);
-	
 	jstrescapecpy(t_name, p->name);
 	
 	if (p==NULL || party_id==0 || p->party_id ==0 || party_id!=p->party_id) {
@@ -236,10 +235,14 @@ struct party* search_partyname(char *str)
 {
 	struct party *p=NULL;
 	int leader_id = 0;
+
+	char newstr[100];				//To support ' and \'s
+	jstrescapecpy(newstr, str);		//To support ' and \'s
 	
-	sprintf(tmp_sql,"SELECT `party_id`, `name`,`exp`,`item`,`leader_id` FROM `party` WHERE BINARY `name`='%s'", jstrescape(str));
+	sprintf(tmp_sql,"SELECT `party_id`, `name`,`exp`,`item`,`leader_id` FROM `party` WHERE BINARY `name`='%s'",newstr);	
 	if(mysql_query(&mysql_handle, tmp_sql) ) {
 			printf("DB server Error (select `party`)- %s\n", mysql_error(&mysql_handle) );
+			return p;
 	}
 	sql_res = mysql_store_result(&mysql_handle) ;
 	if (mysql_num_rows(sql_res)<=0) { mysql_free_result(sql_res); return p; }
@@ -446,6 +449,7 @@ int mapif_party_message(int party_id,int account_id,char *mes,int len)
 int mapif_parse_CreateParty(int fd,int account_id,char *name,char *nick,char *map,int lv)
 {
 	struct party *p;
+
 	if( (p=search_partyname(name))!=NULL){
 		printf("int_party: same name party exists [%s]\n",name);
 		mapif_party_created(fd,account_id,NULL);
@@ -586,10 +590,11 @@ int mapif_parse_PartyLeave(int fd,int party_id,int account_id)
 				mapif_party_leaved(party_id,account_id,p->member[i].name);
 				
 				
-				
+				char t_memname[256];
+				jstrescapecpy(t_memname, p->member[i].name);
 				// Update char information, does the name need encoding?
 				sprintf(tmp_sql,"UPDATE `char` SET `party_id`='0', `online`='1' WHERE `party_id`='%d' AND BINARY `name`='%s';", 
-					party_id, jstrescape(p->member[i].name));
+					party_id, t_memname);	
 				if(mysql_query(&mysql_handle, tmp_sql) ) {
 					printf("DB server Error (update `char`)- %s\n", mysql_error(&mysql_handle) );
 				}
@@ -602,8 +607,10 @@ int mapif_parse_PartyLeave(int fd,int party_id,int account_id)
 						if(p->member[j].account_id>0&&j!=i){
 							mapif_party_leaved(party_id,p->member[j].account_id,p->member[j].name);
 							// Update char information, does the name need encoding?
-							sprintf(tmp_sql,"UPDATE `char` SET `party_id`='0', `online`='1' WHERE `party_id`='%d' AND `name`='%s';", 
-								party_id, jstrescape(p->member[j].name));
+							char t_memname[256];
+							jstrescapecpy(t_memname,p->member[j].name);
+							sprintf(tmp_sql,"UPDATE `char` SET `party_id`='0', `online`='1' WHERE `party_id`='%d' AND BINARY `name`='%s';", 
+								party_id, t_memname);	
 							if(mysql_query(&mysql_handle, tmp_sql) ) {
 								printf("DB server Error (update `char`)- %s\n", mysql_error(&mysql_handle) );
 							}

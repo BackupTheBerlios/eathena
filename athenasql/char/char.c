@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.3 2004/02/21 20:22:21 rovert Exp $
+// $Id: char.c,v 1.4 2004/02/22 06:04:38 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 //
 // original code from athena
@@ -46,6 +46,13 @@ char char_txt[256];
 char lan_map_ip[128];
 int subneti[4];
 int subnetmaski[4];
+
+//Added for Mugendai's I'm Alive mod
+int imalive_on=0;
+int imalive_time=60;
+//Added by Mugendai for GUI
+int flush_on=0;
+int flush_time=100;
 
 #define CHAR_STATE_WAITAUTH 0
 #define CHAR_STATE_AUTHOK 1
@@ -1874,6 +1881,14 @@ int char_config_read(const char *cfgName){
 			memcpy(start_point.map, map, 16);
 			start_point.x=x;
 			start_point.y=y;
+		} else if(strcmpi(w1,"imalive_on")==0){		// Start Added by Mugendai for I'm Alive mod
+			imalive_on = atoi(w2);
+		} else if(strcmpi(w1,"imalive_time")==0){
+			imalive_time = atoi(w2);
+		} else if(strcmpi(w1,"flush_on")==0){
+			flush_on = atoi(w2);
+		} else if(strcmpi(w1,"flush_time")==0){
+			flush_time = atoi(w2);			// End Added by Mugendai for GUI
 		}
 	}
 	fclose(fp);
@@ -1897,6 +1912,26 @@ int char_config_read(const char *cfgName){
 	printf("set ip address.....\n");
 //Read ItemDB	
 	do_init_itemdb();
+	return 0;
+}
+
+//-----------------------------------------------------
+//I'm Alive Alert
+//Used to output 'I'm Alive' every few seconds
+//Intended to let frontends know if the app froze
+//-----------------------------------------------------
+int imalive_timer(int tid, unsigned int tick, int id, int data){
+	printf("I'm Alive\n");
+
+	return 0;
+}
+
+//-----------------------------------------------------
+//Flush stdout
+//stdout buffer needs flushed to be seen in GUI
+//-----------------------------------------------------
+int flush_timer(int tid, unsigned int tick, int id, int data){
+	fflush(stdout);
 	return 0;
 }
 
@@ -1936,6 +1971,17 @@ int do_init(int argc, char **argv){
 	//no need to set sync timer on SQL version.
 	//printf("add interval tic (mmo_char_sync_timer)....\n");
 	//i=add_timer_interval(gettick()+10, mmo_char_sync_timer, 0,0, autosave_interval);
+
+	//Added for Mugendais I'm Alive mod
+	if (imalive_on)
+	{
+		add_timer_interval(gettick()+10, imalive_timer,0,0,imalive_time*1000);
+	}
+	//Added by Mugendai for GUI support
+	if (imalive_on)
+	{
+		add_timer_interval(gettick()+10, flush_timer,0,0,flush_time);
+	}
 
 	printf("char server init func end (now unlimited loop start!)....\n");
 	return 0;
