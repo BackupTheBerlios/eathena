@@ -1,4 +1,6 @@
 Date	Added
+01/15
+	* fixed auto spell so it works the prober way
 01/07
 	* added OnCommand for NPC [RoVeRT]
 	* added new on death method for NPC spawned mobs [RoVeRT]
