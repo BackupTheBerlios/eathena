@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.18 2004/02/16 20:36:46 rovert Exp $
+// $Id: script.c,v 1.19 2004/02/17 18:57:49 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -2188,15 +2188,14 @@ int buildin_itemskill(struct script_state *st)
 	int id,lv;
 	char *str;
 	struct map_session_data *sd=map_id2sd(st->rid);
-	unsigned int tick=gettick();
+
 	id=conv_num(st,& (st->stack->stack_data[st->start+2]));
 	lv=conv_num(st,& (st->stack->stack_data[st->start+3]));
 	str=conv_str(st,& (st->stack->stack_data[st->start+4]));
 
 	// 詠唱中にスキルアイテムは使用できない
-	if(sd->skilltimer != -1 || DIFF_TICK(tick , sd->canact_tick) < 0){
+	if(sd->skilltimer != -1)
 		return 0;
-	}
 
 	sd->skillitem=id;
 	sd->skillitemlv=lv;
