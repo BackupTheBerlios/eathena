@@ -197,7 +197,22 @@ int SkillStatusChangeTable[]={	/* skill.h‚Ìenum‚ÌSC_***‚Æ‚ ‚í‚¹‚é‚±‚Æ */
 /* 330- */
 	SC_SERVICE4U,
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,
-};
+/* 340- */
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+/* 350- */
+	-1,-1,-1,-1,-1,
+	SC_AURABLADE,
+	SC_PARRYING,
+	SC_CONCENTRATION,
+	SC_TENSIONRELAX,
+	SC_BERSERK,
+/* 360- */
+	SC_BERSERK,
+	SC_ASSUMPTIO,
+	SC_BASILICA,
+	-1,-1,-1,-1,-1,-1,-1,
+/* 370- */
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,};
 
 static const int dirx[8]={0,-1,-1,-1,0,1,1,1};
 static const int diry[8]={1,1,0,-1,-1,-1,0,1};

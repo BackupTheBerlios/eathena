@@ -15,7 +15,7 @@
 #define MAX_AMOUNT 30000
 #define MAX_ZENY 1000000000	// 1G zeny
 #define MAX_CART 100
-#define MAX_SKILL 350
+#define MAX_SKILL 400
 #define GLOBAL_REG_NUM 128
 #define DEFAULT_WALK_SPEED 150
 #define MAX_STORAGE 100
