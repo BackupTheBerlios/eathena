@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.27 2004/02/13 21:05:16 rovert Exp $
+// $Id: mob.c,v 1.28 2004/02/15 13:15:09 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1860,7 +1860,6 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 		if (agit_flag == 1) //Call to Run NPC_Event[OnAgitBreak]
 			guild_agit_break(md);
 	}
-
 
 	if(md->npc_event[0]){	// SCRIPTé¿çs
 //		if(battle_config.battle_log)
