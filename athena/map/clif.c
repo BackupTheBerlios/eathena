@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.44 2004/02/29 22:39:37 sara-chan Exp $
+// $Id: clif.c,v 1.45 2004/03/03 02:38:33 sara-chan Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -705,13 +705,16 @@ static int clif_set007b(struct map_session_data *sd,unsigned char *buf)
 int clif_mob_class_change(struct mob_data *md,int class)
 {
 	char buf[16];
+	int view = mob_get_viewclass(class);
 
+	if(view > 23) {
 	WBUFW(buf,0)=0x1b0;
 	WBUFL(buf,2)=md->bl.id;
 	WBUFB(buf,6)=1;
-	WBUFL(buf,7)=mob_get_viewclass(class);
+		WBUFL(buf,7)=view;
 
 	clif_send(buf,packet_len_table[0x1b0],&md->bl,AREA);
+	}
 	return 0;
 }
 
@@ -959,7 +962,7 @@ int clif_spawnnpc(struct npc_data *nd)
 	unsigned char buf[64];
 	int len;
 
-	if(nd->class == INVISIBLE_CLASS)
+	if(nd->class < 0 || nd->flag&1 || nd->class == INVISIBLE_CLASS)
 		return 0;
 
 	memset(buf,0,packet_len_table[0x7c]);
@@ -5435,7 +5438,7 @@ void clif_parse_WalkToXY(int fd,struct map_session_data *sd)
  */
 void clif_parse_QuitGame(int fd,struct map_session_data *sd)
 {
-	if(sd->opt1 || sd->opt2)
+	if(!pc_isdead(sd) && (sd->opt1 || sd->opt2))
 		return;
 	WFIFOW(fd,0)=0x18b;
 	if (battle_config.prevent_logout && (gettick() - sd->canlog_tick) >= 10000) {

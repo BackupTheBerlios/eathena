@@ -59,7 +59,9 @@ int SkillStatusChangeTable[]={	/* skill.hのenumのSC_***とあわせること */
 	SC_ASPERSIO,		/* アスペルシオ */
 	SC_BENEDICTIO,		/* 聖体降福 */
 /* 70- */
-	-1,SC_SLOWPOISON,-1,
+	-1,
+	SC_SLOWPOISON,
+	-1,
 	SC_KYRIE,			/* キリエエレイソン */
 	SC_MAGNIFICAT,		/* マグニフィカート */
 	SC_GLORIA,			/* グロリア */
@@ -124,9 +126,7 @@ int SkillStatusChangeTable[]={	/* skill.hのenumのSC_***とあわせること */
 /* 220- */
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 /* 230- */
-	-1,-1,
-	SC_CANNIBALIZE,
-	SC_SPHEREMINE,
+	-1,-1,-1,-1,
 	SC_CP_WEAPON,
 	SC_CP_SHIELD,
 	SC_CP_ARMOR,
@@ -1277,6 +1277,8 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	if(sd && pc_isdead(sd))
 		return 1;
 
+	if((skillid == WZ_SIGHTRASHER || skillid == CR_GRANDCROSS) && src != bl)
+		bl = src;
 	if(bl == NULL || bl->prev == NULL)
 		return 1;
 	if(bl->type == BL_PC && pc_isdead((struct map_session_data *)bl))
@@ -1331,8 +1333,11 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	case NPC_HOLYATTACK:
 	case NPC_DARKNESSATTACK:
 	case NPC_TELEKINESISATTACK:
-	case NPC_DARKBREATH:
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
+		break;
+	case NPC_DARKBREATH:
+		clif_emotion(src,7);
+		skill_attack(BF_MISC,src,src,bl,skillid,skilllv,tick,flag);
 		break;
 	case KN_BRANDISHSPEAR:		/* ブランディッシュスピア */
 		{
@@ -1582,8 +1587,8 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		break;
 
 	case WZ_SIGHTRASHER:
-		clif_skill_nodamage(src,src,skillid,skilllv,1);
-		skill_castend_pos2(src,src->x,src->y,skillid,skilllv,tick,0);
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		skill_castend_pos2(src,bl->x,bl->y,skillid,skilllv,tick,0);
 		skill_status_change_end(src,SC_SIGHT,-1);
 		break;
 
@@ -1611,7 +1616,7 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 
 	case CR_GRANDCROSS:			/* グランドクロス */
 		/* スキルユニット配置 */
-		skill_castend_pos2(src,src->x,src->y,skillid,skilllv,tick,0);
+		skill_castend_pos2(src,bl->x,bl->y,skillid,skilllv,tick,0);
 		if(sd)
 			sd->canmove_tick = tick + 900;
 		else if(src->type == BL_MOB)
@@ -1864,10 +1869,10 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case PR_SUFFRAGIUM:		/* サフラギウム */
 	case PR_BENEDICTIO:		/* 聖体降福 */
 	case CR_PROVIDENCE:		/* プロヴィデンス */
-	case SA_FLAMELAUNCHER:	/* フレイ?ラン?ャ? */
-	case SA_FROSTWEAPON:	/* フロストウェ?ン */
-	case SA_LIGHTNINGLOADER:/* ライトニングロ??? */
-	case SA_SEISMICWEAPON:	/* サイズ?ックウェ?ン */
+	case SA_FLAMELAUNCHER:	/* フレイムランチャー */
+	case SA_FROSTWEAPON:	/* フロストウェポン */
+	case SA_LIGHTNINGLOADER:/* ライトニングローダー */
+	case SA_SEISMICWEAPON:	/* サイズミックウェポン */
 		clif_skill_nodamage( (skillid==PR_KYRIE)?bl:src,bl,skillid,skilllv,1);
 		if( bl->type==BL_PC && ((struct map_session_data *)bl)->special_state.no_magic_damage )
 			break;
@@ -2339,21 +2344,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		}
 		break;
 
-	case WZ_FROSTNOVA:			/* フロストノヴ? */
-		skill_area_temp[1]=bl->id;
-		skill_area_temp[2]=bl->x;
-		skill_area_temp[3]=bl->y;
-		/* まず??ゲットにエフェクトを出す */
-/*		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		clif_skill_damage(src,bl,tick,battle_get_amotion(src),0,-1,1,skillid,skilllv,6);
-		skill_attack(BF_MAGIC,src,src,bl,skillid,skilllv,tick, ); */
-		/* その後??ゲット以外の範囲内の敵全体に処理を行う */
-		map_foreachinarea(skill_area_sub,
-			bl->m,bl->x-1,bl->y-1,bl->x+1,bl->y+1,0,
-			src,skillid,skilllv,tick, flag|BCT_ENEMY|1,
-			skill_castend_damage_id);
-		break;
-
 	case RG_STRIPWEAPON:		/* ストリップウェ?ン */
 	case RG_STRIPSHIELD:		/* ストリップシ?ルド */
 	case RG_STRIPARMOR:			/* ストリップア??? */
@@ -2575,18 +2565,20 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
 			md->def_ele=skill_get_pl(skillid);
 			if(md->def_ele==0)			/* ランダム変化、ただし、*/
-				md->def_ele=rand()%9;	/* 不死属性は除く */
+				md->def_ele=rand()%10;	/* 不死属性は除く */
 			md->def_ele+=(1+rand()%4)*20;	/* 属性レベルはランダム */
 		}
 		break;
 
 	case NPC_PROVOCATION:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		clif_pet_performance(src,1);
+		clif_pet_performance(src,mob_db[md->class].skill[md->skillidx].val[0]);
 		break;
 
 	case NPC_HALLUCINATION:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		if( bl->type==BL_PC && ((struct map_session_data *)bl)->special_state.no_magic_damage )
+			break;
 		skill_status_change_start(bl,SkillStatusChangeTable[skillid],skilllv,0,0,0,skill_get_time(skillid,skilllv),0 );
 		break;
 
@@ -2606,9 +2598,9 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
 			if( bl->type==BL_PC && ((struct map_session_data *)bl)->special_state.no_magic_damage )
 				break;
-			if(battle_get_elem_type(bl) == 7)
+			if(battle_get_elem_type(bl) == 7 || battle_get_race(bl) == 6)
 				break;
-			if(rand()%100 < sc_def) {
+			if(rand()%100 < sc_def*(50+skilllv*5)/100) {
 				if(dstsd) {
 					int hp = battle_get_hp(bl)-1;
 					pc_heal(dstsd,-hp,0);
@@ -2639,20 +2631,23 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case NPC_SUMMONSLAVE:		/* 手下召喚 */
 	case NPC_SUMMONMONSTER:		/* MOB召喚 */
 		if(md)
-			mob_summonslave(md,mob_db[md->class].skill[md->skillidx].val1,
-				skilllv,(skillid==NPC_SUMMONSLAVE)?1:0);
+			mob_summonslave(md,mob_db[md->class].skill[md->skillidx].val,skilllv,(skillid==NPC_SUMMONSLAVE)?1:0);
 		break;
 
+	case NPC_TRANSFORMATION:
 	case NPC_METAMORPHOSIS:
 		if(md)
-			mob_class_change(md,mob_db[md->class].skill[md->skillidx].val1);
+			mob_class_change(md,mob_db[md->class].skill[md->skillidx].val);
 		break;
 
 	case NPC_EMOTION:			/* エモーション */
 		if(md)
-			clif_emotion(&md->bl,mob_db[md->class].skill[md->skillidx].val1);
+			clif_emotion(&md->bl,mob_db[md->class].skill[md->skillidx].val[0]);
 		break;
 
+	case NPC_DEFENDER:
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		
 	case BD_ENCORE:				// Added by RoVeRT
 		sd->skillitem = sd->last_skillid;
 		sd->skillitemlv = sd->last_skilllv;
@@ -2660,6 +2655,8 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		sd->last_skillid = BD_ENCORE;
 		break;
 
+	default:
+		return 1;
 	}
 
 	return 0;
@@ -2804,6 +2801,7 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 		break;
 
 	case MG_SAFETYWALL:			/* セイフティウォール */
+	case MG_FIREWALL:			/* ファイヤーウォール */
 	case MG_THUNDERSTORM:		/* サンダーストーム */
 	case AL_PNEUMA:				/* ニューマ */
 	case WZ_ICEWALL:			/* アイスウォール */
@@ -2820,13 +2818,13 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 	case HT_SKIDTRAP:			/* スキッドトラップ */
 	case HT_LANDMINE:			/* ランドマイン */
 	case HT_ANKLESNARE:			/* アンクルスネア */
-	case HT_SHOCKWAVE:			/* ショックウェ?ブトラップ */
-	case HT_SANDMAN:			/* サンド?ン */
-	case HT_FLASHER:			/* フラッシャ? */
-	case HT_FREEZINGTRAP:		/* フリ?ジングトラップ */
-	case HT_BLASTMINE:			/* ブラスト?イン */
-	case HT_CLAYMORETRAP:		/* クレイモア?トラップ */
-	case AS_VENOMDUST:			/* ベノ??スト */
+	case HT_SHOCKWAVE:			/* ショックウェーブトラップ */
+	case HT_SANDMAN:			/* サンドマン */
+	case HT_FLASHER:			/* フラッシャー */
+	case HT_FREEZINGTRAP:		/* フリージングトラップ */
+	case HT_BLASTMINE:			/* ブラストマイン */
+	case HT_CLAYMORETRAP:		/* クレイモアートラップ */
+	case AS_VENOMDUST:			/* ベノムダスト */
 		/* Test */
 	case AM_DEMONSTRATION:
 	case SA_VOLCANO:
@@ -2838,8 +2836,7 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 		skill_unitsetting(src,skillid,skilllv,x,y,0);
 		break;
 
-	case MG_FIREWALL:			/* フ?イヤ?ウォ?ル */
-		skill_unitsetting(src,skillid,skilllv,x,y,0);
+			skill_unitsetting(src,skillid,skilllv,x,y,0);
 		break;
 
 	case WZ_METEOR:				//メテオストーム
@@ -3015,6 +3012,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 	case MG_SAFETYWALL:			/* セイフティウォール */
 		limit=skill_get_time(skillid,skilllv);
 		val2=skilllv+1;
+		interval = -1;
 		target=(battle_config.defnotenemy)?BCT_NOENEMY:BCT_ALL;
 		break;
 
@@ -3032,6 +3030,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 
 	case AL_PNEUMA:				/* ニューマ */
 		limit=skill_get_time(skillid,skilllv);
+		interval = -1;
 		target=(battle_config.defnotenemy)?BCT_NOENEMY:BCT_ALL;
 		count = 9;
 		break;
@@ -5783,11 +5782,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_COMBO:
 			break;
-
-//	-- moonsoul (various lines below have been commented out where they set tick
-//			 or certain values that the skills already set in skill_unitsetting,
-//			 which has been destabilizing map-server)
-//
 		case SC_LULLABY:			/* 子守唄 */
 			val2 = 11;
 			break;
@@ -5816,32 +5810,20 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_WHISTLE:			/* 口笛 */
 			calc_flag = 1;
-//			val2 = (pc_checkskill(sd,BA_MUSICALLESSON)+1)>>1;
-//			val3 = battle_get_agi(bl)/10;
-//			val4 = battle_get_luk(bl)/10;
 			break;
 		case SC_ASSNCROS:			/* 夕陽のアサシンクロス */
 			calc_flag = 1;
-//			val2 = (pc_checkskill(sd,BA_MUSICALLESSON)+1)>>1;
-//			val3 = battle_get_agi(bl)/20;
 			break;
 		case SC_POEMBRAGI:			/* ブラギの詩 */
-//			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
-//			val3 = battle_get_dex(bl)/10;
-//			val4 = battle_get_int(bl)/5;
 			break;
 		case SC_APPLEIDUN:			/* イドゥンの林檎 */
 			calc_flag = 1;
-//			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
-//			val3 = battle_get_vit(bl);
 			break;
 		case SC_UGLYDANCE:			/* 自分勝手なダンス */
 			val2 = 10;
 			break;
 		case SC_HUMMING:			/* ハミング */
 			calc_flag = 1;
-//			val2 = pc_checkskill(sd,DC_DANCINGLESSON);
-//			val3 = battle_get_dex(bl)/10;
 			break;
 		case SC_DONTFORGETME:		/* 私を忘れないで */
 			calc_flag = 1;
@@ -5858,13 +5840,9 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_FORTUNE:			/* 幸運のキス */
 			calc_flag = 1;
-//			val2 = (pc_checkskill(sd,DC_DANCINGLESSON)+1)>>1;
-//			val3 = battle_get_luk(bl)/10;
 			break;
 		case SC_SERVICE4U:			/* サービスフォーユー */
 			calc_flag = 1;
-//			val2 = (pc_checkskill(sd,DC_DANCINGLESSON)+1)>>1;
-//			val3 = battle_get_int(bl)/10;
 			break;
 		case SC_DANCING:			/* ダンス/演奏中 */
 			calc_flag = 1;

@@ -1,4 +1,164 @@
 --------------------
+//0860 by J
+
+・死神さんの手下召喚の修正に合わせてMOBスキルDBを修正
+(/conf)
+	mob_skill_db.txt 修正。
+
+--------------------
+//0859 by 獅子o^.^o
+Alchemist warp 修正(Aegis参考)
+(/conf)
+    (/warp)
+		npc_warp_job.txt 修正
+		
+--------------------
+//0858 by 死神
+
+・細かい修正。
+・MAX_MOBSKILLを24から32に変更。(ただ少しですがまたメモリー使用量が増えます。)
+・プロボケーションで取る行動をmob_skill_db.txtのval1(値1)で設定できるように修正。
+・手下召喚で複数の種類を設定出切るように修正。(最大5つまで)
+・メタモルフォーシスとトランスフォーメーションも複数の種類を設定できるように修正。
+	(db/)
+	skill_db.txt 修正。
+	mob_skill_db.txt 修正。
+	(map/)
+	skill.c
+		skill_castend_damage_id()、skill_castend_nodamage_id() 修正。
+	map.h 修正。
+	mob.h 修正。
+	mob.c
+		mob_readskilldb()、mob_summonslave()、mob_class_change() 修正。
+
+--------------------
+//0857 by J
+
+・OWN Ragnarokにのっていた情報を元にMOBスキルを修正。
+・chase(突撃)が実装されているとのことなので突撃(?)をchaseにかえて
+コメントアウトをはずしました。
+・死神さんが実装したMOBスキルを使用するモンスターを狩場情報に載ってる情報を元に実装。
+	(/conf)
+		mob_skill_db.txt
+
+--------------------
+//0856 by 死神
+
+・バグ修正と細かい修正。
+・battle_athena.confにmonster_attack_direction_change追加。
+・battle_athena.confのbasic_skill_checkとカプラの倉庫利用を合わせていましたがいつのまにかなくなったので取り戻し。(basic_skill_checkがnoなら基本機能スキルレベルに関係なく倉庫を使えます。)
+・ピアーシングアタックの射程を3セルに変更して近接攻撃として認識するように修正。
+・A鯖でのテストでアンデッドの認識を属性によってすることがわかったのでundead_detect_typeのデフォルトを0に変更。
+・メタモルフォーシスやトランスフォーメーションで見た目がプレイヤーなら0x1b0パケットを送らないように変更。
+・ニューマバグは修正してみましたがスキルユニットの時間による作動仕様はまだ分析が完全じゃないので他の不具合が出てくるかも...
+	(conf/)
+	battle_athena.conf 修正。
+	mapflag.txt 修正。(普通のダンジョンがシーズモードであるはずがないので)
+	(conf/npc/)
+	npc_town_kafra.txt 修正。
+	(db/)
+	skill_db.txt 修正。
+	(doc/)
+	conf_ref.txt 修正。
+	script_ref.txt 修正。
+	(map/)
+	pc.c
+		pc_modifybuyvalue()、pc_modifysellvalue() 修正。
+	battle.h
+	battle.c
+		battle_calc_pet_weapon_attack()、battle_calc_mob_weapon_attack() 修正。
+		battle_calc_pc_weapon_attack()、battle_weapon_attack() 修正。
+		battle_config_read() 修正。
+	skill.c
+		skill_unitsetting()、skill_castend_damage_id() 修正。
+		skill_castend_nodamage_id() 修正。
+	mob.c
+		mob_attack() 修正。
+	pet.c
+		pet_attack() 修正。
+	clif.c
+		mob_class_change() 修正。
+
+--------------------
+//0855 by asong
+
+・メタモルフォーシスでＰＣとして表示するＭＯＢを指定した場合倉落ちするバグを「暫定」修正。
+・0x1b0パケでは無く0x7bを使うことで何とかしています。
+・使い分けをしたいところですが当方Ｃの知識が無く条件分岐が上手くいきませんでした。
+・もしかしたらプパの孵化（羽化？）がおかしくなってるかもしれません。
+	(/map)
+		clif.c
+			mob_class_change() 修正。
+
+--------------------
+//0854 by Kalen
+
+・不足していた一次職転職クエスト追加及び、それに伴うWarp、Mob修正)
+	(/conf)
+	   (/npc)
+		npc_job_archer.txt
+		npc_job_swordman.txt
+		npc_job_thief.txt(台詞修正、点数処理変更)
+		npc_job_magician.txt
+	   (/warp)
+		npc_warp25.txt(一部移動)
+		npc_warp.txt(一部移動)
+		npc_warp_job.txt(新設)
+	   (/mob)
+		npc_mob_job.txt
+・雛祭りQuest追加及び、それに伴うNPC修正。アマツ行き船で料金を取らなかった問題修正
+	(/conf)
+		npc_event_hinamatsuri.txt
+		npc_town_amatsu.txt
+		npc_town_guide.txt
+		npc_town_kafra.txt
+	雛祭りを有効にするとアマツカプラをWに、
+	アルベルタ南カプラを削除にするようにしています。
+
+--------------------
+//0853 by 死神
+
+・バグ修正とNPCスキル関係の修正。
+・ダークブレスをMISC攻撃に変更。(ただ命中判定有り)
+・クリティカルスラッシュ、コンボアタック、ガイデッドアタック、スプラッシュアタック、ブラインドアタック、カースアタック、ペトリファイアタック、ポイズンアタック、サイレンスアタック、スリープアタック、スタンアタック、ランダムアタック、ダークネスアタック、ファイアアタック、グラウンドアタック、ホーリーアタック、ポイズンアタック、テレキネスアタック、ウォーターアタック、ウィンドアタック、マジカルアタック、ブラッドドレイン、メンタルブレイカーはモンスターの武器射程に変更。そしてこれらのスキルをモンスターの攻撃射程によって遠距離攻撃と近距離攻撃になるように変更。
+・ピアーシングアタックは武器射程+2に変更。
+・エナジードレイン、ハルシネーションは魔法射程に変更。
+・ダークブレッシングの射程を4に変更とかかる確率を50+スキルレベル*5%に変更。(一応これも魔法なので少し射程を広くしました。基本魔法射程である8に変えるべきなのかどうかは微妙...)
+・ガイデッドアタックはセイフティウォールとニューマを無効にする報告がありましたのでセイフティウォールとニューマが効かないように修正。
+・ディフェンダーはエフェクトだけ出るように修正。(スキルの仕様等をわかる方は情報をお願いします。)
+・トランスフォーメーション実装。(メタモーフォシスと同じ物だそうです。ただこれは全然関係ない別のモンスターになる物らしいです。ニフルヘイムに使うやつがいるみたいです。)
+・Athena雑談スレッド 其の弐の80をscript_ref.txtとして追加とちょっと修正。
+	(db/)
+	skill_db.txt 修正。
+	(doc/)
+	script_ref.txt 追加。
+	(map/)
+	battle.c
+		battle_calc_damage()、battle_calc_pet_weapon_attack() 修正。
+		battle_calc_mob_weapon_attack()、battle_calc_pc_weapon_attack() 修正。
+		battle_calc_magic_attack()、battle_calc_misc_attack() 修正。
+	skill.c
+		castend_damage_id()、castend_nodamage_id()、skill_use_pos() 修正。
+	clif.c
+		clif_spawnnpc()、clif_parse_Restart()、clif_parse_QuitGame() 修正。
+	mob.c
+		mobskill_castend_id()、mobskill_castend_pos() 修正。
+		mobskill_use_id()、mobskill_use_pos() 修正。
+
+--------------------
+//0852 by ぴざまん
+
+・亀島4F・蟻D2F・アマツD1Fをテレポ不可、シーズモードに変更。
+・nosaveの引数にSavePointが指定できてなかったので追加。
+・PVPのmapflagをmapflag.txtに統合。
+	(map/)
+	npc.c
+		npc_parse_mapflag() 修正。
+	(conf/)
+		mapflag.txt 修正。
+		npc/npc_pvp.txt 修正。
+
+--------------------
 //0851 by 胡蝶蘭
 
 ・ログイン時の暗号化keyが常に同じという大きな問題があったので修正

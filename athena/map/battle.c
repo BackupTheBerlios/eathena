@@ -1084,8 +1084,7 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,i
 
 	if(sc_count!=NULL && *sc_count>0){
 
-		if(sc_data[SC_SAFETYWALL].timer!=-1 && damage>0 && skill_num != NPC_DARKBREATH &&
-			flag&BF_WEAPON && flag&BF_SHORT ){
+		if(sc_data[SC_SAFETYWALL].timer!=-1 && damage>0 && flag&BF_WEAPON && flag&BF_SHORT && skill_num != NPC_GUIDEDATTACK){
 			// セーフティウォール
 			struct skill_unit *unit=(struct skill_unit*)sc_data[SC_SAFETYWALL].val2;
 			if( unit->alive && (--unit->group->val2)<=0 )
@@ -1398,7 +1397,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 		damage = 0;
 	atkmin = battle_get_atk(src);
 	atkmax = battle_get_atk2(src);
-	if(skill_num == 0 && mob_db[pd->class].range>3 )
+	if(mob_db[pd->class].range>3 )
 		flag=(flag&~BF_RANGEMASK)|BF_LONG;
 
 	if(atkmin > atkmax) atkmin = atkmax;
@@ -1453,10 +1452,17 @@ static struct Damage battle_calc_pet_weapon_attack(
 			case AC_DOUBLE:	// ダブルストレイフィング
 				damage = damage*(180+ 20*skill_lv)/100;
 				div_=2;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case AC_SHOWER:	// アローシャワー
 				damage = damage*(75 + 5*skill_lv)/100;
 				blewcount=2;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				break;
+			case AC_CHARGEARROW:	// チャージアロー
+				damage = damage*150/100;
+				blewcount=6;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case KN_PIERCE:	// ピアース
 				damage = damage*(100+ 10*skill_lv)/100;
@@ -1484,15 +1490,10 @@ static struct Damage battle_calc_pet_weapon_attack(
 				break;
 			case KN_BOWLINGBASH:	// ボウリングバッシュ
 				damage = damage*(100+ 50*skill_lv)/100;
-				//blewcount=4;skill.cで吹き飛ばしやってみた
 				break;
 			case AS_SONICBLOW:	// ソニックブロウ
 				damage = damage*(300+ 50*skill_lv)/100;
 				div_=8;
-				break;
-			case AC_CHARGEARROW:	// チャージアロー
-				damage = damage*150/100;
-				blewcount=6;
 				break;
 			case TF_SPRINKLESAND:	// 砂まき
 				damage = damage*125/100;
@@ -1526,9 +1527,8 @@ static struct Damage battle_calc_pet_weapon_attack(
 			case NPC_RANGEATTACK:
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
-			case NPC_DARKBREATH:
-				damage = 500 + (skill_lv-1)*1000 + rand()%1000;
-				if(damage > 9999) damage = 9999;
+			case NPC_PIERCINGATT:
+				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
 				break;
 			case RG_BACKSTAP:	// バックスタブ
 				damage = damage*(300+ 40*skill_lv)/100;
@@ -1563,6 +1563,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 				div_ = 1;
 				break;
 			case MO_INVESTIGATE:	// 発 勁
+				if(def1 < 1000000)
 				damage = damage*(100+ 75*skill_lv)/100 * (def1 + def2)/100;
 				hitrate = 1000000;
 				s_ele = 0;
@@ -1582,9 +1583,11 @@ static struct Damage battle_calc_pet_weapon_attack(
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
 				damage = damage*(100+ 50 * skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case DC_THROWARROW:	// 矢撃ち
 				damage = damage*(100+ 50 * skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			}
 		}
@@ -1592,7 +1595,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 		if( skill_num!=NPC_CRITICALSLASH ){
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
-			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST && skill_num != NPC_DARKBREATH) {	//DEF, VIT無視
+			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST && skill_num != KN_AUTOCOUNTER && def1 < 1000000 ) {	//DEF, VIT無視
 				int t_def;
 				if(battle_config.vit_penaly_type > 0) {
 					if(target_count >= battle_config.vit_penaly_count) {
@@ -1671,6 +1674,8 @@ static struct Damage battle_calc_pet_weapon_attack(
 	wd.type=type;
 	wd.div_=div_;
 	wd.amotion=battle_get_amotion(src);
+	if(skill_num == KN_AUTOCOUNTER)
+		wd.amotion >>= 1;
 	wd.dmotion=battle_get_dmotion(target);
 	wd.blewcount=blewcount;
 	wd.flag=flag;
@@ -1762,7 +1767,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		damage = 0;
 	atkmin = battle_get_atk(src);
 	atkmax = battle_get_atk2(src);
-	if(skill_num == 0 && mob_db[md->class].range>3 )
+	if(mob_db[md->class].range>3 )
 		flag=(flag&~BF_RANGEMASK)|BF_LONG;
 
 	if(atkmin > atkmax) atkmin = atkmax;
@@ -1836,10 +1841,17 @@ static struct Damage battle_calc_mob_weapon_attack(
 			case AC_DOUBLE:	// ダブルストレイフィング
 				damage = damage*(180+ 20*skill_lv)/100;
 				div_=2;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case AC_SHOWER:	// アローシャワー
 				damage = damage*(75 + 5*skill_lv)/100;
 				blewcount=2;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				break;
+			case AC_CHARGEARROW:	// チャージアロー
+				damage = damage*150/100;
+				blewcount=6;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case KN_PIERCE:	// ピアース
 				damage = damage*(100+ 10*skill_lv)/100;
@@ -1867,7 +1879,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case KN_BOWLINGBASH:	// ボウリングバッシュ
 				damage = damage*(100+ 50*skill_lv)/100;
-				//blewcount=4;skill.cで吹き飛ばしやってみた
 				break;
 			case KN_AUTOCOUNTER:
 				if(battle_config.monster_auto_counter_type&1)
@@ -1883,10 +1894,6 @@ static struct Damage battle_calc_mob_weapon_attack(
 			case AS_SONICBLOW:	// ?ニックブロウ
 				damage = damage*(300+ 50*skill_lv)/100;
 				div_=8;
-				break;
-			case AC_CHARGEARROW:	// チャージアロー
-				damage = damage*150/100;
-				blewcount=6;
 				break;
 			case TF_SPRINKLESAND:	// 砂まき
 				damage = damage*125/100;
@@ -1920,9 +1927,8 @@ static struct Damage battle_calc_mob_weapon_attack(
 			case NPC_RANGEATTACK:
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
-			case NPC_DARKBREATH:
-				damage = 500 + (skill_lv-1)*1000 + rand()%1000;
-				if(damage > 9999) damage = 9999;
+			case NPC_PIERCINGATT:
+				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
 				break;
 			case RG_BACKSTAP:	// バックスタブ
 				damage = damage*(300+ 40*skill_lv)/100;
@@ -1957,6 +1963,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 				div_ = 1;
 				break;
 			case MO_INVESTIGATE:	// 発 勁
+				if(def1 < 1000000)
 				damage = damage*(100+ 75*skill_lv)/100 * (def1 + def2)/100;
 				hitrate = 1000000;
 				s_ele = 0;
@@ -1976,9 +1983,11 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
 				damage = damage*(100+ 50 * skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			case DC_THROWARROW:	// 矢撃ち
 				damage = damage*(100+ 50 * skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			}
 		}
@@ -1986,7 +1995,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		if( skill_num!=NPC_CRITICALSLASH ){
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
-			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST && skill_num != KN_AUTOCOUNTER && skill_num != NPC_DARKBREATH) {	//DEF, VIT無視
+			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST && skill_num != KN_AUTOCOUNTER && def1 < 1000000) {	//DEF, VIT無視
 				int t_def;
 				if(battle_config.vit_penaly_type > 0) {
 					if(target_count >= battle_config.vit_penaly_count) {
@@ -2031,10 +2040,10 @@ static struct Damage battle_calc_mob_weapon_attack(
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = 0;
 
-	if( target->type==BL_PC ){
+	if( target->type==BL_PC){
 		int cardfix=100,i;
-		cardfix=cardfix*(100-tsd->subrace[s_race])/100;	// 種族によるダメージ耐性
 		cardfix=cardfix*(100-tsd->subele[s_ele])/100;	// 属 性によるダメージ耐性
+		cardfix=cardfix*(100-tsd->subrace[s_race])/100;	// 種族によるダメージ耐性
 		if(flag&BF_LONG)
 			cardfix=cardfix*(100-tsd->long_attack_def_rate)/100;
 		if(flag&BF_SHORT)
@@ -2310,29 +2319,35 @@ static struct Damage battle_calc_pc_weapon_attack(
 		type = 0x0a;
 
 		if(sd->def_ratio_atk_ele & (1<<t_ele) || sd->def_ratio_atk_race & (1<<t_race)) {
+			if(def1 < 1000000)
 			damage = (damage * (def1 + def2))/100;
 			idef_flag = 1;
 		}
 		if(sd->def_ratio_atk_ele_ & (1<<t_ele) || sd->def_ratio_atk_race_ & (1<<t_race)) {
+			if(def1 < 1000000)
 			damage2 = (damage2 * (def1 + def2))/100;
 			idef_flag_ = 1;
 		}
 		if(tmd && mob_db[tmd->class].mode & 0x20) {
 			if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
+				if(def1 < 1000000)
 				damage = (damage * (def1 + def2))/100;
 				idef_flag = 1;
 			}
 			if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
+				if(def1 < 1000000)
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
 		}
 		else {
 			if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
+				if(def1 < 1000000)
 				damage = (damage * (def1 + def2))/100;
 				idef_flag = 1;
 			}
 			if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
+				if(def1 < 1000000)
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
@@ -2362,29 +2377,35 @@ static struct Damage battle_calc_pc_weapon_attack(
 
 		if(skill_num != MO_INVESTIGATE) {
 			if(sd->def_ratio_atk_ele & (1<<t_ele) || sd->def_ratio_atk_race & (1<<t_race)) {
+				if(def1 < 1000000)
 				damage = (damage * (def1 + def2))/100;
 				idef_flag = 1;
 			}
 			if(sd->def_ratio_atk_ele_ & (1<<t_ele) || sd->def_ratio_atk_race_ & (1<<t_race)) {
+				if(def1 < 1000000)
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
 			if(tmd && mob_db[tmd->class].mexp & 0x20) {
 				if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
+				if(def1 < 1000000)
 					damage = (damage * (def1 + def2))/100;
 					idef_flag = 1;
 				}
 				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<10)) {
+					if(def1 < 1000000)
 					damage2 = (damage2 * (def1 + def2))/100;
 					idef_flag_ = 1;
 				}
 			}
 			else {
 				if(!idef_flag && sd->def_ratio_atk_race & (1<<11)) {
+					if(def1 < 1000000)
 					damage = (damage * (def1 + def2))/100;
 					idef_flag = 1;
 				}
 				if(!idef_flag_ && sd->def_ratio_atk_race_ & (1<<11)) {
+					if(def1 < 1000000)
 					damage2 = (damage2 * (def1 + def2))/100;
 					idef_flag_ = 1;
 				}
@@ -2453,6 +2474,22 @@ static struct Damage battle_calc_pc_weapon_attack(
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				sd->state.arrow_atk = 1;
 				break;
+			case AC_CHARGEARROW:	// チャージアロー
+				if(!sd->state.arrow_atk && sd->arrow_atk > 0) {
+					int arr = rand()%(sd->arrow_atk+1);
+					damage += arr;
+					damage2 += arr;
+				}
+				damage = damage*150/100;
+				damage2 = damage2*150/100;
+				blewcount=6;
+				if(sd->arrow_ele > 0) {
+					s_ele = sd->arrow_ele;
+					s_ele_ = sd->arrow_ele;
+				}
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				sd->state.arrow_atk = 1;
+				break;
 			case KN_PIERCE:	// ピアース
 				damage = damage*(100+ 10*skill_lv)/100;
 				damage2 = damage2*(100+ 10*skill_lv)/100;
@@ -2510,22 +2547,6 @@ static struct Damage battle_calc_pc_weapon_attack(
 				damage = damage*(200+ 20*skill_lv)/100;
 				div_=6;
 				break;
-			case AC_CHARGEARROW:	// ?ャ?ジアロ?
-				if(!sd->state.arrow_atk && sd->arrow_atk > 0) {
-					int arr = rand()%(sd->arrow_atk+1);
-					damage += arr;
-					damage2 += arr;
-				}
-				damage = damage*150/100;
-				damage2 = damage2*150/100;
-				blewcount=6;
-				if(sd->arrow_ele > 0) {
-					s_ele = sd->arrow_ele;
-					s_ele_ = sd->arrow_ele;
-				}
-				flag=(flag&~BF_RANGEMASK)|BF_LONG;
-				sd->state.arrow_atk = 1;
-				break;
 			case TF_SPRINKLESAND:	// 砂まき
 				damage = damage*125/100;
 				damage2 = damage2*125/100;
@@ -2569,9 +2590,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 			case NPC_RANGEATTACK:
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
-			case NPC_DARKBREATH:
-				damage = 500 + (skill_lv-1)*1000 + rand()%1000;
-				if(damage > 9999) damage = 9999;
+			case NPC_PIERCINGATT:
+				flag=(flag&~BF_RANGEMASK)|BF_SHORT;
 				break;
 			case RG_BACKSTAP:	// バックスタブ
 				damage = damage*(300+ 40*skill_lv)/100;
@@ -2620,8 +2640,10 @@ static struct Damage battle_calc_pc_weapon_attack(
 				}
 				break;
 			case MO_INVESTIGATE:	// 発 勁
+				if(def1 < 1000000) {
 				damage = damage*(100+ 75*skill_lv)/100 * (def1 + def2)/100;
 				damage2 = damage2*(100+ 75*skill_lv)/100 * (def1 + def2)/100;
+				}
 				hitrate = 1000000;
 				s_ele = 0;
 				s_ele_ = 0;
@@ -2686,7 +2708,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		if( skill_num!=NPC_CRITICALSLASH ){
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
-			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST && skill_num != KN_AUTOCOUNTER && skill_num != NPC_DARKBREATH) {	//DEF, VIT無視
+			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST && skill_num != KN_AUTOCOUNTER && def1 < 1000000) {	//DEF, VIT無視
 				int t_def;
 				if(battle_config.vit_penaly_type > 0) {
 					if(target_count >= battle_config.vit_penaly_count) {
@@ -3241,6 +3263,7 @@ struct Damage battle_calc_magic_attack(
 	md.damage2=0;
 	md.type=0;
 	md.blewcount=blewcount;
+	md.flag=aflag;
 
 	return md;
 }
@@ -3317,11 +3340,26 @@ struct Damage  battle_calc_misc_attack(
 		damage=3;
 		damagefix=0;
 		break;
+
+	case NPC_DARKBREATH:
+		{
+			struct status_change *sc_data = battle_get_sc_data(target);
+			int hitrate=battle_get_hit(bl) - battle_get_flee(target) + 80;
+			hitrate = ( (hitrate>95)?95: ((hitrate<5)?5:hitrate) );
+			if(sc_data && (sc_data[SC_SLEEP].timer!=-1 || sc_data[SC_STAN].timer!=-1 ||
+				sc_data[SC_FREEZE].timer!=-1 || (sc_data[SC_STONE].timer!=-1 && sc_data[SC_STONE].val2==0) ) )
+				hitrate = 1000000;
+			if(rand()%100 < hitrate) {
+				damage = 500 + (skill_lv-1)*1000 + rand()%1000;
+				if(damage > 9999) damage = 9999;
+			}
+		}
+		break;
 	}
 
 	ele = skill_get_pl(skill_num);
 	if(damagefix){
-		if(damage<1)
+		if(damage<1 && skill_num != NPC_DARKBREATH)
 			damage=1;
 
 		if( target->type==BL_PC ){
@@ -3351,6 +3389,7 @@ struct Damage  battle_calc_misc_attack(
 	md.damage2=0;
 	md.type=0;
 	md.blewcount=blewcount;
+	md.flag=aflag;
 	return md;
 
 }
@@ -3421,7 +3460,7 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		if(flag&0x8000) {
 			if(src->type == BL_PC)
 				sd->dir = sd->head_dir = map_calc_dir(src, target->x,target->y );
-			else if(src->type == BL_MOB)
+			else if(src->type == BL_MOB && battle_config.monster_attack_direction_change)
 				((struct mob_data *)src)->dir = map_calc_dir(src, target->x,target->y );
 			wd=battle_calc_weapon_attack(src,target,KN_AUTOCOUNTER,flag&0xff,0);
 		}
@@ -3884,6 +3923,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.gvg_misc_damage_rate = 100;
 	battle_config.gvg_eliminate_time = 7000;
 	battle_config.mob_changetarget_byskill = 0;
+	battle_config.monster_attack_direction_change = 1;
 	battle_config.item_rate_common = 100;
 	battle_config.item_rate_equip = 100;
 	battle_config.item_rate_card = 100;
@@ -4018,6 +4058,7 @@ int battle_config_read(const char *cfgName)
 			{ "gvg_misc_attack_damage_rate" ,&battle_config.gvg_misc_damage_rate },
 			{ "gvg_eliminate_time" ,&battle_config.gvg_eliminate_time },
 			{ "mob_changetarget_byskill" ,&battle_config.mob_changetarget_byskill },
+			{ "monster_attack_direction_change" ,&battle_config.monster_attack_direction_change },			
 		{ "item_rate_common",	&battle_config.item_rate_common	},	// Added by RoVeRT
 		{ "item_rate_equip",	&battle_config.item_rate_equip	},
 		{ "item_rate_card",	&battle_config.item_rate_card	},	// End Addition

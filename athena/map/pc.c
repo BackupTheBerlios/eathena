@@ -2163,11 +2163,14 @@ int pc_insert_card(struct map_session_data *sd,int idx_card,int idx_equip)
  */
 int pc_modifybuyvalue(struct map_session_data *sd,int orig_value)
 {
-	int skill,val = orig_value;
+	int skill,val = orig_value,rate1 = 0,rate2 = 0;
 	if((skill=pc_checkskill(sd,MC_DISCOUNT))>0)	// ディスカウント
-		val -= (int)((double)orig_value*(5+skill*2-(skill==10))/100);
+		rate1 = 5+skill*2-((skill==10)? 1:0);
 	if((skill=pc_checkskill(sd,RG_COMPULSION))>0)	// コムパルションディスカウント
-		val -= (int)((double)orig_value*(5+skill*4)/100);
+		rate2 = 5+skill*4;
+	if(rate1 < rate2) rate1 = rate2;
+	if(rate1)
+		val = (int)((double)orig_value*(double)(100-rate1)/100.);
 	if(val < 0) val = 0;
 	if(orig_value > 0 && val < 1) val = 1;
 
@@ -2181,9 +2184,11 @@ int pc_modifybuyvalue(struct map_session_data *sd,int orig_value)
  */
 int pc_modifysellvalue(struct map_session_data *sd,int orig_value)
 {
-	int skill,val = orig_value;
+	int skill,val = orig_value,rate = 0;
 	if((skill=pc_checkskill(sd,MC_OVERCHARGE))>0)	// オーバーチャージ
-		val += (int)((double)orig_value*(5+skill*2-(skill==10))/100);
+		rate = 5+skill*2-((skill==10)? 1:0);
+	if(rate)
+		val = (int)((double)orig_value*(double)(100+rate)/100.);
 	if(val < 0) val = 0;
 	if(orig_value > 0 && val < 1) val = 1;
 
@@ -3720,7 +3725,7 @@ int pc_allskillup(struct map_session_data *sd)
 	}
 	else {
 		for(i=0;(id=skill_tree[c][i].id)>0;i++){
-			if(sd->status.skill[id].id==0 && !(skill_get_inf2(id)&0x01))
+			if(sd->status.skill[id].id==0 && (!(skill_get_inf2(id)&0x01) || battle_config.quest_skill_learn) )
 				sd->status.skill[id].lv=skill_get_max(id);
 		}
 	}

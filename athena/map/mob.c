@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.53 2004/02/29 22:39:37 sara-chan Exp $
+// $Id: mob.c,v 1.54 2004/03/03 02:38:33 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -429,6 +429,7 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 		md->state.state=MS_IDLE;
 		return 0;
 	}
+	if(battle_config.monster_attack_direction_change)
 	md->dir=map_calc_dir(&md->bl, sd->bl.x,sd->bl.y );	// 向き設定
 
 	md->to_x = md->bl.x;
@@ -451,11 +452,6 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 		skill_status_change_end(&sd->bl,SC_AUTOGUARD,-1);
 		return 0;
 	}*/
-	if(sd->sc_data[SC_REFLECTSHIELD].timer != -1){
-		pc_attack(sd,md->bl.id,0);
-		skill_status_change_end(&sd->bl,SC_AUTOCOUNTER,-1);
-		return 0;
-	}
 
 	md->attackabletime = tick + battle_get_adelay(&md->bl);
 
@@ -2009,11 +2005,20 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
  *
  *------------------------------------------
  */
-int mob_class_change(struct mob_data *md,int class)
+int mob_class_change(struct mob_data *md,int *value)
 {
 	unsigned int tick = gettick();
-	int i,c,hp_rate,max_hp;
+	int i,c,hp_rate,max_hp,class,count = 0;
+
+	if(value[0]<=1000 || value[0]>2000)
+		return 0;
 	if(md->bl.prev == NULL) return 0;
+
+	while(count < 5 && value[count] > 1000 && value[count] <= 2000) count++;
+	if(count < 1) return 0;
+
+	class = value[rand()%count];
+	if(class<=1000 || class>2000) return 0;
 
 	max_hp = battle_get_max_hp(&md->bl);
 	hp_rate = md->hp*100/max_hp;
@@ -2201,14 +2206,20 @@ int mob_countslave(struct mob_data *md)
  * 手下MOB召喚
  *------------------------------------------
  */
-int mob_summonslave(struct mob_data *md2,int class,int amount,int flag)
+int mob_summonslave(struct mob_data *md2,int *value,int amount,int flag)
 {
 	struct mob_data *md;
-	int bx=md2->bl.x,by=md2->bl.y,m=md2->bl.m;
+	int bx=md2->bl.x,by=md2->bl.y,m=md2->bl.m,count = 0,class,k,a = amount;
 
-	if(class<=1000 || class>2000)	// 値が異常なら召喚を止める
+	if(value[0]<=1000 || value[0]>2000)	// 値が異常なら召喚を止める
 		return 0;
+	while(count < 5 && value[count] > 1000 && value[count] <= 2000) count++;
+	if(count < 1) return 0;
 
+	for(k=0;k<count;k++) {
+		amount = a;
+		class = value[k];
+		if(class<=1000 || class>2000) continue;
 	for(;amount>0;amount--){
 		int x=0,y=0,c=0,i=0;
 		md=malloc(sizeof(struct mob_data));
@@ -2226,11 +2237,11 @@ int mob_summonslave(struct mob_data *md2,int class,int amount,int flag)
 		else
 			md->lootitem=NULL;
 
-		while((x<=0 || y<=0 || (c=map_getcell(m,x,y))==1 || c==5 ) && (i++)<50){
+			while((x<=0 || y<=0 || (c=map_getcell(m,x,y))==1 || c==5 ) && (i++)<100){
 			x=rand()%9-4+bx;
 			y=rand()%9-4+by;
 		}
-		if(i>=50){
+			if(i>=100){
 			x=bx;
 			y=by;
 		}
@@ -2254,6 +2265,7 @@ int mob_summonslave(struct mob_data *md2,int class,int amount,int flag)
 
 		if(flag)
 			md->master_id=md2->bl.id;
+	}
 	}
 	return 0;
 }
@@ -2403,7 +2415,7 @@ int mobskill_castend_id( int tid, unsigned int tick, int id,int data )
 	}
 	range = skill_get_range(md->skillid,md->skilllv);
 	if(range < 0)
-		range = (1 - range) + battle_get_range(&md->bl);
+		range = battle_get_range(&md->bl) - (range + 1);
 	if(range + battle_config.mob_skill_add_range < distance(md->bl.x,md->bl.y,bl->x,bl->y))
 		return 0;
 	md->skilldelay[md->skillidx]=tick;
@@ -2517,7 +2529,7 @@ int mobskill_castend_pos( int tid, unsigned int tick, int id,int data )
 
 	range = skill_get_range(md->skillid,md->skilllv);
 	if(range < 0)
-		range = (1 - range) + battle_get_range(&md->bl);
+		range = battle_get_range(&md->bl) - (range + 1);
 	if(range + battle_config.mob_skill_add_range < distance(md->bl.x,md->bl.y,md->skillx,md->skilly))
 		return 0;
 	md->skilldelay[md->skillidx]=tick;
@@ -2565,7 +2577,7 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 	// 射程と障害物チェック
 	range = skill_get_range(skill_id,skill_lv);
 	if(range < 0)
-		range = (1 - range) + battle_get_range(&md->bl);
+		range = battle_get_range(&md->bl) - (range + 1);
 	if(!battle_check_range(&md->bl,target,range))
 		return 0;
 
@@ -2648,7 +2660,7 @@ int mobskill_use_pos( struct mob_data *md,
 	bl.y = skill_y;
 	range = skill_get_range(skill_id,skill_lv);
 	if(range < 0)
-		range = (1 - range) + battle_get_range(&md->bl);
+		range = battle_get_range(&md->bl) - (range + 1);
 	if(!battle_check_range(&md->bl,&bl,range))
 		return 0;
 
@@ -3133,7 +3145,7 @@ static int mob_readskilldb(void)
 			continue;
 		}
 		while(fgets(line,1020,fp)){
-			char *sp[16],*p;
+			char *sp[20],*p;
 			int mob_id;
 			struct mob_skill *ms;
 			int j=0;
@@ -3142,7 +3154,7 @@ static int mob_readskilldb(void)
 				continue;
 	
 			memset(sp,0,sizeof(sp));
-			for(i=0,p=line;i<13 && p;i++){
+			for(i=0,p=line;i<17 && p;i++){
 				sp[i]=p;
 				if((p=strchr(p,','))!=NULL)
 					*p++=0;
@@ -3189,7 +3201,11 @@ static int mob_readskilldb(void)
 					ms->cond1=cond1[j].id;
 			}
 			ms->cond2=atoi(sp[11]);
-			ms->val1=atoi(sp[12]);
+			ms->val[0]=atoi(sp[12]);
+			ms->val[1]=atoi(sp[13]);
+			ms->val[2]=atoi(sp[14]);
+			ms->val[3]=atoi(sp[15]);
+			ms->val[4]=atoi(sp[16]);
 			mob_db[mob_id].maxskill=i+1;
 		}
 		fclose(fp);

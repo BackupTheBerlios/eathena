@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.15 2004/02/20 21:52:41 rovert Exp $
+// $Id: npc.c,v 1.16 2004/03/03 02:38:33 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -275,7 +275,7 @@ int npc_event_do_clock(int tid,unsigned int tick,int id,int data)
 		c+=npc_event_doall(buf);
 	}
 	if(t->tm_mday!= ev_tm_b.tm_mday){
-		sprintf(buf,"OnDate%02d%02d",t->tm_mon+1,t->tm_mday);
+		sprintf(buf,"OnHour%02d%02d",t->tm_mon+1,t->tm_mday);
 		c+=npc_event_doall(buf);
 	}
 	memcpy(&ev_tm_b,t,sizeof(ev_tm_b));
@@ -1211,11 +1211,17 @@ static int npc_parse_mapflag(char *w1,char *w2,char *w3,char *w4)
 		return 1;
 
 //マップフラグ
-	if( strcmpi(w3,"nosave")==0 && sscanf(w4,"%[^,],%d,%d",savemap,&savex,&savey)==3){
-		map[m].flag.nosave=1;
+	if( strcmpi(w3,"nosave")==0){
+		if(strcmp(w4,"SavePoint")==0){
+			memcpy(map[m].save.map,"SavePoint",16);
+			map[m].save.x=-1;
+			map[m].save.y=-1;
+		}else if(sscanf(w4,"%[^,],%d,%d",savemap,&savex,&savey)==3){
 		memcpy(map[m].save.map,savemap,16);
 		map[m].save.x=savex;
 		map[m].save.y=savey;
+	}
+		map[m].flag.nosave=1;
 	}
 	else if(strcmpi(w3,"nomemo")==0) {
 		map[m].flag.nomemo=1;
@@ -1280,10 +1286,10 @@ int do_init_npc(void)
 		while(fgets(line,1020,fp)){
 			char w1[1024],w2[1024],w3[1024],w4[1024],mapname[1024];
 			int i,j,w4pos,count;
-			lines++;
 			if(line[0] == '/' && line[1] == '/')
 				continue;
 			// 不要なスペースやタブの連続は詰める
+			lines++;
 			for(i=j=0;line[i];i++){
 				if(line[i]==' '){
 					if(!((line[i+1] && (isspace(line[i+1]) || line[i+1]==',')) ||

@@ -166,6 +166,7 @@ static int pet_attack(struct pet_data *pd,unsigned int tick,int data)
 		pd->state.state=MS_IDLE;
 		return 0;
 	}
+	if(battle_config.monster_attack_direction_change)
 	pd->dir=map_calc_dir(&pd->bl, md->bl.x,md->bl.y );
 
 	pd->to_x = pd->bl.x;
