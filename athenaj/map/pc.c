@@ -4597,10 +4597,6 @@ int pc_equipitem(struct map_session_data *sd,int n,int pos)
 		if(sd->sc_data[SC_ENDURE].timer != -1 && sd->sc_data[SC_ENDURE].val2)
 			skill_status_change_end(&sd->bl,SC_ENDURE,-1);
 	}
-	if(!sd->special_state.infinite_autospell) {
-		if(sd->sc_data[SC_AUTOSPELL].val1)
-			skill_status_change_end(&sd->bl,SC_ENDURE,-1);
-	}
 
 	return 0;
 }
