@@ -186,6 +186,7 @@ extern struct Battle_Config {
 	int save_log;
 	int error_log;
 	int etc_log;
+	int save_clothcolor;
 } battle_config;
 
 #define BATTLE_CONF_FILENAME	"conf/battle_athena.conf"
