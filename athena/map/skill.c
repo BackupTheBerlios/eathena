@@ -2389,7 +2389,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case BD_INTOABYSS:			/* 深淵の中に */
 	case BD_SIEGFRIED:			/* 不死身のジークフリード */
 		if(src->type==BL_PC)		
-			if(skill_ensemble((struct map_session_data *)src,skillid))==0
+			if(skill_ensemble((struct map_session_data *)src,skillid)==0)
 				clif_skill_fail((struct map_session_data *)src,skillid,0,0);
 		break;
 
@@ -5506,8 +5506,6 @@ static int skill_ensemble_count(struct block_list *bl,va_list ap)
 	if(pc_checkskill(sd,skill_num) > 0 && pc_checkskill(t_sd,skill_num) > 0){
 		struct block_list *src = (struct block_list *)sd;
 		int skill_av = (pc_checkskill(sd,skill_num)+pc_checkskill(t_sd,skill_num))/2;
-		int tick = gettick();
-
 		clif_skill_nodamage(src,src,skill_num,skill_av,1);
 		clif_skill_nodamage(bl,bl,skill_num,skill_av,1);
 		skill_unitsetting(src,skill_num,skill_av,src->x,src->y,0);	
