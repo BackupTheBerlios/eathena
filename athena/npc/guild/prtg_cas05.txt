@@ -369,14 +369,14 @@ L3:
 	mes "[Kafra Service]";
 	mes "Please choose a city.";
 	next;
-	menu "プロンテラ -> 200 z",L3_1,"Cancle",L3_2;
+	menu "Prontera -> 200 z",L3_1,"Cancel",L3_2;
 		L3_1:
 			if (Zeny < 200) goto Lerror3;
 			set Zeny,Zeny-200;set KF_PIT,KF_PIT+20;warp "prontera.gat",278,211;end;
 		L3_2:
 				mes "[Kafra Service]";
-				mes "ありがとうございました。";
-				mes "またご利用くださいませ。";
+				mes "Kafra Service always trying to offer best service for you.";
+				mes "Thank you for using our service.";
 				goto L_EXIT;
 		Lerror3:
 				mes "[Kafra Service]";
@@ -388,10 +388,10 @@ L4:
 	mes "Cart Rental is  800 Zeny and the [Pushcart] skill is neccessary.";
 	mes "Would you like to rental?";
 	next;
-	menu "Rent Cart",L4_1,"Cancle",-;
+	menu "Rent Cart",L4_1,"Cancel",-;
 		mes "[Kafra Service]";
-		mes "ありがとうございました。";
-		mes "またご利用くださいませ。";
+		mes "Kafra Service always trying to offer best service for you.";
+		mes "Thank you for using our service.";
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 800) goto Lerror4_2;
