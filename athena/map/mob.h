@@ -15,6 +15,7 @@ struct mob_skill {
 };
 
 struct mob_db {
+	int view_class;
 	char name[24],jname[24];
 	int lv;
 	int max_hp,max_sp;
@@ -82,6 +83,7 @@ int mob_damage(struct block_list *,struct mob_data*,int);
 int mob_changestate(struct mob_data *md,int state,int type);
 int mob_heal(struct mob_data*,int);
 int mob_get_speed(struct mob_data *md);
+int mob_get_viewclass(struct mob_data *md);
 int do_init_mob(void);
 
 int mob_delete(struct mob_data *md);
