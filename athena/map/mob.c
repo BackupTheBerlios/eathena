@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.3 2004/01/09 15:02:20 rovert Exp $
+// $Id: mob.c,v 1.4 2004/01/09 18:21:12 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -2459,8 +2459,17 @@ static int mob_readdb(void)
 			mob_db[class].dmotion=atoi(str[28]);
 	
 			for(i=0;i<8;i++){
+				int rate = 100,type;
 				mob_db[class].dropitem[i].nameid=atoi(str[29+i*2]);
-				mob_db[class].dropitem[i].p=atoi(str[30+i*2])*battle_config.item_rate/100;
+				type = itemdb_type(mob_db[class].dropitem[i].nameid);
+				if (type == 4 || type == 5 )
+					rate = battle_config.item_rate_equip;
+				if (type == 6)
+					rate = battle_config.item_rate_card;
+				else
+					rate = battle_config.item_rate_common;
+	
+				mob_db[class].dropitem[i].p=atoi(str[30+i*2])* rate /100;
 			}
 			// Item1,Item2
 			mob_db[class].mexp=atoi(str[47])*battle_config.mvp_exp_rate/100;

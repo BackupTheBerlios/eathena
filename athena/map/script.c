@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.3 2004/01/09 15:02:20 rovert Exp $
+// $Id: script.c,v 1.4 2004/01/09 18:21:12 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -153,7 +153,6 @@ int buildin_pvpoff(struct script_state *st);
 int buildin_gvgon(struct script_state *st);
 int buildin_gvgoff(struct script_state *st);
 int buildin_mapwarp(struct script_state *st);
-int buildin_npctimer(struct script_state *st);
 int buildin_inittimer(struct script_state *st);
 int buildin_stoptimer(struct script_state *st);
 int buildin_cmdothernpc(struct script_state *st);
@@ -254,7 +253,6 @@ struct {
 	{buildin_gvgon,"gvgon","s"},
 	{buildin_gvgoff,"gvgoff","s"},
 	{buildin_mapwarp,"mapwarp","ssii"},		// Added by RoVeRT
-	{buildin_npctimer,"npctimer","i"},
 	{buildin_inittimer,"inittimer",""},
 	{buildin_stoptimer,"stoptimer",""},
 	{buildin_cmdothernpc,"cmdothernpc","ss"},
@@ -2759,29 +2757,31 @@ int buildin_mapwarp(struct script_state *st)	// Added by RoVeRT
 }
 
 
-int buildin_npctimer(struct script_state *st)	// Added by RoVeRT
+/*int buildin_npctimer(struct script_state *st)	// Added by RoVeRT
 {
 	int option;
 	option=conv_num(st,& (st->stack->stack_data[st->start+2]));
 	npc_do_ontimer(st->oid, map_id2sd(st->rid), option);
 	return 0;
-}
+}*/
 
 
 int buildin_inittimer(struct script_state *st)	// Added by RoVeRT
 {
-	struct npc_data *nd=(struct npc_data*)map_id2bl(st->oid);
+//	struct npc_data *nd=(struct npc_data*)map_id2bl(st->oid);
 
-	nd->lastaction=nd->timer=gettick();
+//	nd->lastaction=nd->timer=gettick();
+	npc_do_ontimer(st->oid, map_id2sd(st->rid), 1);
 
 	return 0;
 }
 
 int buildin_stoptimer(struct script_state *st)	// Added by RoVeRT
 {
-	struct npc_data *nd=(struct npc_data*)map_id2bl(st->oid);
+//	struct npc_data *nd=(struct npc_data*)map_id2bl(st->oid);
 
-	nd->lastaction=nd->timer=-1;
+//	nd->lastaction=nd->timer=-1;
+	npc_do_ontimer(st->oid, map_id2sd(st->rid), 0);
 
 	return 0;
 }

@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.2 2004/01/09 03:00:18 rovert Exp $
+// $Id: npc.c,v 1.3 2004/01/09 18:21:12 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -113,7 +113,7 @@ int npc_timer_event(const char *eventname)	// Added by RoVeRT
 
 	return 0;
 }
-
+/*
 int npc_timer_sub_sub(void *key,void *data,va_list ap)	// Added by RoVeRT
 {
 	char *p=(char *)key;
@@ -156,7 +156,7 @@ int npc_timer(int tid,unsigned int tick,int id,int data)	// Added by RoVeRT
 
 	free((void*)data);
 	return 0;
-}
+}*/
 /*==========================================
  * イベント用ラベルのエクスポート
  * npc_parse_script->strdb_foreachから呼ばれる
@@ -220,12 +220,58 @@ int npc_event_do_oninit(void)
  * OnTimer NPC event - by RoVeRT
  *------------------------------------------
  */
+int npc_addeventtimer(struct npc_data *nd,int tick,const char *name)
+{
+	int i;
+	for(i=0;i<MAX_EVENTTIMER;i++)
+		if( nd->eventtimer[i]==-1 )
+			break;
+	if(i<MAX_EVENTTIMER){
+		char *evname=malloc(24);
+		if(evname==NULL){
+			printf("npc_addeventtimer: out of memory !\n");exit(1);
+		}
+		memcpy(evname,name,24);
+		nd->eventtimer[i]=add_timer(gettick()+tick,
+			npc_event_timer,nd->bl.id,(int)evname);
+	}else
+		printf("npc_addtimer: event timer is full !\n");
+
+	return 0;
+}
+
+int npc_deleventtimer(struct npc_data *nd,const char *name)
+{
+	int i;
+	for(i=0;i<MAX_EVENTTIMER;i++)
+		if( nd->eventtimer[i]!=-1 && strcmp(
+			(char *)(get_timer(nd->eventtimer[i])->data), name)==0 ){
+				delete_timer(nd->eventtimer[i],npc_event_timer);
+				nd->eventtimer[i]=-1;
+				break;
+		}
+
+	return 0;
+}
+
+int npc_cleareventtimer(struct npc_data *nd)
+{
+	int i;
+	for(i=0;i<MAX_EVENTTIMER;i++)
+		if( nd->eventtimer[i]!=-1 ){
+			delete_timer(nd->eventtimer[i],npc_event_timer);
+			nd->eventtimer[i]=-1;
+		}
+
+	return 0;
+}
+
 int npc_do_ontimer_sub(void *key,void *data,va_list ap)
 {
 	char *p=(char *)key;
 	struct event_data *ev=(struct event_data *)data;
 	int *c=va_arg(ap,int *);
-	struct map_session_data *sd=va_arg(ap,struct map_session_data *);
+//	struct map_session_data *sd=va_arg(ap,struct map_session_data *);
 	int option=va_arg(ap,int);
 	int tick=0;
 	char temp[10];
@@ -239,9 +285,9 @@ int npc_do_ontimer_sub(void *key,void *data,va_list ap)
 		strcat( event, p);
 
 		if (option!=0) {
-			pc_addeventtimer(sd,tick,event);
+			npc_addeventtimer(ev->nd,tick,event);
 		} else {
-			pc_deleventtimer(sd,event);
+			npc_deleventtimer(ev->nd,event);
 		}
 	}
 	return 0;
@@ -942,8 +988,6 @@ static int npc_parse_script(char *w1,char *w2,char *w3,char *w4,char *first_line
 	nd->speed=200;
 	nd->u.scr.script=script;
 	nd->chat_id=0;
-	nd->timer=-1;		// RoVeRT
-	nd->lastaction=-1;	// RoVeRT
 
 	//printf("script npc %s %d %d read done\n",mapname,nd->bl.id,nd->class);
 	npc_script++;
@@ -1186,8 +1230,8 @@ int do_init_npc(void)
 		   npc_id-START_NPC_NUM,npc_warp,npc_shop,npc_script,npc_mob);
 
 	add_timer_func_list(npc_event_timer,"npc_event_timer");
-	add_timer_func_list(npc_timer,"npc_timer");
-	add_timer_interval(gettick()+100,npc_timer,0,0,100);
+//	add_timer_func_list(npc_timer,"npc_timer");
+//	add_timer_interval(gettick()+100,npc_timer,0,0,100);
 
 	//exit(1);
 

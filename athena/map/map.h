@@ -281,7 +281,8 @@ struct npc_data {
 	} u;
 	// ‚±‚±‚Éƒƒ“ƒo‚ğ’Ç‰Á‚µ‚Ä‚Í‚È‚ç‚È‚¢(shop_item‚ª‰Â•Ï’·‚Ìˆ×)
 
-	int timer,lastaction;		// Added by RoVeRT
+	char eventqueue[MAX_EVENTQUEUE][50];
+	int eventtimer[MAX_EVENTTIMER];
 	short arenaflag;
 };
 struct mob_data {
