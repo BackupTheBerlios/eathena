@@ -466,7 +466,7 @@ LStartg:
 		close;
 }
 //------------------------------ƒJƒvƒ‰--------------------------------
-prtg_cas02.gat,71,36,4	script	Kafra Service	117,{
+prtg_cas02.gat,71,36,4	script	Kafra Service#prt2	117,{
 	cutin "kafra_01",2;
 	getcastledata "prtg_cas02.gat",1,@GID;
 	if (getcharid(2) == @GID) goto LStartg;
