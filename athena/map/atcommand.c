@@ -841,13 +841,13 @@ z [0`4]•ž‚ÌF
 			(i2=3,strcmpi(command,"@int")==0) ||
 			(i2=4,strcmpi(command,"@dex")==0) ||
 			(i2=5,strcmpi(command,"@luk")==0) ) && gm_level >= atcommand_config.param){
-
-			sscanf(message,"%s%d",command,&i1);
-			
-			unsigned char *p[]={
+			short *p[]={
 				&sd->status.str,&sd->status.agi,&sd->status.vit,
 				&sd->status.int_,&sd->status.dex,&sd->status.luk
 			};
+
+			sscanf(message,"%s%d",command,&i1);
+			
 			i=(int)(*p[i2])+i1;
 			if(i< 1)i1=1-*p[i2];
 			if(i>battle_config.max_parameter) i1=battle_config.max_parameter-*p[i2];

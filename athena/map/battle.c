@@ -1224,7 +1224,6 @@ static struct Damage battle_calc_pet_weapon_attack(
 			// 対 象の防御力によるダメージの減少
 			// ディバインプロテクション（ここでいいのかな？）
 			if ( skill_num != MO_INVESTIGATE && skill_num != MO_EXTREMITYFIST) {	//DEF, VIT無視
-
 				vitbonusmax = (t_vit/20)*(t_vit/20)-1;
 				damage = damage * (100 - def1) /100
 					- def2 - ((vitbonusmax < 1)?0: rand()%(vitbonusmax+1) );
@@ -1242,7 +1241,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 		(t_sc_data != NULL && (t_sc_data[SC_SLEEP].timer!=-1 ||	// 睡眠は必中
 		t_sc_data[SC_STAN].timer!=-1 ||		// スタンは必中
 		t_sc_data[SC_FREEZE].timer!=-1 ) ) )	// 凍結は必中
-		hitrate = 100;
+		hitrate = 1000000;
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = 0;
 
@@ -1259,7 +1258,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 
 	// 完全回避の判定
 	if(battle_config.enemy_perfect_flee) {
-		if( skill_num==0 && tmd!=NULL && rand()%1000<battle_get_luk(target)+1 ){
+		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000<battle_get_luk(target)+1 ){
 			damage=0;
 			type=0x0b;
 		}
@@ -1557,7 +1556,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		(t_sc_data != NULL && (t_sc_data[SC_SLEEP].timer!=-1 ||	// 睡眠は必中
 		t_sc_data[SC_STAN].timer!=-1 ||		// スタンは必中
 		t_sc_data[SC_FREEZE].timer!=-1 ) ) )	// 凍結は必中
-		hitrate = 100;
+		hitrate = 1000000;
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = 0;
 
@@ -1595,13 +1594,13 @@ static struct Damage battle_calc_mob_weapon_attack(
 	}
 
 	// 完全回避の判定
-	if( skill_num==0 && tsd!=NULL && rand()%100 < tsd->flee2){
+	if( skill_num==0 && tsd!=NULL && hitrate < 1000000 && rand()%100 < tsd->flee2){
 		damage=0;
 		type=0x0b;
 	}
 
 	if(battle_config.enemy_perfect_flee) {
-		if( skill_num==0 && tmd!=NULL && rand()%1000<battle_get_luk(target)+1 ){
+		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000<battle_get_luk(target)+1 ){
 			damage=0;
 			type=0x0b;
 		}
@@ -1835,7 +1834,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		}
 	}
 	else {
-		int vitbonusmax, t_vit=0;
+		int vitbonusmax;
 
 		if(atkmax > atkmin)
 			damage += atkmin + rand() % (atkmax-atkmin + 1);
@@ -2145,7 +2144,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		(t_sc_data != NULL && (t_sc_data[SC_SLEEP].timer!=-1 ||	// 睡眠は必中
 		t_sc_data[SC_STAN].timer!=-1 ||		// スタンは必中
 		t_sc_data[SC_FREEZE].timer!=-1 ) ) )	// 凍結は必中
-		hitrate = 100;
+		hitrate = 1000000;
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = damage2 = 0;
 
@@ -2277,13 +2276,13 @@ static struct Damage battle_calc_pc_weapon_attack(
 	}
 
 	// 完全回避の判定
-	if( skill_num==0 && tsd!=NULL && rand()%100 < tsd->flee2){
+	if( skill_num==0 && tsd!=NULL && hitrate < 1000000 && rand()%100 < tsd->flee2){
 		damage=damage2=0;
 		type=0x0b;
 	}
 
 	if(battle_config.enemy_perfect_flee) {
-		if( skill_num==0 && tmd!=NULL && rand()%1000<battle_get_luk(target)+1 ) {
+		if( skill_num==0 && tmd!=NULL && hitrate < 1000000 && rand()%1000<battle_get_luk(target)+1 ) {
 			damage=damage2=0;
 			type=0x0b;
 		}
