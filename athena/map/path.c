@@ -1,4 +1,4 @@
-// $Id: path.c,v 1.8 2004/02/24 05:07:33 rovert Exp $
+// $Id: path.c,v 1.9 2004/02/26 00:50:33 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

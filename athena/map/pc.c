@@ -526,6 +526,7 @@ int pc_authok(int id,struct mmo_charstatus *st)
 	sd->skillitem=-1;
 	sd->skillitemlv=-1;
 	sd->invincible_timer=-1;
+	sd->sg_count=0;
 
 	sd->deal_locked =0;
 	sd->trade_partner=0;
@@ -1364,6 +1365,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->flee += sd->flee * (sd->sc_data[SC_WHISTLE].val1
 					+sd->sc_data[SC_WHISTLE].val2+(sd->sc_data[SC_WHISTLE].val3>>16))/100;
 			sd->flee2+= (sd->sc_data[SC_WHISTLE].val1+sd->sc_data[SC_WHISTLE].val2+(sd->sc_data[SC_WHISTLE].val3&0xffff)) * 10;
+			sd->status.sp--;		// Added by AppleGirl
+			clif_updatestatus(sd,SP_SP);
 		}
 		if(sd->sc_data[SC_HUMMING].timer!=-1)  // ハ?ング
 			sd->hit += (sd->sc_data[SC_HUMMING].val1*2+sd->sc_data[SC_HUMMING].val2
@@ -2084,10 +2087,10 @@ int pc_skill(struct map_session_data *sd,int id,int level,int flag)
 	}
 	else if(sd->status.skill[id].lv < level){	// 覚えられるがlvが小さいなら
 		if(sd->status.skill[id].id==id)
-			sd->status.skill[id].flag=sd->status.skill[id].lv+2;	// lvを記憶
+					sd->status.skill[id].flag=sd->status.skill[id].lv+2;	// lvを記憶
 		else {
 			sd->status.skill[id].id=id;
-			sd->status.skill[id].flag=1;	// cardスキルとする
+		sd->status.skill[id].flag=1;	// cardスキルとする
 		}
 		sd->status.skill[id].lv=level;
 	}
@@ -3678,14 +3681,14 @@ int pc_allskillup(struct map_session_data *sd)
 {
 	int i,id;
 	int c = sd->status.class;
-
+	
 	for(i=0;i<MAX_SKILL;i++){
 		sd->status.skill[i].id=0;
 		if (sd->status.skill[i].flag){	// cardスキルなら、
 			sd->status.skill[i].lv=(sd->status.skill[i].flag==1)?0:sd->status.skill[i].flag-2;	// ?当のlvに
 			sd->status.skill[i].flag=0;	// flagは0にしておく
-		}
-	}
+				}
+			}
 
 	if (battle_config.gm_allskill > 0 && pc_isGM(sd) >= battle_config.gm_allskill){
 		// 全てのスキル
@@ -3819,6 +3822,8 @@ int pc_damage(struct block_list *src,struct map_session_data *sd,int damage)
 			(sd->sc_data[SC_PROVOKE].timer==-1 || sd->sc_data[SC_PROVOKE].val2==0 ))
 			// オ?トバ?サ?ク発動
 			skill_status_change_start(&sd->bl,SC_PROVOKE,10,1,0,0,0,0);
+
+		sd->canlog_tick = gettick();
 
 		return 0;
 	}

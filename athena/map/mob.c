@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.49 2004/02/25 16:54:48 sara-chan Exp $
+// $Id: mob.c,v 1.50 2004/02/26 00:50:33 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -375,9 +375,8 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 		return 0;
 
 	battle_weapon_attack(&md->bl,&sd->bl,tick,0);
-	if(!(battle_config.monster_cloak_check_type&2) && md->sc_data[SC_CLOAKING].timer != -1)
+		if(!(battle_config.monster_cloak_check_type&2) && md->sc_data[SC_CLOAKING].timer != -1)
 		skill_status_change_end(&md->bl,SC_CLOAKING,-1);
-
 /*	if(sd->sc_data[SC_AUTOCOUNTER].timer != -1){		// AppleGirl
 		pc_attack(sd,md->bl.id,0);
 		skill_status_change_end(&sd->bl,SC_AUTOCOUNTER,-1);
@@ -675,6 +674,7 @@ int mob_spawn(int id)
 	md->next_walktime = tick+rand()%50+5000;
 	md->attackabletime = tick;
 	md->canmove_tick = tick;
+	md->sg_count=0;
 
 	md->skilltimer=-1;
 	for(i=0,c=tick-1000*3600*10;i<MAX_MOBSKILL;i++)
@@ -1918,7 +1918,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			}
 		}
 		if(sd)
-			npc_event(sd,md->npc_event,1);
+			npc_event(sd,md->npc_event,0);
 	}
 
 	clif_clearchar_area(&md->bl,1);
@@ -1967,6 +1967,7 @@ int mob_class_change(struct mob_data *md,int class)
 	md->next_walktime = tick+rand()%50+5000;
 	md->attackabletime = tick;
 	md->canmove_tick = tick;
+	md->sg_count=0;
 
 	for(i=0,c=tick-1000*3600*10;i<MAX_MOBSKILL;i++)
 		md->skilldelay[i] = c;
@@ -2538,6 +2539,8 @@ int mobskill_use_id(struct mob_data *md,struct block_list *target,int skill_idx)
 		md->skilltimer = -1;
 		mobskill_castend_id(md->skilltimer,gettick(),md->bl.id, 0);
 	}
+
+//	sd->canmove_tick=gettick()+casttime+delay;
 
 	return 1;
 }

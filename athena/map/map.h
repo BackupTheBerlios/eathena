@@ -170,6 +170,7 @@ struct map_session_data {
 	struct skill_unit_group skillunit[MAX_SKILLUNITGROUP];
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL];
+	short sg_count;
 
 	int invincible_timer;
 	unsigned int canact_tick;
@@ -331,6 +332,7 @@ struct mob_data {
 	short sc_count;
 	short opt1,opt2,option;
 	short min_chase;
+	short sg_count;
 
 	int skilltimer;
 	int skilltarget;
@@ -467,6 +469,22 @@ struct chat_data {
 	int trigger;		// Added by RoVeRT
 };
 
+/*struct mons_data {
+	int type;
+	int max_hp;
+	int npc_num;
+	int job_exp;
+	int base_exp;
+	int atk;
+	int hit;
+	int flee;
+	int def;
+	struct {
+		int nameid,p;
+	} dropitem[16];
+};*/
+
+
 extern struct map_data map[];
 extern int map_num;
 extern int autosave_interval;
@@ -500,7 +518,7 @@ int map_quit(struct map_session_data *);
 int map_addnpc(int,struct npc_data *);
 
 
-// 床アイテ?関連
+// 床アイテム関連
 int map_clearflooritem_timer(int,unsigned int,int,int);
 #define map_clearflooritem(id) map_clearflooritem_timer(0,0,id,1)
 int map_addflooritem(struct item *,int,int,int,int,struct map_session_data *,struct map_session_data *,struct map_session_data *,int);

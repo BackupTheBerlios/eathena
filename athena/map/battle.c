@@ -960,9 +960,7 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 			skill_castcancel(target,0);
 	}
 
-
 	if(target->type==BL_MOB){	// MOB
-
 		struct mob_data *md=(struct mob_data *)target;
 		if(md->skilltimer!=-1 && md->state.skillcastcancel)	// 詠唱妨害
 			skill_castcancel(target,0);
@@ -993,6 +991,10 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 			if( (!tsd->special_state.no_castcancel || map[bl->m].flag.gvg) && tsd->state.skillcastcancel &&
 				!tsd->special_state.no_castcancel2)
 				skill_castcancel(target,0);
+		}
+		if( (*battle_get_option(target))&6 ){
+			skill_status_change_end( target, SC_HIDING, -1);
+			skill_status_change_end( target, SC_CLOAKING, -1);
 		}
 
 		return pc_damage(bl,tsd,damage);
@@ -1071,6 +1073,7 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,i
 	struct status_change *sc_data,*sc;
 	short *sc_count;
 	int class = battle_get_class(bl);
+	int i;
 
 	if(bl->type==BL_MOB) md=(struct mob_data *)bl;
 	else sd=(struct map_session_data *)bl;
@@ -1188,6 +1191,13 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,i
 		}
 		else if(damage > 0 && damage < 3)
 			damage = 3;
+	}
+
+	if(	damage>0 && sc_data!=NULL && (
+		sc_data[i=SC_STONE].timer!=-1	||	// 石化
+		sc_data[i=SC_FREEZE].timer!=-1	||	// ?結
+		sc_data[i=SC_SLEEP].timer!=-1	)){	// 睡眠
+		skill_status_change_end( bl, i, -1 );	// ?メ?ジ受けたら解ける
 	}
 
 	if( md!=NULL && md->hp>0 && damage > 0 )	// 反撃などのMOBスキル判定
@@ -1614,7 +1624,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 	if(	hitrate < 1000000 &&			// 必中攻撃
 		(t_sc_data != NULL && (t_sc_data[SC_SLEEP].timer!=-1 ||	// 睡眠は必中
 		t_sc_data[SC_STAN].timer!=-1 ||		// ス?ンは必中
-		t_sc_data[SC_FREEZE].timer!=-1 ) ) )	// ?結は必中
+		t_sc_data[SC_FREEZE].timer!=-1 || (t_sc_data[SC_STONE].timer!=-1 && t_sc_data[SC_STONE].val2==0) ) ) )	// ?結は必中
 		hitrate = 1000000;
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = 0;
@@ -2001,7 +2011,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 	if(	hitrate < 1000000 &&			// 必中攻撃
 		(t_sc_data != NULL && (t_sc_data[SC_SLEEP].timer!=-1 ||	// 睡眠は必中
 		t_sc_data[SC_STAN].timer!=-1 ||		// ス?ンは必中
-		t_sc_data[SC_FREEZE].timer!=-1 || (t_sc_data[SC_STONE].timer!=-1 && t_sc_data[SC_STONE].val2==0) ) ) )	// ｡ｰ｢讓ｫ??I?K｡ｯ｢ﾓ
+		t_sc_data[SC_FREEZE].timer!=-1 || (t_sc_data[SC_STONE].timer!=-1 && t_sc_data[SC_STONE].val2==0) ) ) )	// ?結は必中
 		hitrate = 1000000;
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = 0;
@@ -2736,7 +2746,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 	if(	hitrate < 1000000 && // 必中攻撃
 		(t_sc_data != NULL && (t_sc_data[SC_SLEEP].timer!=-1 ||	// 睡眠は必中
 		t_sc_data[SC_STAN].timer!=-1 ||		// ス?ンは必中
-		t_sc_data[SC_FREEZE].timer!=-1 || (t_sc_data[SC_STONE].timer!=-1 && t_sc_data[SC_STONE].val2==0) ) ) )	// ｡ｰ｢讓ｫ??I?K｡ｯ｢ﾓ
+		t_sc_data[SC_FREEZE].timer!=-1 || (t_sc_data[SC_STONE].timer!=-1 && t_sc_data[SC_STONE].val2==0) ) ) )	// ?結は必中
 		hitrate = 1000000;
 	if(type == 0 && rand()%100 >= hitrate)
 		damage = damage2 = 0;
@@ -3417,6 +3427,16 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		//二刀流左手とカ??ル追撃の?ス?示(無理やり?)
 			if(src->type == BL_PC && sd->status.weapon >= 16 && wd.damage2 == 0)
 				clif_damage(src,target,tick+10, wd.amotion, wd.dmotion,0, 1, 0, 0);
+		}
+		if(sd && sd->sc_data[SC_AUTOSPELL].val1) {	// オ?トスペル
+			int per=0,skilllv=rand()%sd->sc_data[SC_AUTOSPELL].val2+1;
+			if	(skilllv==1) per=50;
+			else if (skilllv==2) per=35;
+			else if (skilllv==3) per=15;
+			else if (skilllv<11) per= 5;
+				
+			if(rand()%100 < per)
+				skill_castend_damage_id(src,target,sd->sc_data[SC_AUTOSPELL].val1,skilllv,tick,flag);
 		}
 		map_freeblock_lock();
 		if(sd && sd->splash_range > 0 && (wd.damage > 0 || wd.damage2 > 0) )
