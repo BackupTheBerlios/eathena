@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.10 2004/02/05 18:04:42 rovert Exp $
+// $Id: npc.c,v 1.11 2004/02/10 16:43:38 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -1258,10 +1258,10 @@ int do_init_npc(void)
 		while(fgets(line,1020,fp)){
 			char w1[1024],w2[1024],w3[1024],w4[1024],mapname[1024];
 			int i,j,w4pos,count;
+			lines++;
 			if(line[0] == '/' && line[1] == '/')
 				continue;
 			// 不要なスペースやタブの連続は詰める
-			lines++;
 			for(i=j=0;line[i];i++){
 				if(line[i]==' '){
 					if(!((line[i+1] && (isspace(line[i+1]) || line[i+1]==',')) ||
