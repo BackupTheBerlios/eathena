@@ -22,19 +22,19 @@ gef_fild10.gat,73,340,4	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 			next;
                 	cutin "kafra_02",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_02",255;
 		close;
 
@@ -60,7 +60,7 @@ gef_fild10.gat,73,340,4	script	Kafra	115,{
 
 				RCNeedZenys:
 					mes "[Kafra]";
-					mes "Dear,you don't have enough Money. You need 800 Zeny.";
+					mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 					cutin "kafra_02",255;
 					close;
 			RCCancel:
@@ -167,8 +167,8 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 				delitem 1072,1;
      	       			set nov_3_merchant,11;
      			       	mes "[Kapra's]";
-     			       	mes "Oh,My good Lord! Mr. Mansoo wrote me a Letter? Thank you, Thank you~";
-     			       	mes "I though he would send one one of thesedays, but I've never expected it would be so soon like this time~";
+     			       	mes "Oh, my good Lord! Mr. Mansoo wrote me a Letter? Thank you, Thank you~";
+     			       	mes "I though he would send one one of these days, but I've never expected it would be so soon like this time~";
      			       	goto DevMsgCont;
 
 		DevMsgCont:
@@ -212,20 +212,20 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
                 NeedJobLevel:
                 	cutin "kafra_02",2;
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_03",255;
                 	close;
                 
                 NeedZenys:
                 	cutin "kafra_02",2;
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_03",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry. The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -249,7 +249,7 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -304,19 +304,19 @@ moc_ruins.gat,61,156,5	script	Kafra	114,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_04",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_04",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -340,7 +340,7 @@ moc_ruins.gat,61,156,5	script	Kafra	114,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -395,18 +395,18 @@ prt_fild01.gat,198,47,8	script	Kafra	112,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_06",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_06",255;
                 	close;
 	L2:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_06",255;
 		close;
 
@@ -436,7 +436,7 @@ prt_fild01.gat,198,47,8	script	Kafra	112,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_06",255;
 				close;
 		RCCancel:
@@ -501,18 +501,18 @@ prt_fild05.gat,290,224,1	script	Kafra	114,{
 	
 		NeedJobLevel:
 			mes "[Kafra]";
-			mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+			mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 			cutin "kafra_04",255;
 			close;
 		NeedZenys:
 			mes "[Kafra]";
-			mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+			mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
 			cutin "kafra_04",255;
 			close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -536,7 +536,7 @@ prt_fild05.gat,290,224,1	script	Kafra	114,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -613,12 +613,12 @@ alberta.gat,28,229,8	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_03",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_03",255;
                 	close;
 	Lteleport:
@@ -651,13 +651,13 @@ alberta.gat,28,229,8	script	Kafra	115,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_03",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry. The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -681,7 +681,7 @@ alberta.gat,28,229,8	script	Kafra	115,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -741,12 +741,12 @@ alberta.gat,113,60,5	script	Kafra	112,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_06",255;
                 	close;
 		NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_06",255;
 			close;
 	Lteleport:
@@ -778,13 +778,13 @@ alberta.gat,113,60,5	script	Kafra	112,{
 			close;
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_06",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -808,7 +808,7 @@ alberta.gat,113,60,5	script	Kafra	112,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -873,18 +873,18 @@ alb2trea.gat,59,69,1	script	Kafra	117,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_03",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_03",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -908,7 +908,7 @@ alb2trea.gat,59,69,1	script	Kafra	117,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -1223,18 +1223,18 @@ aldeba_in.gat,96,181,4	script	Kafra Service	113,{
 
                 NeedJobLevel:
                 	mes "[Kafra Leilah]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_05",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra Leilah]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_05",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra Leilah]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -1258,7 +1258,7 @@ aldeba_in.gat,96,181,4	script	Kafra Service	113,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra Leilah]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -1329,18 +1329,18 @@ aldebaran.gat,143,119,4	script	Kafra	113,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_05",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_05",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -1364,7 +1364,7 @@ aldebaran.gat,143,119,4	script	Kafra	113,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -1401,13 +1401,13 @@ geffen.gat,120,62,8	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_03",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_03",255;
                 	close;
 	Lteleport:
@@ -1446,13 +1446,13 @@ geffen.gat,120,62,8	script	Kafra	115,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_03",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -1476,7 +1476,7 @@ geffen.gat,120,62,8	script	Kafra	115,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -1547,12 +1547,12 @@ geffen.gat,203,123,3	script	Kafra	114,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_04",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_04",255;
                 	close;
 	Lteleport:
@@ -1592,13 +1592,13 @@ geffen.gat,203,123,3	script	Kafra	114,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_04",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -1622,7 +1622,7 @@ geffen.gat,203,123,3	script	Kafra	114,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -1696,13 +1696,13 @@ izlude.gat,124,115,6	script	Kafra	117,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_01",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_01",255;
                 	close;
 	Lteleport:
@@ -1735,13 +1735,13 @@ izlude.gat,124,115,6	script	Kafra	117,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_01",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -1765,7 +1765,7 @@ izlude.gat,124,115,6	script	Kafra	117,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -1828,13 +1828,13 @@ morocc.gat,156,97,4	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_03",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_03",255;
                 	close;
 	Lteleport:
@@ -1873,13 +1873,13 @@ morocc.gat,156,97,4	script	Kafra	115,{
 			
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_03",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -1903,7 +1903,7 @@ morocc.gat,156,97,4	script	Kafra	115,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -1972,13 +1972,13 @@ morocc.gat,163,260,4	script	Kafra	114,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_04",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_04",255;
                 	close;
 	Lteleport:
@@ -2013,13 +2013,13 @@ morocc.gat,163,260,4	script	Kafra	114,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_04",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -2043,7 +2043,7 @@ morocc.gat,163,260,4	script	Kafra	114,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -2114,13 +2114,13 @@ payon.gat,99,116,4	script	Kafra	113,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_05",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_05",255;
                 	close;
 	Lteleport:
@@ -2153,13 +2153,13 @@ payon.gat,99,116,4	script	Kafra	113,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_05",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -2183,7 +2183,7 @@ payon.gat,99,116,4	script	Kafra	113,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -2225,7 +2225,7 @@ payon.gat,99,116,4	script	Kafra	113,{
 pay_arche.gat,55,123,8	script	Kafra	117,{
 	cutin "kafra_01",2;
 	mes "[Kafra]";
-	mes "Welcome to Kafra Corp.We will stay with you wherever you go.";
+	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
 	next;
 	menu "Save",Lsave,"Use Storage",Lstorage,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
 
@@ -2245,19 +2245,19 @@ pay_arche.gat,55,123,8	script	Kafra	117,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_01",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_01",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -2281,7 +2281,7 @@ pay_arche.gat,55,123,8	script	Kafra	117,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -2315,7 +2315,7 @@ pay_arche.gat,55,123,8	script	Kafra	117,{
 prontera.gat,29,207,6	script	Kafra	113,{
 	cutin "kafra_05",2;
 	mes "[Kafra]";
-	mes "Welcome to Kafra Corp.We will stay with you wherever you go This karfa have been made for FGM RO Lord.";
+	mes "Welcome to Kafra Corp.We will stay with you wherever you go.";
 	next;
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
 
@@ -2344,13 +2344,13 @@ prontera.gat,29,207,6	script	Kafra	113,{
 
                 NeedJobLevel:
 			mes "[Kafra]";
-			mes "I am sorry but you have to be at least Novice level 6 if you want to use the storage.";
+			mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 			cutin "kafra_05",255;			
 			close;
 			
                 NeedZenys:
 			mes "[Kafra]";
-			mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+			mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
 			cutin "kafra_05",255;
 			close;
 	Lteleport:
@@ -2395,13 +2395,13 @@ prontera.gat,29,207,6	script	Kafra	113,{
 	
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_05",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -2425,7 +2425,7 @@ prontera.gat,29,207,6	script	Kafra	113,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -2494,13 +2494,13 @@ prontera.gat,146,89,6	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_02",255;
                 	close;
                 
                 NeedZenys:
 			mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
                 	close;
 	Lteleport:
@@ -2545,13 +2545,13 @@ prontera.gat,146,89,6	script	Kafra	115,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_02",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -2575,7 +2575,7 @@ prontera.gat,146,89,6	script	Kafra	115,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -2641,13 +2641,13 @@ prontera.gat,282,199,6	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_02",255;
                 	close;
                 
                 NeedZenys:
 			mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
                 	close;
 	Lteleport:
@@ -2692,13 +2692,13 @@ prontera.gat,282,199,6	script	Kafra	115,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_02",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -2722,7 +2722,7 @@ prontera.gat,282,199,6	script	Kafra	115,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -2798,13 +2798,13 @@ prontera.gat,151,29,8	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
                 	cutin "kafra_02",255;
                 	close;
                 
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
                 	close;
 	Lteleport:
@@ -2849,13 +2849,13 @@ prontera.gat,151,29,8	script	Kafra	115,{
 
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_02",255;
 				close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_04",255;
 		close;
 
@@ -2879,7 +2879,7 @@ prontera.gat,151,29,8	script	Kafra	115,{
 					close;
 			RCNeedZenys:
 				mes "[Kafra]";
-				mes "Dear,you don't have enough Money. You need 800 Zeny.";
+				mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 				cutin "kafra_04",255;
 				close;
 		RCCancel:
@@ -2924,760 +2924,371 @@ prontera.gat,151,29,8	script	Kafra	115,{
 }
 
 //Yuno Npc Kafra @ 328 108
-
 yuno.gat,328,108,6	script	Kafra	117,{
-
 	cutin "kafra_02",2;
-
 	mes "[Kafra]";
-
 	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
-
 	next;
-
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
-
-
-
 	Lsave:
-
-		save "yuno.gat",332,107;
-
+		savepoint "yuno.gat",332,107;
 		mes "[Kafra]";
-
 		mes "Your respawn point has saved. Thank you.";
-
 		cutin "kafra_02",255;
-
 		close;
-
 	Lstorage:
-
 		if((class ==Job_Novice) && (JobLevel<6)) goto NeedJobLevel;
-
 		if(Zeny<30) goto NeedZenys;
-
 		set Zeny, Zeny-30;
-
 		openstorage;
-
 		cutin "kafra_02",255;
-
 		close;
-
-
-
                 NeedJobLevel:
-
                 	mes "[Kafra]";
-
-                	mes "I am sorry but you have to be at least Novice level 6 if you want to use the storage.";
-
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 			next;
-
                 	cutin "kafra_02",255;
-
                 	close;
-
                 NeedZenys:
-
 	                mes "[Kafra]";
-
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
-
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
-
                 	close;
-
 	Lcart:
-
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
-
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
-
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_02",255;
-
 		close;
-
-
-
 		UseCart:
-
 			mes "[Kafra]";
-
 			mes "The Cart Fee is 800 Zeny. Do you want to Rent a Cart?";
-
 			next;
-
 			menu "Rent a Cart.",RentCart,"Cancel.",RCCancel;
-
-
-
 			RentCart:
-
 				if(Zeny<800) goto RCNeedZenys;
-
 				set Zeny, Zeny-800;
-
 				if((CheckCart)==0) goto NoCartSkill;
-
 				if((CheckCart)==1) goto GetCart;
-
 			
-
 				GetCart:
-
 					set Zeny,Zeny-800;
-
 					setcart;
-
 					mes "[Kafra]";
-
 					mes "There you go..";
-
 					cutin "kafra_08",255;
-
 					close;
-
-
-
 				RCNeedZenys:
-
 					mes "[Kafra]";
-
-					mes "Dear,you don't have enough Money. You need 800 Zeny.";
-
+					mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 					cutin "kafra_02",255;
-
 					close;
-
 			RCCancel:
-
 				cutin "kafra_02",255;
-
 				close;
-
 	Lpass:
-
 		if(countitem(1084)<1) goto NeedKafraPass;
-
 		
-
 		NeedKafraPass:
-
 			mes "[Kafra]";
-
 			mes "Dear you need at least 1 passport.";
-
 			cutin "kafra_02",255;
-
 			close;
-
 		mes "[Kafra]";
-
 		mes "Now you are Using a Kapra's Pass.";
-
 		delitem 1084,1;
-
 		next;
-
 		mes "[Kafra]";
-
 		mes "Under development";
-
 		cutin "kafra_02",255;
-
 		close;
-
 	Lteleport:
-
 		mes "[Kafra]";
-
 		mes "Set your destination.";
-
 		next;
-
 		menu "Izlude -> 900 z",Izlude,"Geffen -> 1400 z",Geffen,"Payon -> 1700 z",Payon,"Morroc -> 1800 z",Morroc,"Cancel",Cancel;
-
 		
-
 		Izlude:
-
 			if(Zeny<900) goto cantTeleport;
-
 			set Zeny, Zeny-900;
-
 			warp "izlude.gat",91,105;
-
 			cutin "kafra_03",255;
-
 			close;
-
 		Geffen:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "geffen.gat",120,39;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Morroc:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "morroc.gat",156,46;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Payon:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "payon.gat",100,100;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Cancel:
-
 			cutin "kafra_03",255;
-
 			close;
-
 	Lcancel:
-
 		cutin "kafra_02",255;
-
 		close;
-
 			CantTeleport:
-
 				mes "[Kafra]";
-
-				mes "Dear you don't have enough money. Please check again.";
-
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_03",255;
-
 				close;
-
 }
 
 //Yuno Kafra @ 151 87
-
 yuno.gat,151,87,4	script	Kafra	115,{
-
 	cutin "kafra_02",2;
-
 	mes "[Kafra]";
-
 	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
-
 	next;
-
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
-
-
-
 	Lsave:
-
-		save "yuno.gat",154,75;
-
+		savepoint "yuno.gat",154,75;
 		mes "[Kafra]";
-
 		mes "Your respawn point has saved. Thank you.";
-
 		cutin "kafra_02",255;
-
 		close;
-
 	Lstorage:
-
 		if((class ==Job_Novice) && (JobLevel<6)) goto NeedJobLevel;
-
 		if(Zeny<30) goto NeedZenys;
-
 		set Zeny, Zeny-30;
-
 		openstorage;
-
 		cutin "kafra_02",255;
-
 		close;
-
-
-
                 NeedJobLevel:
-
                 	mes "[Kafra]";
-
-                	mes "I am sorry but you have to be at least Novice level 6 if you want to use the storage.";
-
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 			next;
-
                 	cutin "kafra_02",255;
-
                 	close;
-
                 NeedZenys:
-
 	                mes "[Kafra]";
-
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
-
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
-
                 	close;
-
 	Lcart:
-
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
-
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
-
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_02",255;
-
 		close;
-
-
-
 		UseCart:
-
 			mes "[Kafra]";
-
 			mes "The Cart Fee is 800 Zeny. Do you want to Rent a Cart?";
-
 			next;
-
 			menu "Rent a Cart.",RentCart,"Cancel.",RCCancel;
-
-
-
 			RentCart:
-
 				if(Zeny<800) goto RCNeedZenys;
-
 				set Zeny, Zeny-800;
-
 				if((CheckCart)==0) goto NoCartSkill;
-
 				if((CheckCart)==1) goto GetCart;
-
 			
-
 				GetCart:
-
 					set Zeny,Zeny-800;
-
 					setcart;
-
 					mes "[Kafra]";
-
 					mes "There you go..";
-
 					cutin "kafra_08",255;
-
 					close;
-
-
-
 				RCNeedZenys:
-
 					mes "[Kafra]";
-
-					mes "Dear,you don't have enough Money. You need 800 Zeny.";
-
+					mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 					cutin "kafra_02",255;
-
 					close;
-
 			RCCancel:
-
 				cutin "kafra_02",255;
-
 				close;
-
 	Lpass:
-
 		if(countitem(1084)<1) goto NeedKafraPass;
-
 		
-
 		NeedKafraPass:
-
 			mes "[Kafra]";
-
 			mes "Dear you need at least 1 passport.";
-
 			cutin "kafra_02",255;
-
 			close;
-
 		mes "[Kafra]";
-
 		mes "Now you are Using a Kapra's Pass.";
-
 		delitem 1084,1;
-
 		next;
-
 		mes "[Kafra]";
-
 		mes "Under development";
-
 		cutin "kafra_02",255;
-
 		close;
-
 	Lteleport:
-
 		mes "[Kafra]";
-
 		mes "Set your destination.";
-
 		next;
-
 		menu "Izlude -> 900 z",Izlude,"Geffen -> 1400 z",Geffen,"Payon -> 1700 z",Payon,"Morroc -> 1800 z",Morroc,"Cancel",Cancel;
-
 		
-
 		Izlude:
-
 			if(Zeny<900) goto cantTeleport;
-
 			set Zeny, Zeny-900;
-
 			warp "izlude.gat",91,105;
-
 			cutin "kafra_03",255;
-
 			close;
-
 		Geffen:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "geffen.gat",120,39;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Morroc:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "morroc.gat",156,46;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Payon:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "payon.gat",100,100;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Cancel:
-
 			cutin "kafra_03",255;
-
 			close;
-
 	Lcancel:
-
 		cutin "kafra_02",255;
-
 		close;
-
 			CantTeleport:
-
 				mes "[Kafra]";
-
-				mes "Dear you don't have enough money. Please check again.";
-
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_03",255;
-
 				close;
-
 }
 
 //Yuno Kafra @ 278 221
-
 yuno.gat,278,221,6	script	Kafra	117,{
-
 	cutin "kafra_02",2;
-
 	mes "[Kafra]";
-
 	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
-
 	next;
-
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
-
-
-
 	Lsave:
-
-		save "yuno.gat",332 107;
-
+		savepoint "yuno.gat",332 107;
 		mes "[Kafra]";
-
 		mes "Your respawn point has saved. Thank you.";
-
 		cutin "kafra_02",255;
-
 		close;
-
 	Lstorage:
-
 		if((class ==Job_Novice) && (JobLevel<6)) goto NeedJobLevel;
-
 		if(Zeny<30) goto NeedZenys;
-
 		set Zeny, Zeny-30;
-
 		openstorage;
-
 		cutin "kafra_02",255;
-
 		close;
-
-
-
                 NeedJobLevel:
-
                 	mes "[Kafra]";
-
-                	mes "I am sorry but you have to be at least Novice level 6 if you want to use the storage.";
-
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 			next;
-
                 	cutin "kafra_02",255;
-
                 	close;
-
                 NeedZenys:
-
 	                mes "[Kafra]";
-
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
-
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
-
                 	close;
-
 	Lcart:
-
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
-
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
-
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_02",255;
-
 		close;
-
-
-
 		UseCart:
-
 			mes "[Kafra]";
-
 			mes "The Cart Fee is 800 Zeny. Do you want to Rent a Cart?";
-
 			next;
-
 			menu "Rent a Cart.",RentCart,"Cancel.",RCCancel;
-
-
-
 			RentCart:
-
 				if(Zeny<800) goto RCNeedZenys;
-
 				set Zeny, Zeny-800;
-
 				if((CheckCart)==0) goto NoCartSkill;
-
 				if((CheckCart)==1) goto GetCart;
-
 			
-
 				GetCart:
-
 					set Zeny,Zeny-800;
-
 					setcart;
-
 					mes "[Kafra]";
-
 					mes "There you go..";
-
 					cutin "kafra_08",255;
-
 					close;
-
-
-
 				RCNeedZenys:
-
 					mes "[Kafra]";
-
-					mes "Dear,you don't have enough Money. You need 800 Zeny.";
-
+					mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 					cutin "kafra_02",255;
-
 					close;
-
 			RCCancel:
-
 				cutin "kafra_02",255;
-
 				close;
-
 	Lpass:
-
 		if(countitem(1084)<1) goto NeedKafraPass;
-
 		
-
 		NeedKafraPass:
-
 			mes "[Kafra]";
-
 			mes "Dear you need at least 1 passport.";
-
 			cutin "kafra_02",255;
-
 			close;
-
 		mes "[Kafra]";
-
 		mes "Now you are Using a Kapra's Pass.";
-
 		delitem 1084,1;
-
 		next;
-
 		mes "[Kafra]";
-
 		mes "Under development";
-
 		cutin "kafra_02",255;
-
 		close;
-
 	Lteleport:
-
 		mes "[Kafra]";
-
 		mes "Set your destination.";
-
 		next;
-
 		menu "Izlude -> 900 z",Izlude,"Geffen -> 1400 z",Geffen,"Payon -> 1700 z",Payon,"Morroc -> 1800 z",Morroc,"Cancel",Cancel;
-
 		
-
 		Izlude:
-
 			if(Zeny<900) goto cantTeleport;
-
 			set Zeny, Zeny-900;
-
 			warp "izlude.gat",91,105;
-
 			cutin "kafra_03",255;
-
 			close;
-
 		Geffen:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "geffen.gat",120,39;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Morroc:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "morroc.gat",156,46;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Payon:
-
 			if(Zeny<2100) goto cantTeleport;
-
 			set Zeny, Zeny-2100;
-
 			warp "payon.gat",100,100;
-
 			cutin "kafra_03",255;
-
 			close;		
-
 		Cancel:
-
 			cutin "kafra_03",255;
-
 			close;
-
 	Lcancel:
-
 		cutin "kafra_02",255;
-
 		close;
-
 			CantTeleport:
-
 				mes "[Kafra]";
-
-				mes "Dear you don't have enough money. Please check again.";
-
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_03",255;
-
 				close;
-
 }
+
 
 //Umbala	
 umbala.gat,128,133,4	script	Kafra	115,{
@@ -3688,7 +3299,7 @@ umbala.gat,128,133,4	script	Kafra	115,{
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
 
 	Lsave:
-		save "umbala.gat",126,131;
+		savepoint "umbala.gat",126,131;
 		mes "[Kafra]";
 		mes "Your respawn point has saved. Thank you.";
 		cutin "kafra_02",255;
@@ -3703,19 +3314,19 @@ umbala.gat,128,133,4	script	Kafra	115,{
 
                 NeedJobLevel:
                 	mes "[Kafra]";
-                	mes "I am sorry but you have to be at leaset Novice level 6 if you want to use the storage.";
+                	mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 			next;
                 	cutin "kafra_02",255;
                 	close;
                 NeedZenys:
 	                mes "[Kafra]";
-                	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+                	mes "Dear, you don't have enough zeny. The Storage fee is 30 Zeny.";
                 	cutin "kafra_02",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem)) goto UseCart;
 		mes "[Kafra]";
-		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		cutin "kafra_02",255;
 		close;
 
@@ -3741,7 +3352,7 @@ umbala.gat,128,133,4	script	Kafra	115,{
 
 				RCNeedZenys:
 					mes "[Kafra]";
-					mes "Dear,you don't have enough Money. You need 800 Zeny.";
+					mes "Dear, you don't have enough zeny. You need 800 Zeny.";
 					cutin "kafra_02",255;
 					close;
 			RCCancel:
@@ -3801,29 +3412,25 @@ umbala.gat,128,133,4	script	Kafra	115,{
 		close;
 			CantTeleport:
 				mes "[Kafra]";
-				mes "Dear you don't have enough money. Please check again.";
+				mes "Dear, you don't have enough zeny. Please check again.";
 				cutin "kafra_03",255;
 				close;
 }
 
 //----------------------------------
-// < コンロン >
+// Gon Ryun Kafra
 //----------------------------------
 
-gonryun.gat,159,122,4	script	カプラ職員	116,{
+gonryun.gat,159,122,4	script	Kafra	116,{
 	cutin "kafra_02",2;
-	mes "[カプラ職員]";
-	mes "いらっしゃいませ";
-	mes "カプラサービスは";
-	mes "いつも皆様のそばにいます。";
-	mes "何をお手伝いいたしましょう？";
+	mes "[Kafra]";
+	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
 	next;
-	menu "位置セーブサービス",L1,"倉庫サービス",L2,"カートサービス",L4,"カプラポイント確認",L5,"終了",L7;
+	menu "Save",L1,"Use Storage",L2,"Rent a cart",L4,"カプラポイント確認",L5,"終了",L7;
 L1:
 	savepoint "gonryun.gat",160,62;
-	mes "[カプラ職員]";
-	mes "セーブしました。";
-	mes "ご利用ありがとうございます。";
+	mes "[Kafra]";
+	mes "Your respawn point has saved. Thank you.";
 	goto L_EXIT;
 L2:
 	if(getskilllv(1) < 6) goto Lerror2_1;
@@ -3832,29 +3439,19 @@ L2:
 		openstorage;
 		goto L_EXIT;
 	Lerror2_1:
-		mes "[カプラ職員]";
-		mes "倉庫は基本スキルレベル6を";
-		mes "習得してから利用可能となります。";
+		mes "[Kafra]";
+		mes "I am sorry but you have to be at least novice with job level 6 if you want to use the storage";
 		goto L_EXIT;
 	Lerror2_2:
-		mes "[カプラ職員]";
-		mes "お客様、お金が足りません。";
-		mes "倉庫利用料金は 80 Zenyです。";
+		mes "[Kafra]";
+                mes "Dear, you don't have enough zeny. The Storage fee is 80 Zeny.";
 		goto L_EXIT;
 L4:
-	if (!((Class == 5) || (Class == 10) || (Class == 18))) goto Lerror4_1;
-	mes "[カプラ職員]";
-	mes "カート利用料金は 700 Zenyです。";
-	mes "また、カートを利用するには";
-	mes "｢プッシュカート｣スキルが必要です。";
-	mes "そのスキルがないとカートを利用";
-	mes "できずにお金だけ消えてしまいます。";
-	mes "準備はよろしいですか？";
+	if(!((class ==Job_Merchant) || (class==Job_Blacksmith) || (class==Job_Alchem))) goto Lerror4_1;
+	mes "[Kafra]";
+	mes "The Cart Fee is 700 Zeny. Do you want to Rent a Cart?";
 	next;
-	menu "利用する",L4_1,"取り消し",-;
-		mes "[カプラ職員]";
-		mes "ありがとうございました。";
-		mes "またご利用くださいませ。";
+	menu "Rent a Cart",L4_1,"Cancel",-;
 		goto L_EXIT;
 	L4_1:
 		if (Zeny < 700) goto Lerror4_2;
@@ -3862,36 +3459,32 @@ L4:
 		setcart;
 		goto L_EXIT;
 	Lerror4_1:
-		mes "[カプラ職員]";
-		mes "申し訳ございません。";
-		mes "カートは商人とブラックスミス、";
-		mes "そしてアルケミスト専用の";
-		mes "サービスです。";
+		mes "[Kafra]";
+		mes "I'm sorry. The cart service is only provided for Merchants, Blacksmiths and Alchemists only.";
 		goto L_EXIT;
 	Lerror4_2:
-		mes "[カプラ職員]";
-		mes "お客様、お金が足りません。";
-		mes "カート利用料金は 800 Zenyです。";
+		mes "[Kafra]";
+		mes "Dear, you don't have enough zeny. You need 700 Zeny.";
 		goto L_EXIT;
 //Cart already have
 //Lerror4_3:
-//mes "[カプラ職員]";
+//mes "[Kafra]";
 //mes "お客様は現在カートを";
 //mes "利用されています。";
 //goto L_EXIT;
 L5:
-	mes "[カプラ職員]";
+	mes "[Kafra]";
 	mes strcharinfo(0) + " 様の獲得ポイントは、";
 	mes "" + KF_PIT + " 点です。";
 	next;
-	mes "[カプラ職員]";
+	mes "[Kafra]";
 	mes "カプラポイントは当カプラサービスの";
 	mes "本社で賞品と引き換えが可能です。";
 	mes "今後ともカプラサービスをよろしく";
 	mes "お願い致します。";
 	goto L_EXIT;
 L7:
-	mes "[カプラ職員]";
+	mes "[Kafra]";
 	mes "我々カプラサービスは、より完璧な";
 	mes "サービスと管理業務を目指し";
 	mes "お客様が安心してご利用いただけるよう";
