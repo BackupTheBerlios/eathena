@@ -2,7 +2,7 @@
 //Athena Conversion by RoVeRT
 //================== Wizard's Guild: Cartlin Medichi ======================
 //======== Registration, Mission 1 Item Quest, etc =======
-gef_tower.gat,111,37	script	Wizard's Guild Worker	70,{
+gef_tower.gat,111,37,4	script	Wizard's Guild Worker	70,{
 //======== Other Jobs
    	if (Class == Job_Magician) goto Part2;
 		if (Class == Job_Wizard) goto IsWizard;
@@ -363,7 +363,7 @@ Part7:
 		end;
 //======== Ouch! That must hurt
 Part8:
-	if (job_wizard_q != 6) goto Part9:;
+	if (job_wizard_q != 6) goto Part9;
 		mes "[Cartlin]";
 		mes "Why did you come out during the test?";
 		mes "I never thought you were that weak >_>";
@@ -790,7 +790,7 @@ Part5:
 		mes "[Raul]";
 		mes "Be that way! If you miss one question, you fail! What do you say!?";
 		next;
-		menu "I want to live in peace..........",TryNo "I want to continue.",TryYes;
+		menu "I want to live in peace..........",TryNo, "I want to continue.",TryYes;
 			TryNo:
 				mes "[Raul]";
 				mes "Good choice.";
@@ -806,7 +806,7 @@ Part5:
 				mes "Heh, another idiot!";
 				mes "Let's see how great you are!";
 				next;
-				goto M2_Start:
+				goto M2_Start;
 
 //======== Mission 3 대기중, 워프를 타자!
 Part6:
@@ -1033,7 +1033,7 @@ job_wiz.gat,50,165,4	script	Helper	700,{
 	end;
 }
 //======== Waiting Room
-arenaguide "job_wiz.gat" "Waiting Room" 8_F_GIRL 50 165 2 1 1;
+job_wiz.gat,50,165,2	script	Waiting Room	700,{
 	OnInit:
 		disablenpc "Waiting Room";
 //		setarenaeventsize 1;
@@ -1516,7 +1516,7 @@ job_wiz.gat,46,99,0	script	fail3 	139,16,16,{
 		end;
 }
 //========Fire Room = Success
-job_wiz.gat,46,99	script	Success	139,16,16,{
+job_wiz.gat,46,99,0	script	Success	139,16,16,{
 		warp "gef_tower.gat",110,30;
 		end;
 	OnInit:
