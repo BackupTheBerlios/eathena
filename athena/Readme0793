@@ -1,4 +1,80 @@
 --------------------
+//0806 by Kalen
+
+EagitƒtƒHƒ‹ƒ_¨gvgƒtƒHƒ‹ƒ_‚ÖˆÚs
+	”ˆÓŒ©‚ ‚é‚ÆŽv‚¢‚Ü‚·‚ªAjRO‚Å‚ÍUéí‚ðgvg‚ÆŒÄ‚Ô‚±‚Æ‚ªˆê”Ê“I‚È‚Ì‚Å‚±‚¿‚ç‚É“‡‚µ‚Ü‚·B
+	conf/gvg/
+	###agitƒtƒHƒ‹ƒ_‚ðíœ‚µ‚Ä‚­‚¾‚³‚¢###@(Please delete the "agit" folder.)
+	getmaster‘Î‰ž
+
+EƒAƒ}ƒc‚ÌŽõŽi‰®ƒoƒOC³‚Æ€–Ú’Ç‰Á(thx 114
+	conf/npc/npc_town_amatsu.txt
+
+Emap_flagÄC³
+	conf/map_flag.txt
+	[GVGMAP]Šm‚©‚Éí‚ÉƒV[ƒYƒ‚[ƒh‚È‚ç–â‘è‚È‚¢‚Å‚·‚ªAíœ‚³‚ê‚Ü‚µ‚½‚Ì‚Å
+	í‚ÉƒV[ƒYƒ‚[ƒh‚Å‚Í‚ ‚è‚Ü‚¹‚ñB]‚Á‚Ä‰ðœŽž(ŽžŠÔŠO)‚É‚ÍŽ}AƒeƒŒƒ|‚ªŽg‚¦‚Ü‚·
+	ŽžŠÔ‘O‚ÉŽ}ŽT‚«A‚Ü‚¾ŽÀ‘•‚µ‚Ä‚Ü‚¹‚ñ‚ª•ó” ’DŽæ‚à‰Â”\‚É‚È‚é‚Ì‚ÅŽ}AƒeƒŒƒ|‚Íí‚ÉŽg—p•s‰Â‚Å–â‘è‚È‚¢‚ÆŽv‚¢‚Ü‚·B
+
+Œã‘O‰ñ‘‚«–Y‚ê‚Ü‚µ‚½‚ªAmomotaroƒCƒxƒ“ƒg‚Å‚·‚ªA‚¿‚å‚Á‚Æ•sˆÀ’è‚È‰Â”\«‚ª‚ ‚è‚Ü‚·B
+Œ´ˆö‚ª‚í‚©‚ç‚È‚¢‚Ì‚Å‚·‚ªAƒ‹[ƒv‚µ‚Ä‚é‚©‚à‚µ‚ê‚Ü‚¹‚ñBˆê‰žƒRƒƒ“ƒgƒAƒEƒg‚µ‚Ä‚ ‚è‚Ü‚·
+
+--------------------
+//0805 by Ž€_
+
+E•¶Žš‰»‚¯C³B
+EƒV[ƒYƒ‚[ƒh‚Å‚ÌƒeƒŒƒ|[ƒg‹ÖŽ~‚âŒÃ–Ø‚ÌŽ}Žg—p‹ÖŽ~‚Íƒ\[ƒXƒŒƒxƒ‹‚Å
+ˆ—‚µ‚Ä‚¢‚é‚Ì‚Åmapflag.txt‚©‚çíœB(ˆö‚Ý‚Énopenalty‚àƒ\[ƒXƒŒƒxƒ‹‚Å
+ˆ—‚µ‚Ä‚¢‚Ü‚·B)
+Ebattle_athena.conf‚Ìagit_eliminate_time‚ðgvg_eliminate_time‚É•ÏXB
+E@ƒRƒ}ƒ“ƒh@GMíœB
+EFD_SETSIZE‚©cygwin‚Å64‚ÉÝ’è‚³‚ê‚Ä‚¢‚½‚Ì‚¹‚¢‚ÅÅ‘åÚ‘±l”‚ª56–¼‚ð
+‰z‚¦‚é‚Æƒ}ƒbƒvŽI‚ª–³ŒÀƒ‹[ƒv‚·‚é–â‘èC³B(‚½‚¾ƒeƒXƒg‚ª‚Å‚«‚È‚©‚Á‚½•¨‚È‚Ì‚Å–{“–‚É‘åä•v‚É‚È‚Á‚½‚©‚Ç‚¤‚©‚Í•s–¾‚Å‚·B‚ ‚­‚Ü‚Å‚àŽ©•ª‚Ì—\‘ª‚É‚·‚¬‚È‚¢•¨‚Å‚·‚ª...)
+E•¶Žš‰»‚¯‚Ì‚¹‚¢‚Å‚Ç‚±‚ð‚Ç‚¤C³‚µ‚½‚©Šo‚¦‚Ä‚È‚¢‚Ì‚ÅC³‚µ‚½ƒtƒ@ƒCƒ‹‚¾‚¯B
+	(conf/)
+	atcommand_athena.conf
+	battle_athena.conf
+	mapflag.txt
+	(db/)
+	castle_db.txt
+	(doc/)
+	conf_ref.txt
+	(common/)
+	mmo.h
+	(login/)
+	login.c
+	(char/)
+	inter.c
+	int_guild.c
+	(map/)
+	atcommand.h
+	atcommand.c
+	battle.h
+	battle.c
+	chrif.c
+	guild.h
+	guild.c
+	intif.h
+	intif.c
+	map.h
+	map.c
+	mob.c
+	npc.c
+	npc.h
+	script.c
+	skill.c
+	pc.c
+	makefile
+
+--------------------
+//0804 by Žß‘¸
+
+EƒAƒ‹ƒxƒ‹ƒ^‚Ì‚Ê‚¢‚®‚é‚ÝƒCƒxƒ“ƒg‚Å‚¤‚³‚¬‚Ì‚Ê‚¢‚®‚é‚Ý‚ð‚ ‚°‚é‚ÆƒT[ƒo[‚ª—Ž‚¿‚éƒoƒOC³
+
+	(conf/npc/)
+	npc_event_doll.txt C³B
+
+--------------------
 //0803 by ‚Ò‚´‚Ü‚ñ
 
 	GvG‚ÅƒGƒ“ƒyƒŠƒEƒ€•ö‰óŽžgvg_eliminate_time‚Ì’l‚ÉŠÖ‚í‚ç‚¸‘¦À‚É‘Þ‹Ž‚³‚¹‚ç‚ê‚Ä‚¢‚½ƒoƒOC³
@@ -13,6 +89,7 @@
 	(map/)
 	int_guild.c
 		inter_guild_init() C³B
+
 --------------------
 //0802 by Michael_Huang
 
@@ -444,5 +521,3 @@ bSplashRange‚ÆbSplashAddRange‚Í•Ší‚Åƒ_ƒ[ƒW‚ð—^‚¦‚½Žž‚Ì‚Ý”­“®A’Êí‚Ì•ŠíUŒ‚ˆ
 
 
 (c) 2003 Athena Project.
-
--->>J2KWorkBench<<--

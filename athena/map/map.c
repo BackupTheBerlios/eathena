@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.20 2004/02/13 21:42:03 rovert Exp $
+// $Id: map.c,v 1.21 2004/02/15 15:05:24 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -54,7 +54,6 @@ struct map_data map[MAX_MAP_PER_SERVER];
 int map_num=0;
 
 int autosave_interval=DEFAULT_AUTOSAVE_INTERVAL;
-
 int agit_flag=0;
 
 struct charid2nick {
