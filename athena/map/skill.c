@@ -211,7 +211,9 @@ int SkillStatusChangeTable[]={	/* skill.h‚Ìenum‚ÌSC_***‚Æ‚ ‚í‚¹‚é‚±‚Æ */
 	SC_BERSERK,
 	SC_ASSUMPTIO,
 	SC_BASILICA,
-	-1,-1,-1,-1,-1,-1,-1,
+	-1,-1,-1,
+	SC_MAGICPOWER,
+	-1,-1,-1,
 /* 370- */
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 /* 380- */
