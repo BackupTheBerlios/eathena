@@ -2,79 +2,79 @@
 // nameid, item_name(dummy), rate
 // アイテムID、アイテムの名前(ダミー)、確率(*10000)をした物です。500000なら50%で1000000なら100%です。)
 // アイテムIDが0の場合確率をアイテムの選択に失敗した時に得られるデフォルトアイテムのIDとして認識します。(複数である場合最後の物だけ有効です。) 
-0,Oridecon_Stone,Rough Oridecon,756
-756,Oridecon_Stone,Rough Oridecon,50000
-757,Elunium_Stone,Elunium Stone,20000
-984,Oridecon,Oridecon,20000
-985,Elunium,Elunium,10000
-714,Emperium,Emperium,10000
-999,Steel,Steel,10000
-1000,Star_Crumb,Star Crumb,10000
-994,Flame_Heart,Flame Heart,10000
-995,Mistic_Frozen,Mistic Frozen,10000
-996,Rough_Wind,Rough Wind,10000
-997,Great_Nature,Great Nature,10000
-975,Scarlet_Dyestuffs,Scarlet Dyestuffs,10000
-976,Lemon_Dyestuffs,Lemon Dyestuffs,10000
-978,Cobaltblue_Dyestuffs,Cobaltblue Dyestuffs,10000
-979,Darkgreen_Dyestuffs,Darkgreen Dyestuffs,10000
-980,Orange_Dyestuffs,Orange Dyestuffs,10000
-981,Violet_Dyestuffs,Violet Dyestuffs,10000
-982,White_Dyestuffs,White Dyestuffs,10000
-983,Black_Dyestuffs,Black Dyestuffs,10000
-969,Gold,Gold,10000
-718,Dark_red_Jewel,Garnet,10000
-719,Violet_Jewel,Amethyst,10000
-720,Skyblue_Jewel,Aquamarine,10000
-721,Azure_Jewel,Emerald,10000
-722,Scarlet_Jewel,Pearl,10000
-723,Cardinal_Jewel,Ruby,10000
-724,Cardinal_Jewel_,Cursed Ruby,10000
-725,Red_Jewel,Sardonyx,10000
-726,Blue_Jewel,Sapphire,10000
-727,White_Jewel,Opal,10000
-728,Golden_Jewel,Topaz,10000
-729,Blueish_green_Jewel,Zircon,10000
+0,Rough Oridecon,756
+756,Rough Oridecon,50000
+757,Elunium Stone,20000
+984,Oridecon,20000
+985,Elunium,10000
+714,Emperium,10000
+999,Steel,10000
+1000,Star Crumb,10000
+994,Flame Heart,10000
+995,Mistic Frozen,10000
+996,Rough Wind,10000
+997,Great Nature,10000
+975,Scarlet Dyestuffs,10000
+976,Lemon Dyestuffs,10000
+978,Cobaltblue Dyestuffs,10000
+979,Darkgreen Dyestuffs,10000
+980,Orange Dyestuffs,10000
+981,Violet Dyestuffs,10000
+982,White Dyestuffs,10000
+983,Black Dyestuffs,10000
+969,Gold,10000
+718,Garnet,10000
+719,Amethyst,10000
+720,Aquamarine,10000
+721,Emerald,10000
+722,Pearl,10000
+723,Ruby,10000
+724,Cursed Ruby,10000
+725,Sardonyx,10000
+726,Sapphire,10000
+727,Opal,10000
+728,Topaz,10000
+729,Zircon,10000
 730,1 Carat Diamond,10000
 731,2 Carat Diamond,10000
 732,3 Carat Diamond,10000
-733,Crystal_Jewel___,Cracked Diamond,10000
-734,Red_Frame,Red Frame,10000
-735,Blue_Porcelain,Chung Jah,10000
-736,White_Platter,China,10000
-737,Black_Ladle,Black Ladle,10000
-738,Pencil_Case,Pencil Case,10000
-739,Rouge,Rouge,10000
-740,Stuffed_Doll,Puppet,10000
-741,Poring_Doll,Poring Doll,10000
-742,Chonchon_Doll,Chonchon Doll,10000
-743,Spore_Doll,Spore Doll,10000
-744,Bunch_of_Flowers,Bouquet,10000
-745,Wedding_Bouquet,Wedding Bouquet,10000
-746,Glass_Bead,Glass Bead,10000
-747,Crystal_Mirror,Crystal Mirror,10000
-748,Witherless_Rose,Witherless Rose,10000
-749,Frozen_Rose,Frozen Rose,10000
-750,Baphomet_Doll,Baphomet Doll,10000
-751,Osiris_Doll,Osiris Doll,10000
-752,Grasshopper_Doll,Grasshopper Doll,10000
-753,Monkey_Doll,Yoyo Doll,10000
-754,Raccoon_Doll,Raccoon Doll,10000
-706,Four_leaf_Clover,Four leaf Clover,10000
-4005,Poring__Card,Poring  Card,10000
-7034,Red_Socks_with_Holes,Red Socks with Holes,10000
-501,Red_Potion,Red Potion,10000
-502,Orange_Potion,Orange Potion,10000
-503,Yellow_Potion,Yellow Potion,10000
-504,White_Potion,White Potion,10000
-505,Blue_Potion,Blue Potion,10000
-506,Green_Potion,Green Potion,10000
-526,Royal_Jelly,Royal Jelly,10000
-529,Candy,Candy,10000
-530,Candy_Striper,Candy Cane,10000
-537,Pet_Food,Pet Food,10000
-538,Well_baked_Cookie,Well-baked Cookie,10000
-539,Piece_of_Cake,Piece of Cake,10000
-603,Old_Blue_Box,Old Blue Box,10000
-617,Old_Violet_Box,Old Violet Box,10000
-644,Gift_Box,Gift Box,190000
+733,Cracked Diamond,10000
+734,Red Frame,10000
+735,Chung Jah,10000
+736,China,10000
+737,Black Ladle,10000
+738,Pencil Case,10000
+739,Rouge,10000
+740,Puppet,10000
+741,Poring Doll,10000
+742,Chonchon Doll,10000
+743,Spore Doll,10000
+744,Bouquet,10000
+745,Wedding Bouquet,10000
+746,Glass Bead,10000
+747,Crystal Mirror,10000
+748,Witherless Rose,10000
+749,Frozen Rose,10000
+750,Baphomet Doll,10000
+751,Osiris Doll,10000
+752,Grasshopper Doll,10000
+753,Yoyo Doll,10000
+754,Raccoon Doll,10000
+706,Four Leaf Clover,10000
+4005,Poring Card,10000
+7034,Red Socks with Holes,10000
+501,Red Potion,10000
+502,Orange Potion,10000
+503,Yellow Potion,10000
+504,White Potion,10000
+505,Blue Potion,10000
+506,Green Potion,10000
+526,Royal Jelly,10000
+529,Candy,10000
+530,Candy Cane,10000
+537,Pet Food,10000
+538,Well-baked Cookie,10000
+539,Piece of Cake,10000
+603,Old Blue Box,10000
+617,Old Violet Box,10000
+644,Gift Box,190000
