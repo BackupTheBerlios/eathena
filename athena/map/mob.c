@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.45 2004/02/17 20:00:41 rovert Exp $
+// $Id: mob.c,v 1.46 2004/02/18 18:10:58 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -301,6 +301,9 @@ static int mob_walk(struct mob_data *md,unsigned int tick,int data)
 		map_foreachinmovearea(clif_mobinsight,md->bl.m,x-AREA_SIZE,y-AREA_SIZE,x+AREA_SIZE,y+AREA_SIZE,-dx,-dy,BL_PC,md);
 		md->state.state=MS_IDLE;
 
+		if(md->option&4)
+			skill_check_cloaking(&md->bl);
+
 		skill_unit_move(&md->bl,tick,1);	// スキルユニットの検査
 
 		if(md->sc_data[SC_ANKLE].timer != -1 || md->canmove_tick > tick)
@@ -351,8 +354,7 @@ static int mob_attack(struct mob_data *md,unsigned int tick,int data)
 
 	mode=mob_db[md->class].mode;
 	race=mob_db[md->class].race;
-	if(mob_db[md->class].mexp <= 0 && !(mode&0x20) &&
-		(sd->sc_data[SC_TRICKDEAD].timer != -1 ||
+	if(!(mode&0x20) && (sd->sc_data[SC_TRICKDEAD].timer != -1 ||
 		 ((pc_ishiding(sd) || sd->state.gangsterparadise) && race!=4 && race!=6) ) ) {
 		md->target_id=0;
 		md->state.targettype = NONE_ATTACKABLE;
@@ -818,14 +820,14 @@ int mob_target(struct mob_data *md,struct block_list *bl,int dist)
 	if( (md->target_id > 0 && md->state.targettype == ATTACKABLE) && ( !(mode&0x04) || rand()%100>25) )
 		return 0;
 
-	if(	mob_db[md->class].mexp > 0 || mode&0x20 ||	// MVPMOBなら強制
+	if(mode&0x20 ||	// MVPMOBなら強制
 		(sc_data && sc_data[SC_TRICKDEAD].timer == -1 &&
 		 ( (option && !(*option&0x06) ) || race==4 || race==6) ) ){
 		if(bl->type == BL_PC) {
 			sd = (struct map_session_data *)bl;
 			if(sd->invincible_timer != -1 || pc_isinvisible(sd))
 				return 0;
-			if(mob_db[md->class].mexp <= 0 && !(mode&0x20) && race!=4 && race!=6 && sd->state.gangsterparadise)
+			if(!(mode&0x20) && race!=4 && race!=6 && sd->state.gangsterparadise)
 				return 0;
 		}
 
@@ -861,7 +863,7 @@ static int mob_ai_sub_hard_activesearch(struct block_list *bl,va_list ap)
 			(dist=distance(md->bl.x,md->bl.y,sd->bl.x,sd->bl.y))<9){
 
 			race=mob_db[md->class].race;
-			if(	mob_db[md->class].mexp > 0 || mode&0x20 ||
+			if(mode&0x20 ||
 				(sd->sc_data[SC_TRICKDEAD].timer == -1 &&
 				((!pc_ishiding(sd) && !sd->state.gangsterparadise) || race==4 || race==6) )  ){	// 妨害がないか判定
 
@@ -1018,7 +1020,7 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 		if(sd!=NULL && !pc_isdead(sd) && sd->invincible_timer == -1 && !pc_isinvisible(sd)){
 
 			race=mob_db[md->class].race;
-			if(	mob_db[md->class].mexp > 0 || mode&0x20 ||
+			if(mode&0x20 ||
 				(sd->sc_data[SC_TRICKDEAD].timer == -1 &&
 				( (!pc_ishiding(sd) && !sd->state.gangsterparadise) || race==4 || race==6) ) ){	// 妨害がないか判定
 
@@ -1036,7 +1038,7 @@ static int mob_ai_sub_hard_mastersearch(struct block_list *bl,va_list ap)
 		if(sd!=NULL && !pc_isdead(sd) && sd->invincible_timer == -1 && !pc_isinvisible(sd)){
 
 			race=mob_db[mmd->class].race;
-			if(	mob_db[md->class].mexp > 0 || mode&0x20 ||
+			if(mode&0x20 ||
 				(sd->sc_data[SC_TRICKDEAD].timer == -1 &&
 				(!(sd->status.option&0x06) || race==4 || race==6)
 				) ){	// 妨害がないか判定
@@ -1449,7 +1451,7 @@ static int mob_ai_sub_lazy(void * key,void * data,va_list app)
 		
 			// 召喚MOBでなく、BOSSでもないMOBは時々、沸きなおす
 			else if( rand()%1000<MOB_LAZYWARPPERC && md->x0<=0 &&
-				mob_db[md->class].mexp<=0 )
+				mob_db[md->class].mexp <= 0 && !(mob_db[md->class].mode & 0x20))
 				mob_spawn(md->bl.id);
 			
 		}else{
@@ -1699,6 +1701,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 	// map外に消えた人は計算から除くので
 	// overkill分は無いけどsumはmax_hpとは違う
 
+
 	for(i=0,count=0,mvp_damage=0;i<DAMAGELOG_SIZE;i++){
 		if(md->dmglog[i].id==0)
 			continue;
@@ -1796,8 +1799,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 				if(sd->monster_drop_itemid[i] <= 0)
 					continue;
 				if(sd->monster_drop_race[i] & (1<<race) || 
-					(mob_db[md->class].mexp > 0 && sd->monster_drop_race[i] & 1<<10) ||
-					(mob_db[md->class].mexp <= 0 && sd->monster_drop_race[i] & 1<<11) ) {
+					(mob_db[md->class].mode & 0x20 && sd->monster_drop_race[i] & 1<<10) ||
+					(!(mob_db[md->class].mode & 0x20) && sd->monster_drop_race[i] & 1<<11) ) {
 					if(sd->monster_drop_itemrate[i] <= rand()%10000)
 						continue;
 
@@ -2037,7 +2040,7 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 		return 0;
 
 	if(type >= 0) {
-		if(map[md->bl.m].flag.noteleport)
+		if(map[md->bl.m].flag.monster_noteleport)
 			return 0;
 		clif_clearchar_area(&md->bl,type);
 	}

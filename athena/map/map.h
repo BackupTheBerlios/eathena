@@ -168,7 +168,7 @@ struct map_session_data {
 	struct skill_unit_group skillunit[MAX_SKILLUNITGROUP];
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL];
-	short sg_count;
+	short sg_count,fw_count;
 
 	int invincible_timer;
 	unsigned int canact_tick;
@@ -381,6 +381,8 @@ struct map_data {
 	struct {
 		unsigned nomemo : 1;
 		unsigned noteleport : 1;
+		unsigned noreturn : 1;
+		unsigned monster_noteleport : 1;
 		unsigned nosave : 1;
 		unsigned nobranch : 1;
 		unsigned nopenalty : 1;

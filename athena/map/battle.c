@@ -1688,24 +1688,25 @@ static struct Damage battle_calc_mob_weapon_attack(
 	t_mode=battle_get_mode( target );
 	t_sc_data=battle_get_sc_data( target );
 
-	if((battle_config.monster_auto_counter_type&2 || (skill_num == 0 && skill_lv >= 0))) {
-	if(skill_num != CR_GRANDCROSS && t_sc_data && t_sc_data[SC_AUTOCOUNTER].timer != -1) {
-		int dir = map_calc_dir(src,target->x,target->y),t_dir = battle_get_dir(target);
-		int dist = distance(src->x,src->y,target->x,target->y);
-		if(dist <= 0 || map_check_dir(dir,t_dir) ) {
-			memset(&wd,0,sizeof(wd));
-			t_sc_data[SC_AUTOCOUNTER].val3 = 0;
-			t_sc_data[SC_AUTOCOUNTER].val4 = 1;
-			if(sc_data && sc_data[SC_AUTOCOUNTER].timer == -1) {
-				int range = battle_get_range(target);
-				if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range+1) ||
-					(target->type == BL_MOB && range <= 3 && dist <= range+1) )
-					t_sc_data[SC_AUTOCOUNTER].val3 = src->id;
+	if((skill_num == 0 || (target->type == BL_PC && battle_config.pc_auto_counter_type&2) ||
+		(target->type == BL_MOB && battle_config.monster_auto_counter_type&2)) && skill_lv >= 0) {
+		if(skill_num != CR_GRANDCROSS && t_sc_data && t_sc_data[SC_AUTOCOUNTER].timer != -1) {
+			int dir = map_calc_dir(src,target->x,target->y),t_dir = battle_get_dir(target);
+			int dist = distance(src->x,src->y,target->x,target->y);
+			if(dist <= 0 || map_check_dir(dir,t_dir) ) {
+				memset(&wd,0,sizeof(wd));
+				t_sc_data[SC_AUTOCOUNTER].val3 = 0;
+				t_sc_data[SC_AUTOCOUNTER].val4 = 1;
+				if(sc_data && sc_data[SC_AUTOCOUNTER].timer == -1) {
+					int range = battle_get_range(target);
+					if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range+1) ||
+						(target->type == BL_MOB && range <= 3 && dist <= range+1) )
+						t_sc_data[SC_AUTOCOUNTER].val3 = src->id;
+				}
+				return wd;
 			}
-			return wd;
+			else ac_flag = 1;
 		}
-		else ac_flag = 1;
-	}
 	}
 	flag=BF_SHORT|BF_WEAPON|BF_NORMAL;	// 攻撃の種類の設定
 
@@ -2002,7 +2003,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 			cardfix=cardfix*(100-tsd->long_attack_def_rate)/100;
 		if(flag&BF_SHORT)
 			cardfix=cardfix*(100-tsd->near_attack_def_rate)/100;
-		if(mob_db[md->class].mexp > 0)
+		if(mob_db[md->class].mode & 0x20)
 			cardfix=cardfix*(100-tsd->subrace[10])/100;
 		else
 			cardfix=cardfix*(100-tsd->subrace[11])/100;
@@ -2108,24 +2109,25 @@ static struct Damage battle_calc_pc_weapon_attack(
 	t_mode=battle_get_mode( target );
 	t_sc_data=battle_get_sc_data( target );
 
-	if((battle_config.pc_auto_counter_type&2 || (skill_num == 0 && skill_lv >= 0))) {
-	if(skill_num != CR_GRANDCROSS && t_sc_data && t_sc_data[SC_AUTOCOUNTER].timer != -1) {
-		int dir = map_calc_dir(src,target->x,target->y),t_dir = battle_get_dir(target);
-		int dist = distance(src->x,src->y,target->x,target->y);
-		if(dist <= 0 || map_check_dir(dir,t_dir) ) {
-			memset(&wd,0,sizeof(wd));
-			t_sc_data[SC_AUTOCOUNTER].val3 = 0;
-			t_sc_data[SC_AUTOCOUNTER].val4 = 1;
-			if(sc_data && sc_data[SC_AUTOCOUNTER].timer == -1) {
-				int range = battle_get_range(target);
-				if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range+1) ||
-					(target->type == BL_MOB && range <= 3 && dist <= range+1) )
-					t_sc_data[SC_AUTOCOUNTER].val3 = src->id;
+	if((skill_num == 0 || (target->type == BL_PC && battle_config.pc_auto_counter_type&2) ||
+		(target->type == BL_MOB && battle_config.monster_auto_counter_type&2)) && skill_lv >= 0) {
+		if(skill_num != CR_GRANDCROSS && t_sc_data && t_sc_data[SC_AUTOCOUNTER].timer != -1) {
+			int dir = map_calc_dir(src,target->x,target->y),t_dir = battle_get_dir(target);
+			int dist = distance(src->x,src->y,target->x,target->y);
+			if(dist <= 0 || map_check_dir(dir,t_dir) ) {
+				memset(&wd,0,sizeof(wd));
+				t_sc_data[SC_AUTOCOUNTER].val3 = 0;
+				t_sc_data[SC_AUTOCOUNTER].val4 = 1;
+				if(sc_data && sc_data[SC_AUTOCOUNTER].timer == -1) {
+					int range = battle_get_range(target);
+					if((target->type == BL_PC && ((struct map_session_data *)target)->status.weapon != 11 && dist <= range+1) ||
+						(target->type == BL_MOB && range <= 3 && dist <= range+1) )
+						t_sc_data[SC_AUTOCOUNTER].val3 = src->id;
+				}
+				return wd;
 			}
-			return wd;
+			else ac_flag = 1;
 		}
-		else ac_flag = 1;
-	}
 	}
 
 	flag=BF_SHORT|BF_WEAPON|BF_NORMAL;	// 攻撃の種類の設定
@@ -2271,7 +2273,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 			damage2 = (damage2 * (def1 + def2))/100;
 			idef_flag_ = 1;
 		}
-		if(tmd && mob_db[tmd->class].mexp > 0) {
+		if(tmd && mob_db[tmd->class].mode & 0x20) {
 			if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
 				damage = (damage * (def1 + def2))/100;
 				idef_flag = 1;
@@ -2323,7 +2325,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				damage2 = (damage2 * (def1 + def2))/100;
 				idef_flag_ = 1;
 			}
-			if(tmd && mob_db[tmd->class].mexp > 0) {
+			if(tmd && mob_db[tmd->class].mexp & 0x20) {
 				if(!idef_flag && sd->def_ratio_atk_race & (1<<10)) {
 					damage = (damage * (def1 + def2))/100;
 					idef_flag = 1;
@@ -2658,7 +2660,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 					idef_flag = 1;
 				if(sd->ignore_def_ele_ & (1<<t_ele) || sd->ignore_def_race_ & (1<<t_race))
 					idef_flag_ = 1;
-				if(tmd && mob_db[tmd->class].mexp > 0) {
+				if(tmd && mob_db[tmd->class].mode & 0x20) {
 					if(sd->ignore_def_race & (1<<10))
 						idef_flag = 1;
 					if(sd->ignore_def_race_ & (1<<10))
@@ -2746,7 +2748,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		cardfix=cardfix*(100+sd->addsize[t_size]+sd->arrow_addsize[t_size])/100;	// サイズによるダメージ修正
 	}
 	if(tmd) {
-		if(mob_db[tmd->class].mexp > 0) {
+		if(mob_db[tmd->class].mode & 0x20) {
 			if(!sd->state.arrow_atk) {
 				if(!battle_config.left_cardfix_to_right)
 					cardfix=cardfix*(100+sd->addrace[10])/100;
@@ -2782,7 +2784,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		cardfix=cardfix*(100+sd->addele_[t_ele])/100;	// 属 性によるダメージ修正
 		cardfix=cardfix*(100+sd->addsize_[t_size])/100;	// サイズによるダメージ修正
 		if(tmd) {
-			if(mob_db[tmd->class].mexp > 0)
+			if(mob_db[tmd->class].mode & 0x20)
 				cardfix=cardfix*(100+sd->addrace_[10])/100;
 			else
 				cardfix=cardfix*(100+sd->addrace_[11])/100;
@@ -3015,7 +3017,7 @@ struct Damage battle_calc_magic_attack(
 						((200 - hp * 200 / mhp));
 //				if(battle_config.battle_log)
 //					printf("ターンアンデッド！ 確率%d ‰(千分率)\n", thres);
-				if(rand()%1000 < thres && !(battle_get_mexp(target)))	// 成功
+				if(rand()%1000 < thres && !(battle_get_mode(target)&0x20))	// 成功
 					damage = hp;
 				else					// 失敗
 					damage = battle_get_lv(bl) + battle_get_int(bl) + skill_lv * 10;
@@ -3094,7 +3096,7 @@ struct Damage battle_calc_magic_attack(
 		if(sd) {
 			if(sd->ignore_mdef_ele & (1<<t_ele) || sd->ignore_mdef_race & (1<<t_race))
 				imdef_flag = 1;
-			if(tmd && mob_db[tmd->class].mexp > 0) {
+			if(tmd && mob_db[tmd->class].mode & 0x20) {
 				if(sd->ignore_mdef_race & (1<<10))
 					imdef_flag = 1;
 			}
@@ -3115,7 +3117,7 @@ struct Damage battle_calc_magic_attack(
 		cardfix=cardfix*(100+sd->magic_addrace[t_race])/100;
 		cardfix=cardfix*(100+sd->magic_addele[t_ele])/100;
 		if(tmd) {
-			if(mob_db[tmd->class].mexp > 0)
+			if(mob_db[tmd->class].mode & 0x20)
 				cardfix=cardfix*(100+sd->magic_addrace[10])/100;
 			else
 				cardfix=cardfix*(100+sd->magic_addrace[11])/100;
@@ -3700,6 +3702,8 @@ int battle_config_read(const char *cfgName)
 	battle_config.vit_penaly_num = 0;
 	battle_config.pc_skill_reiteration = 0;
 	battle_config.monster_skill_reiteration = 0;
+	battle_config.pc_cloak_check_wall = 1;
+	battle_config.monster_cloak_check_wall = 1;
 	battle_config.gvg_short_damage_rate = 100;
 	battle_config.gvg_long_damage_rate = 100;
 	battle_config.gvg_magic_damage_rate = 100;
@@ -3828,6 +3832,8 @@ int battle_config_read(const char *cfgName)
 			{ "vit_penaly_num", &battle_config.vit_penaly_num },
 			{ "player_skill_reiteration", &battle_config.pc_skill_reiteration },
 			{ "monster_skill_reiteration", &battle_config.monster_skill_reiteration },
+			{ "player_cloak_check_wall", &battle_config.pc_cloak_check_wall },
+			{ "monster_cloak_check_wall", &battle_config.monster_cloak_check_wall },
 			{ "gvg_short_attack_damage_rate" ,&battle_config.gvg_short_damage_rate },
 			{ "gvg_long_attack_damage_rate" ,&battle_config.gvg_long_damage_rate },
 			{ "gvg_magic_attack_damage_rate" ,&battle_config.gvg_magic_damage_rate },
