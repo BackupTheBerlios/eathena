@@ -1,4 +1,4 @@
-// $Id: socket.c,v 1.2 2004/01/25 14:28:10 RoVeRT Exp $
+// $Id: socket.c,v 1.3 2004/02/01 16:11:53 rovert Exp $
 // original : core.c 2003/02/26 18:03:12 Rev 1.7
 
 #include <stdio.h>
