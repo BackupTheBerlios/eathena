@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.5 2004/02/13 21:42:03 rovert Exp $
+// $Id: login.c,v 1.6 2004/02/13 21:45:31 rovert Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -696,6 +696,7 @@ int parse_login(int fd)
 		{
 			unsigned char *p=(unsigned char *)&session[fd]->client_addr.sin_addr;
 			login_log("client connection request %s from %d.%d.%d.%d" RETCODE,
+				RFIFOP(fd,6),p[0],p[1],p[2],p[3]);
 		}
 		
 		if( !check_ip(session[fd]->client_addr.sin_addr.s_addr) ){
