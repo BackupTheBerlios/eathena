@@ -4,9 +4,9 @@
 //======== Registration, Mission 1 Item Quest, etc =======
 gef_tower.gat,111,37,4	script	Wizard's Guild Worker	70,{
 //======== Other Jobs
-   	if (Class == Job_Magician) goto Part2;
-		if (Class == Job_Wizard) goto IsWizard;
-		if (Class == Job_Novice) goto IsNovice;
+   	if (Class == 2) goto Part2;
+		if (Class == 9) goto IsWizard;
+		if (Class == 2) goto IsNovice;
 		goto IsOther;
 		IsWizard:
 			if (Sex == 1) goto IsMale;
@@ -436,10 +436,10 @@ QuitScript:
 //======== Mission 2 do , Mission 3 do, warps from tower to arena ===========
 gef_tower.gat,102,24,2	script	Wizard	735,{
 //======== filtering other jobs
-   	if (Class == Job_Magician) goto Part2;
-		if (Class == Job_Wizard) IsWizard;
-		if (Class == Job_Priest) goto IsPriest;
-		if (Class == Job_Novice) goto IsNovice;
+   	if (Class == 2) goto Part2;
+		if (Class == 9) IsWizard;
+		if (Class == 8) goto IsPriest;
+		if (Class == 0) goto IsNovice;
 			mes "[Raul]";
 			mes "Ugh I don't feel good....I feel like I'm trapped in ice........";
 			next;
