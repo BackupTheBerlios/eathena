@@ -32,7 +32,7 @@ This is used once in main, I doubt you'll need it.
 
 
 
-void web_send(int sockin, char *in_data)
+void web_send(int sockin, char *in_data);
 
 Super easy way of sending data to a webpage!
 Simply put in the socket name and then the data.
@@ -41,3 +41,10 @@ Simply put in the socket name and then the data.
 		web_send(socket, "I like cheese!\n";
 
 
+
+
+char *html_header(char* title);
+Easy way to print the eAthena header for the server.
+
+	Ex:
+		web_send(sockethere, html_header("About");
