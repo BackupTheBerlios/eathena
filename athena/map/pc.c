@@ -4470,7 +4470,7 @@ int pc_eventtimer(int tid,unsigned int tick,int id,int data)
 	for(i=0;i<MAX_EVENTTIMER;i++){
 		if( sd->eventtimer[i]==tid ){
 			sd->eventtimer[i]=-1;
-			npc_event(sd,(const char *)data);
+			npc_event(sd,(const char *)data,0);
 			break;
 		}
 	}
