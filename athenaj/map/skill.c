@@ -934,7 +934,6 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		return 0;
 	if(bl->type == BL_PC && pc_isdead((struct map_session_data *)bl))
 		return 0;
-
 	switch(skillid)
 	{
 	/* •ŠíUŒ‚ŒnƒXƒLƒ‹ */
@@ -3172,6 +3171,7 @@ int skill_check_condition( struct map_session_data *sd )
 			break;
 
 		case MC_VENDING:		// ˜I“XŠJİ	
+		case MC_CARTREVOLUTION:		// ƒJ[ƒgƒŒƒ{ƒŠƒ…[ƒVƒ‡ƒ“
 			if(!pc_iscarton(sd)) {
 				clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
