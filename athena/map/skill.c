@@ -1822,7 +1822,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;
 	case SM_PROVOKE:		/* プロボック */
 		/* MVPmobには効かない */
-		if(bl->type==BL_MOB && battle_get_mode(bl)&0x20 || battle_check_undead(battle_get_race(bl),battle_get_elem_type(bl)))
+		if(bl->type==BL_MOB && (battle_get_mode(bl)&0x20 || battle_check_undead(battle_get_race(bl),battle_get_elem_type(bl))))
 			return 0;
 
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
@@ -4702,6 +4702,9 @@ int skill_autospell(struct map_session_data *md,int skillid)
 	}else if(skillid==MG_FROSTDIVER)
 					maxlv=1;
 	else return 0;
+
+	if(maxlv > pc_checkskill(md,skillid))
+		maxlv = pc_checkskill(md,skillid);
 
 	skill_status_change_start(&md->bl,SC_AUTOSPELL,skillid,maxlv,	// val1:スキルID val2:使用最大Lv
 				skill_get_time(SA_AUTOSPELL,skilllv),0);// にしてみたけどbscriptが書き易い・・・？
