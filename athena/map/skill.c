@@ -2679,7 +2679,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 	for(i=0;i<count;i++){
 		struct skill_unit *unit;
 		int ux=x,uy=y,val1=skilllv,val2=0,limit=group->limit,alive=1;
-		int range=0;
+		int range=0,c;
 		switch(skillid){	/* 設定 */
 		case MG_FIREWALL:		/* ファイヤーウォール */
 		{
@@ -2857,7 +2857,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 				range=-1;	/* 中心じゃない場合は範囲を-1にオーバーライド */
 			break;
 		}
-		if(alive){
+		if(alive && !((c=read_gat(src->m,ux,uy))==1 || c==5) ){
 			unit=skill_initunit(group,i,ux,uy);
 			unit->val1=val1;
 			unit->val2=val2;
@@ -4531,8 +4531,10 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		printf("skill_status_change_start: neither MOB nor PC !\n");
 		return 0;
 	}
-	if(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP)
+	if(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP) {
 		battle_stopwalking(bl,1);
+		skill_castcancel(bl);
+	}
 
 	if(sc_data[type].timer != -1){	/* すでに同じ異常になっている場合タイマ解除 */
 		(*sc_count)--;
