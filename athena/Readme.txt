@@ -5,10 +5,10 @@
 /\  __/\ \ \/\ \ \ \_\ \ \ \ \/\  __//\ \/\ \/\ \L\.\_ 
 \ \____\\ \_\ \_\ \__\\ \_\ \_\ \____\ \_\ \_\ \__/.\_\
  \/____/ \/_/\/_/\/__/ \/_/\/_/\/____/\/_/\/_/\/__/\/_/
-  _   _   _   _   _   _   _     _   _   _   _   _   _  
+  _   _   _   _   _   _   _     _   _   _   _   _   _
  / \ / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \ 
 ( e | n | g | l | i | s | h ) ( a | t | h | e | n | a )
- \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/ 
+ \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/
 
 
 --------------------------------------------------------------
@@ -29,12 +29,24 @@ eAthena Features
 - qPets (Cute Pets)
 - Monster skills
 - 2-2 Jobs (Alternate 2nd Jobs)
--
+- SuperNovice (Alternate 1st Job)
 --------------------------------------------------------------
 > eAthena Incomplete Features - Estimated completion rate
 --------------------------------------------------------------
-- Guild Wars (War of Emperium) - 20%
+- Guild Wars (War of Emperium) - 30%
 - 2-2 Skills (Advanced 2nd Job Skills) - 80%
+  * Crusader - %
+  * Monk - %
+  * Alchemist - %
+  * Sage - %
+  * Rogue - %
+  * Bard - %
+  * Dancer - %
+--------------------------------------------------------------
+> eAthena - What we currently do not have
+--------------------------------------------------------------
+- Wedding System
+- Upper 2nd Job System
 --------------------------------------------------------------
 --------------------------------------------------------------
 
@@ -174,6 +186,12 @@ Q: You said eAthena has 2-2 skills. Well, I tried it and there
    are no 2-2 skills when I use 2-2 characters! You lie!
 A: No, I did not. You have an outdated Ragexe/Sakexe that does
    not support 2-2 skills. Update it to a later one which does.
+
+Q: My Ragnarok Online crashed while playing with eAthena! What
+   do I do now?
+A: Well, if your Ragnarok crashes, it's most probably not
+   anything to do with eAthena. Something is wrong with your
+   Ragnarok installation. Try reinstalling or updating.
 
 Q: Is eAthena compatible with mySQL? Can I use mySQL as the DB
    instead of using text files?
