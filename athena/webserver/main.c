@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 			memset(recvin, 0x0, 500);
 			recv(new_fd, recvin, 500, 0);
 			send(new_fd, header, strlen(header), 0);
-			generate_page(new_fd, get_query(recvin), inet_ntoa(their_addr.sin_addr));
+			generate_page(password, new_fd, get_query(recvin), inet_ntoa(their_addr.sin_addr));
 			log_visit(get_query(recvin), inet_ntoa(their_addr.sin_addr));
 
 			close(new_fd);
