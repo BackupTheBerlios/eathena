@@ -14,6 +14,7 @@ PHARA:
 EMVER:
 	set @itemid,1011;
 	set @value,1000;
+	goto CONTINUE;
 
 CONTINUE:
 	input @ammount;
@@ -52,6 +53,7 @@ PHARA:
 EMVER:
 	set @itemid,1011;
 	set @value,1000;
+	goto CONTINUE;
 
 CONTINUE:
 	input @ammount;
@@ -90,6 +92,7 @@ goto CONTINUE;
 EMVER:
 set @itemid,1011;
 set @value,1000;
+	goto CONTINUE;
 
 CONTINUE:
 input @ammount;
@@ -128,6 +131,7 @@ goto CONTINUE;
 EMVER:
 set @itemid,1011;
 set @value,1000;
+goto CONTINUE;
 
 CONTINUE:
 input @ammount;
@@ -169,6 +173,7 @@ goto CONTINUE;
 EMVER:
 set @itemid,1011;
 set @value,1000;
+goto CONTINUE;
 
 CONTINUE:
 input @ammount;
