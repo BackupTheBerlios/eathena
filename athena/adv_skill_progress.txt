@@ -1,0 +1,118 @@
+----------------------------------------------------------
+
+LK_AURABLADE:			(need proper status icon)
+
++10 dmg per level			(done)	(battle_calc_xx_weapon_attack)
+  --> penetrates def		(done)	(battle_calc_xx_weapon_attack)
+ 
+----------------------------------------------------------
+
+LK_PARRYING:			(need proper status icon)
+
+chance of total blocking	(done)	(battle_calc_damage)
+  --> 3% per level		(done)	(battle_calc_damage)
+
+[possibly other effects to be discovered]
+
+----------------------------------------------------------
+
+LK_CONCENTRATION:			(need proper status icon)
+
++5% atk per level			(done)	(pc_calcstatus)
++10% hit per level		(done)	(pc_calcstatus)
+-10% def per level		(done)	(pc_calcstatus)
+
+----------------------------------------------------------
+
+LK_TENSIONRELAX:			(need proper status icon)
+
+-15 SP every 10 seconds:
+HP recovery x2:
+must be sitting:	
+
+----------------------------------------------------------
+
+LK_BERSERK/LK_FURY:		(need proper status icon)
+
+Max HP x2/HP fully refilled 	(done)	(pc_calcstatus)
+Atk +150:				(done)	(pc_calcstatus)
+Aspd +5%:				(done)  	(pc_calcstatus)
+def->0:				(done)	(pc_calcstatus)
+mdef->0:				(done)	(pc_calcstatus)
+no natural healing while on:	(done)	
+cannot be healed by magic:
+cannot use items:			(done)	(pc_useitem)
+cannot equip or unequip:	(done)	(pc_equipitem and pc_equipitem)
+1% hp damage per 15 seconds:
+
+[possibly other effects to be discovered]
+
+---------------------------------------------------------
+
+HP_MEDITATIO:
+
+3 extra SP recovery per level:	(done)	(pc_calcstatus)
+1% extra SP per level:			(done)	(pc_calcstatus)
+
+---------------------------------------------------------
+
+HP_ASSUMPTIO:			(need proper status icon)
+
+cannot co-exist with kyrie:	(done)	(skill_status_change_start)
+halves all damage:		(done)	(battle_calc_damage)
+
+
+-----------------------------------------------------------------
+
+HW_SOULDRAIN:
+
+1% extra SP per level:		(done)	(pc_calcstatus)
+
+certain amount of SP drained	(partial)	(skill_attack)
+from enemy kills:
+
+-----------------------------------------------------------------
+
+PA_PRESSURE:
+
+300/450/600/750/900 dmg		(done)	(battle_calc_magic_attack)
+  --> dmg avoids def		(done)	(battle_calc_magic_attack)
+
+-----------------------------------------------------------------
+
+PA_SACRIFICE:
+
+cause dmg to caster of up to 9%:	
+cause dmg of up to 9% of max hp:	(done)	(battle_calc_pc_weapon_attack)
+  -> damage above is multiplied
+	up to 1.65*:			(done)	(battle_calc_pc_weapon_attack)
+
+cannot harm boss monsters:
+
+-----------------------------------------------------------------
+
+CH_PALMSTRIKE:
+
+can only be done under crit.explosion	(done)	(skill_require_db.txt)
+dmg is 50%+(100% * level):			(done)	(various battle_calc_xx_weapon_attack)
+push enemy 3 cells away:			(done)	(various battle_calc_xx_weapon_attack)
+
+-----------------------------------------------------------------
+
+CH_TIGERFIST:
+
+can use only after MO_COMBOFINISH:	(done)	(skill_attack)
+dmg is 100%+(20% * level):		(done) 	(various battle_calc_xx_weapon_attack)
+stun chance 5%+(5% * level):		(done)	(skill_additional_effect)
+
+-----------------------------------------------------------------
+
+CH_CHAINCRUSH:
+
+can use after MO_COMBOFINISH:		(done)	(skill_attack)
+can use after CH_TIGERFIST:		(done)	(skill_attack)
+
+dmg is 100%+(20% * level):		(done)	(various battle_calc_xx_weapon_attack)
+amount of hits is level/2:
+
+------------------------------------------------------------------
