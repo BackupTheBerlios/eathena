@@ -104,11 +104,11 @@ int skill_castcancel(struct block_list *bl,int type);
 int skill_gangsterparadise(struct map_session_data *sd ,int type);
 void skill_brandishspear_first(struct square *tc,int dir,int x,int y);
 void skill_brandishspear_dir(struct square *tc,int dir,int are);
+int skill_autospell(struct map_session_data *md,int skillid);
 void skill_devotion(struct map_session_data *md,int target);
 void skill_devotion2(struct block_list *bl,int crusader);
 int skill_devotion3(struct block_list *bl,int target);
 void skill_devotion_end(struct map_session_data *md,struct map_session_data *sd,int target);
-int skill_frostjoke_scream(struct block_list *bl,va_list ap);
 
 #define skill_calc_heal(bl,skill_lv) (( battle_get_lv(bl)+battle_get_int(bl) )/8 *(4+ skill_lv*8))
 
@@ -213,6 +213,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_DEVOTION				=60,
 	SC_PROVIDENCE			=61,
 	SC_DEFENDER				=62,
+	SC_AUTOSPELL			=65,
 	SC_SPEARSQUICKEN		=68,
 	SC_EXPLOSIONSPIRITS		=86,
 	SC_STEELBODY			=87,
@@ -261,7 +262,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_SIGHTTRASHER			=73,
 
 //	SC_CALLSPIRITS			=100,
-	SC_FREECAST			=101,
+//	SC_FREECAST			=101,
 //	SC_ABSORBSPIRIT			=102,
 	SC_BLADESTOP			=180,
 	SC_VIOLENTGALE			=181,
@@ -271,10 +272,9 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 
 	SC_CANNIBALIZE			=186,
 	SC_SPHEREMINE			=187,
-	SC_METEOSTORM			=189,
-	SC_CASTCANCEL			=190,
+//	SC_METEOSTORM			=189,
+//	SC_CASTCANCEL			=190,
 	SC_SPELLBREAKER			=191,
-	SC_AUTOSPELL			=103,
 
 };
 extern int SkillStatusChangeTable[];

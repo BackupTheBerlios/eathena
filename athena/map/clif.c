@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.34 2004/02/18 21:54:30 rovert Exp $
+// $Id: clif.c,v 1.35 2004/02/20 03:14:56 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -4188,6 +4188,41 @@ int clif_pet_food(struct map_session_data *sd,int foodid,int fail)
 	return 0;
 }
 /*==========================================
+ * オートスペル リスト送信
+ *------------------------------------------
+ */
+int clif_autospell(struct map_session_data *sd,int skilllv)
+{
+	int fd=sd->fd;
+	WFIFOW(fd, 0)=0x1cd;
+	
+	if(skilllv>0 && pc_checkskill(sd,MG_NAPALMBEAT))
+			WFIFOL(fd,2)= MG_NAPALMBEAT;
+	else		WFIFOL(fd,2)= 0x00000000;
+	if(skilllv>1 && pc_checkskill(sd,MG_COLDBOLT))
+			WFIFOL(fd,6)= MG_COLDBOLT;
+	else		WFIFOL(fd,6)= 0x00000000;
+	if(skilllv>1 && pc_checkskill(sd,MG_FIREBOLT))
+			WFIFOL(fd,10)= MG_FIREBOLT;
+	else		WFIFOL(fd,10)= 0x00000000;
+	if(skilllv>1 && pc_checkskill(sd,MG_LIGHTNINGBOLT))
+			WFIFOL(fd,14)= MG_LIGHTNINGBOLT;
+	else		WFIFOL(fd,14)= 0x00000000;
+	if(skilllv>4 && pc_checkskill(sd,MG_SOULSTRIKE))
+			WFIFOL(fd,18)= MG_SOULSTRIKE;
+	else		WFIFOL(fd,18)= 0x00000000;
+	if(skilllv>7 && pc_checkskill(sd,MG_FIREBALL))
+			WFIFOL(fd,22)= MG_FIREBALL;
+	else		WFIFOL(fd,22)= 0x00000000;
+	if(skilllv>9 && pc_checkskill(sd,MG_FROSTDIVER))
+			WFIFOL(fd,26)= MG_FROSTDIVER;
+	else		WFIFOL(fd,26)= 0x00000000;
+
+	WFIFOSET(fd,packet_len_table[0x1cd]);
+	return 0;
+}
+
+/*==========================================
  * ディボーションの青い糸
  *------------------------------------------
  */
@@ -5839,6 +5874,14 @@ void clif_parse_SelectArrow(int fd,struct map_session_data *sd)
 	skill_arrow_create(sd,RFIFOW(fd,2));
 }
 /*==========================================
+ * オートスペル受信
+ *------------------------------------------
+ */
+void clif_parse_AutoSpell(int fd,struct map_session_data *sd)
+{
+	skill_autospell(sd,RFIFOW(fd,2));
+}
+/*==========================================
  * カード使用
  *------------------------------------------
  */
@@ -6416,25 +6459,6 @@ if (skillid== 125)
 //printf("skill: %d %d location: %3d %3d message: %s\n",skillid,skilllv,x,y,(char*)mes);
 }
 
-int clif_skill_list_send(struct map_session_data *sd,int skills[],int limit)
-{
-	int i;
-	WFIFOW(sd->fd,0)=0x1cd;
-
-	for(i=0;i<7;i++)
-		WFIFOL(sd->fd,2+4*i)=(i < limit && pc_checkskill(sd,skills[i]) > 0)?skills[i]:0;
-
-	WFIFOSET(sd->fd,packet_len_table[0x1cd]);
-
-	return 0;
-}
-
-void clif_parse_selected_spell(int fd,struct map_session_data *sd)
-{
-	int skilllv=RFIFOL(fd,2);
-	skill_status_change_start((struct block_list*) sd, SC_AUTOSPELL, pc_checkskill(sd,SA_AUTOSPELL), skilllv, 1000 * (90 + 30 * skilllv),0 );
-}
-
 /*==========================================
  * GMによるチャット禁止時間参照（？）
  *------------------------------------------
@@ -6696,7 +6720,7 @@ static int clif_parse(int fd)
 
 		// 1c0
 		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, NULL,NULL,NULL,NULL,NULL,NULL,
-		clif_parse_selected_spell,
+		clif_parse_AutoSpell,
 		NULL,
 		// 1d0
 		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, NULL,NULL,NULL,NULL,NULL,NULL,NULL,
