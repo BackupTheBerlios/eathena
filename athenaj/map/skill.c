@@ -1880,7 +1880,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case NPC_SUICIDE:			/* 自決 */
 		if(md){
 			clif_skill_nodamage(src,bl,skillid,skilllv,1);
-			mob_damage(NULL,md,md->hp);
+			mob_damage(NULL,md,md->hp,0);
 		}
 		break;
 
@@ -2564,7 +2564,7 @@ int skill_unit_onplace(struct skill_unit *src,struct block_list *bl,unsigned int
 
 	if(bl == NULL ||  bl->prev==NULL || !src->alive)
 		return 0;
-	if( bl->type!=BL_PC && bl->type!=BL_MOB && bl->type!=BL_SKILL)
+	if( bl->type!=BL_PC && bl->type!=BL_MOB)
 		return 0;
 
 	if(ss==NULL)
@@ -4815,7 +4815,7 @@ int skill_unit_timer_sub_ondelete( struct block_list *bl, va_list ap )
 	return 0;
 }
 
-static int del_count=0;
+static int del_count = 0;
 /*==========================================
  * スキルユニットタイマー処理用(foreachobject)
  *------------------------------------------

@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.1 2004/01/20 05:14:20 RoVeRT Exp $
+// $Id: clif.c,v 1.2 2004/01/20 19:09:02 RoVeRT Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -6191,7 +6191,8 @@ void clif_parse_GMKick(int fd,struct map_session_data *sd)
 			}
 			else if(target->type == BL_MOB) {
 				struct mob_data *md = (struct mob_data *)target;
-				mob_damage(NULL,md,md->hp);
+				sd->state.attack_type = 0;
+				mob_damage(sd,md,md->hp,2);
 			}
 			else
 				clif_GM_kickack(sd,0);

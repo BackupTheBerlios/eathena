@@ -649,32 +649,17 @@ int pc_calc_skilltree(struct map_session_data *sd)
 			flag=0;
 			for(i=0;(id=skill_tree[c][i].id)>0;i++){
 				int j,f=1;
-				for(j=0;j<5;j++)
-					if( skill_tree[c][i].need[j].id &&
-						pc_checkskill(sd,skill_tree[c][i].need[j].id) <
-						skill_tree[c][i].need[j].lv
-					 ) f=0;
+				if(!battle_config.pc_skillfree) {
+					for(j=0;j<5;j++) {
+						if( skill_tree[c][i].need[j].id &&
+							pc_checkskill(sd,skill_tree[c][i].need[j].id) <
+							skill_tree[c][i].need[j].lv
+						 ) f=0;
+					}
+				}
 				if(f && sd->status.skill[id].id==0 ){
-					f = 0;
-					if(pc_isGM(sd) < battle_config.pc_skillflee)
-					{
-						if(id >=  2 && id <= 53)
-						{
-							if(sd->status.skill[1].lv < 9)f = 1;
-							if((id == 2 || id == 44 || id == 46) && c == 17 && sd->status.skill_point >= sd->status.job_level)f = 1;
-							if((id == 28 || id == 22 || id == 23 || id == 35) && c == 14 && sd->status.skill_point >= sd->status.job_level)f = 1;
-							if((id == 9 || id == 12) && c == 8 && sd->status.skill_point >= sd->status.job_level)f = 1;
-						}
-						if(id >= 54 && id <= 330)
-						{
-							if(sd->status.skill[1].lv < 9)f = 1;
-							if(sd->status.skill_point >= sd->status.job_level)f = 1;
-						}
-					}
-					if(f == 0){
-						sd->status.skill[id].id=id;
-						flag=1;
-					}
+					sd->status.skill[id].id=id;
+					flag=1;
 				}
 			}
 		}while(flag);
@@ -2934,7 +2919,7 @@ int pc_checkskill(struct map_session_data *sd,int skill_id)
 		return 0;
 	}
 
-	if(sd->status.skill[skill_id].id == skill_id || (pc_isGM(sd) < battle_config.pc_skillflee && sd->status.skill[skill_id].id == 0 && sd->status.skill[skill_id].lv > 0))
+	if(sd->status.skill[skill_id].id == skill_id)
 		return (sd->status.skill[skill_id].lv);
 
 	return 0;

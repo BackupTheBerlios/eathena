@@ -1,4 +1,39 @@
 --------------
+//0724 by 死神
+
+・バグ修正と安定化の為の修正。
+・ペットの攻撃でイベントが処理されず鯖落ちになる問題修正。(未テスト)
+・モンスターの大量発生で鯖が落ちる問題修正。(モンスターを10000匹を呼んで
+魔法で倒すことを5回程テスト。ただ動かないやつのみ。)
+・取り巻きがボスと一緒に死ぬ時アイテムを落とさないように変更。(未テスト)
+・battle_athena.confのpc_skillfleeをplayer_skillfreeに変更して処理を変更。
+・アイスウォールにskill_unit_settingを使うスキルで攻撃できないように修正。
+・その他細かい修正少し。安定化されたかどうかはまだわかりませんがXP1800+、512M、モンスター配置50%で10000匹召喚して異常なかったので大丈夫になったと思います。大丈夫じゃなくても責任はとれませんが...
+	(conf/)
+	battle_athena.conf 修正。
+	(doc/)
+	conf_ref.txt 修正。
+	(map/)
+	mob.h 修正。
+	mob.c
+		mob_timer()、mob_deleteslave_sub()、mob_damage() 修正。
+	npc.c
+		npc_event() 修正。
+	skill.c
+		skill_area_sub()、skill_unit_onplace()、skill_castend_nodamage_id() 修正。
+	clif.c
+		clif_parse_GMKick() 修正。
+	battle.h
+	battle.c
+		battle_damage()、battle_check_target()、battle_config_read() 修正。
+	pc.c
+		pc_calc_skilltree()、pc_checkskill() 修正。
+	map.h 修正。
+	map.c
+		map_foreachinarea()、map_foreachinmovearea() 修正。
+		map_foreachobject() 修正。
+
+--------------
 //0723 by DRG
 
 ・0719の修正

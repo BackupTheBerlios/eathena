@@ -864,7 +864,7 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 		struct mob_data *md=(struct mob_data *)target;
 		if(md->skilltimer!=-1 && md->state.skillcastcancel)	// ‰r¥–WŠQ
 			skill_castcancel(target,0);
-		return mob_damage(bl,md,damage);
+		return mob_damage(bl,md,damage,0);
 
 	}else if(target->type==BL_PC){	// PC
 
@@ -3032,8 +3032,8 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 			return -1;
 	}
 	
-//	if( target->type==BL_SKILL )	// ‘Î Û‚ªƒXƒLƒ‹ƒ†ƒjƒbƒg‚È‚ç–³ðŒm’è
-//		return 0;
+	if(src->type == BL_SKILL && target->type == BL_SKILL)	// ‘Î Û‚ªƒXƒLƒ‹ƒ†ƒjƒbƒg‚È‚ç–³ðŒm’è
+		return -1;
 
 	if(target->type == BL_SKILL) {
 		if(((struct skill_unit *)target)->group->unit_id == 0x8d)
@@ -3128,7 +3128,7 @@ int battle_check_range(struct block_list *src,struct block_list *bl,int range)
 	wpd.path_half=0;
 	if(path_search(&wpd,src->m,src->x,src->y,bl->x,bl->y,0x10001)!=-1)
 		return 1;
-		
+
 	dx=(dx>0)?1:((dx<0)?-1:0);
 	dy=(dy>0)?1:((dy<0)?-1:0);
 	return (path_search(&wpd,src->m,src->x+dx,src->y+dy,
@@ -3189,6 +3189,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.mvp_hp_rate=100;
 	battle_config.atc_gmonly=0;
 	battle_config.gm_allskill=0;
+	battle_config.pc_skillfree = 0;
 	battle_config.wp_rate=100;
 	battle_config.monster_active_enable=1;
 	battle_config.monster_damage_delay_rate=100;
@@ -3233,7 +3234,6 @@ int battle_config_read(const char *cfgName)
 	battle_config.save_log = 0;
 	battle_config.error_log = 1;
 	battle_config.etc_log = 1;
-	battle_config.pc_skillflee = 0;
 
 	fp=fopen(cfgName,"r");
 	if(fp==NULL){
@@ -3277,6 +3277,7 @@ int battle_config_read(const char *cfgName)
 			{ "mvp_exp_rate",			&battle_config.mvp_exp_rate			},
 			{ "atcommand_gm_only",		&battle_config.atc_gmonly			},
 			{ "gm_all_skill",			&battle_config.gm_allskill			},
+			{ "player_skillfree", &battle_config.pc_skillfree },
 			{ "weapon_produce_rate",	&battle_config.wp_rate				},
 			{ "monster_active_enable",	&battle_config.monster_active_enable},
 			{ "monster_damage_delay_rate",	&battle_config.monster_damage_delay_rate		},
@@ -3321,7 +3322,6 @@ int battle_config_read(const char *cfgName)
 			{ "save_log", &battle_config.save_log },
 			{ "error_log", &battle_config.error_log },
 			{ "etc_log", &battle_config.etc_log },
-			{ "pc_skillflee", &battle_config.pc_skillflee },
 		};
 		
 		if(line[0] == '/' && line[1] == '/')
