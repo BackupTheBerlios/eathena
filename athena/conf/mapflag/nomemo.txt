@@ -176,3 +176,4 @@ xmas_in.gat	mapflag	nomemo
 yuno_in01.gat	mapflag	nomemo
 yuno_in02.gat	mapflag	nomemo
 yuno_in03.gat	mapflag	nomemo
+gon_test.gat	mapflag	nomemo

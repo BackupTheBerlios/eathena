@@ -33,3 +33,4 @@ yuno_in01.gat	mapflag	nopenalty
 yuno_in03.gat	mapflag	nopenalty
 yuno_in04.gat	mapflag	nopenalty
 yuno_in05.gat	mapflag	nopenalty
+gon_test.gat	mapflag	nopenalty

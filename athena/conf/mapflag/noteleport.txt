@@ -53,3 +53,4 @@ prtg_cas02.gat	mapflag	noteleport
 prtg_cas03.gat	mapflag	noteleport
 prtg_cas04.gat	mapflag	noteleport
 prtg_cas05.gat	mapflag	noteleport
+gon_test.gat	mapflag	noteleport

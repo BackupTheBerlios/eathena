@@ -1,0 +1,1 @@
+gon_test.gat	mapflag	nosavnosave	prontera.gat,150,180

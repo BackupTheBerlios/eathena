@@ -53,3 +53,4 @@ prtg_cas02.gat	mapflag	nobranch
 prtg_cas03.gat	mapflag	nobranch
 prtg_cas04.gat	mapflag	nobranch
 prtg_cas05.gat	mapflag	nobranch
+gon_test.gat	mapflag	nobranch
