@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.11 2004/02/26 00:50:33 sara-chan Exp $
+// $Id: char.c,v 1.12 2004/03/06 20:14:07 akitasha Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -71,7 +71,7 @@ int autosave_interval=DEFAULT_AUTOSAVE_INTERVAL;
 
 // 初期位置（confファイルから再設定可能）
 struct point start_point={"new_1-1.gat",53,111};
-int start_zeny=500;
+int start_zeny;
 
 int mmo_char_tostr(char *str,struct mmo_charstatus *p)
 {
@@ -389,7 +389,7 @@ int make_new_char(int fd,unsigned char *dat)
   char_dat[i].job_level=1;
   char_dat[i].base_exp=0;
   char_dat[i].job_exp=0;
-  char_dat[i].zeny=500;
+  char_dat[i].zeny=start_zeny;
   char_dat[i].str=dat[24];
   char_dat[i].agi=dat[25];
   char_dat[i].vit=dat[26];
