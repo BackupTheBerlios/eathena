@@ -1,4 +1,24 @@
 --------------
+//0707 by 死神
+
+・0705の阿修羅覇鳳拳のバグ修正。
+	(db/)
+	skill_db.txt
+	(map/)
+	skill.c
+		skill_castend_id()
+		skill_castend_pos()
+	battle.c
+		battle_calc_pc_weapon_attack()
+	clif.c
+		clif_parse_UseSkillToId()
+
+--------------
+//0706 by kalen
+・修正
+	conf/npc_warp_umbala.txt
+
+--------------
 //0705 by 死神
 
 ・色々と修正。

@@ -2067,7 +2067,8 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 {
 	struct map_session_data* sd=NULL/*,*target_sd=NULL*/;
 	struct block_list *bl;
-	
+	int range;
+
 	if( (sd=map_id2sd(id))==NULL || sd->bl.prev == NULL)
 		return 0;
 	
@@ -2084,9 +2085,11 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 	if(sd->bl.m != bl->m || pc_isdead(sd))
 		return 0;
 
-	if(!battle_config.skill_out_range_consume && 
-		(sd->skillid != MO_EXTREMITYFIST || sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH) ) {
-		if(skill_get_range(sd->skillid,sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
+	range = skill_get_range(sd->skillid,sd->skilllv) + battle_config.pc_skill_add_range;
+	if(sd->skillid == MO_EXTREMITYFIST && sd->sc_data[SC_COMBO].timer != -1 && sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH)
+		range += 5;
+	if(!battle_config.skill_out_range_consume) {
+		if(range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
 			clif_skill_fail(sd,sd->skillid,0,0);
 			sd->canact_tick = tick;
 			sd->canmove_tick = tick;
@@ -2098,9 +2101,8 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 		sd->canmove_tick = tick;
 		return 0;
 	}
-	if(battle_config.skill_out_range_consume &&
-		(sd->skillid != MO_EXTREMITYFIST || sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH) ) {
-		if(skill_get_range(sd->skillid,sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
+	if(battle_config.skill_out_range_consume) {
+		if(range < distance(sd->bl.x,sd->bl.y,bl->x,bl->y)) {
 			clif_skill_fail(sd,sd->skillid,0,0);
 			sd->canact_tick = tick;
 			sd->canmove_tick = tick;
@@ -2110,7 +2112,7 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 
 	printf("PC %d skill castend skill=%d\n",sd->bl.id,sd->skillid);
 
-	if( (skill_get_inf(sd->skillid)&1) &&	// ”Þ‰ä“G‘ÎŠÖŒWƒ`ƒFƒbƒN
+	if( ( (skill_get_inf(sd->skillid)&1) || (skill_get_inf2(sd->skillid)&4) ) &&	// ”Þ‰ä“G‘ÎŠÖŒWƒ`ƒFƒbƒN
 		battle_check_target(&sd->bl,bl, BCT_ENEMY)<=0 )
 		return 0;
 
@@ -3439,7 +3441,8 @@ int skill_unit_ondamaged(struct skill_unit *src,struct block_list *bl,
 int skill_castend_pos( int tid, unsigned int tick, int id,int data )
 {
 	struct map_session_data* sd=NULL/*,*target_sd=NULL*/;
-	
+	int range;
+
 	if( (sd=map_id2sd(id))==NULL )
 		return 0;
 	
@@ -3453,8 +3456,9 @@ int skill_castend_pos( int tid, unsigned int tick, int id,int data )
 	if(pc_isdead(sd))
 		return 0;
 
+	range = skill_get_range(sd->skillid,sd->skilllv) + battle_config.pc_skill_add_range;
 	if(!battle_config.skill_out_range_consume) {
-		if(skill_get_range(sd->skillid, sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,sd->skillx,sd->skilly)) {
+		if(range < distance(sd->bl.x,sd->bl.y,sd->skillx,sd->skilly)) {
 			clif_skill_fail(sd,sd->skillid,0,0);
 			sd->canact_tick = tick;
 			sd->canmove_tick = tick;
@@ -3467,7 +3471,7 @@ int skill_castend_pos( int tid, unsigned int tick, int id,int data )
 		return 0;
 	}
 	if(battle_config.skill_out_range_consume) {
-		if(skill_get_range(sd->skillid, sd->skilllv) + battle_config.pc_skill_add_range < distance(sd->bl.x,sd->bl.y,sd->skillx,sd->skilly)) {
+		if(range < distance(sd->bl.x,sd->bl.y,sd->skillx,sd->skilly)) {
 			clif_skill_fail(sd,sd->skillid,0,0);
 			sd->canact_tick = tick;
 			sd->canmove_tick = tick;

@@ -1918,6 +1918,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				div_=2;
 				if(sd->arrow_ele > 0)
 					s_ele = sd->arrow_ele;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				sd->state.arrow_atk = 1;
 				break;
 			case AC_SHOWER:	// アローシャワー
@@ -1925,6 +1926,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				blewcount=2;
 				if(sd->arrow_ele > 0)
 					s_ele = sd->arrow_ele;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				sd->state.arrow_atk = 1;
 				break;
 			case KN_PIERCE:	// ピアース
@@ -1962,6 +1964,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				blewcount=6;
 				if(sd->arrow_ele > 0)
 					s_ele = sd->arrow_ele;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				sd->state.arrow_atk = 1;
 				break;
 			case TF_SPRINKLESAND:	// 砂まき
@@ -2058,6 +2061,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				damage = damage*(100+ 50 * skill_lv)/100;
 				if(sd->arrow_ele > 0)
 					s_ele = sd->arrow_ele;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				sd->state.arrow_atk = 1;
 				break;
 			case BA_DISSONANCE:	// 不協和音
@@ -2069,6 +2073,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				damage = damage*(100+ 50 * skill_lv)/100;
 				if(sd->arrow_ele > 0)
 					s_ele = sd->arrow_ele;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				sd->state.arrow_atk = 1;
 				break;
 			}

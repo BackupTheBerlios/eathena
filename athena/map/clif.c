@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.7 2004/01/15 01:00:04 rovert Exp $
+// $Id: clif.c,v 1.8 2004/01/15 17:55:26 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -5602,11 +5602,18 @@ void clif_parse_UseSkillToId(int fd,struct map_session_data *sd)
 	skilllv = RFIFOW(fd,2);
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
-		if(skillnum == MO_EXTREMITYFIST && !sd->state.skill_flag &&
-			(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH)) {
-			sd->state.skill_flag = 1;
-			clif_skillinfo(sd,MO_EXTREMITYFIST,1,-1);
-			return;
+		if(skillnum == MO_EXTREMITYFIST) {
+			if((sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH)) {
+				if(!sd->state.skill_flag ) {
+					sd->state.skill_flag = 1;
+					clif_skillinfo(sd,MO_EXTREMITYFIST,1,-1);
+					return;
+				}
+				else if(sd->bl.id == RFIFOL(fd,6)) {
+					clif_skillinfo(sd,MO_EXTREMITYFIST,1,-1);
+					return;
+				}
+			}
 		}
 		if( (lv = pc_checkskill(sd,skillnum)) > 0) {
 			if(skilllv > lv)
@@ -6267,6 +6274,25 @@ void clif_parse_PMIgnoreAll(int fd,struct map_session_data *sd)		// Added by RoV
 }
 
 
+void clif_parse_skillMessage(int fd,struct map_session_data *sd)	// Added by RoVeRT
+{
+	int skillid,skilllv,x,y;
+	char *mes;
+
+	skilllv = RFIFOW(fd,2);
+	skillid = RFIFOW(fd,4);
+
+	y = RFIFOB(fd,6);
+	x = RFIFOB(fd,8);
+
+	mes = RFIFOP(fd,10);
+
+// skill 125 = talky box
+// skill 220 = graffiti
+
+// Process here or in another function
+//printf("skill: %d %d location: %3d %3d message: %s\n",skillid,skilllv,x,y,(char*)mes);
+}
 
 /*==========================================
  * GMによるチャット禁止時間参照（？）
@@ -6494,7 +6520,8 @@ static int clif_parse(int fd)
 		clif_parse_ProduceMix,
 		NULL,
 		// 190
-		NULL,NULL,NULL,
+		clif_parse_skillMessage,
+		NULL,NULL,
 		clif_parse_SolveCharName,
 		NULL,NULL,NULL,
 		clif_parse_ResetChar,
