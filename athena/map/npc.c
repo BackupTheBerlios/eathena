@@ -1,9 +1,10 @@
-// $Id: npc.c,v 1.7 2004/01/20 16:25:56 rovert Exp $
+// $Id: npc.c,v 1.8 2004/01/21 17:06:25 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 #include "map.h"
 #include "npc.h"
@@ -40,6 +41,8 @@ struct event_data {
 	struct npc_data *nd;
 	int pos;
 };
+
+static struct tm ev_tm_b;	// 時計イベント用
 
 
 /*==========================================
@@ -196,27 +199,75 @@ int npc_event_export(void *key,void *data,va_list ap)
 	return 0;
 }
 /*==========================================
- * OnInitイベント実行
+ * 全てのNPCのOn*イベント実行
  *------------------------------------------
  */
-int npc_event_do_oninit_sub(void *key,void *data,va_list ap)
+int npc_event_doall_sub(void *key,void *data,va_list ap)
 {
 	char *p=(char *)key;
 	struct event_data *ev=(struct event_data *)data;
 	int *c=va_arg(ap,int *);
+	const char *name=va_arg(ap,const char *);
 
-	if( (p=strchr(p,':')) && p && strcasecmp("::OnInit",p)==0 ){
+	if( (p=strchr(p,':')) && p && strcasecmp(name,p)==0 ){
 		run_script(ev->nd->u.scr.script,ev->pos,0,ev->nd->bl.id);
 		(*c)++;
 	}
 	
 	return 0;
 }
-int npc_event_do_oninit(void)
+int npc_event_doall(const char *name)
 {
 	int c=0;
-	strdb_foreach(ev_db,npc_event_do_oninit_sub,&c);
+	char buf[64]="::";
+	
+	strcpy(buf+2,name);
+	strdb_foreach(ev_db,npc_event_doall_sub,&c,buf);
+	return c;	
+}
+/*==========================================
+ * 時計イベント実行
+ *------------------------------------------
+ */
+int npc_event_do_clock(int tid,unsigned int tick,int id,int data)
+{
+	time_t timer;
+	struct tm *t;
+	char buf[64];
+	int c=0;
+	
+	time(&timer);
+	t=localtime(&timer);
+	
+	if(t->tm_min != ev_tm_b.tm_min ){
+		sprintf(buf,"OnMinute%02d",t->tm_min);
+		c+=npc_event_doall(buf);
+		sprintf(buf,"OnClock%02d%02d",t->tm_hour,t->tm_min);
+		c+=npc_event_doall(buf);
+	}
+	if(t->tm_hour!= ev_tm_b.tm_hour){
+		sprintf(buf,"OnHour%02d",t->tm_hour);
+		c+=npc_event_doall(buf);
+	}
+	if(t->tm_mday!= ev_tm_b.tm_mday){
+		sprintf(buf,"OnHour%02d%02d",t->tm_mon+1,t->tm_mday);
+		c+=npc_event_doall(buf);
+	}
+	memcpy(&ev_tm_b,t,sizeof(ev_tm_b));
+	return c;
+}
+/*==========================================
+ * OnInitイベント実行(&時計イベント開始)
+ *------------------------------------------
+ */
+int npc_event_do_oninit(void)
+{
+	int c = npc_event_doall("OnInit");
 	printf("npc: OnInit Event done. (%d npc)\n",c);
+
+	add_timer_interval(gettick()+100,
+		npc_event_do_clock,0,0,1000);
+
 	return 0;
 }
 
@@ -1191,6 +1242,8 @@ int do_init_npc(void)
 
 	ev_db=strdb_init(24);
 	npcname_db=strdb_init(24);
+	
+	memset(&ev_tm_b,-1,sizeof(ev_tm_b));
 
 	for(nsl=npc_src_first;nsl;nsl=nsl->next){
 		fp=fopen(nsl->name,"r");
@@ -1247,6 +1300,8 @@ int do_init_npc(void)
 		   npc_id-START_NPC_NUM,npc_warp,npc_shop,npc_script,npc_mob);
 
 	add_timer_func_list(npc_event_timer,"npc_event_timer");
+	add_timer_func_list(npc_event_do_clock,"npc_event_do_clock");
+	
 
 	//exit(1);
 
