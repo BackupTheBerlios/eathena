@@ -127,6 +127,7 @@ char *get_param(char in_string[500], char swhat[500])
 			}
 			marker++;
 		}
+		return 0;
 	}
 }
 			

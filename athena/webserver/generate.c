@@ -17,4 +17,9 @@ void generate_page(int sock_in, char *query, char *ip)
 	if ( strcmp(page, "/about.html") == 0 )
 		generate_about(sock_in, query, ip);
 
+
+	//Test page:
+	if ( strcmp(page, "/testing/") == 0 )
+		generate_sample(sock_in, query, ip);
+
 }

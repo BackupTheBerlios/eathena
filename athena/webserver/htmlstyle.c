@@ -32,3 +32,20 @@ char *html_header(char *title)
 
 
 
+char *html_start_form(char *location, char *action)
+{
+	memset(output, 0x0, 10000);
+	sprintf(output, "<form action=\"%s\" method=\"%s\">", location, action);
+	return output;
+
+
+}
+
+
+char *html_end_forum(void)
+{
+	return "</form>";
+}
+
+
+
