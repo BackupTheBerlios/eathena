@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.9 2004/02/02 15:51:04 rovert Exp $
+// $Id: itemdb.c,v 1.10 2004/02/03 21:10:56 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -80,7 +80,7 @@ int itemdb_searchrandomid(int flags)
 		list=data[flags].list;
 
 		if(count > 0) {
-			for(i=0;i<count;i++) {
+			for(i=0;i<1000;i++) {
 				index = rand()%count;
 				if(	rand()%1000000 < list[index].per) {
 					nameid = list[index].nameid;
