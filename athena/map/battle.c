@@ -1030,7 +1030,7 @@ int battle_attr_fix(int damage,int atk_elem,int def_elem)
  * ダメージ最終計算
  *------------------------------------------
  */
-int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,int skill_num,int skill_lv,int flag)
+int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,int div_,int skill_num,int skill_lv,int flag)
 {
 	struct map_session_data *sd=NULL;
 	struct mob_data *md=NULL;
@@ -1145,6 +1145,15 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,i
 		if(flag&BF_MISC)
 			damage=damage*battle_config.gvg_misc_damage_rate/100;
 		if(damage < 1) damage  = 1;
+	}
+
+	if(battle_config.skill_min_damage || flag&BF_MISC) {
+		if(div_ < 255) {
+			if(damage > 0 && damage < div_)
+				damage = div_;
+		}
+		else if(damage > 0 && damage < 3)
+			damage = 3;
 	}
 
 	if(	damage>0 && sc_data!=NULL && (
@@ -1594,17 +1603,8 @@ static struct Damage battle_calc_pet_weapon_attack(
 	if(def1 >= 1000000 && damage > 0)
 		damage = 1;
 
-	if(battle_config.skill_min_damage) {
-		if(div_ < 255) {
-			if(damage > 0 && damage < div_)
-				damage = div_;
-		}
-		else if(damage > 0 && damage < 3)
-			damage = 3;
-	}
-
 	if(skill_num != CR_GRANDCROSS)
-		damage=battle_calc_damage(src,target,damage,skill_num,skill_lv,flag);
+		damage=battle_calc_damage(src,target,damage,div_,skill_num,skill_lv,flag);
 
 	wd.damage=damage;
 	wd.damage2=0;
@@ -1994,20 +1994,11 @@ static struct Damage battle_calc_mob_weapon_attack(
 	if(def1 >= 1000000 && damage > 0)
 		damage = 1;
 
-	if(battle_config.skill_min_damage) {
-		if(div_ < 255) {
-			if(damage > 0 && damage < div_)
-				damage = div_;
-		}
-		else if(damage > 0 && damage < 3)
-			damage = 3;
-	}
-
 	if( tsd && tsd->special_state.no_weapon_damage)
 		damage = 0;
 
 	if(skill_num != CR_GRANDCROSS)
-		damage=battle_calc_damage(src,target,damage,skill_num,skill_lv,flag);
+		damage=battle_calc_damage(src,target,damage,div_,skill_num,skill_lv,flag);
 
 	wd.damage=damage;
 	wd.damage2=0;
@@ -2371,6 +2362,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 				hitrate=hitrate*(100+5*skill_lv)/100;
 				div_=t_size+1;
 				damage*=div_;
+				damage2*=div_;
 				break;
 			case KN_SPEARSTAB:	// スピアスタブ
 				damage = damage*(100+ 15*skill_lv)/100;
@@ -2831,26 +2823,17 @@ static struct Damage battle_calc_pc_weapon_attack(
 			damage2 = 1;
 	}
 
-	if(battle_config.skill_min_damage) {
-		if(div_ < 255) {
-			if(damage > 0 && damage < div_)
-				damage = div_;
-		}
-		else if(damage > 0 && damage < 3)
-			damage = 3;
-	}
-
 	if( tsd && tsd->special_state.no_weapon_damage && skill_num != CR_GRANDCROSS)
 		damage = damage2 = 0;
 
 	if(skill_num != CR_GRANDCROSS && (damage > 0 || damage2 > 0) ) {
 		if(damage2<1)		// ダメージ最終修正
-			damage=battle_calc_damage(src,target,damage,skill_num,skill_lv,flag);
+			damage=battle_calc_damage(src,target,damage,div_,skill_num,skill_lv,flag);
 		else if(damage<1)	// 右手がミス？
-			damage2=battle_calc_damage(src,target,damage2,skill_num,skill_lv,flag);
+			damage2=battle_calc_damage(src,target,damage2,div_,skill_num,skill_lv,flag);
 		else {	// 両 手/カタールの場合はちょっと計算ややこしい
 			int d1=damage+damage2,d2=damage2;
-			damage=battle_calc_damage(src,target,damage+damage2,skill_num,skill_lv,flag);
+			damage=battle_calc_damage(src,target,damage+damage2,div_,skill_num,skill_lv,flag);
 			damage2=(d2*100/d1)*damage/100;
 			if(damage > 1 && damage2 < 1) damage2=1;
 			damage-=damage2;
@@ -3109,15 +3092,10 @@ struct Damage battle_calc_magic_attack(
 	if(mdef1 >= 1000000 && damage > 0)
 		damage = 1;
 
-	if(battle_config.skill_min_damage) {
-		if(damage > 0 && damage < div_)
-			damage = div_;
-	}
-
 	if( target->type==BL_PC && ((struct map_session_data *)target)->special_state.no_magic_damage)
 		damage=0;	// 黄 金蟲カード（魔法ダメージ０）
 
-	damage=battle_calc_damage(bl,target,damage,skill_num,skill_lv,aflag);	// 最終修正
+	damage=battle_calc_damage(bl,target,damage,div_,skill_num,skill_lv,aflag);	// 最終修正
 
 	md.damage=damage;
 	md.div_=div_;
@@ -3194,7 +3172,7 @@ struct Damage  battle_calc_misc_attack(
 		break;
 
 	case NPC_SELFDESTRUCTION:	// 自爆
-		damage=battle_get_hp(bl))-(bl==target?1:0);
+		damage=battle_get_hp(bl)-(bl==target?1:0);
 		damagefix=0;
 		break;
 
@@ -3227,7 +3205,7 @@ struct Damage  battle_calc_misc_attack(
 		damage = div_;
 	}
 
-	damage=battle_calc_damage(bl,target,damage,skill_num,skill_lv,aflag);	// 最終修正
+	damage=battle_calc_damage(bl,target,damage,div_,skill_num,skill_lv,aflag);	// 最終修正
 
 	md.damage=damage;
 	md.div_=div_;
@@ -3272,8 +3250,13 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 	struct status_change *sc_data=battle_get_sc_data(target);
 	short *opt1;
 
-	if(src->type == BL_PC)
+	if(src->type == BL_PC) {
 		sd = (struct map_session_data *)src;
+		if(sd->gvg_invincible_timer != -1) {
+			battle_stopattack(src);
+			return 0;
+		}
+	}
 
 	if(src->prev == NULL || target->prev == NULL)
 		return 0;
@@ -3281,11 +3264,6 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 		return 0;
 	if(target->type == BL_PC && pc_isdead((struct map_session_data *)target))
 		return 0;
-	if(map[src->m].flag.gvg){
-		if(target->type == BL_PC
-			&& ((struct map_session_data *)target)->gvg_ghost_timer != -1)
-				return 0;
-	}
 
 	opt1=battle_get_opt1(src);
 	if(opt1 && *opt1 > 0) {
@@ -3406,6 +3384,9 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 	if(src->type == BL_SKILL && target->type == BL_SKILL)	// 対 象がスキルユニットなら無条件肯定
 		return -1;
 
+	if(target->type == BL_PC && ((struct map_session_data *)target)->gvg_invincible_timer != -1)
+		return -1;
+
 	if(target->type == BL_SKILL) {
 		if(((struct skill_unit *)target)->group->unit_id == 0x8d)
 			return 0;
@@ -3433,6 +3414,9 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 
 	if( src==target || ss==target )	// 同じなら肯定
 		return 1;
+
+	if(target->type == BL_PC && pc_isinvisible((struct map_session_data *)target))
+		return -1;
 
 	if( src->prev==NULL ||	// 死んでるならエラー
 		(src->type==BL_PC && pc_isdead((struct map_session_data *)src) ) )
@@ -3650,7 +3634,8 @@ int battle_config_read(const char *cfgName)
 	battle_config.gvg_long_damage_rate = 100;
 	battle_config.gvg_magic_damage_rate = 100;
 	battle_config.gvg_misc_damage_rate = 100;
-	battle_config.gvg_ghost_time = 10000;
+	battle_config.gvg_invincible_time = 10000;
+	battle_config.gvg_continuous_attack = 0;
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 
 	fp=fopen(cfgName,"r");
@@ -3761,7 +3746,8 @@ int battle_config_read(const char *cfgName)
 			{ "gvg_long_attack_damage_rate" ,&battle_config.gvg_long_damage_rate },
 			{ "gvg_magic_attack_damage_rate" ,&battle_config.gvg_magic_damage_rate },
 			{ "gvg_misc_attack_damage_rate" ,&battle_config.gvg_misc_damage_rate },
-			{ "gvg_ghost_time" ,&battle_config.gvg_ghost_time },
+			{ "gvg_invincible_time" ,&battle_config.gvg_invincible_time },
+			{ "gvg_continuous_attack" ,&battle_config.gvg_continuous_attack },
 		{ "item_rate_equip",	&battle_config.item_rate_equip },		// Added by RoVeRT
 		{ "item_rate_card",	&battle_config.item_rate_card },
 		{ "prevent_logout", 	&battle_config.prevent_logout },		/// End Addition

@@ -1,16 +1,32 @@
 Date	Added
-02/03   * Improved the prontera.gat map fallback.
+02/05
+	* fixed provoke so it doesnt work on undead
+02/04
+	* added start_zeny and party_level_range to char_athena.conf [RoVeRT]
+02/03
+	* Improved the prontera.gat map fallback.
 	  Improved the way guild emblems act when logging in. [Sara-chan]
+	* Undead-class armor, and Undead monster themselves will never be frozen [RoVeRT]
+	* fixed negative values for NPC to always be 0
+01/26
+	* mob_warpslave correction [RoVeRT]
 01/25
 	* added poison hp reduction [AppleGirl]
 01/20
 	* added intimidate [RoVeRT]
+	* added mvp checks for some skills
+01/17
+	* added skill check for empelium attack and removed drops from NULL kills [RoVeRT]
 01/16
 	* added secondary effects for when characters with appropriate elemental armor
 	  are within area of effect of sage spells SA_VOLCANO(atk up), SA_DELUGE(max hp up),
 	  SA_VIOLENTGALE(flee up) [moonsoul]
+	* removeal of @randmon as it isnt needed [RoVeRT]
 01/15
-	* fixed auto spell so it works the prober way
+	* fixed auto spell so it works the prober way [RoVeRT]
+01/12
+	* added mob_warpslave [RoVeRT]
+	* added mob_warp to check noteleport mapflag
 01/07
 	* added OnCommand for NPC [RoVeRT]
 	* added new on death method for NPC spawned mobs [RoVeRT]

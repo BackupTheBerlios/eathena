@@ -685,6 +685,11 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 	if(bl->type == BL_PC && pc_isdead((struct map_session_data *)bl))
 		return 0;
 
+	if(sc_data && sc_data[SC_HIDING].timer != -1) {
+		if(skill_get_pl(skillid) != 2)
+			return 0;
+	}
+
 	if(skillid == WZ_STORMGUST) {
 		struct status_change *sc_data = battle_get_sc_data(bl);
 		if(sc_data && sc_data[SC_FREEZE].timer != -1)
@@ -1282,11 +1287,15 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 				skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,0x0500);
 		}
 		else { /*ボウリングバッシュを仮実装してみる（吹き飛ばしはここでやる） */
-			int ar = 1;
-			map_freeblock_lock();
-			/* まずターゲットに攻撃を加える */
-			if(skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,0) > 0 && bl->prev != NULL) {
+			struct Damage dmg;
+			struct status_change *sc_data = battle_get_sc_data(bl);
+			int damage,ar = 1,type = -1;
+			dmg=battle_calc_attack(BF_WEAPON, src,bl, skillid,skilllv, flag&0xff);
+			damage = dmg.damage + dmg.damage2;
+			if( flag&0xff00 ) type=(flag&0xff00)>>8;
+			if(damage > 0) {
 				int i,c;	/* 他人から聞いた動きなので間違ってる可能性大＆効率が悪いっす＞＜ */
+
 				c = ((skilllv-1)>>1) + 1;
 				if(map[bl->m].flag.gvg) c = 0;
 				for(i=0;i<c;i++){
@@ -1312,6 +1321,21 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 					bl->m,bl->x-ar,bl->y-ar,bl->x+ar,bl->y+ar,0,
 					src,skillid,skilllv,tick, flag|BCT_ENEMY|1,
 					skill_castend_damage_id);
+			}
+			clif_skill_damage(src,bl,tick,dmg.amotion,dmg.dmotion,
+				damage, dmg.div_, skillid, skilllv, type );
+			map_freeblock_lock();
+			battle_damage(src,bl,damage);
+			if(!(bl->prev == NULL || (bl->type == BL_PC && pc_isdead((struct map_session_data *)bl) ) ) ) {
+				if(damage > 0)
+					skill_additional_effect(src,bl,skillid,skilllv,BF_WEAPON,tick);
+				if(bl->type==BL_MOB && src!=bl)	/* スキル使用条件のMOBスキル */
+					mobskill_use((struct mob_data *)bl,tick,MSC_SKILLUSED|(skillid<<16));
+			}
+				if(sc_data && sc_data[SC_AUTOCOUNTER].timer != -1 && sc_data[SC_AUTOCOUNTER].val4 > 0) {
+				if(sc_data[SC_AUTOCOUNTER].val3 == src->id)
+					battle_weapon_attack(bl,src,tick,0x8000|sc_data[SC_AUTOCOUNTER].val1);
+				skill_status_change_end(bl,SC_AUTOCOUNTER,-1);
 			}
 			map_freeblock_unlock();
 		}
@@ -1641,7 +1665,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case AC_CONCENTRATION:	/* 集中力向上 */
 	case MC_LOUD:			/* ラウドボイス */
 	case MG_ENERGYCOAT:		/* エナジーコート */
-	case SM_PROVOKE:		/* プロボック */
 	case SM_ENDURE:			/* インデュア */
 	case MG_SIGHT:			/* サイト */
 	case AL_RUWACH:			/* ルアフ */
@@ -1662,7 +1685,11 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 #endif
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		skill_status_change_start( bl, SkillStatusChangeTable[skillid], skilllv, 0,skill_get_time(skillid,skilllv),0 );
-		if(skillid==SM_PROVOKE && bl->type==BL_MOB) {
+	case SM_PROVOKE:		/* プロボック */
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		if(!battle_check_undead(battle_get_race(bl),battle_get_elem_type(bl)))
+			skill_status_change_start( bl, SkillStatusChangeTable[skillid], skilllv, 0,skill_get_time(skillid,skilllv),0 );
+		if(bl->type==BL_MOB) {
 			int range = skill_get_range(skillid,skilllv);
 			if(range < 0)
 				range = battle_get_range(src) - (range + 1);
@@ -2258,6 +2285,7 @@ int skill_castend_id( int tid, unsigned int tick, int id,int data )
 
 	if(battle_config.pc_skill_log)
 		printf("PC %d skill castend skill=%d\n",sd->bl.id,sd->skillid);
+	pc_stop_walking(sd,0);
 
 	if( ( (skill_get_inf(sd->skillid)&1) || (skill_get_inf2(sd->skillid)&4) ) &&	// 彼我敵対関係チェック
 		battle_check_target(&sd->bl,bl, BCT_ENEMY)<=0 )
@@ -2485,6 +2513,7 @@ int skill_castend_map( struct map_session_data *sd,int skill_num, const char *ma
 
 	if(battle_config.pc_skill_log)
 		printf("PC %d skill castend skill =%d map=%s\n",sd->bl.id,skill_num,map);
+	pc_stop_walking(sd,0);
 
 	if(strcmp(map,"cancel")==0)
 		return 0;
@@ -3565,6 +3594,7 @@ int skill_castend_pos( int tid, unsigned int tick, int id,int data )
 
 	if(battle_config.pc_skill_log)
 		printf("PC %d skill castend skill=%d\n",sd->bl.id,sd->skillid);
+	pc_stop_walking(sd,0);
 
 	skill_castend_pos2(&sd->bl,sd->skillx,sd->skilly,sd->skillid,sd->skilllv,tick,0);
 

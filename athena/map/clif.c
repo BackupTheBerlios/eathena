@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.26 2004/02/04 15:51:19 rovert Exp $
+// $Id: clif.c,v 1.27 2004/02/05 14:50:48 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -4870,10 +4870,10 @@ void clif_parse_LoadEndAck(int fd,struct map_session_data *sd)
 
 	if(battle_config.ghost_time > 0)
 		pc_setghosttimer(sd,battle_config.ghost_time);
-	if(battle_config.gvg_ghost_time > 0 && map[sd->bl.m].flag.gvg)
-		pc_setgvg_ghosttimer(sd,battle_config.gvg_ghost_time);
+	if(battle_config.gvg_invincible_time > 0 && map[sd->bl.m].flag.gvg)
+		pc_setgvginvincibletimer(sd,battle_config.gvg_invincible_time);
 	if(!map[sd->bl.m].flag.gvg)
-		pc_delgvg_ghosttimer(sd);
+		pc_delgvginvincibletimer(sd);
 
 	map_addblock(&sd->bl);	// ƒuƒƒbƒN“o˜^
 	clif_spawnpc(sd);	// spawn
@@ -4936,10 +4936,6 @@ void clif_parse_LoadEndAck(int fd,struct map_session_data *sd)
 		skill_status_change_start(&sd->bl,SC_ENDURE,10,1,0,0);
 
 	map_foreachinarea(clif_getareachar,sd->bl.m,sd->bl.x-AREA_SIZE,sd->bl.y-AREA_SIZE,sd->bl.x+AREA_SIZE,sd->bl.y+AREA_SIZE,0,sd);
-
-	struct guild *g=guild_search(RFIFOL(fd,2));
-	if(g!=NULL)
-	clif_guild_emblem(sd,g);
 }
 
 /*==========================================
@@ -4965,8 +4961,6 @@ void clif_parse_WalkToXY(int fd,struct map_session_data *sd)
 		clif_clearchar_area(&sd->bl,1);
 		return;
 	}
-	if(sd->gvg_ghost_timer != -1)
-		pc_delgvg_ghosttimer(sd);
 
 	if(sd->npc_id != 0 || sd->vender_id != 0) return;
 
@@ -5173,6 +5167,7 @@ void clif_parse_ActionRequest(int fd,struct map_session_data *sd)
 	switch(RFIFOB(fd,6)){
 	case 0x00:	// once attack
 	case 0x07:	// continuous attack
+		if(sd->gvg_invincible_timer != -1) return;
 		if(!battle_config.sdelay_attack_enable && (sd->skilltimer == -1 || pc_checkskill(sd,SA_FREECAST) <= 0) ) {
 			if(DIFF_TICK(tick , sd->canact_tick) < 0) {
 				clif_skill_fail(sd,1,4,0);
@@ -5181,8 +5176,6 @@ void clif_parse_ActionRequest(int fd,struct map_session_data *sd)
 		}
 		if(sd->ghost_timer != -1)
 			pc_delghosttimer(sd);
-		if(sd->gvg_ghost_timer != -1)
-			pc_delgvg_ghosttimer(sd);
 		pc_attack(sd,RFIFOL(fd,2),RFIFOB(fd,6)!=0);
 		break;
 	case 0x02:	// sitdown
@@ -5332,9 +5325,6 @@ void clif_parse_UseItem(int fd,struct map_session_data *sd)
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
-		if(sd->gvg_ghost_timer != -1)
-		pc_delgvg_ghosttimer(sd);
-
 
 	pc_useitem(sd,RFIFOW(fd,2)-2);
 }
@@ -5633,7 +5623,7 @@ void clif_parse_UseSkillToId(int fd,struct map_session_data *sd)
 	int skillnum,skilllv,lv;
 	unsigned int tick=gettick();
 
-	if(sd->npc_id!=0 || sd->vender_id != 0) return;
+	if(sd->npc_id!=0 || sd->vender_id != 0 || sd->gvg_invincible_timer != -1) return;
 
 	skillnum = RFIFOW(fd,4);
 	skilllv = RFIFOW(fd,2);
@@ -5649,8 +5639,6 @@ void clif_parse_UseSkillToId(int fd,struct map_session_data *sd)
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
-	if(sd->gvg_ghost_timer != -1)
-		pc_delgvg_ghosttimer(sd);
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
 		if(skillnum == MO_EXTREMITYFIST) {
@@ -5690,7 +5678,7 @@ void clif_parse_UseSkillToPos(int fd,struct map_session_data *sd)
 	int skillnum,skilllv,lv;
 	unsigned int tick=gettick();
 
-	if(sd->npc_id!=0 || sd->vender_id != 0) return;
+	if(sd->npc_id!=0 || sd->vender_id != 0 || sd->gvg_invincible_timer != -1) return;
 
 	skillnum = RFIFOW(fd,4);
 	skilllv = RFIFOW(fd,2);
@@ -5704,8 +5692,6 @@ void clif_parse_UseSkillToPos(int fd,struct map_session_data *sd)
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
-	if(sd->gvg_ghost_timer != -1)
-		pc_delgvg_ghosttimer(sd);
 
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
@@ -5728,12 +5714,11 @@ void clif_parse_UseSkillToPos(int fd,struct map_session_data *sd)
  */
 void clif_parse_UseSkillMap(int fd,struct map_session_data *sd)
 {
-	if(sd->npc_id!=0 || sd->vender_id != 0 || sd->sc_data[SC_TRICKDEAD].timer != -1) return;
+	if(sd->npc_id!=0 || sd->vender_id != 0 || sd->gvg_invincible_timer != -1 ||
+		sd->sc_data[SC_TRICKDEAD].timer != -1) return;
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
-	if(sd->gvg_ghost_timer != -1)
-		pc_delgvg_ghosttimer(sd);
 
 	skill_castend_map(sd,RFIFOW(fd,2),RFIFOP(fd,4));
 }
