@@ -153,6 +153,7 @@ extern struct Battle_Config {
 	int pet_rename;
 	int pet_friendly_rate;
 	int pet_hungry_delay_rate;
+	int pet_status_support;
 	int pet_support;
 	int pet_support_rate;
 	int pet_attack_exp_to_master;
@@ -175,7 +176,6 @@ extern struct Battle_Config {
 	int max_cart_weight;
 	int item_rate_equip;	// Modified by RoVeRT
 	int item_rate_card;
-	int custom_db;
 	int prevent_logout;	// End Modification
 } battle_config;
 

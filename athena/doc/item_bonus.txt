@@ -57,14 +57,14 @@ bonus bIgnoreMDefRace		n race the magical defensive power disregard damage
 					0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
 bonus bIgnoreMDefEle		n attribute the magical defensive power disregard damage
 					0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality	
+bonus bDefRatioAtkRace,n;		n race if defensive power is high the high extent big damage is given, (defense disregard) 
+					0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
+bonus bDefRatioAtkEle,n;		n attribute if defensive power is high the high extent big damage is given, (defense disregard)
+					0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
 bonus bAtkEle,n;		Attack with element n
 					0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
 bonus bDefEle,n;		Guard against element n
 					0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
-bonus bDefRatioAtkEle,n;		n attribute if defensive power is high the high extent big damage is given, (defense disregard)
-					0,Nothing 1,Water 2,Earth 3,Fire 4,Wind 5,Poison 6,Saint 7,Darkness 8,Sense 9,Immortality
-bonus bDefRatioAtkRace,n;		n race if defensive power is high the high extent big damage is given, (defense disregard) 
-					0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
 
 bonus bInfiniteEndure,n;	Unlimited Endure (n is meaningless) 
 bonus bRestartFullRecover,n;	When reviving, HP and SP all recoveries (non mind there is no n)

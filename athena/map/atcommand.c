@@ -545,7 +545,7 @@ int atcommand(int fd,struct map_session_data *sd,char *message)
 			else if(sd->status.guild_id)
 				clif_displaymessage(fd,"ou must leave your guild first.");
 			else{
-				if(sd->status.pet_id && sd->pd)
+				if(sd->status.pet_id > 0 && sd->pd)
 					intif_save_petdata(sd->status.account_id,&sd->pet);
 				pc_makesavestatus(sd);
 				chrif_save(sd);

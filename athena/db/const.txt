@@ -33,6 +33,7 @@ mf_pvp_noguild	7
 mf_gvg		8
 mf_gvg_noparty	9
 
+
 StatusPoint	9	1
 BaseLevel	11	1
 SkillPoint	12	1
@@ -103,7 +104,7 @@ bMagicAddRace	1036
 bMagicSubRace	1037
 bPerfectHitRate	1038
 bPerfectHitAddRate	1039
-bCritacalRate	1040
+bCriticalRate	1040
 bGetZenyNum	1041
 bAddGetZenyNum	1042
 bAddDamageClass	1043

@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.3 2004/01/09 18:21:12 rovert Exp $
+// $Id: npc.c,v 1.4 2004/01/11 15:08:46 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -275,7 +275,7 @@ int npc_do_ontimer_sub(void *key,void *data,va_list ap)
 	int option=va_arg(ap,int);
 	int tick=0;
 	char temp[10];
-	char event[100];
+	char event[50];
 
 	if(ev->nd->bl.id==(int)*c && (p=strchr(p,':')) && p && strncasecmp("::OnTimer",p,8)==0 ){
 		sscanf(&p[9],"%s",temp);
