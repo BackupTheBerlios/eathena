@@ -1695,11 +1695,6 @@ static struct Damage battle_calc_pet_weapon_attack(
 	if(def1 >= 1000000 && damage > 0)
 		damage = 1;
 
-// -- moonsoul (additional damage from aurablade)
-//
-	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
-			damage+=(sc_data[SC_AURABLADE].val1*10);
-
 	if(skill_num != CR_GRANDCROSS)
 		damage=battle_calc_damage(src,target,damage,div_,skill_num,skill_lv,flag);
 
