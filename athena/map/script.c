@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.2 2004/01/09 03:00:19 rovert Exp $
+// $Id: script.c,v 1.3 2004/01/09 15:02:20 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -2379,11 +2379,9 @@ int buildin_enablearena(struct script_state *st)	// Added by RoVeRT
 	npc_enable(nd->name,1);
 	nd->arenaflag=1;
 
-printf("a: %d %d %s %d\n", cd->users, cd->trigger, &cd->npc_event[0], nd->arenaflag);
-	if(cd->users>=cd->trigger && cd->npc_event[0]) {
+	if(cd->users>=cd->trigger && cd->npc_event[0])
 		npc_timer_event(cd->npc_event);
-printf("run event\n");
-}
+
 	return 0;
 }
 int buildin_disablearena(struct script_state *st)	// Added by RoVeRT
@@ -2391,7 +2389,6 @@ int buildin_disablearena(struct script_state *st)	// Added by RoVeRT
 	struct npc_data *nd=(struct npc_data *)map_id2bl(st->oid);
 	nd->arenaflag=0;
 
-printf("disable\n");
 	return 0;
 }
 
@@ -2536,10 +2533,8 @@ int buildin_warpwaitingpc(struct script_state *st)	// Modified by RoVeRT
 	x=conv_num(st,& (st->stack->stack_data[st->start+3]));
 	y=conv_num(st,& (st->stack->stack_data[st->start+4]));
 
-printf("processing... %s %d %d\n",str,y,x);
 	for(i=0;i<cd->trigger;i++){
 		struct map_session_data *sd=cd->usersd[i];
-printf("processing loop... on: %s\n", sd->status.name);
 	
 		if(strcmp(str,"Random")==0)
 			pc_randomwarp(sd,3);
