@@ -1675,7 +1675,7 @@ int atcommand_config_read(const char *cfgName)
 				{ "charjlvl",&atcommand_config.charjlvl },
 				{ "kick",&atcommand_config.kick },
 				{ "kickall",&atcommand_config.kickall },
-				{ "allskill",@&atcommand_config.allskill },
+				{ "skillall",&atcommand_config.skillall },
 				{ "questskill",&atcommand_config.questskill },
 				{ "lostskill",&atcommand_config.lostskill },
 				{ "spiritball",&atcommand_config.spiritball },
