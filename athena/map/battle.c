@@ -1180,12 +1180,10 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,i
 					((struct mob_data *)bl)->canmove_tick = gettick() + 300;
 			}
 		}
-	}
 
-// -- moonsoul (new High Priest skill halves all damage taken)
-//
-	if(sc_data[SC_ASSUMPTIO].timer!=-1 && damage > 0)
-		damage=damage/2;
+		if(sc_data[SC_ASSUMPTIO].timer!=-1 && damage > 0)
+			damage=damage/2;
+	}
 
 	if(class == 1288) {
 		if(flag&BF_SKILL)
