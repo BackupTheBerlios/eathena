@@ -1919,7 +1919,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		if(map[sd->bl.m].flag.noteleport)	/* テレポ禁止 */
 			break;
 
-		int mx,my,xy=map_searchrandfreecell(sd->bl.m, sd->bl.x, sd->bl.y, 5);
+		int mx,my,xy=map_searchrandfreecell(sd->bl.m, sd->bl.x, sd->bl.y, map[sd->bl.m].ys);
 		mx=xy&0xffff;
 		my=(xy>>16)&0xffff;
 
@@ -3418,7 +3418,6 @@ int skill_unit_ondelete(struct skill_unit *src,struct block_list *bl,unsigned in
 int skill_unit_onlimit(struct skill_unit *src,unsigned int tick)
 {
 	struct skill_unit_group *sg= src->group;
-	
 
 	switch(sg->unit_id){
 	case 0x81:	/* ワープポータル(発動前) */
@@ -4654,9 +4653,10 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 
 	if(bl->type==BL_MOB){
 		md=(struct mob_data *)bl;
-		if( (mob_db[md->class].mode & 0x20 || mob_db[md->class].mexp > 0) &&
-			(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP)){
-			/* ボスには効かない */
+		if((mob_db[md->class].mode & 0x20 || mob_db[md->class].mexp > 0) &&
+			(type==SC_STONE || type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP || type==SC_SILENCE) &&
+			(val1!=1 || val2!=5)){
+			/* ボスには効かない(ただしカードによる効果は適用される) */
 			return 0;
 		}
 	}else if(bl->type==BL_PC){
@@ -5295,7 +5295,7 @@ int skill_delunit(struct skill_unit *unit)
 		}
 		skill_delunitgroup(group);
 	}
-	
+
 	return 0;
 }
 /*==========================================
@@ -5498,7 +5498,6 @@ int skill_unit_timer_sub_onplace( struct block_list *bl, va_list ap )
 	unsigned int tick;
 	src=va_arg(ap,struct block_list*);
 	tick=va_arg(ap,unsigned int);
-
 
 	if( ((struct skill_unit *)src)->alive) {
 		if(battle_check_target(src,bl,((struct skill_unit *)src)->group->target_flag )>0 ||
@@ -6131,5 +6130,3 @@ int do_init_skill(void)
 
 	return 0;
 }
-
-
