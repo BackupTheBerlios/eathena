@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.35 2004/02/08 21:59:32 rovert Exp $
+// $Id: mob.c,v 1.36 2004/02/09 14:25:30 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -2510,7 +2510,7 @@ int mobskill_use(struct mob_data *md,unsigned int tick,int event)
 			case MSC_ATTACKPCGE:	// attack pc >= num
 				flag=( mob_counttargeted(md,NULL) >= c2 ); break;
 			case MSC_SKILLUSED:		// specificated skill used
-				flag=( (event&0xffff)==MSC_SKILLUSED && (event>>16)==c2); break;
+				flag=( (event&0xffff)==MSC_SKILLUSED && ((event>>16)==c2 || c2==0)); break;
 			}
 		}
 

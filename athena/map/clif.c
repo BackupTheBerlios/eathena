@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.29 2004/02/08 21:59:32 rovert Exp $
+// $Id: clif.c,v 1.30 2004/02/09 14:25:29 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -773,7 +773,7 @@ static int clif_pet0078(struct pet_data *pd,unsigned char *buf)
 	WBUFW(buf,0)=0x78;
 	WBUFL(buf,2)=pd->bl.id;
 	WBUFW(buf,6)=pd->speed;
-	WBUFW(buf,14)=pd->class;
+	WBUFW(buf,14)=mob_get_viewclass(pd->class);
 	WBUFW(buf,16)=0x14;
 	if((view = itemdb_viewid(pd->equip)) > 0)
 		WBUFW(buf,20)=view;
@@ -800,7 +800,7 @@ static int clif_pet007b(struct pet_data *pd,unsigned char *buf)
 	WBUFW(buf,0)=0x7b;
 	WBUFL(buf,2)=pd->bl.id;
 	WBUFW(buf,6)=pd->speed;
-	WBUFW(buf,14)=pd->class;
+	WBUFW(buf,14)=mob_get_viewclass(pd->class);
 	WBUFW(buf,16)=0x14;
 	if((view = itemdb_viewid(pd->equip)) > 0)
 		WBUFW(buf,20)=view;

@@ -3660,6 +3660,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.gvg_magic_damage_rate = 100;
 	battle_config.gvg_misc_damage_rate = 100;
 	battle_config.gvg_eliminate_time = 5000;
+	battle_config.mob_changetarget_byskill = 0;
 	battle_config.item_drop_common_min=1;	// Added by TyrNemesis^
 	battle_config.item_drop_common_max=10000;
 	battle_config.item_drop_equip_min=1;
@@ -3778,6 +3779,7 @@ int battle_config_read(const char *cfgName)
 			{ "gvg_magic_attack_damage_rate" ,&battle_config.gvg_magic_damage_rate },
 			{ "gvg_misc_attack_damage_rate" ,&battle_config.gvg_misc_damage_rate },
 			{ "gvg_eliminate_time" ,&battle_config.gvg_eliminate_time },
+			{ "mob_changetarget_byskill" ,&battle_config.mob_changetarget_byskill },
 		{ "item_rate_common",	&battle_config.item_rate_common	},	// Added by RoVeRT
 		{ "item_rate_equip",	&battle_config.item_rate_equip	},
 		{ "item_rate_card",	&battle_config.item_rate_card	},	// End Addition
