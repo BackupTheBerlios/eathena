@@ -1965,7 +1965,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 		}
 		damage=damage*cardfix/100;
 	}
-	if(damage < 1) damage = 1;	// fixed by RoVeRT
+	if(damage < 0) damage = 0;
 
 	// ‘® «‚Ì“K—p
 	damage=battle_attr_fix(damage, s_ele, battle_get_element(target) );
@@ -2751,7 +2751,7 @@ static struct Damage battle_calc_pc_weapon_attack(
 		damage=damage*cardfix/100;
 		damage2=damage2*cardfix/100;
 	}
-	if(damage < 1) damage = 1;	// fixed by RoVeRT
+	if(damage < 0) damage = 0;
 	if(damage2 < 0) damage2 = 0;
 
 	// ‘® «‚Ì“K—p
@@ -3091,7 +3091,7 @@ struct Damage battle_calc_magic_attack(
 			}
 		}
 	}
-	if(damage < 1) damage = 1;	// fixed by RoVeRT
+	if(damage < 0) damage = 0;
 
 	damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// ‘® «C³
 
@@ -3215,7 +3215,7 @@ struct Damage  battle_calc_misc_attack(
 			cardfix=cardfix*(100-tsd->misc_def_rate)/100;
 			damage=damage*cardfix/100;
 		}
-		if(damage < 1) damage = 1;	// fixed by RoVeRT
+		if(damage < 0) damage = 0;
 		damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// ‘® «C³
 	}
 
