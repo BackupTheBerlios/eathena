@@ -38,7 +38,7 @@ Super easy way of sending data to a webpage!
 Simply put in the socket name and then the data.
 
 	Ex:
-		web_send(socket, "I like cheese!\n";
+		web_send(socket, "I like cheese!\n");
 
 
 
@@ -47,4 +47,4 @@ char *html_header(char* title);
 Easy way to print the eAthena header for the server.
 
 	Ex:
-		web_send(sockethere, html_header("About");
+		web_send(sockethere, html_header("About"));
