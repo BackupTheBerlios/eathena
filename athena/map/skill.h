@@ -98,6 +98,8 @@ int skill_castfix( struct block_list *bl, int time );
 int skill_delayfix( struct block_list *bl, int time );
 int skill_check_unit_range(int m,int x,int y,int range,int skillid);
 int skill_check_unit_range2(int m,int x,int y,int range);
+// -- moonsoul	(added skill_check_unit_cell)
+int skill_check_unit_cell(int skillid,int m,int x,int y,int unit_id);
 int skill_unit_out_all( struct block_list *bl,unsigned int tick,int range);
 int skill_unit_move( struct block_list *bl,unsigned int tick,int range);
 
@@ -169,7 +171,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_SIGNUMCRUCIS			=11,
 	SC_INCREASEAGI			=12,
 	SC_DECREASEAGI			=13,
-	SC_SLOWPOISON				=14,
+	SC_SLOWPOISON			=14,
 	SC_IMPOSITIO			=15,
 	SC_SUFFRAGIUM			=16,
 	SC_ASPERSIO				=17,
@@ -187,7 +189,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_TRICKDEAD			=29,
 	SC_LOUD					=30,
 	SC_ENERGYCOAT			=31,
-	SC_HALLUCINATION	=34,
+	SC_HALLUCINATION		=34,
 	SC_WEIGHT50				=35,
 	SC_WEIGHT90				=36,
 	SC_SPEEDPOTION0			=37,
@@ -210,7 +212,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_SPEARSQUICKEN		=68,
 	SC_EXPLOSIONSPIRITS		=86,
 	SC_STEELBODY			=87,
-	SC_COMBO					=89,
+	SC_COMBO				=89,
 	SC_FLAMELAUNCHER		=90,
 	SC_FROSTWEAPON			=91,
 	SC_LIGHTNINGLOADER		=92,
@@ -232,10 +234,10 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_WATERBALL			=142,
 	SC_ANKLE				=143,
 	SC_DANCING				=144,
-	SC_KEEPING			=145,
-	SC_BARRIER			=146,
+	SC_KEEPING				=145,
+	SC_BARRIER				=146,
 	
-	SC_MAGICROD			=149,
+	SC_MAGICROD				=149,
 	SC_SIGHT				=150,
 	SC_RUWACH				=151,
 	SC_AUTOCOUNTER			=152,
@@ -268,13 +270,13 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_SIGHTTRASHER			=73,
 
 //	SC_CALLSPIRITS			=100,
-//	SC_FREECAST			=101,
+//	SC_FREECAST				=101,
 //	SC_ABSORBSPIRIT			=102,
 	SC_BLADESTOP			=180,
 	SC_VIOLENTGALE			=181,
 	SC_LANDPROTECTOR		=182,
 	SC_ADAPTATION			=183,
-//	SC_GANGSTER			=184,
+//	SC_GANGSTER				=184,
 
 	SC_CANNIBALIZE			=186,
 	SC_SPHEREMINE			=187,
@@ -284,12 +286,14 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 
 // -- testing various SC effects
 	SC_AURABLADE			=81,
-	SC_PARRYING			=82,			
-	SC_CONCENTRATION			=83,
+	SC_PARRYING				=82,			
+	SC_CONCENTRATION		=83,
 	SC_TENSIONRELAX			=84,
-	SC_BERSERK			=85,
+	SC_BERSERK				=85,
 	SC_ASSUMPTIO			=114,
 	SC_BASILICA				=125,
+	SC_TRUESIGHT			=126,
+	SC_SHARPSHOOT			=127,
 };
 extern int SkillStatusChangeTable[];
 

@@ -1628,6 +1628,14 @@ static struct Damage battle_calc_pet_weapon_attack(
 				damage = damage*(100+ 50 * skill_lv)/100;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
+			case SN_SHARPSHOOTING:
+				damage = damage;
+				break;
+			case CG_ARROWVULCAN:	// ダブルストレイフィング
+				damage = damage*(160+ 40*skill_lv)/100;
+				div_=9;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				break;
 			}
 		}
 
@@ -2033,6 +2041,14 @@ static struct Damage battle_calc_mob_weapon_attack(
 				break;
 			case DC_THROWARROW:	// 矢撃ち
 				damage = damage*(100+ 50 * skill_lv)/100;
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				break;
+			case SN_SHARPSHOOTING:
+				damage = damage;
+				break;
+			case CG_ARROWVULCAN:	// ダブルストレイフィング
+				damage = damage*(160+ 40*skill_lv)/100;
+				div_=9;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				break;
 			}
@@ -2757,6 +2773,24 @@ static struct Damage battle_calc_pc_weapon_attack(
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
 				sd->state.arrow_atk = 1;
 				break;
+			case SN_SHARPSHOOTING:
+				damage = damage;
+				break;
+			case CG_ARROWVULCAN:	// ダブルストレイフィング
+				if(!sd->state.arrow_atk && sd->arrow_atk > 0) {
+					int arr = rand()%(sd->arrow_atk+1);
+					damage += arr;
+					damage2 += arr;
+				}
+				damage = damage*(160+ 40*skill_lv)/100;
+				div_=9;
+				if(sd->arrow_ele > 0) {
+					s_ele = sd->arrow_ele;
+					s_ele_ = sd->arrow_ele;
+				}
+				flag=(flag&~BF_RANGEMASK)|BF_LONG;
+				sd->state.arrow_atk = 1;
+				break;
 			}
 		}
 		if(da == 2) { //三段掌が発動しているか
@@ -3429,6 +3463,13 @@ struct Damage  battle_calc_misc_attack(
 				if(damage > 9999) damage = 9999;
 			}
 		}
+		break;
+	case SN_FALCONASSAULT:	// ブリッツビート
+		if( sd==NULL || (skill = pc_checkskill(sd,HT_STEELCROW)) <= 0)
+			skill=0;
+		damage=(dex/10+int_/2+skill*3+40)*2;
+		if(flag > 1)
+			damage /= flag;
 		break;
 	}
 

@@ -213,7 +213,12 @@ int SkillStatusChangeTable[]={	/* skill.hのenumのSC_***とあわせること */
 	SC_BASILICA,
 	-1,-1,-1,-1,-1,-1,-1,
 /* 370- */
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,};
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+/* 380- */
+	SC_TRUESIGHT,
+	-1,
+	SC_SHARPSHOOT,-1,-1,-1,-1,-1,-1,-1,
+};
 
 static const int dirx[8]={0,-1,-1,-1,0,1,1,1};
 static const int diry[8]={1,1,0,-1,-1,-1,0,1};
@@ -1436,10 +1441,14 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	case NPC_HOLYATTACK:
 	case NPC_DARKNESSATTACK:
 	case NPC_TELEKINESISATTACK:
+	case CG_ARROWVULCAN:
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
 		break;
 	case NPC_DARKBREATH:
 		clif_emotion(src,7);
+		skill_attack(BF_MISC,src,src,bl,skillid,skilllv,tick,flag);
+		break;
+	case SN_FALCONASSAULT:
 		skill_attack(BF_MISC,src,src,bl,skillid,skilllv,tick,flag);
 		break;
 	case KN_BRANDISHSPEAR:		/* ブランディッシュスピア */
@@ -2026,6 +2035,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case LK_AURABLADE:	// Lord Knight - Aura Blade (355)
 	case LK_PARRYING:		// Lord Knight - Parrying (356)
 	case LK_TENSIONRELAX:
+	case SN_SIGHT:
 #if 0
 	case SA_VOLCANO:		/* ボルケーノ */
 	case SA_DELUGE:			/* デリュージ */
@@ -2847,6 +2857,16 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		sd->skillitemlv = sd->last_skilllv;
 		clif_item_skill(sd,sd->last_skillid,sd->last_skilllv,sd->status.name);
 		sd->last_skillid = BD_ENCORE;
+		break;
+
+	case PF_HPCONVERSION:
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		if(sd) {
+			int sp = skill_get_sp(sd->skillid_old,sd->skilllv_old);
+			sp = sp*20*skilllv/100;
+			if(sp < 0) sp = 0;
+			pc_heal(sd,+sp,0);
+		}
 		break;
 
 	default:
@@ -5444,6 +5464,8 @@ int skill_status_change_end( struct block_list* bl , int type,int tid )
 			case SC_VIOLENTGALE:
 			case SC_CONCENTRATION:
 			case SC_BERSERK:
+			case SC_TRUESIGHT:			/* SN_SIGHT */
+			case SC_SHARPSHOOT:
 				calc_flag = 1;
 				break;
 			case SC_DEVOTION:		/* ディボーション */
@@ -6267,6 +6289,15 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			if(sc_data[SC_KYRIE].timer!=-1 )
 				skill_status_change_end(bl,SC_KYRIE,-1);
 			break;	
+
+		case SC_TRUESIGHT:
+			if(sc_data[SC_CONCENTRATE].timer!=-1 )
+				skill_status_change_end(bl,SC_CONCENTRATE,-1);
+			calc_flag=1;
+			break;
+		case SC_SHARPSHOOT:
+			calc_flag=1;
+			break;
 
 		default:
 			if(battle_config.error_log)
