@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.9 2004/01/28 00:06:40 rovert Exp $
+// $Id: npc.c,v 1.10 2004/02/05 18:04:42 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -1133,7 +1133,7 @@ int npc_parse_mob(char *w1,char *w2,char *w3,char *w4)
 		memcpy(md->name,w3,24);
 
 		md->n = i;
-		md->class=class;
+		md->base_class = md->class = class;
 		md->bl.id=npc_id++;
 		md->x0=x;
 		md->y0=y;
