@@ -1284,6 +1284,7 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		else { /*ボウリングバッシュを仮実装してみる（吹き飛ばしはここでやる） */
 			int ar = 1;
 			map_freeblock_lock();
+			/* まずターゲットに攻撃を加える */
 			if(skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,0) > 0 && bl->prev != NULL) {
 				int i,c;	/* 他人から聞いた動きなので間違ってる可能性大＆効率が悪いっす＞＜ */
 				c = ((skilllv-1)>>1) + 1;
@@ -1306,6 +1307,7 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 				skill_area_temp[1]=bl->id;
 				skill_area_temp[2]=bl->x;
 				skill_area_temp[3]=bl->y;
+				/* その後ターゲット以外の範囲内の敵全体に処理を行う */
 				map_foreachinarea(skill_area_sub,
 					bl->m,bl->x-ar,bl->y-ar,bl->x+ar,bl->y+ar,0,
 					src,skillid,skilllv,tick, flag|BCT_ENEMY|1,
@@ -1437,18 +1439,23 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		if(flag&1){
 			/* 個別にダメージを与える */
 			if(src->type==BL_MOB){
+				struct mob_data* mb=(struct mob_data*)src;
+				mb->hp=skill_area_temp[2];
 				if(bl->id!=skill_area_temp[1])
 					skill_attack(BF_MISC,src,src,bl,skillid,skilllv,tick,flag );
+				mb->hp=1;
 			}
 		}else{
 			skill_area_temp[1]=bl->id;
-			/* まずターゲット以外の範囲内の敵全体に処理を行う */
+			skill_area_temp[2]=battle_get_hp(src);
+			/* まずターゲットに攻撃を加える */
+			skill_attack(BF_MISC,src,src,bl,skillid,skilllv,tick,flag );
+			/* その後ターゲット以外の範囲内の敵全体に処理を行う */
 			map_foreachinarea(skill_area_sub,
 				bl->m,bl->x-5,bl->y-5,bl->x+5,bl->y+5,0,
 				src,skillid,skilllv,tick, flag|BCT_ALL|1,
 				skill_castend_damage_id);
-			/* その後ターゲットに攻撃を加える */
-			skill_attack(BF_MISC,src,src,bl,skillid,skilllv,tick,flag );
+			battle_damage(src,src,1);
 		}
 		break;
 

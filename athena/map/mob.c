@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.26 2004/02/03 21:01:09 rovert Exp $
+// $Id: mob.c,v 1.27 2004/02/05 04:31:12 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1918,6 +1918,7 @@ int mob_warpslave_sub(struct block_list *bl,va_list ap)
  */
 int mob_warpslave(struct mob_data *md,int x, int y)
 {
+printf("warp slave\n");
 	map_foreachinarea(mob_warpslave_sub, md->bl.m,
 		x-AREA_SIZE,y-AREA_SIZE,
 		x+AREA_SIZE,y+AREA_SIZE,BL_MOB,
@@ -1980,10 +1981,10 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	}
 
 	map_addblock(&md->bl);
-	if(type>0)
+	if(type>0) {
 		clif_spawnmob(md);
-
-	mob_warpslave(md,lx,ly);
+		mob_warpslave(md,lx,ly);
+	}
 
 	return 0;
 }
