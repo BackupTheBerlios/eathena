@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.31 2004/02/05 22:06:46 rovert Exp $
+// $Id: mob.c,v 1.32 2004/02/05 23:11:01 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1845,7 +1845,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 				drop_rate = 1;
 			if(drop_rate < battle_config.item_drop_mvp_min)
 				drop_rate = battle_config.item_drop_mvp_min;
-			if(drop_rate > battle_config.max_item_drop_mvp)
+			if(drop_rate > battle_config.item_drop_mvp_max)
 				drop_rate = battle_config.item_drop_mvp_max;
 			if(drop_rate <= rand()%10000)
 				continue;

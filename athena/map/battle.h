@@ -214,11 +214,11 @@ extern struct Battle_Config {
 	int gvg_invincible_time;
 	int gvg_continuous_attack;
 	int gvg_eliminate_time;
-	int item_drop_common,item_drop_card,item_drop_equip;	// Added by RoVeRT
+	int item_rate_common,item_rate_card,item_rate_equip;	// Added by RoVeRT
 	int item_drop_common_min,item_drop_common_max;	// Added by TyrNemesis^
 	int min_item_drop_equip,max_item_drop_equip;
 	int item_drop_card_min,item_drop_card_max;
-	int item_drop_equip_min.item_drop_equip_max
+	int item_drop_equip_min,item_drop_equip_max;
 	int item_drop_mvp_min,item_drop_mvp_max;	// End Addition
 
 	int prevent_logout;	// Added by RoVeRT

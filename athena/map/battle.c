@@ -3634,14 +3634,14 @@ int battle_config_read(const char *cfgName)
 	battle_config.gvg_invincible_time = 10000;
 	battle_config.gvg_continuous_attack = 0;
 	battle_config.gvg_eliminate_time = 5000;
-	battle_config.min_item_drop_common=1;	// Added by TyrNemesis^
-	battle_config.max_item_drop_common=10000;
-	battle_config.min_item_drop_equip=1;
-	battle_config.max_item_drop_equip=10000;
-	battle_config.min_item_drop_card=1;
-	battle_config.max_item_drop_card=10000;
-	battle_config.min_item_drop_mvp=1;
-	battle_config.max_item_drop_mvp=10000;	// End Addition
+	battle_config.item_drop_common_min=1;	// Added by TyrNemesis^
+	battle_config.item_drop_common_max=10000;
+	battle_config.item_drop_equip_min=1;
+	battle_config.item_drop_equip_max=10000;
+	battle_config.item_drop_card_min=1;
+	battle_config.item_drop_card_max=10000;
+	battle_config.item_drop_mvp_min=1;
+	battle_config.item_drop_mvp_max=10000;	// End Addition
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 
 	fp=fopen(cfgName,"r");
@@ -3754,9 +3754,9 @@ int battle_config_read(const char *cfgName)
 			{ "gvg_invincible_time" ,&battle_config.gvg_invincible_time },
 			{ "gvg_continuous_attack" ,&battle_config.gvg_continuous_attack },
 			{ "gvg_eliminate_time" ,&battle_config.gvg_eliminate_time },
-		{ "item_drop_common",	&battle_config.min_item_drop_common	},	// Added by RoVeRT
-		{ "item_drop_equip",	&battle_config.min_item_drop_common	},
-		{ "item_drop_card",	&battle_config.min_item_drop_common	},	// End Addition
+		{ "item_rate_common",	&battle_config.item_rate_common	},	// Added by RoVeRT
+		{ "item_rate_equip",	&battle_config.item_rate_equip	},
+		{ "item_rate_card",	&battle_config.item_rate_card	},	// End Addition
 		{ "item_drop_common_min",	&battle_config.item_drop_common_min	},	// Added by TyrNemesis^
 		{ "item_drop_common_max",	&battle_config.item_drop_common_max	},
 		{ "item_drop_equip_min",	&battle_config.item_drop_equip_min	},
@@ -3832,22 +3832,22 @@ int battle_config_read(const char *cfgName)
 	if(battle_config.vit_penaly_count < 2)
 		battle_config.vit_penaly_count = 2;
 
-	if(battle_config.min_item_drop_common < 1)		// Added by TyrNemesis^
-		battle_config.min_item_drop_common = 1;
-	if(battle_config.max_item_drop_common > 10000)
-		battle_config.max_item_drop_common = 10000;
-	if(battle_config.min_item_drop_equip < 1)
-		battle_config.min_item_drop_equip = 1;
-	if(battle_config.max_item_drop_equip > 10000)
-		battle_config.max_item_drop_equip = 10000;
-	if(battle_config.min_item_drop_card < 1)
-		battle_config.min_item_drop_card = 1;
-	if(battle_config.max_item_drop_card > 10000)
-		battle_config.max_item_drop_card = 10000;
-	if(battle_config.min_item_drop_mvp < 1)
-		battle_config.min_item_drop_mvp = 1;
-	if(battle_config.max_item_drop_mvp > 10000)
-		battle_config.max_item_drop_mvp = 10000;	// End Addition
+	if(battle_config.item_drop_common_min < 1)		// Added by TyrNemesis^
+		battle_config.item_drop_common_min = 1;
+	if(battle_config.item_drop_common_max > 10000)
+		battle_config.item_drop_common_max = 10000;
+	if(battle_config.item_drop_equip_min < 1)
+		battle_config.item_drop_equip_min = 1;
+	if(battle_config.item_drop_equip_max > 10000)
+		battle_config.item_drop_equip_max = 10000;
+	if(battle_config.item_drop_card_min < 1)
+		battle_config.item_drop_card_min = 1;
+	if(battle_config.item_drop_card_max > 10000)
+		battle_config.item_drop_card_max = 10000;
+	if(battle_config.item_drop_mvp_min < 1)
+		battle_config.item_drop_mvp_min = 1;
+	if(battle_config.item_drop_mvp_max > 10000)
+		battle_config.item_drop_mvp_max = 10000;	// End Addition
 
 	add_timer_func_list(battle_delay_damage_sub,"battle_delay_damage_sub");
 
