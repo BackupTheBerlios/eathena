@@ -1189,6 +1189,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 	// スキルやステータス異常による残りのパラメータ補正
 	if(sd->sc_count){
 		// ATK/DEF変化形
+		if(sd->sc_data[SC_VOLCANO].timer!=-1 && sd->def_ele == 3)
+			sd->watk += (sd->sc_data[SC_VOLCANO].val1 * 10);
 		if(sd->sc_data[SC_ANGELUS].timer!=-1)	// エンジェラス
 			sd->def2 = sd->def2*(110+5*sd->sc_data[SC_ANGELUS].val1)/100;
 		if(sd->sc_data[SC_IMPOSITIO].timer!=-1)	// インポシティオマヌス
@@ -1229,6 +1231,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->speed*=4;
 
 		// HIT/FLEE変化系
+		if(sd->sc_data[SC_VIOLENTGALE].timer!=-1 && sd->def_ele == 4)
+			sd->flee += (int)(sd->sc_data[SC_VIOLENTGALE].val1 * 3);
 		if(sd->sc_data[SC_WHISTLE].timer!=-1){  // 口笛
 			sd->flee += sd->sc_data[SC_WHISTLE].val1 * sd->flee/100;
 			sd->flee2+= sd->sc_data[SC_WHISTLE].val1 * sd->flee2/100;
@@ -1253,6 +1257,14 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		}
 
 		// その他
+		if(sd->sc_data[SC_DELUGE].timer!=-1 && sd->def_ele == 1)
+		{
+			int deluge_bonus[]={0,5,9,12,14,15};
+			int deluge_lv = sd->sc_data[SC_DELUGE].val1;
+			sd->status.max_hp += (sd->status.max_hp * deluge_bonus[deluge_lv]) / 100;
+			if(sd->status.max_hp < 0 || sd->status.max_hp > battle_config.max_hp)
+				sd->status.max_hp = battle_config.max_hp;
+		}
 		if(sd->sc_data[SC_APPLEIDUN].timer!=-1){	// イドゥンの林檎
 			sd->status.max_hp += (sd->sc_data[SC_APPLEIDUN].val2 * sd->status.max_hp)/100;
 			if(sd->status.max_hp < 0 || sd->status.max_hp > battle_config.max_hp)

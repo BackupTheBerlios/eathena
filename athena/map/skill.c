@@ -2434,7 +2434,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 	struct skill_unit_group *group=NULL;
 	int i,count=1,limit=10000,val1=skilllv,val2=0;
 	int target=BCT_ENEMY,interval=1000,range=0;
-	int dir=0;
+	int dir=0,aoe_diameter=0;	// -- aoe_diameter (moonsoul) added for sage Area Of Effect skills
 
 	if (1){
 
@@ -2649,28 +2649,18 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 	case SA_VIOLENTGALE:	/* グランドクロス */
 		//count=33;
 		limit=180000;
-		range=skilllv+skilllv%2+3;
+		aoe_diameter=skilllv+skilllv%2+3;
 		target=BCT_ALL;
-		if(skilllv > 0 && skilllv <= 2)
-			count=25;
-		else if(skilllv > 2 && skilllv <= 4)
-			count=49;
-		else
-			count=81;
+		count=aoe_diameter*aoe_diameter;
 		break;
 
 	case SA_LANDPROTECTOR:	/* グランドクロス */
 //		count=33;
 		limit=(90+skilllv*30)*1000;
 		val1=skilllv*15+10;
-		range=skilllv+skilllv%2+5;
+		aoe_diameter=skilllv+skilllv%2+5;
 		target=BCT_ALL;
-		if(skilllv > 0 && skilllv <= 2)
-			count=49;
-		else if(skilllv > 2 && skilllv <= 4)
-			count=81;
-		else
-			count=121;
+		count=aoe_diameter*aoe_diameter;
 		break;
 
 	case BD_LULLABY:			/* 子守唄 */
@@ -2913,8 +2903,12 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		case SA_DELUGE:				/* デリュージ */
 		case SA_VIOLENTGALE:	/* グランドクロス */
 		case SA_LANDPROTECTOR:	/* グランドクロス */
-			ux+=(i%9-4);
-			uy+=(i/9-4);
+			ux+=(i%aoe_diameter-(int)(aoe_diameter/2));
+			uy+=(i/aoe_diameter-(int)(aoe_diameter/2));
+			if(i==(int)count/2)
+				range=(int)aoe_diameter/2;	/* 中心の場合は範囲を4にオーバーライド */
+			else
+				range=-1;	/* 中心じゃない場合は範囲を-1にオーバーライド */
 			break;
 
 		/* ダンスなど */
@@ -4845,6 +4839,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 			tick = 1000 * 30 * val1;
 			break;
 		case SC_VOLCANO:
+			tick=((struct skill_unit *)val2)->group->limit;
 			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_DELUGE,-1);
 			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
@@ -4853,6 +4848,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 				skill_status_change_end(bl,SC_LANDPROTECTOR,-1);
 			break;
 		case SC_DELUGE:
+			tick=((struct skill_unit *)val2)->group->limit;
 			if( sc_data[SC_LANDPROTECTOR].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_LANDPROTECTOR,-1);
 			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
@@ -4861,6 +4857,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 				skill_status_change_end(bl,SC_VOLCANO,-1);
 			break;
 		case SC_VIOLENTGALE:
+			tick=((struct skill_unit *)val2)->group->limit;
 			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_DELUGE,-1);
 			if( sc_data[SC_LANDPROTECTOR].timer!=-1 )	/* EP解除 */
