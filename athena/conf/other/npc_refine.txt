@@ -7,7 +7,6 @@ mes "Would you like to buy some?";
 menu"Pharacon - 200z",PHARA,"Emveretarcon - 1000z",EMVER;
 
 PHARA:
-set @itemid,1010;
 set @value,200;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
@@ -18,13 +17,12 @@ set zeny,zeny-@value*@ammount;
 close;
 
 EMVER:
-set @itemid,1011;
 set @value,1000;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -49,7 +47,6 @@ mes "Would you like to buy some?";
 menu"Pharacon - 200z",PHARA,"Emveretarcon - 1000z",EMVER;
 
 PHARA:
-set @itemid,1010;
 set @value,200;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
@@ -60,13 +57,12 @@ set zeny,zeny-@value*@ammount;
 close;
 
 EMVER:
-set @itemid,1011;
 set @value,1000;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -91,7 +87,6 @@ mes "Would you like to buy some?";
 menu"Pharacon - 200z",PHARA,"Emveretarcon - 1000z",EMVER;
 
 PHARA:
-set @itemid,1010;
 set @value,200;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
@@ -102,13 +97,12 @@ set zeny,zeny-@value*@ammount;
 close;
 
 EMVER:
-set @itemid,1011;
 set @value,1000;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -133,7 +127,6 @@ mes "Would you like to buy some?";
 menu"Pharacon - 200z",PHARA,"Emveretarcon - 1000z",EMVER;
 
 PHARA:
-set @itemid,1010;
 set @value,200;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
@@ -144,13 +137,12 @@ set zeny,zeny-@value*@ammount;
 close;
 
 EMVER:
-set @itemid,1011;
 set @value,1000;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
@@ -167,7 +159,7 @@ mes "You have to buy a POSITIVE amount of items!";
 close;
 }
 
-//Yuno NPC @ 171 26
+//Yuno
 
 yuno_in01.gat,171,26,6	script	Miner	88,{
 
@@ -177,8 +169,8 @@ mes "They are Pharacon and Emvertacon.";
 mes "Would you like to buy some?";
 menu"Pharacon - 200z",PHARA,"Emveretarcon - 1000z",EMVER;
 
+
 PHARA:
-set @itemid,1010;
 set @value,200;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
@@ -189,13 +181,12 @@ set zeny,zeny-@value*@ammount;
 close;
 
 EMVER:
-set @itemid,1011;
 set @value,1000;
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
 if (checkweight(@item,@amount) == 0) goto FAIL;
-getitem 1010,@ammount;
+getitem 1011,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
 
