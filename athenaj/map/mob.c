@@ -1,10 +1,11 @@
-// $Id: mob.c,v 1.2 2004/01/20 19:09:03 RoVeRT Exp $
+// $Id: mob.c,v 1.3 2004/01/20 19:09:22 RoVeRT Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 
 #include "timer.h"
+#include "socket.h"
 #include "db.h"
 #include "map.h"
 #include "clif.h"
@@ -446,6 +447,7 @@ static int mob_timer(int tid,unsigned int tick,int id,int data)
 	if(md->bl.prev == NULL || md->state.state == MS_DEAD)
 		return 1;
 
+	map_freeblock_lock();
 	switch(md->state.state){
 	case MS_WALK:
 		mob_walk(md,tick,data);
@@ -461,6 +463,7 @@ static int mob_timer(int tid,unsigned int tick,int id,int data)
 			printf("mob_timer : %d ?\n",md->state.state);
 		break;
 	}
+	map_freeblock_unlock();
 	return 0;
 }
 
@@ -1821,7 +1824,19 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 //			printf("mob_damage : run event : %s\n",md->npc_event);
 		if(src && src->type == BL_PET)
 			sd = ((struct pet_data *)src)->msd;
-		npc_event(sd,md->npc_event);
+		if(sd == NULL) {
+			struct map_session_data *tmpsd;
+			int i;
+			for(i=0;i<fd_max;i++){
+				if(session[i] && (tmpsd=session[i]->session_data) && tmpsd->state.auth) {
+					if(md->bl.m == tmpsd->bl.m) {
+						sd = tmpsd;
+						break;
+					}
+				}
+			}
+		}
+		if(sd) npc_event(sd,md->npc_event);
 	}
 
 	clif_clearchar_area(&md->bl,1);
