@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.25 2004/02/04 00:02:38 sara-chan Exp $
+// $Id: clif.c,v 1.26 2004/02/04 15:51:19 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -4870,6 +4870,11 @@ void clif_parse_LoadEndAck(int fd,struct map_session_data *sd)
 
 	if(battle_config.ghost_time > 0)
 		pc_setghosttimer(sd,battle_config.ghost_time);
+	if(battle_config.gvg_ghost_time > 0 && map[sd->bl.m].flag.gvg)
+		pc_setgvg_ghosttimer(sd,battle_config.gvg_ghost_time);
+	if(!map[sd->bl.m].flag.gvg)
+		pc_delgvg_ghosttimer(sd);
+
 	map_addblock(&sd->bl);	// ブロック登録
 	clif_spawnpc(sd);	// spawn
 
@@ -4960,6 +4965,9 @@ void clif_parse_WalkToXY(int fd,struct map_session_data *sd)
 		clif_clearchar_area(&sd->bl,1);
 		return;
 	}
+	if(sd->gvg_ghost_timer != -1)
+		pc_delgvg_ghosttimer(sd);
+
 	if(sd->npc_id != 0 || sd->vender_id != 0) return;
 
 	if(sd->skilltimer != -1 && pc_checkskill(sd,SA_FREECAST) <= 0) // フリーキャスト
@@ -5173,6 +5181,8 @@ void clif_parse_ActionRequest(int fd,struct map_session_data *sd)
 		}
 		if(sd->ghost_timer != -1)
 			pc_delghosttimer(sd);
+		if(sd->gvg_ghost_timer != -1)
+			pc_delgvg_ghosttimer(sd);
 		pc_attack(sd,RFIFOL(fd,2),RFIFOB(fd,6)!=0);
 		break;
 	case 0x02:	// sitdown
@@ -5322,6 +5332,10 @@ void clif_parse_UseItem(int fd,struct map_session_data *sd)
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
+		if(sd->gvg_ghost_timer != -1)
+		pc_delgvg_ghosttimer(sd);
+
+
 	pc_useitem(sd,RFIFOW(fd,2)-2);
 }
 
@@ -5635,6 +5649,8 @@ void clif_parse_UseSkillToId(int fd,struct map_session_data *sd)
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
+	if(sd->gvg_ghost_timer != -1)
+		pc_delgvg_ghosttimer(sd);
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
 		if(skillnum == MO_EXTREMITYFIST) {
@@ -5688,6 +5704,8 @@ void clif_parse_UseSkillToPos(int fd,struct map_session_data *sd)
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
+	if(sd->gvg_ghost_timer != -1)
+		pc_delgvg_ghosttimer(sd);
 
 	if(sd->sc_data[SC_TRICKDEAD].timer != -1 && skillnum != NV_TRICKDEAD) return;
 	if(sd->skillitem == -1) {
@@ -5714,6 +5732,9 @@ void clif_parse_UseSkillMap(int fd,struct map_session_data *sd)
 
 	if(sd->ghost_timer != -1)
 		pc_delghosttimer(sd);
+	if(sd->gvg_ghost_timer != -1)
+		pc_delgvg_ghosttimer(sd);
+
 	skill_castend_map(sd,RFIFOW(fd,2),RFIFOP(fd,4));
 }
 /*==========================================
