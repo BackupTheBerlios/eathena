@@ -1773,6 +1773,8 @@ static struct Damage battle_calc_mob_weapon_attack(
 			case KN_AUTOCOUNTER:
 				if(battle_config.monster_auto_counter_type)
 					hitrate += 20;
+				else
+					hitrate = 1000000;
 				break;
 			case AS_SPLASHER:		// Added by AppleGirl
 				damage = damage*(200+ 20*skill_lv)/100;
@@ -2369,6 +2371,8 @@ static struct Damage battle_calc_pc_weapon_attack(
 			case KN_AUTOCOUNTER:
 				if(battle_config.pc_auto_counter_type)
 					hitrate += 20;
+				else
+					hitrate = 1000000;
 				break;
 			case AS_SONICBLOW:	// ソニックブロウ
 				damage = damage*(300+ 50*skill_lv)/100;
@@ -2930,7 +2934,7 @@ struct Damage battle_calc_magic_attack(
 			break;
 		case ALL_RESURRECTION:
 		case PR_TURNUNDEAD:	// 攻撃リザレクションとターンアンデッド
-			if( battle_get_elem_type(target)==9){
+			if(battle_check_undead(t_race,t_ele)){
 				int hp = 0, mhp = 0, thres = 0;
 				hp = battle_get_hp(target);
 				mhp = battle_get_max_hp(target);
@@ -2966,12 +2970,9 @@ struct Damage battle_calc_magic_attack(
 			}
 			break;
 		case MG_FIREWALL:	// ファイヤーウォール
-			{
-				int ele=battle_get_elem_type(target);
-				if( ele!=3 && ele!=9 )
-					blewcount=2|0x10000;
-				MATK_FIX( 1,2 );
-			}
+			if( t_ele!=3 && !battle_check_undead(t_race,t_ele) )
+				blewcount=2|0x10000;
+			MATK_FIX( 1,2 );
 			break;
 		case MG_THUNDERSTORM:	// サンダーストーム
 			MATK_FIX( 80,100 );

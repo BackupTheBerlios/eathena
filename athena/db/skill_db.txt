@@ -1,14 +1,15 @@
 //id,range,hit,inf,pl,nk,max,list_num,castcancel,cast_defence_rate,inf2
 // 01 ID
-// 02 range射程
-// 03 hit連打8　単発6
-// 04 inf(0-パッシブ、1-敵、2-場所、4-即時発動、16-味方、32-罠)
-// 05 pl 属性(0-無 1-水 2-地 3-火 4-風 5-毒 6-聖 7-暗 8-念 9-不死)
-// 06 nk 付加　1効果　2吹き飛ばし
+// 02 range
+// 03 hit (8- repeated hitting, 6- single-hit)
+// 04 inf (0- passive, 1- enemy, 2- place, 4- self, 16- friend, 32- trap) 
+// 05 pl attributes (0- nothing, 1- water, 2- earth, 3- fire, 4- wind, 5- poison, 6- saint, 7- darkness, 8- sense, 9- immortality) 
+// 06 nk addition 1 effects 2 you blow and throw and 
 // 07 MaxLv
-// 08 Hit回数のリスト
-// 09 キャンセルされるかどうか(1でキャンセルされる。0でキャンセルされない)
-// 10 キャスティング中に低下する防御力の比率
+// 08 Hit frequency 
+// 09 castcancelled (it is cancelled at 1. Are not cancelled with 0) 
+// 10 ratio of the defensive power which decreases in 10 castings 
+// 11 inf2 (skill information 2) (1- クェストスキル(afterwards additional schedule), 2- npc skill, 4- enemy, 8- place, 16- self, 32- friend, 64- skill where the damage enters into all ones which include by your with the trap and 128-PVP mode (only land skill), 256- the skill where the damage enter even by your (only land skill), 512- by your, the skill which cannot use. ) (Active skill of part uses 4, 8, 16, 32 and 64. Now only the Asura supremacy  fist use. )
 // 11 inf2(スキル情報2)    (1 - クェストスキル(後で追加予定)、2 - npc スキル、4-敵、8-場所、16-即時発動、32-味方、64-罠、128-PVPモードで自分を含む全ての物にダメージが入るスキル(地面スキルのみ)、256-自分にもダメージが入るスキル(地面スキルのみ)、512-自分には使うことができないスキル。) (4、8、16、32、64は一部のアクティブスキルが使用。今は阿修羅覇鳳拳のみ使用。)
 
 1,0,0,0,0,0,9,0,0,0,0	//NV_BASIC#基本スキル#
@@ -298,7 +299,7 @@
 210,0,0,0,0,0,10,0,0,0,0	//RG_SNATCHER#スナッチャー#
 211,1,6,1,0,1,10,1,0,0,0	//RG_STEALCOIN#スティールコイン#
 212,-1,6,1,0,0,10,1,0,0,0	//RG_BACKSTAP#バックスタブ#
-213,0,0,0,0,0,10,0,0,0,0	//RG_TUNNELDRIVE#トンネルドライブ#
+213,0,0,0,0,0,5,0,0,0,0	//RG_TUNNELDRIVE#トンネルドライブ#
 214,0,6,4,0,1,5,1,0,0,0	//RG_RAID#サプライズアタック#
 215,1,6,1,0,1,5,1,0,0,0	//RG_STRIPWEAPON#ストリップウエポン#
 216,1,6,1,0,1,5,1,0,0,0	//RG_STRIPSHIELD#ストリップシールド#
@@ -308,7 +309,7 @@
 220,0,6,2,0,1,1,1,0,0,0	//RG_GRAFFITI#グラフィティ#
 221,0,6,2,0,1,5,1,0,0,0	//RG_FLAGGRAFFITI#フラッググラフィティ#
 222,0,6,2,0,1,1,1,0,0,0	//RG_CLEANER#クリーナー#
-223,0,0,0,0,0,5,0,0,0,0	//RG_GANGSTER#ギャングスターパラダイス#
+223,0,0,0,0,0,1,0,0,0,0	//RG_GANGSTER#ギャングスターパラダイス#
 224,0,0,0,0,0,5,0,0,0,0	//RG_COMPULSION#コムパルションディスカウント#
 225,0,0,0,0,0,10,0,0,0,0	//RG_PLAGIARISM#クローンスキル#
 
