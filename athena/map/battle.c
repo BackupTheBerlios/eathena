@@ -169,7 +169,8 @@ int battle_get_agi(struct block_list *bl)
 		agi=mob_db[((struct pet_data *)bl)->class].agi;
 
 	if(sc_data) {
-		if( sc_data[SC_INCREASEAGI].timer!=-1 && sc_data[SC_QUAGMIRE].timer == -1 && bl->type != BL_PC)	// 速度増加(PCはpc.cで)
+		if( sc_data[SC_INCREASEAGI].timer!=-1 && sc_data[SC_QUAGMIRE].timer == -1 && sc_data[SC_DONTFORGETME].timer == -1 &&
+			bl->type != BL_PC)	// 速度増加(PCはpc.cで)
 			agi += 2+sc_data[SC_INCREASEAGI].val1;
 
 		if(sc_data[SC_CONCENTRATE].timer!=-1 && sc_data[SC_QUAGMIRE].timer == -1 && bl->type != BL_PC)
@@ -281,7 +282,7 @@ int battle_get_flee(struct block_list *bl)
 	if(sc_data) {
 		if(sc_data[SC_WHISTLE].timer!=-1 && bl->type != BL_PC)
 			flee += flee*(sc_data[SC_WHISTLE].val1+sc_data[SC_WHISTLE].val2
-					+sc_data[SC_WHISTLE].val3)/100;
+					+(sc_data[SC_WHISTLE].val3>>16))/100;
 		if(sc_data[SC_BLIND].timer!=-1 && bl->type != BL_PC)
 			flee -= flee*25/100;
 	}
@@ -323,7 +324,7 @@ int battle_get_flee2(struct block_list *bl)
 	if(sc_data) {
 		if(sc_data[SC_WHISTLE].timer!=-1 && bl->type != BL_PC)
 			flee2 += (sc_data[SC_WHISTLE].val1+sc_data[SC_WHISTLE].val2
-					+sc_data[SC_WHISTLE].val4)*10;
+					+(sc_data[SC_WHISTLE].val3&0xffff))*10;
 	}
 	if(flee2 < 1) flee2 = 1;
 	return flee2;
@@ -586,18 +587,20 @@ int battle_get_speed(struct block_list *bl)
 			speed = ((struct pet_data *)bl)->msd->petDB->speed;
 
 		if(sc_data) {
-			if(sc_data[SC_INCREASEAGI].timer!=-1)
+			if(sc_data[SC_INCREASEAGI].timer!=-1 && sc_data[SC_DONTFORGETME].timer == -1)
 				speed -= speed*25/100;
 			if(sc_data[SC_DECREASEAGI].timer!=-1)
 				speed = speed*125/100;
 			if(sc_data[SC_QUAGMIRE].timer!=-1)
 				speed = speed*3/2;
 			if(sc_data[SC_DONTFORGETME].timer!=-1)
-				speed = speed*sc_data[SC_DONTFORGETME].val3/100;
+				speed = speed*(100+sc_data[SC_DONTFORGETME].val1*2 + sc_data[SC_DONTFORGETME].val2 + (sc_data[SC_DONTFORGETME].val3&0xffff))/100;
 			if(sc_data[SC_STEELBODY].timer!=-1)
 				speed = speed*125/100;
 			if(sc_data[SC_DEFENDER].timer!=-1)
 				speed = (speed * (155 - sc_data[SC_DEFENDER].val1*5)) / 100;
+			if(sc_data[SC_DANCING].timer!=-1 )
+				speed*=4;
 			if(sc_data[SC_CURSE].timer!=-1)
 				speed = speed + 450;
 		}
@@ -620,23 +623,24 @@ int battle_get_adelay(struct block_list *bl)
 			adelay = mob_db[((struct pet_data *)bl)->class].adelay;
 
 		if(sc_data) {
-			if(sc_data[SC_TWOHANDQUICKEN].timer != -1 && sc_data[SC_QUAGMIRE].timer == -1)	// 2HQ
+			if(sc_data[SC_TWOHANDQUICKEN].timer != -1 && sc_data[SC_QUAGMIRE].timer == -1 && sc_data[SC_DONTFORGETME].timer == -1)	// 2HQ
 				aspd_rate -= 30;
 			if(sc_data[SC_ADRENALINE].timer != -1 && sc_data[SC_TWOHANDQUICKEN].timer == -1 &&
-				sc_data[SC_QUAGMIRE].timer == -1)	// アドレナリンラッシュ
+				sc_data[SC_QUAGMIRE].timer == -1 && sc_data[SC_DONTFORGETME].timer == -1)	// アドレナリンラッシュ
 				aspd_rate -= 30;
 			if(sc_data[SC_SPEARSQUICKEN].timer != -1 && sc_data[SC_ADRENALINE].timer == -1 &&
-				sc_data[SC_TWOHANDQUICKEN].timer == -1 && sc_data[SC_QUAGMIRE].timer == -1)	// スピアクィッケン
+				sc_data[SC_TWOHANDQUICKEN].timer == -1 && sc_data[SC_QUAGMIRE].timer == -1 && sc_data[SC_DONTFORGETME].timer == -1)	// スピアクィッケン
 				aspd_rate -= sc_data[SC_SPEARSQUICKEN].val2;
 			if(sc_data[SC_ASSNCROS].timer!=-1 && // 夕陽のアサシンクロス
-				sc_data[SC_TWOHANDQUICKEN].timer==-1 && sc_data[SC_ADRENALINE].timer==-1 && sc_data[SC_SPEARSQUICKEN].timer==-1)
+				sc_data[SC_TWOHANDQUICKEN].timer==-1 && sc_data[SC_ADRENALINE].timer==-1 && sc_data[SC_SPEARSQUICKEN].timer==-1 &&
+				sc_data[SC_DONTFORGETME].timer == -1)
 				aspd_rate -= 5+sc_data[SC_ASSNCROS].val1+sc_data[SC_ASSNCROS].val2+sc_data[SC_ASSNCROS].val3;
 			if(sc_data[SC_DONTFORGETME].timer!=-1)		// 私を忘れないで
-				aspd_rate += sc_data[SC_DONTFORGETME].val2;
+				aspd_rate += sc_data[SC_DONTFORGETME].val1*3 + sc_data[SC_DONTFORGETME].val2 + (sc_data[SC_DONTFORGETME].val3>>16);
 			if(sc_data[SC_STEELBODY].timer!=-1)	// 金剛
 				aspd_rate += 25;
 			if(sc_data[SC_DEFENDER].timer != -1)
-				aspd_rate += (35 - sc_data[SC_DEFENDER].val1*5);
+				adelay += (1100 - sc_data[SC_DEFENDER].val1*100);
 		}
 		if(aspd_rate != 100)
 			adelay = adelay*aspd_rate/100;
@@ -658,23 +662,24 @@ int battle_get_amotion(struct block_list *bl)
 			amotion = mob_db[((struct pet_data *)bl)->class].amotion;
 
 		if(sc_data) {
-			if(sc_data[SC_TWOHANDQUICKEN].timer != -1 && sc_data[SC_QUAGMIRE].timer == -1)	// 2HQ
+			if(sc_data[SC_TWOHANDQUICKEN].timer != -1 && sc_data[SC_QUAGMIRE].timer == -1 && sc_data[SC_DONTFORGETME].timer == -1)	// 2HQ
 				aspd_rate -= 30;
 			if(sc_data[SC_ADRENALINE].timer != -1 && sc_data[SC_TWOHANDQUICKEN].timer == -1 &&
-				sc_data[SC_QUAGMIRE].timer == -1)	// アドレナリンラッシュ
+				sc_data[SC_QUAGMIRE].timer == -1 && sc_data[SC_DONTFORGETME].timer == -1)	// アドレナリンラッシュ
 				aspd_rate -= 30;
 			if(sc_data[SC_SPEARSQUICKEN].timer != -1 && sc_data[SC_ADRENALINE].timer == -1 &&
-				sc_data[SC_TWOHANDQUICKEN].timer == -1 && sc_data[SC_QUAGMIRE].timer == -1)	// スピアクィッケン
+				sc_data[SC_TWOHANDQUICKEN].timer == -1 && sc_data[SC_QUAGMIRE].timer == -1 && sc_data[SC_DONTFORGETME].timer == -1)	// スピアクィッケン
 				aspd_rate -= sc_data[SC_SPEARSQUICKEN].val2;
 			if(sc_data[SC_ASSNCROS].timer!=-1 && // 夕陽のアサシンクロス
-				sc_data[SC_TWOHANDQUICKEN].timer==-1 && sc_data[SC_ADRENALINE].timer==-1 && sc_data[SC_SPEARSQUICKEN].timer==-1)
+				sc_data[SC_TWOHANDQUICKEN].timer==-1 && sc_data[SC_ADRENALINE].timer==-1 && sc_data[SC_SPEARSQUICKEN].timer==-1 &&
+				sc_data[SC_DONTFORGETME].timer == -1)
 				aspd_rate -= 5+sc_data[SC_ASSNCROS].val1+sc_data[SC_ASSNCROS].val2+sc_data[SC_ASSNCROS].val3;
 			if(sc_data[SC_DONTFORGETME].timer!=-1)		// 私を忘れないで
-				aspd_rate += sc_data[SC_DONTFORGETME].val2;
+				aspd_rate += sc_data[SC_DONTFORGETME].val1*3 + sc_data[SC_DONTFORGETME].val2 + (sc_data[SC_DONTFORGETME].val3>>16);
 			if(sc_data[SC_STEELBODY].timer!=-1)	// 金剛
 				aspd_rate += 25;
 			if(sc_data[SC_DEFENDER].timer != -1)
-				aspd_rate += (35 - sc_data[SC_DEFENDER].val1*5);
+				amotion += (550 - sc_data[SC_DEFENDER].val1*50);
 		}
 		if(aspd_rate != 100)
 			amotion = amotion*aspd_rate/100;
@@ -990,10 +995,6 @@ int battle_damage(struct block_list *bl,struct block_list *target,int damage)
 			if( (!tsd->special_state.no_castcancel || map[bl->m].flag.gvg) && tsd->state.skillcastcancel &&
 				!tsd->special_state.no_castcancel2)
 				skill_castcancel(target,0);
-		}
-		if( (*battle_get_option(target))&6 ){
-			skill_status_change_end( target, SC_HIDING, -1);
-			skill_status_change_end( target, SC_CLOAKING, -1);
 		}
 
 		return pc_damage(bl,tsd,damage);
@@ -3014,17 +3015,18 @@ struct Damage battle_calc_magic_attack(
 		case PR_SANCTUARY:	// サンクチュアリ
 			damage = (skill_lv>6)?388:skill_lv*50;
 			normalmagic_flag=0;
-			blewcount=3|0x10000;
+			blewcount=2|0x10000;
 			break;
 		case ALL_RESURRECTION:
 		case PR_TURNUNDEAD:	// 攻撃リザレクションとターンアンデッド
 			if(target->type != BL_PC && battle_check_undead(t_race,t_ele)){
-				int hp = 0, mhp = 0, thres = 0;
+				int hp, mhp, thres;
 				hp = battle_get_hp(target);
 				mhp = battle_get_max_hp(target);
 				thres = (skill_lv * 20) + battle_get_luk(bl)+
 						battle_get_int(bl) + battle_get_lv(bl)+
 						((200 - hp * 200 / mhp));
+				if(thres > 700) thres = 700;
 //				if(battle_config.battle_log)
 //					printf("ターンアンデッド！ 確率%d ‰(千分率)\n", thres);
 				if(rand()%1000 < thres && !(battle_get_mode(target)&0x20))	// 成功
@@ -3071,11 +3073,14 @@ struct Damage battle_calc_magic_attack(
 			matk1+=50;
 			matk2+=50;
 			break;
+		case WZ_SIGHTRASHER:
+			MATK_FIX( 100+skill_lv*20, 100);
+			blewcount=5|0x10000;
+			break;
 		case WZ_METEOR:
-//			MATK_FIX( skill_lv*30+80, 100 );
 			break;
 		case WZ_JUPITEL:	// ユピテルサンダー
-			blewcount=(skill_lv>6)?6:skill_lv;
+			blewcount=(skill_lv>6)? 7:skill_lv+1;
 			break;
 		case WZ_VERMILION:	// ロードオブバーミリオン
 			MATK_FIX( skill_lv*20+80, 100 );
@@ -3329,7 +3334,7 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 	 unsigned int tick,int flag)
 {
 	struct map_session_data *sd=NULL;
-	struct status_change *sc_data=battle_get_sc_data(target);
+	struct status_change *sc_data = battle_get_sc_data(src),*t_sc_data=battle_get_sc_data(target);
 	short *opt1;
 
 	if(src->type == BL_PC)
@@ -3383,7 +3388,7 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 					delay += 300;
 				else
 					delay = 300;
-				skill_status_change_start(src,SC_COMBO,MO_TRIPLEATTACK,0,delay,0);
+				skill_status_change_start(src,SC_COMBO,MO_TRIPLEATTACK,0,0,0,delay,0);
 			}
 			sd->attackabletime = sd->canmove_tick = tick + delay;
 			clif_combo_delay(src,delay);
@@ -3397,22 +3402,6 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 			if(src->type == BL_PC && sd->status.weapon >= 16 && wd.damage2 == 0)
 				clif_damage(src,target,tick+10, wd.amotion, wd.dmotion,0, 1, 0, 0);
 		}
-		if(sd && sd->sc_data[SC_AUTOSPELL].val1) {	// オートスペル
-			int per=0,sp=0,skilllv=rand()%sd->sc_data[SC_AUTOSPELL].val2+1;
-
-			if	(skilllv==1) per=50;
-			else if (skilllv==2) per=35;
-			else if (skilllv==3) per=15;
-			else if (skilllv<11) per= 5;
-
-			sp=skill_get_sp(sd->sc_data[SC_AUTOSPELL].val1, skilllv)*2/3;	/* 消費SP(通常の2/3) */
-
-			if(rand()%100 < per && sp > 0 && sd->status.sp >= sp){		/* SP消費 */
-				sd->status.sp-=sp;
-				clif_updatestatus(sd,SP_SP);
-				skill_castend_damage_id(src,target,sd->sc_data[SC_AUTOSPELL].val1,skilllv,tick,flag);
-			}
-		}
 		map_freeblock_lock();
 		if(sd && sd->splash_range > 0 && (wd.damage > 0 || wd.damage2 > 0) )
 			skill_castend_damage_id(src,target,0,-1,tick,0);
@@ -3421,9 +3410,47 @@ int battle_weapon_attack( struct block_list *src,struct block_list *target,
 			if(wd.damage > 0 || wd.damage2 > 0)
 				skill_additional_effect(src,target,0,0,BF_WEAPON,tick);
 		}
-		if(sc_data && sc_data[SC_AUTOCOUNTER].timer != -1 && sc_data[SC_AUTOCOUNTER].val4 > 0) {
-			if(sc_data[SC_AUTOCOUNTER].val3 == src->id)
-				battle_weapon_attack(target,src,tick,0x8000|sc_data[SC_AUTOCOUNTER].val1);
+		if(sc_data && sc_data[SC_AUTOSPELL].timer != -1 && rand()%100 < sc_data[SC_AUTOSPELL].val4) {
+			int skilllv=sc_data[SC_AUTOSPELL].val3,i,f=0;
+			i = rand()%100;
+			if(i >= 50) skilllv -= 2;
+			else if(i >= 15) skilllv--;
+			if(skilllv < 1) skilllv = 1;
+			if(sd) {
+				int sp = skill_get_sp(sc_data[SC_AUTOSPELL].val2,skilllv)*2/3;
+				if(sd->status.sp >= sp) {
+					if((i=skill_get_inf(sc_data[SC_AUTOSPELL].val2) == 2) || i == 32)
+						f = skill_castend_pos2(src,target->x,target->y,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+					else
+						f = skill_castend_damage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+					if(!f) pc_heal(sd,0,-sp);
+				}
+			}
+			else {
+				if((i=skill_get_inf(sc_data[SC_AUTOSPELL].val2) == 2) || i == 32)
+					skill_castend_pos2(src,target->x,target->y,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+				else
+					skill_castend_damage_id(src,target,sc_data[SC_AUTOSPELL].val2,skilllv,tick,flag);
+			}
+		}
+		if(sd && sd->autospell_id > 0 && sd->autospell_lv > 0 && rand()%100 < sd->autospell_rate) {
+			int skilllv=sd->autospell_lv,i,f=0,sp;
+			i = rand()%100;
+			if(i >= 50) skilllv -= 2;
+			else if(i >= 15) skilllv--;
+			if(skilllv < 1) skilllv = 1;
+			sp = skill_get_sp(sd->autospell_id,skilllv)*2/3;
+			if(sd->status.sp >= sp) {
+				if((i=skill_get_inf(sd->autospell_id) == 2) || i == 32)
+					f = skill_castend_pos2(src,target->x,target->y,sd->autospell_id,skilllv,tick,flag);
+				else
+					f = skill_castend_damage_id(src,target,sd->autospell_id,skilllv,tick,flag);
+				if(!f) pc_heal(sd,0,-sp);
+			}
+		}
+		if(t_sc_data && t_sc_data[SC_AUTOCOUNTER].timer != -1 && t_sc_data[SC_AUTOCOUNTER].val4 > 0) {
+			if(t_sc_data[SC_AUTOCOUNTER].val3 == src->id)
+				battle_weapon_attack(target,src,tick,0x8000|t_sc_data[SC_AUTOCOUNTER].val1);
 			skill_status_change_end(target,SC_AUTOCOUNTER,-1);
 		}
 		map_freeblock_unlock();
@@ -3730,8 +3757,8 @@ int battle_config_read(const char *cfgName)
 	battle_config.monster_skill_reiteration = 0;
 	battle_config.pc_skill_nofootset = 0;
 	battle_config.monster_skill_nofootset = 0;
-	battle_config.pc_cloak_check_wall = 1;
-	battle_config.monster_cloak_check_wall = 1;
+	battle_config.pc_cloak_check_type = 0;
+	battle_config.monster_cloak_check_type = 0;
 	battle_config.gvg_short_damage_rate = 100;
 	battle_config.gvg_long_damage_rate = 100;
 	battle_config.gvg_magic_damage_rate = 100;
@@ -3862,8 +3889,8 @@ int battle_config_read(const char *cfgName)
 			{ "monster_skill_reiteration", &battle_config.monster_skill_reiteration },
 			{ "player_skill_nofootset", &battle_config.pc_skill_nofootset },
 			{ "monster_skill_nofootset", &battle_config.monster_skill_nofootset },
-			{ "player_cloak_check_wall", &battle_config.pc_cloak_check_wall },
-			{ "monster_cloak_check_wall", &battle_config.monster_cloak_check_wall },
+			{ "player_cloak_check_type", &battle_config.pc_cloak_check_type },
+			{ "monster_cloak_check_type", &battle_config.monster_cloak_check_type },
 			{ "gvg_short_attack_damage_rate" ,&battle_config.gvg_short_damage_rate },
 			{ "gvg_long_attack_damage_rate" ,&battle_config.gvg_long_damage_rate },
 			{ "gvg_magic_attack_damage_rate" ,&battle_config.gvg_magic_damage_rate },

@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.22 2004/02/22 06:04:38 rovert Exp $
+// $Id: map.c,v 1.23 2004/02/24 05:07:33 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,11 +42,11 @@ static int users;
 static struct block_list *object[MAX_FLOORITEM];
 static int first_free_object_id,last_object_id;
 
-#define block_free_max 262144
+#define block_free_max 1048576
 static void *block_free[block_free_max];
 static int block_free_count=0,block_free_lock=0;
 
-#define BL_LIST_MAX 262144
+#define BL_LIST_MAX 1048576
 static struct block_list *bl_list[BL_LIST_MAX];
 static int bl_list_count = 0;
 
@@ -55,13 +55,6 @@ int map_num=0;
 
 int autosave_interval=DEFAULT_AUTOSAVE_INTERVAL;
 int agit_flag=0;
-
-//Added for Mugendai's I'm Alive mod
-int imalive_on=0;
-int imalive_time=60;
-//Added by Mugendai for GUI
-int flush_on=0;
-int flush_time=100;
 
 struct charid2nick {
 	char nick[24];
@@ -1340,38 +1333,10 @@ int map_config_read(char *cfgName)
 			strcpy(motd_txt,w2);
 		} else if(strcmpi(w1,"help_txt")==0){
 			strcpy(help_txt,w2);
-		} else if(strcmpi(w1,"imalive_on")==0){		//Added by Mugendai for I'm Alive mod
-			imalive_on = atoi(w2);					//Added by Mugendai for I'm Alive mod
-		} else if(strcmpi(w1,"imalive_time")==0){	//Added by Mugendai for I'm Alive mod
-			imalive_time = atoi(w2);				//Added by Mugendai for I'm Alive mod
-		} else if(strcmpi(w1,"flush_on")==0){		//Added by Mugendai for GUI
-			flush_on = atoi(w2);					//Added by Mugendai for GUI
-		} else if(strcmpi(w1,"flush_time")==0){		//Added by Mugendai for GUI
-			flush_time = atoi(w2);					//Added by Mugendai for GUI
 		}
 	}
 	fclose(fp);
 
-	return 0;
-}
-
-//-----------------------------------------------------
-//I'm Alive Alert
-//Used to output 'I'm Alive' every few seconds
-//Intended to let frontends know if the app froze
-//-----------------------------------------------------
-int imalive_timer(int tid, unsigned int tick, int id, int data){
-	printf("I'm Alive\n");
-
-	return 0;
-}
-
-//-----------------------------------------------------
-//Flush stdout
-//stdout buffer needs flushed to be seen in GUI
-//-----------------------------------------------------
-int flush_timer(int tid, unsigned int tick, int id, int data){
-	fflush(stdout);
 	return 0;
 }
 
@@ -1411,17 +1376,6 @@ int do_init(int argc,char *argv[])
 	map_readallmap();
 
 	add_timer_func_list(map_clearflooritem_timer,"map_clearflooritem_timer");
-
-	//Added for Mugendais I'm Alive mod
-	if (imalive_on)
-	{
-		add_timer_interval(gettick()+10, imalive_timer,0,0,imalive_time*1000);
-	}
-	//Added by Mugendai for GUI support
-	if (imalive_on)
-	{
-		add_timer_interval(gettick()+10, flush_timer,0,0,flush_time);
-	}
 
 	do_init_chrif();
 	do_init_clif();

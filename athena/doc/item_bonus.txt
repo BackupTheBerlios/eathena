@@ -129,6 +129,7 @@ bonus2 bAddMDefClass,n,x;		In monster of class n in case of the magical damage r
 
 bonus3 bAddMonsterDropItem,n,x;		When pushing down the monster with physical attack, the probability which drops item n +x% (the item which the monster drops unrelated ones)
 						0,Intangibility 1,Immortality 2,Animal 3,Plant 4,Insect 5,Fish and shellfish 6,Demon 7,Human 8,Angel 9,Dragon family 10:Boss monster 11:Other than boss monster (normal monster)
+bonus3 bAutoSpell,n,x,y;		Auto Spell casting of spell n at level x with y% chance
 
 // bAddDamageClass, bAddMagicDamageClass and bAddMonsterDropItem it is setting possible up to 10. Those which exceed 10 are ignored.
 // those which can be used with the arrow are only bCritical, bAtkEle, bHit, bAddEle, bAddRace, bAddSize and bAddEff. The other things are ignored.

@@ -23,8 +23,9 @@
 #define MAX_EVENTQUEUE	2
 #define MAX_EVENTTIMER	32
 #define NATURAL_HEAL_INTERVAL 500
-#define MAX_FLOORITEM 262144
+#define MAX_FLOORITEM 500000
 #define MAX_LEVEL 255
+#define MAX_WALKPATH 48
 
 #define DEFAULT_AUTOSAVE_INTERVAL 60*1000
 
@@ -42,7 +43,7 @@ struct block_list {
 
 struct walkpath_data {
 	unsigned char path_len,path_pos,path_half;
-	unsigned char path[32];
+	unsigned char path[MAX_WALKPATH];
 };
 struct script_reg {
 	int index;
@@ -50,7 +51,7 @@ struct script_reg {
 };
 struct status_change {
 	int timer;
-	int val1,val2,val3,val4,val5;
+	int val1,val2,val3,val4;
 };
 struct vending {
 	short index;
@@ -169,12 +170,10 @@ struct map_session_data {
 	struct skill_unit_group skillunit[MAX_SKILLUNITGROUP];
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL];
-	short sg_count;
 
 	int invincible_timer;
 	unsigned int canact_tick;
 	unsigned int canmove_tick;
-	unsigned int canlog_tick;
 	int hp_sub,sp_sub;
 	int inchealhptick,inchealsptick,inchealspirittick;
 
@@ -212,7 +211,8 @@ struct map_session_data {
 	short monster_drop_itemid[10];
 	int monster_drop_race[10],monster_drop_itemrate[10];
 	int double_add_rate,speed_add_rate,aspd_add_rate,perfect_hit_add,get_zeny_add_num;
-	short splash_range,splash_add_range;
+	int splash_range,splash_add_range;
+	int autospell_id,autospell_lv,autospell_rate;
 	short spiritball, spiritball_old;
 	int spirit_timer[MAX_SKILL_LEVEL];
 
@@ -329,7 +329,6 @@ struct mob_data {
 	short sc_count;
 	short opt1,opt2,option;
 	short min_chase;
-	short sg_count;
 
 	int skilltimer;
 	int skilltarget;
@@ -465,22 +464,6 @@ struct chat_data {
 	char npc_event[50];
 	int trigger;		// Added by RoVeRT
 };
-
-/*struct mons_data {
-	int type;
-	int max_hp;
-	int npc_num;
-	int job_exp;
-	int base_exp;
-	int atk;
-	int hit;
-	int flee;
-	int def;
-	struct {
-		int nameid,p;
-	} dropitem[16];
-};*/
-
 
 extern struct map_data map[];
 extern int map_num;

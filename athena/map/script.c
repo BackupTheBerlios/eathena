@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.29 2004/02/22 06:04:38 rovert Exp $
+// $Id: script.c,v 1.30 2004/02/24 05:07:33 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -61,10 +61,6 @@ static struct dbt *scriptlabel_db=NULL;
 struct dbt* script_get_label_db(){ return scriptlabel_db; }
 static int scriptlabel_final(void *k,void *d,va_list ap){ return 0; }
 static char pos[11][100] = {"Head","Body","Left hand","Right hand","Robe","Shoes","Accessory 1","Accessory 2","Head 2","Head 3","Not Equipped"};
-
-//Added by Mugendai for global vars functions ^_^
-int read_global_var(char *var_name);
-int write_global_int(char* var, int value);
 
 /*==========================================
  * ローカルプロトタイプ宣言 (必要な物のみ)
@@ -534,8 +530,7 @@ static unsigned char *skip_space(unsigned char *p)
 static unsigned char *skip_word(unsigned char *p)
 {
 	if(*p=='@') p++;	// like weiss
-	if(*p=='$') p++;	// MAP鯖内共有変?用
-	if(*p=='#') p++;								//Added by mugendai for the globar var thingy
+	if(*p=='$') p++;	// MAP鯖内共有変数用
 	while(isalnum(*p)||*p=='_'|| *p>=0x81)
 		if(*p>=0x81 && p[1]){
 			p+=2;
@@ -962,103 +957,12 @@ int get_val(struct script_state*st,struct script_data* data)
 			data->u.num = pc_readreg(sd,data->u.num);
 		}else if(str_buf[str_data[data->u.num].str]=='$'){
 			data->u.num = (int)strdb_search(mapval_db,str_buf+str_data[data->u.num].str);
-		}else if(str_buf[str_data[data->u.num].str]=='#'){ //new global var by AjS, Mugen, Aeturnum! ^o^
-		    data->u.num = read_global_var(str_buf+str_data[data->u.num].str+1);  //Adds support for # global script variables
 		}else{
 			data->u.num = pc_readglobalreg(sd,str_buf+str_data[data->u.num].str);
 		}
 	}
 	return 0;
 }
-
-//Read global string written by AjS15822, and Mugendai
-//Reads a global script string to the global_vars.txt
-int read_global_var(char *var_name) //lets pretend to be proffesional (^_^)
-{
-    FILE *fp;
-    char varname[80]={0};
-    int value;
-    fp = fopen("db/global_vars.txt", "r");  //We need to look int he db path right? (Mugen), Yes we do ^^ (AjS)
-    
-    if(fp == 0)	
-    {
-        FILE *fpglobalvars; //once again with that proffesionalism
-        printf("ERROR: Could not find global_vars.txt!\n Creating global_vars.txt...\n");
-        fpglobalvars = fopen("global_vars.txt", "w");
-        fclose(fpglobalvars);
-		fp = fopen("db/global_vars.txt", "r");
-    }
-    
-    rewind(fp);
-    
-    while(!feof(fp) && !ferror(fp))
-    {
-        fscanf(fp, "%s\t%d\n", varname, &value);
-		printf("varname: %s, value: %d\n", varname, value);
-		if(strcmp(varname, var_name) == 0)  //Need to use strcmp to compare string, never as easy as ==, 0 means they are identical
-        {
-			fclose(fp);
-			return value;
-        }
-    }
-	fclose(fp);
-    return 0;
-}
-
-//Write global string written by Aeturnum
-//Writes a global script string to the global_cars.txt
-int write_global_int(char* var, int value)
-{
-	FILE* writeglobals;
-	FILE* readglobals;
-
-	
-	if(access("db/global_vars.txt", 0))	//If it dont exist
-	{
-		printf("ERROR: Could not find global_vars.txt in folder DB!\n Creating global_vars.txt...\n");
-		writeglobals = fopen("db/global_vars.txt", "w");
-		fprintf(writeglobals,"%s\t%d\n", var, value);
-		fclose(writeglobals);
-	}
-	else
-	{
-		remove ("db/global_vars.bak");
-		rename ("db/global_vars.txt","db/global_vars.bak");
-		readglobals = fopen("db/global_vars.bak","r");
-		writeglobals = fopen("db/global_vars.txt", "w");
-
-		char curVar[1024];
-		int curVal;
-		int foundIt = 0;
-		while (!feof(readglobals) && !ferror(readglobals)) //Mugendai's Append var code below
-		{
-			if (fscanf(readglobals,"%s\t%d\n",curVar,&curVal) == 2)
-			{
-				if (!foundIt && (strcmp(curVar,var) == 0))
-				{
-					foundIt = 1;
-					fprintf(writeglobals,"%s\t%d\n", var, value);
-				}
-				else
-				{
-					fprintf(writeglobals,"%s\t%d\n", curVar, curVal);
-				}
-			}
-		}
-
-		if (!foundIt)
-		{
-			fprintf(writeglobals,"%s\t%d\n", var, value);
-		}
-
-		fclose(readglobals);
-		fclose(writeglobals);
-	}
-
-	return 1;
-}
-
-//End funcs added by Aeturnum, AjS15822, & Mugendai
 
 /*==========================================
  *
@@ -1443,8 +1347,6 @@ int buildin_input(struct script_state *st)
 				pc_setreg(sd,num,sd->npc_amount);
 			else if(str_buf[str_data[num].str]=='$')
 				strdb_insert(mapval_db,str_buf+str_data[num].str,sd->npc_amount);
-			else if(str_buf[str_data[num].str]=='#') 					//Adds support for # global script variables, Mugendai
-				write_global_int(str_buf+str_data[num].str+1,sd->npc_amount);
 			else
 				pc_setglobalreg(sd,str_buf+str_data[num].str,sd->npc_amount);
 		} else {
@@ -1503,8 +1405,6 @@ int buildin_set(struct script_state *st)
 		pc_setreg(sd,num,val);
 	}else if(str_buf[str_data[num].str]=='$') {
 		strdb_insert(mapval_db,str_buf+str_data[num].str,val);
-	}else if(str_buf[str_data[num].str]=='#') {					//Adds support for # global script variables, Mugendai
-		write_global_int(str_buf+str_data[num].str+1,val);
 	}else{
 		pc_setglobalreg(sd,str_buf+str_data[num].str,val);
 	}
@@ -2344,7 +2244,7 @@ int buildin_itemskill(struct script_state *st)
 	id=conv_num(st,& (st->stack->stack_data[st->start+2]));
 	lv=conv_num(st,& (st->stack->stack_data[st->start+3]));
 	str=conv_str(st,& (st->stack->stack_data[st->start+4]));
-	
+
 	// 詠唱中にスキルアイテムは使用できない
 	if(sd->skilltimer != -1)
 		return 0;
@@ -2693,7 +2593,7 @@ int buildin_sc_start(struct script_state *st)
 	type=conv_num(st,& (st->stack->stack_data[st->start+2]));
 	tick=conv_num(st,& (st->stack->stack_data[st->start+3]));
 	val1=conv_num(st,& (st->stack->stack_data[st->start+4]));
-	skill_status_change_start(map_id2bl(st->rid),type,val1,0,tick,0);
+	skill_status_change_start(map_id2bl(st->rid),type,val1,0,0,0,tick,0);
 	return 0;
 }
 
@@ -3086,9 +2986,9 @@ int buildin_maprespawnguildid_sub(struct block_list *bl,va_list ap)
 
 	if(sd){
 		if((sd->status.guild_id == g_id) && (flag&1))
-		pc_setpos(sd,sd->status.save_point.map,sd->status.save_point.x,sd->status.save_point.y,3);
+			pc_setpos(sd,sd->status.save_point.map,sd->status.save_point.x,sd->status.save_point.y,3);
 		else if((sd->status.guild_id != g_id) && (flag&2))
-		pc_setpos(sd,sd->status.save_point.map,sd->status.save_point.x,sd->status.save_point.y,3);
+			pc_setpos(sd,sd->status.save_point.map,sd->status.save_point.x,sd->status.save_point.y,3);
 	}
 	if(md && flag&4){
 		if(md->class < 1285 || md->class > 1288)

@@ -124,6 +124,7 @@ int clif_skill_estimation(struct map_session_data *sd,struct block_list *dst);
 int clif_skill_warppoint(struct map_session_data *sd,int skill_num,
 	const char *map1,const char *map2,const char *map3,const char *map4);
 int clif_skill_memo(struct map_session_data *sd,int flag);
+int clif_skill_teleportmessage(struct map_session_data *sd,int flag);
 int clif_skill_produce_mix_list(struct map_session_data *sd,int trigger);
 
 int clif_produceeffect(struct map_session_data *sd,int flag,int nameid);
@@ -137,6 +138,7 @@ int clif_autospell(struct map_session_data *sd,int skilllv);
 int clif_devotion(struct map_session_data *sd,int target);
 int clif_spiritball(struct map_session_data *sd);
 int clif_combo_delay(struct block_list *src,int wait);
+int clif_bladestop(struct block_list *src,struct block_list *dst,int bool);
 int clif_changemapcell(int m,int x,int y,int cell_type,int type);
 
 int clif_status_change(struct block_list *bl,int type,int flag);

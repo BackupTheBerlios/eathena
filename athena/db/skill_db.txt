@@ -1,16 +1,4 @@
-//id,range,hit,inf,pl,nk,max,list_num,castcancel,cast_defence_rate,inf2
-// 01 ID
-// 02 range
-// 03 hit (8- repeated hitting, 6- single-hit)
-// 04 inf (0- passive, 1- enemy, 2- place, 4- self, 16- friend, 32- trap) 
-// 05 pl attributes (0- nothing, 1- water, 2- earth, 3- fire, 4- wind, 5- poison, 6- saint, 7- darkness, 8- sense, 9- immortality) 
-// 06 nk addition 1 effects 2 you blow and throw and 
-// 07 MaxLv
-// 08 Hit frequency 
-// 09 castcancelled (it is cancelled at 1. Are not cancelled with 0) 
-// 10 ratio of the defensive power which decreases in 10 castings 
-// 11 inf2 (skill information 2) (1- ƒNƒFƒXƒgƒXƒLƒ(afterwards additional schedule), 2- npc skill, 4- enemy, 8- place, 16- self, 32- friend, 64- skill where the damage enters into all ones which include by your with the trap and 128-PVP mode (only land skill), 256- the skill where the damage enter even by your (only land skill), 512- by your, the skill which cannot use. ) (Active skill of part uses 4, 8, 16, 32 and 64. Now only the Asura supremacy  fist use. )
-// 11 inf2(ƒXƒLƒî•ñ2)    (1 - ƒNƒFƒXƒgƒXƒLƒ(Œã‚Å’Ç‰Á—\’è)A2 - npc ƒXƒLƒA4-GA8-êA16-‘¦”­®A32-–¡•ûA64-ã©A128-PVPƒ‚ƒh‚Å©•ª‚ğÜ‚Ş‘S‚Ä‚Ì•¨‚Éƒ_ƒƒW‚ªü‚éƒXƒLƒ(’n–ÊƒXƒLƒ‚Ì‚İ)A256-©•ª‚É‚àƒ_ƒƒW‚ªü‚éƒXƒLƒ(’n–ÊƒXƒLƒ‚Ì‚İ)A512-©•ª‚É‚Íg‚¤‚±‚Æ‚ª‚Å‚«‚È‚¢ƒXƒLƒB) (4A8A16A32A64‚Íˆê•”‚ÌƒAƒNƒeƒBƒuƒXƒLƒ‚ªg—pB¡‚Íˆ¢C—…”e–PŒ‚Ì‚İg—pB)
+//id,range,hit,inf,pl,nk,max,list_num,castcancel,cast_defence_rate,inf2,maxcount
 
 1,0,0,0,0,0,9,0,0,0,0,0	//NV_BASIC#Šî–{ƒXƒLƒ‹#
 
@@ -102,14 +90,14 @@
 79,3,8,2,6,0,10,1:2:3:4:5:6:7:8:9:10,1,0,0,0	//PR_MAGNUS#ƒ}ƒOƒkƒXƒGƒNƒ\ƒVƒYƒ€#
 
 80,8,8,2,3,0,10,3:4:5:6:7:8:9:10:11:12,1,0,128,0	//WZ_FIREPILLAR#ƒtƒ@ƒCƒA[ƒsƒ‰[#
-81,1,6,4,3,0,10,1,1,0,0,0	//WZ_SIGHTRASHER#ƒTƒCƒgƒ‰ƒbƒVƒƒ[#
+81,0,6,4,3,0,10,1,1,0,0,0	//WZ_SIGHTRASHER#ƒTƒCƒgƒ‰ƒbƒVƒƒ[#
 //82,8,6,2,3,0,10,1,1,0,0,0	//WZ_FIREIVY#ƒtƒ@ƒCƒAƒAƒCƒr[#
 83,8,8,2,3,0,10,1:1:2:2:3:3:4:4:5:5,1,0,0,0	//WZ_METEOR#ƒƒeƒIƒXƒg[ƒ€#
 84,8,8,1,4,0,10,3:4:5:6:7:8:9:10:11:12,1,0,0,0	//WZ_JUPITEL#ƒ†ƒsƒeƒ‹ƒTƒ“ƒ_[#
 85,8,8,2,4,0,10,10,1,0,0,0	//WZ_VERMILION#ƒ[ƒhƒIƒuƒ”ƒ@[ƒ~ƒŠƒIƒ“#
 86,8,8,1,1,0,5,1,1,0,0,0	//WZ_WATERBALL#ƒEƒH[ƒ^[ƒ{[ƒ‹#
 87,8,6,2,1,0,10,1,1,0,0,0	//WZ_ICEWALL#ƒAƒCƒXƒEƒH[ƒ‹#
-88,8,6,1,1,1,10,1,1,0,0,0	//WZ_FROSTNOVA#ƒtƒƒXƒgƒmƒ”ƒ@#
+88,8,6,1,1,0,10,1,1,0,0,0	//WZ_FROSTNOVA#ƒtƒƒXƒgƒmƒ”ƒ@#
 89,8,6,2,1,1,10,1,1,0,0,0	//WZ_STORMGUST#ƒXƒg[ƒ€ƒKƒXƒg#
 90,8,8,1,2,0,5,1:2:3:4:5,1,0,0,0	//WZ_EARTHSPIKE#ƒA[ƒXƒXƒpƒCƒN#
 91,8,8,2,2,0,5,1:2:3:4:5,1,0,0,0	//WZ_HEAVENDRIVE#ƒwƒ”ƒ“ƒYƒhƒ‰ƒCƒu#
@@ -429,3 +417,4 @@
 328,0,6,4,0,1,10,1,1,0,0,0	//DC_DONTFORGETME#„‚ğ–Y‚ê‚È‚¢‚Åc#
 329,0,6,4,0,1,10,1,1,0,0,0	//DC_FORTUNEKISS#K‰^‚ÌƒLƒX#
 330,0,6,4,0,1,10,1,1,0,0,0	//DC_SERVICEFORYOU#ƒT[ƒrƒXƒtƒH[ƒ†[#
+
