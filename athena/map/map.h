@@ -246,6 +246,7 @@ struct map_session_data {
 
 	int sg_count;
 	int intimidate_x,intimidate_y,intimidate_map;
+	int gangsterparadise;
 
 	int last_skillid,last_skilllv;		// Added by RoVeRT
 	int skill_limit[350];

@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.20 2004/01/25 14:58:31 rovert Exp $
+// $Id: clif.c,v 1.21 2004/01/26 19:16:04 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -2531,6 +2531,7 @@ int clif_getareachar_skillunit(struct map_session_data *sd,struct skill_unit *un
 {
 	int fd=sd->fd;
 #if PACKETVER < 3
+	memset(WFIFOP(fd,0),0,packet_len_table[0x11f]);
 	WFIFOW(fd, 0)=0x11f;
 	WFIFOL(fd, 2)=unit->bl.id;
 	WFIFOL(fd, 6)=unit->group->src_id;
@@ -3002,6 +3003,7 @@ int clif_skill_setunit(struct skill_unit *unit)
 {
 	unsigned char buf[128];
 #if PACKETVER < 3
+	memset(WBUFP(buf, 0),0,packet_len_table[0x11f]);
 	WBUFW(buf, 0)=0x11f;
 	WBUFL(buf, 2)=unit->bl.id;
 	WBUFL(buf, 6)=unit->group->src_id;
@@ -5143,6 +5145,7 @@ void clif_parse_ActionRequest(int fd,struct map_session_data *sd)
 		break;
 	case 0x02:	// sitdown
 		if(battle_config.basic_skill_check == 0 || pc_checkskill(sd,NV_BASIC) >= 3) {
+			skill_gangsterparadise(sd,1);/* ギャングスターパラダイス設定 */
 			pc_setsit(sd);
 			WFIFOW(fd,0)=0x8a;
 			WFIFOL(fd,2)=sd->bl.id;
@@ -5154,6 +5157,7 @@ void clif_parse_ActionRequest(int fd,struct map_session_data *sd)
 		break;
 	case 0x03:	// standup
 		pc_setstand(sd);
+		skill_gangsterparadise(sd,0);/* ギャングスターパラダイス解除 */
 		WFIFOW(fd,0)=0x8a;
 		WFIFOL(fd,2)=sd->bl.id;
 		WFIFOB(fd,26)=3;

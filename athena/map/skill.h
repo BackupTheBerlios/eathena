@@ -91,6 +91,7 @@ int skill_castcancel(struct block_list *bl,int type);
 
 // その他
 int skill_check_cloaking(struct block_list *bl);
+int skill_gangsterparadise(struct map_session_data *sd ,int type);
 
 // ステータス異常
 int skill_status_change_start(struct block_list *bl,int type,int val1,int val2);
@@ -240,7 +241,7 @@ enum {	// struct map_session_data の status_changeの番号テーブル
 	SC_VIOLENTGALE			=181,
 	SC_LANDPROTECTOR		=182,
 	SC_ADAPTATION			=183,
-	SC_GANGSTER			=184,
+//	SC_GANGSTER			=184,
 
 	SC_SLOWPOISON			=185,
 	

@@ -1,5 +1,54 @@
 --------------
+//0745 by ぴざまん
+・ギャングスターパラダイス実装
+・PvPエリアのmapflagを修正(同士討ちが無くなったかと思います)
+・シーズモードでノックバックがあったバグを修正
+・インティミの遅延時間を少し調整
+	(map/)
+	skill.c
+		skill_attack()、skill_additional_effect()修正
+		skill_gangsterparadise()、skill_gangster_in()、skill_gangster_out()追加
+	clif.c
+		clif_parse_ActionRequest()修正
+	mob.c
+		mob_target()、mob_attack()修正
+		mob_ai_sub_hard()、mob_ai_sub_hard_mastersearch()修正
+		mob_ai_sub_hard_activesearch()修正
+	map.h 修正
+	skill.h 修正
+	(conf/)
+	npc_pvp.txt 修正
+
+--------------
+//0744 by 聖
+
+・アイスウォール、メテオストームのコンボでメテオストームのエフェクトが表示されなくなる問題を修正。
+・HP吸収スキルのエフェクト修正。
+・battle_athena.confに項目追加。
+・パケ周りの細かい修正。
+	(conf/)
+	battle_athena.conf
+	(doc/)
+	conf_ref.txt
+	(map/)
+	battle.c
+	battle.h
+	clif.c
+	pc.c
+	pet.c
+	skill.c
+
+--------------
+//0743 by J
+
+・取り巻き召喚などを本鯖に似せる為の修正。
+　あと本鯖相違スレにあったゴスリンの取り巻きを修正。
+　デリーターの空と地のスキルが逆になっていたのを修正。
+	(db/)
+	mob_skill_db.txt 修正
+--------------
 //0742 by ぴざまん
+
 ・インティミデイトを実装
 　攻撃とワープの分別がうまくいかなかったので
 　SC_INTIMIDATEを使って遅延処理をしました

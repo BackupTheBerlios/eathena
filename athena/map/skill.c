@@ -548,7 +548,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 			if(md)
 				m=md->bl.m;
 
-			if(map[m].flag.noteleport)	// テレポート禁止
+			if(map[m].flag.noteleport && !map[m].flag.pvp)	// テレポート禁止
 				break;
 
 			do{
@@ -579,8 +579,8 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 					printf("Skill INTIMIDATE failed : random warp error\n");
 					break;
 			}
-			skill_status_change_start(src,SC_INTIMIDATE,0,600);
-			skill_status_change_start(bl,SC_INTIMIDATE,0,600);
+			skill_status_change_start(src,SC_INTIMIDATE,0,700);
+			skill_status_change_start(bl,SC_INTIMIDATE,0,700);
 		}
 			break;
 
@@ -857,7 +857,7 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 
 	clif_skill_damage(dsrc,bl,tick,dmg.amotion,dmg.dmotion,
 		damage, dmg.div_, skillid, (lv!=0)?lv:skilllv, type );
-	if(dmg.blewcount > 0) {	/* 吹き飛ばし処理とそのパケット */
+	if(dmg.blewcount > 0 &&  !map[((struct map_session_data *)src)->bl.m].flag.gvg) {	/* 吹き飛ばし処理とそのパケット */
 		skill_blown(dsrc,bl,dmg.blewcount);
 		if(bl->type == BL_MOB)
 			clif_fixmobpos((struct mob_data *)bl);
@@ -1444,8 +1444,10 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		{
 			int heal;
 			heal = skill_attack((skillid==NPC_BLOODDRAIN)?BF_WEAPON:BF_MAGIC,src,src,bl,skillid,skilllv,tick,flag);
-			clif_skill_nodamage(bl,src,AL_HEAL,heal,1);
-			battle_heal(NULL,src,heal,0);
+			if( heal > 0 ){
+				clif_skill_nodamage(bl,src,AL_HEAL,heal,1);
+				battle_heal(NULL,src,heal,0);
+			}
 			break;
 		}
 	}
@@ -1725,24 +1727,6 @@ case CR_REFLECTSHIELD:
 				skill_castend_damage_id);
 		}
 		skill_status_change_end(src, SC_HIDDING, -1);	// ハイディング解除
-		break;
-
-	case RG_GANGSTER:
-		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		{
-			if(pc_checkskill(sd,RG_GANGSTER) < 0){
-				return 0;
-			}
-			int x=bl->x,y=bl->y;
-			skill_area_temp[1]=bl->id;
-			skill_area_temp[2]=x;
-			skill_area_temp[3]=y;
-			map_foreachinarea(skill_area_sub,
-				bl->m,x-1,y-1,x+1,y+1,0,
-				src,skillid,skilllv,tick, flag|BCT_ALL,
-				skill_castend_damage_id);
-		}
-		skill_status_change_start( bl, SC_GANGSTER , skilllv, 0 );
 		break;
 
 	/* パーティスキル */
@@ -2328,34 +2312,39 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 		break;
 
 	case WZ_METEOR:				//メテオストーム
-		for(i=0;i<2+(skilllv>>1);i++) {
-			int j = 0, c;
-			do {
-				tmpx = x + (rand()%5 - 2);
-				tmpy = y + (rand()%5 - 2);
-				if(tmpx < 0)
-					tmpx = 0;
-				else if(tmpx >= map[src->m].xs)
-					tmpx = map[src->m].xs - 1;
-				if(tmpy < 0)
-					tmpy = 0;
-				else if(tmpy >= map[src->m].ys)
-					tmpy = map[src->m].ys - 1;
-				j++;
-			} while(((c=map_getcell(src->m,x,y))==1 || c==5) && j<100);
-			if(j >= 100)
-				continue;
-
-			if(i==0)
-				clif_skill_poseffect(src,skillid,skilllv,tmpx,tmpy,tick);
-			if(i > 0)
-				skill_addtimerskill(src,tick+i*1000,0,tmpx,tmpy,skillid,skilllv,(x1<<16)|y1,flag);
-
-			x1 = tmpx;
-			y1 = tmpy;
+		{
+			int s=0;
+			for(i=0;i<2+(skilllv>>1);i++) {
+				int j=0, c;
+				do {
+					tmpx = x + (rand()%5 - 2);
+					tmpy = y + (rand()%5 - 2);
+					if(tmpx < 0)
+						tmpx = 0;
+					else if(tmpx >= map[src->m].xs)
+						tmpx = map[src->m].xs - 1;
+					if(tmpy < 0)
+						tmpy = 0;
+					else if(tmpy >= map[src->m].ys)
+						tmpy = map[src->m].ys - 1;
+					j++;
+				} while(((c=map_getcell(src->m,x,y))==1 || c==5) && j<100);
+				if(j >= 100)
+					continue;
+	
+				if(s==0){
+					clif_skill_poseffect(src,skillid,skilllv,tmpx,tmpy,tick);
+					s=1;
+				}
+				if(i > 0)
+					skill_addtimerskill(src,tick+i*1000,0,tmpx,tmpy,skillid,skilllv,(x1<<16)|y1,flag);
+	
+				x1 = tmpx;
+				y1 = tmpy;
+			}
+			skill_addtimerskill(src,tick+i*1000,0,tmpx,tmpy,skillid,skilllv,-1,flag);
+			break;
 		}
-		skill_addtimerskill(src,tick+i*1000,0,tmpx,tmpy,skillid,skilllv,-1,flag);
-		break;
 
 	case AL_WARP:				/* ワープポータル */
 	case 336:
@@ -4401,7 +4390,61 @@ int skill_castcancel(struct block_list *bl,int type)
 	return 1;
 }
 
+/*==========================================
+ * ギャングスターパラダイス判定処理(foreachinarea)
+ *------------------------------------------
+ */
 
+int skill_gangster_in(struct block_list *bl,va_list ap)
+{
+	int *c;
+	c=va_arg(ap,int *);
+	struct map_session_data *sd=(struct map_session_data*)bl;
+
+	if(sd->state.dead_sit == 2 && pc_checkskill(sd,RG_GANGSTER)){
+		printf("%sさんにG☆Pを付与しますた\n",sd->status.name);
+		sd->gangsterparadise=1;
+		(*c)++;
+	}
+	return 0;
+}
+
+int skill_gangster_out(struct block_list *bl,va_list ap)
+{
+	struct map_session_data *sd=(struct map_session_data*)bl;
+	if(sd->gangsterparadise == 1){
+		printf("%sさんのG☆Pを解除しますた\n",sd->status.name);
+		sd->gangsterparadise=0;
+	}
+	return 0;
+}
+
+int skill_gangsterparadise(struct map_session_data *sd ,int type)
+{
+	int range=1;
+	int c=0;
+
+	if(!pc_checkskill(sd,RG_GANGSTER))
+		return 0;
+
+	if(type==1){/* 座った時の処理 */
+		map_foreachinarea(skill_gangster_in,sd->bl.m,
+			sd->bl.x-range,sd->bl.y-range,
+			sd->bl.x+range,sd->bl.y+range,BL_PC,&c);
+		if(c>0){/*ギャングスター成功したら自分にもギャングスター属性付与*/
+			printf("ギャングスター成功！\n");
+			sd->gangsterparadise=1;
+		}
+		return 0;
+	}else if(type==0){/* 立ち上がったときの処理 */
+		map_foreachinarea(skill_gangster_out,sd->bl.m,
+			sd->bl.x-range,sd->bl.y-range,
+			sd->bl.x+range,sd->bl.y+range,BL_PC);
+			printf("ギャングスター解除終了！\n");
+		return 0;
+	}
+	return 0;
+}
 
 
 /*----------------------------------------------------------------------------
