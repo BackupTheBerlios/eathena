@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 2004/03/06 20:39:42 sara-chan Exp $
+# $Id: Makefile,v 1.6 2004/03/09 01:46:42 mjflick Exp $
 
 CC = gcc -pipe
 PACKETDEF = -DPACKETVER=5 -DNEW_006b
@@ -26,8 +26,8 @@ all: common/GNUmakefile login/GNUmakefile char/GNUmakefile map/GNUmakefile tool/
 	cd char && make $(MKDEF) $@ && cd ..
 	cd map && make $(MKDEF) $@ && cd ..
 
-tool:
-	cd tool && make $(MKDEF) $@ && cd ..
+tools:
+	cd tool && make $(MKDEF) && cd ..
 	$(CC) -o setupwizard setupwizard.c
 
 clean:
