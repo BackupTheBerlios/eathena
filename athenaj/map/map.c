@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.17 2004/02/21 14:40:22 rovert Exp $
+// $Id: map.c,v 1.18 2004/02/23 17:17:22 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,11 +42,11 @@ static int users;
 static struct block_list *object[MAX_FLOORITEM];
 static int first_free_object_id,last_object_id;
 
-#define block_free_max 262144
+#define block_free_max 1048576
 static void *block_free[block_free_max];
 static int block_free_count=0,block_free_lock=0;
 
-#define BL_LIST_MAX 262144
+#define BL_LIST_MAX 1048576
 static struct block_list *bl_list[BL_LIST_MAX];
 static int bl_list_count = 0;
 
