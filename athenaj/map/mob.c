@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.25 2004/02/11 15:54:47 rovert Exp $
+// $Id: mob.c,v 1.26 2004/02/13 14:42:53 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -640,7 +640,6 @@ int mob_spawn(int id)
 	memset(&md->state,0,sizeof(md->state));
 	md->attacked_id = 0;
 	md->target_id = 0;
-	md->first_attacked_id = 0;
 	md->move_fail_count = 0;
 
 	md->speed = mob_db[md->class].speed;
@@ -1467,12 +1466,13 @@ static int mob_ai_lazy(int tid,unsigned int tick,int id,int data)
 struct delay_item_drop {
 	int m,x,y;
 	int nameid,amount;
-	int first_get_id;
+	struct map_session_data *first_sd,*second_sd,*third_sd;
 };
 
 struct delay_item_drop2 {
 	int m,x,y;
 	struct item item_data;
+	struct map_session_data *first_sd,*second_sd,*third_sd;
 };
 
 /*==========================================
@@ -1490,8 +1490,7 @@ static int mob_delay_item_drop(int tid,unsigned int tick,int id,int data)
 	temp_item.nameid = ditem->nameid;
 	temp_item.amount = ditem->amount;
 	temp_item.identify = !itemdb_isequip(temp_item.nameid);
-	temp_item.first_get_id = ditem->first_get_id;
-	map_addflooritem(&temp_item,1,ditem->m,ditem->x,ditem->y);
+	map_addflooritem(&temp_item,1,ditem->m,ditem->x,ditem->y,ditem->first_sd,ditem->second_sd,ditem->third_sd,0);
 
 	free(ditem);
 	return 0;
@@ -1507,7 +1506,7 @@ static int mob_delay_item_drop2(int tid,unsigned int tick,int id,int data)
 
 	ditem=(struct delay_item_drop2 *)id;
 
-	map_addflooritem(&ditem->item_data,ditem->item_data.amount,ditem->m,ditem->x,ditem->y);
+	map_addflooritem(&ditem->item_data,ditem->item_data.amount,ditem->m,ditem->x,ditem->y,ditem->first_sd,ditem->second_sd,ditem->third_sd,0);
 
 	free(ditem);
 	return 0;
@@ -1574,7 +1573,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 	} pt[DAMAGELOG_SIZE];
 	int pnum=0;
 	int mvp_damage,max_hp = battle_get_max_hp(&md->bl);
-	struct map_session_data *mvp_sd=sd;
+	struct map_session_data *mvp_sd=sd ,*second_sd = NULL,*third_sd = NULL;
 
 	if(src && src->type == BL_PC) {
 		sd = (struct map_session_data *)src;
@@ -1588,8 +1587,6 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			printf("mob_damage : BlockError!!\n");
 		return 0;
 	}
-	if(src && src->type==BL_PC && md->first_attacked_id<=0)
-		md->first_attacked_id = sd->bl.id;
 
 	if(md->state.state==MS_DEAD || md->hp<=0) {
 		if(md->bl.prev != NULL) {
@@ -1681,6 +1678,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 
 	// map外に消えた人は計算から除くので
 	// overkill分は無いけどsumはmax_hpとは違う
+
+
 	for(i=0,count=0,mvp_damage=0;i<DAMAGELOG_SIZE;i++){
 		if(md->dmglog[i].id==0)
 			continue;
@@ -1692,6 +1691,8 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			continue;
 
 		if(mvp_damage<md->dmglog[i].dmg){
+			third_sd = second_sd;
+			second_sd = mvp_sd;
 			mvp_sd=tmpsd[i];
 			mvp_damage=md->dmglog[i].dmg;
 		}
@@ -1759,12 +1760,14 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 				exit(1);
 			}
 
-			ditem->nameid=mob_db[md->class].dropitem[i].nameid;
-			ditem->amount=1;
-			ditem->m=md->bl.m;
-			ditem->x=md->bl.x;
-			ditem->y=md->bl.y;
-			ditem->first_get_id=md->first_attacked_id;
+			ditem->nameid = mob_db[md->class].dropitem[i].nameid;
+			ditem->amount = 1;
+			ditem->m = md->bl.m;
+			ditem->x = md->bl.x;
+			ditem->y = md->bl.y;
+			ditem->first_sd = mvp_sd;
+			ditem->second_sd = second_sd;
+			ditem->third_sd = third_sd;
 			add_timer(gettick()+500+i,mob_delay_item_drop,(int)ditem,0);
 		}
 		if(sd && sd->state.attack_type == BF_WEAPON) {
@@ -1785,12 +1788,14 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 						exit(1);
 					}
 
-					ditem->nameid=sd->monster_drop_itemid[i];
-					ditem->amount=1;
-					ditem->m=md->bl.m;
-					ditem->x=md->bl.x;
-					ditem->y=md->bl.y;
-					ditem->first_get_id = md->first_attacked_id;
+					ditem->nameid = sd->monster_drop_itemid[i];
+					ditem->amount = 1;
+					ditem->m = md->bl.m;
+					ditem->x = md->bl.x;
+					ditem->y = md->bl.y;
+					ditem->first_sd = mvp_sd;
+					ditem->second_sd = second_sd;
+					ditem->third_sd = third_sd;
 					add_timer(gettick()+520+i,mob_delay_item_drop,(int)ditem,0);
 				}
 			}
@@ -1807,9 +1812,12 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 					exit(1);
 				}
 				memcpy(&ditem->item_data,&md->lootitem[i],sizeof(md->lootitem[0]));
-				ditem->m=md->bl.m;
-				ditem->x=md->bl.x;
-				ditem->y=md->bl.y;
+				ditem->m = md->bl.m;
+				ditem->x = md->bl.x;
+				ditem->y = md->bl.y;
+				ditem->first_sd = mvp_sd;
+				ditem->second_sd = second_sd;
+				ditem->third_sd = third_sd;
 				add_timer(gettick()+540+i,mob_delay_item_drop2,(int)ditem,0);
 			}
 		}
@@ -1837,10 +1845,10 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			item.identify=1;
 			clif_mvp_item(mvp_sd,item.nameid);
 			if(mvp_sd->weight*2 > mvp_sd->max_weight)
-				map_addflooritem(&item,1,mvp_sd->bl.m,mvp_sd->bl.x,mvp_sd->bl.y);
+				map_addflooritem(&item,1,mvp_sd->bl.m,mvp_sd->bl.x,mvp_sd->bl.y,mvp_sd,second_sd,third_sd,1);
 			else if((ret = pc_additem(mvp_sd,&item,1))) {
 				clif_additem(sd,0,0,ret);
-				map_addflooritem(&item,1,mvp_sd->bl.m,mvp_sd->bl.x,mvp_sd->bl.y);
+				map_addflooritem(&item,1,mvp_sd->bl.m,mvp_sd->bl.x,mvp_sd->bl.y,mvp_sd,second_sd,third_sd,1);
 			}
 			break;
 		}
@@ -1964,7 +1972,7 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	if( md==NULL || md->bl.prev==NULL )
 		return 0;
 
-	if(type>0) {
+	if(type >= 0) {
 		if(map[md->bl.m].flag.noteleport)
 			return 0;
 		clif_clearchar_area(&md->bl,type);
@@ -1998,7 +2006,6 @@ int mob_warp(struct mob_data *md,int x,int y,int type)
 	md->target_id=0;	// タゲを解除する
 	md->state.targettype=NONE_ATTACKABLE;
 	md->attacked_id=0;
-	md->first_attacked_id=0;
 	md->state.state=MS_IDLE;
 	md->state.skillstate=MSS_IDLE;
 
@@ -2225,10 +2232,6 @@ int mobskill_castend_pos( int tid, unsigned int tick, int id,int data )
 		range = -1;
 		switch(md->skillid) {
 			case MG_SAFETYWALL:
-				range = 0;
-				break;
-			case AL_PNEUMA:
-			case AL_WARP:
 			case WZ_FIREPILLAR:
 			case HT_SKIDTRAP:
 			case HT_LANDMINE:
@@ -2240,6 +2243,10 @@ int mobskill_castend_pos( int tid, unsigned int tick, int id,int data )
 			case HT_BLASTMINE:
 			case HT_CLAYMORETRAP:
 			case HT_TALKIEBOX:
+				range = 0;
+				break;
+			case AL_PNEUMA:
+			case AL_WARP:
 				range = 1;
 				break;
 		}

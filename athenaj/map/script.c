@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.11 2004/02/11 15:54:47 rovert Exp $
+// $Id: script.c,v 1.12 2004/02/13 14:42:53 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -1497,7 +1497,7 @@ int buildin_getitem(struct script_state *st)
 			item_tmp.identify=!itemdb_isequip(nameid);
 		if((flag = pc_additem(sd,&item_tmp,amount))) {
 			clif_additem(sd,0,0,flag);
-			map_addflooritem(&item_tmp,amount,sd->bl.m,sd->bl.x,sd->bl.y);
+			map_addflooritem(&item_tmp,amount,sd->bl.m,sd->bl.x,sd->bl.y,NULL,NULL,NULL,0);
 		}
 	}
 
