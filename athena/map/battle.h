@@ -137,7 +137,12 @@ extern struct Battle_Config {
 	int random_monster_checklv;
 	int attr_recover;
 	int flooritem_lifetime;
-	int lootitem_time;
+	int item_first_get_time;
+	int item_second_get_time;
+	int item_third_get_time;
+	int mvp_item_first_get_time;
+	int mvp_item_second_get_time;
+	int mvp_item_third_get_time;
 	int base_exp_rate,job_exp_rate;
 	int drop_rate0item;
 	int death_penalty_type;
@@ -216,7 +221,6 @@ extern struct Battle_Config {
 	int mob_changetarget_byskill;
 	int item_rate_common,item_rate_card,item_rate_equip;	// Added by RoVeRT
 	int item_drop_common_min,item_drop_common_max;	// Added by TyrNemesis^
-	int min_item_drop_equip,max_item_drop_equip;
 	int item_drop_card_min,item_drop_card_max;
 	int item_drop_equip_min,item_drop_equip_max;
 	int item_drop_mvp_min,item_drop_mvp_max;	// End Addition

@@ -1042,7 +1042,7 @@
 4144,Osiris_Card,Osiris Card,6,20,,10,,,,,,,136,,,,{},{ bonus bRestartFullRecover,0; }
 4145,Berzebub_Card,Berzebub Card,6,20,,10,,,,,,,136,,,,{},{ bonus bCastrate,-30; }
 4146,Maya_Card,Maya Card,6,20,,10,,,,,,,32,,,,{},{ bonus bNoMagicDamage,30; }
-4147,Baphomet_Card,Baphomet Card,6,20,,10,,,,,,,2,,,,{},{ bonus bHit,-10; }
+4147,Baphomet_Card,Baphomet Card,6,20,,10,,,,,,,2,,,,{},{ bonus bHit,-10; bonus bSplashRange,1; }
 4148,Pharaoh_Card,Pharaoh Card,6,20,,10,,,,,,,769,,,,{},{ bonus bUseSPrate,-30; }
 4149,Bon_Gun_Card,Bon Gun Card,6,20,,10,,,,,,,32,,,,{},{ bonus bInt,2; }
 4150,Orc_Archer_Card,Orc Archer Card,6,20,,10,,,,,,,136,,,,{},{ bonus bRange,1; }

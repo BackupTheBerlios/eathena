@@ -72,6 +72,8 @@ bonus bDefRate,n;		earned-run average +n% (equipment)
 bonus bDef2Rate,n;		earned-run average +n% (those due to vit)
 bonus bMdefRate,n;		magical earned-run average +n% (equipment)
 bonus bMdef2Rate,n;		magical earned-run average +n% (those due to int)
+bonus bSplashRange n;		damage is given to the peripheral n cell of the target with usual weapon attack, if (as for n just high ones application, 1 if the 3*3, 2 the 5*5)
+bonus bSplashAddRange n;	damage is given to the peripheral n cell of the target with usual weapon attack, (range + n)
 
 bonus bInfiniteEndure,n;	Unlimited Endure (n is meaningless) 
 bonus bRestartFullRecover,n;	When reviving, HP and SP all recoveries (non mind there is no n)
