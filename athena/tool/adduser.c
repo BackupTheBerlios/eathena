@@ -10,8 +10,8 @@ char *account_txt = "../account.txt";
 
 int main(int argc, char *argv[]) {
 
-	char username[20];
-	char password[20];
+	char username[24];
+	char password[24];
 	char sex[2];
 
 	int nid,lid;

@@ -21,8 +21,8 @@ int main() {
 	char r1[1000], r2[1000];
 
 	char IP[20];
-	char username[20];
-	char password[20];
+	char username[24];
+	char password[24];
 
 //Make sex and go_on strings to keep from getting \n as input. 
 	char sex[2];
@@ -180,7 +180,7 @@ int main() {
 	if (accountfound == 0) {
 		FILE *FPaccout=fopen(account_txt, "w");
 		fprintf(FPaccout, "1	s1	p1	-	S	-\r\n");
-		fprintf(FPaccout, "10001	%s	%s	-	%s	-\r\n", username, password, sex);
+		fprintf(FPaccout, "1000000	%s	%s	-	%s	-\r\n", username, password, sex);
         	close(FPaccout);
 	}
 
