@@ -1046,7 +1046,27 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 			struct status_change *sc_data = battle_get_sc_data(src);
 			if(sc_data && sc_data[SC_HIDDING].timer != -1)
 				skill_status_change_end(src, SC_HIDDING, -1);	// ハイディング解除
-			skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
+			int x,y,mx,my,mdir;
+			int dirx[8]={0,-1,-1,-1,0,1,1,1};
+			int diry[8]={1,1,0,-1,-1,-1,0,1};
+			x = sd->bl.x;
+			y = sd->bl.y;
+			mx = bl->x;
+			my = bl->y;
+			if(bl->type==BL_MOB)
+				mdir = ((struct mob_data *)bl)->dir;
+			else if(bl->type==BL_PC)
+				mdir = ((struct map_session_data *)bl)->dir;
+			else {
+				clif_skill_fail(sd,sd->skillid,0,0);
+				break;
+			}
+			if((mx-x)!=dirx[mdir] || (my-y)!=diry[mdir]){
+				clif_skill_fail(sd,sd->skillid,0,0);
+				break;
+			}
+			else
+				skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
 		}
 		break;
 	case MO_FINGEROFFENSIVE:	/* 指弾 */
