@@ -1,4 +1,4 @@
-// $Id: npc.c,v 1.11 2004/02/10 16:43:38 rovert Exp $
+// $Id: npc.c,v 1.12 2004/02/11 02:14:46 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -250,7 +250,7 @@ int npc_event_do_clock(int tid,unsigned int tick,int id,int data)
 		c+=npc_event_doall(buf);
 	}
 	if(t->tm_mday!= ev_tm_b.tm_mday){
-		sprintf(buf,"OnHour%02d%02d",t->tm_mon+1,t->tm_mday);
+		sprintf(buf,"OnDate%02d%02d",t->tm_mon+1,t->tm_mday);
 		c+=npc_event_doall(buf);
 	}
 	memcpy(&ev_tm_b,t,sizeof(ev_tm_b));
