@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.32 2004/02/05 23:11:01 rovert Exp $
+// $Id: mob.c,v 1.33 2004/02/06 16:26:36 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -2727,7 +2727,7 @@ static int mob_readdb(void)
 					ratemin = battle_config.item_drop_common_min;
 					ratemax = battle_config.item_drop_common_max;
 				}
-				rate /= 100 * atoi(str[30+i*2]);
+				rate = (rate / 100) * atoi(str[30+i*2]);
 				mob_db[class].dropitem[i].p = rate;
 			}
 			// Item1,Item2

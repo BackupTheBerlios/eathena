@@ -1251,6 +1251,11 @@ z [0`4]•ž‚ÌF
 			return 1;
 		}
 
+		if(strcmpi(command, "@allskill") == 0 && gm_level >= atcommand_config.allskill){
+			pc_allskillup(sd);
+			return 1;
+		}
+
 //@chardyeclothes
 //Description: Changes target characters clothes color.
 		if(strcmpi(command, "@chardyeclothes") == 0 && gm_level >= atcommand_config.chardyeclothes){
@@ -1508,21 +1513,6 @@ z [0`4]•ž‚ÌF
 			return 1;
 		}
 
-
-		if(strcmpi(command, "@skillall") == 0 && gm_level >= atcommand_config.skillall){
-			int i;
-			for(i=1;i<158;i++)
-				sd->status.skill[i].lv = skill_get_max(i);
-			for(i=210;i<291;i++)
-				sd->status.skill[i].lv = skill_get_max(i);
-			for(i=304;i<MAX_SKILL;i++)
-				sd->status.skill[i].lv = skill_get_max(i);
-
-			pc_calcstatus(sd,0);
-			clif_skillinfoblock(sd);
-			return 1;
-		}
-
  		if(strcmpi(command, "@recallall") == 0 && gm_level >= atcommand_config.recall){
  			for(i=0;i<fd_max;i++)
  			{
@@ -1684,6 +1674,8 @@ int atcommand_config_read(const char *cfgName)
 				{ "charbaselvl",&atcommand_config.charbaselvl },
 				{ "charjlvl",&atcommand_config.charjlvl },
 				{ "kick",&atcommand_config.kick },
+				{ "kickall",&atcommand_config.kickall },
+				{ "allskill",@&atcommand_config.allskill },
 				{ "questskill",&atcommand_config.questskill },
 				{ "lostskill",&atcommand_config.lostskill },
 				{ "spiritball",&atcommand_config.spiritball },
@@ -1699,7 +1691,6 @@ int atcommand_config_read(const char *cfgName)
 			{ "charreset",		&atcommand_config.charreset },
 			{ "charzeny",		&atcommand_config.charzeny },
 			{ "hatch",		&atcommand_config.hatch },
-			{ "skillall",		&atcommand_config.skillall },
 			{ "killmonster",	&atcommand_config.killmonster },
 			};
 		

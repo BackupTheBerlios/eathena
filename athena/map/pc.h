@@ -1,4 +1,4 @@
-// $Id: pc.h,v 1.10 2004/02/05 14:50:48 rovert Exp $
+// $Id: pc.h,v 1.11 2004/02/06 16:26:36 rovert Exp $
 
 #ifndef _PC_H_
 #define _PC_H_
@@ -99,6 +99,7 @@ int pc_need_status_point(struct map_session_data *,int);
 int pc_statusup(struct map_session_data*,int);
 int pc_statusup2(struct map_session_data*,int,int);
 int pc_skillup(struct map_session_data*,int);
+int pc_allskillup(struct map_session_data*);
 int pc_resetstate(struct map_session_data*);
 int pc_resetskill(struct map_session_data*);
 int pc_equipitem(struct map_session_data*,int,int);

@@ -1,4 +1,6 @@
 Date	Added
+02/06
+	* dumped @skillall for @allskill
 02/05
 	* fixed provoke so it doesnt work on undead [RoVeRT]
 	* added TyrNemesis^ card removal code and min/max settings
