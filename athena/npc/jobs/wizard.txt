@@ -50,7 +50,7 @@ gef_tower.gat,111,37,4	script	Wizard's Guild Worker	70,{
 
 //======== Registration
 Part2:
-	if (job_wizard_q != 0) Part3;
+	if (job_wizard_q != 0) goto Part3;
 		mes "[Guild Clerk]";
 		mes "Hey! What brings you all the way up here?";
 		mes "You want to be a wizard, right?";
