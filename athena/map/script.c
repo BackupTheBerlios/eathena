@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.15 2004/02/01 18:07:11 rovert Exp $
+// $Id: script.c,v 1.16 2004/02/02 02:37:39 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -1328,7 +1328,7 @@ int buildin_input(struct script_state *st)
 		sd->state.menu_or_input=0;
 		if(st->end>st->start+2){ // ˆø”1ŒÂ
 			int num=st->stack->stack_data[st->start+2].u.num;
-			if (num<0) num=0;	// Added by RoVeRT
+			if (sd->npc_amount<0) sd->npc_amount=0;	// Added by RoVeRT
 			if(str_buf[str_data[num].str]=='@' || str_buf[str_data[num].str]=='l')
 				pc_setreg(sd,num,sd->npc_amount);
 			else if(str_buf[str_data[num].str]=='$')
