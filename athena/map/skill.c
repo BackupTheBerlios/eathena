@@ -847,11 +847,29 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 		if(rand()%100 < rate)
 			skill_addtimerskill(src,tick + 800,bl->id,0,0,skillid,skilllv,0,flag);
 	}
+	if(damage > 0 && dmg.flag&BF_SKILL && bl->type==BL_PC && pc_checkskill((struct map_session_data *)bl,RG_PLAGIARISM)){
+		struct map_session_data *tsd = (struct map_session_data *)bl;
+		if(!tsd->status.skill[skillid].id && !tsd->status.skill[skillid].id 
+			&& !(skillid > NPC_PIERCINGATT && skillid < NPC_SUMMONMONSTER) ){
+			//既に盗んでいるスキルがあれば該当スキルを消す
+			if (tsd->cloneskill_id && tsd->cloneskill_lv && tsd->status.skill[tsd->cloneskill_id].flag==13){
+				tsd->status.skill[tsd->cloneskill_id].id=0;
+				tsd->status.skill[tsd->cloneskill_id].lv=0;
+				tsd->status.skill[tsd->cloneskill_id].flag=0;
+			}
+			tsd->cloneskill_id=skillid;
+			tsd->cloneskill_lv=skilllv;
+			tsd->status.skill[skillid].id=skillid;
+			tsd->status.skill[skillid].lv=(pc_checkskill(tsd,RG_PLAGIARISM) > skill_get_max(skillid))?
+							skill_get_max(skillid):pc_checkskill(tsd,RG_PLAGIARISM);
+			tsd->status.skill[skillid].flag=13;//cloneskill flag
+			clif_skillinfoblock(tsd);
+		}
+	}
 	/* ダメージがあるなら追加効果判定 */
 	if(!(bl->prev == NULL || (bl->type == BL_PC && pc_isdead((struct map_session_data *)bl) ) ) ) {
 		if(damage > 0)
 			skill_additional_effect(src,bl,skillid,skilllv,attack_type,tick);
-
 		if(bl->type==BL_MOB && src!=bl)	/* スキル使用条件のMOBスキル */
 		{
 				if(battle_config.mob_changetarget_byskill == 1)
@@ -2577,6 +2595,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 
 	case NPC_PROVOCATION:
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		if(md)
 		clif_pet_performance(src,mob_db[md->class].skill[md->skillidx].val[0]);
 		break;
 
@@ -5586,7 +5605,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 	struct mob_data *md = NULL;
 	struct status_change* sc_data;
 	short *sc_count, *option, *opt1, *opt2;
-	int opt_flag = 0, calc_flag = 0;
+	int opt_flag = 0, calc_flag = 0,race, mode, elem, undead_flag;
 
 	if(bl->type == BL_SKILL)
 		return 0;
@@ -5596,6 +5615,10 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 	option=battle_get_option(bl);
 	opt1=battle_get_opt1(bl);
 	opt2=battle_get_opt2(bl);
+	race=battle_get_race(bl);
+	mode=battle_get_mode(bl);
+	elem=battle_get_elem_type(bl);
+	undead_flag=battle_check_undead(race,elem);
 
 	if(sc_data == NULL || sc_count == NULL || option == NULL || opt1 == NULL || opt2 == NULL)
 		return 0;
@@ -5614,6 +5637,8 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 	}
 	else if(bl->type==BL_PC){
 		sd=(struct map_session_data *)bl;
+		if(type==SC_FREEZE && undead_flag && battle_config.pc_undead_nofreeze && !(flag&1))
+			return 0;
 
 		if(SC_STONE<=type && type<=SC_BLIND){	/* カードによる耐性 */
 			if(sd->reseff[type-SC_STONE] > 0 && rand()%10000<sd->reseff[type-SC_STONE]){
@@ -5623,15 +5648,22 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			}
 		}
 	}
-	else{
+	else if(bl->type == BL_MOB) {
+		if(type==SC_FREEZE && undead_flag && !(flag&1))
+			return 0;
+	}
+	else {
 		if(battle_config.error_log)
 			printf("skill_status_change_start: neither MOB nor PC !\n");
 		return 0;
 	}
 
-	if(type==SC_FREEZE && battle_check_undead(battle_get_race(bl),battle_get_elem_type(bl)))
+	if(mode & 0x20 && (type==SC_STONE || type==SC_FREEZE ||
+		type==SC_STAN || type==SC_SLEEP || type==SC_SILENCE || type==SC_QUAGMIRE || type == SC_DECREASEAGI || type == SC_SIGNUMCRUCIS ||
+		(type == SC_BLESSING && (undead_flag || race == 6))) && !(flag&1)){
+		/* ボスには効かない(ただしカードによる効果は適用される) */
 		return 0;
-
+	}
 	if(type==SC_FREEZE || type==SC_STAN || type==SC_SLEEP)
 		battle_stopwalking(bl,1);
 
@@ -5659,8 +5691,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_BLESSING:			/* ブレッシング */
 			{
-				int race = battle_get_race(bl);
-				if(bl->type == BL_PC || (!battle_check_undead(race,battle_get_elem_type(bl)) && race != 6)) {
+				if(bl->type == BL_PC || (!undead_flag && race != 6)) {
 					if(sc_data[SC_CURSE].timer!=-1 )
 						skill_status_change_end(bl,SC_CURSE,-1);
 					if(sc_data[SC_STONE].timer!=-1 && sc_data[SC_STONE].val2 == 0)

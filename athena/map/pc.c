@@ -321,6 +321,7 @@ static int pc_walktoxy_sub(struct map_session_data *);
  */
 int pc_makesavestatus(struct map_session_data *sd)
 {
+	int i;
 	// 服の色は色々弊害が多いので保存対象にはしない
 	if(!battle_config.save_clothcolor)
 		sd->status.clothes_color=0;
@@ -343,7 +344,14 @@ int pc_makesavestatus(struct map_session_data *sd)
 		else
 			memcpy(&sd->status.last_point,&m->save,sizeof(sd->status.last_point));
 	}
-
+	//クローンスキルで覚えたスキルは消す
+	for(i=0;i<MAX_SKILL;i++){
+		if(sd->status.skill[i].flag == 13){
+			sd->status.skill[i].id=0;
+			sd->status.skill[i].lv=0;
+			sd->status.skill[i].flag=0;
+		}
+	}
 	return 0;
 }
 
@@ -673,7 +681,7 @@ static int pc_calc_skillpoint(struct map_session_data* sd)
 			if(!(skill_get_inf2(i)&0x01) || battle_config.quest_skill_learn) {
 				if(!sd->status.skill[i].flag)
 					skill_point += skill;
-				else if(sd->status.skill[i].flag > 2) {
+				else if(sd->status.skill[i].flag > 2 && sd->status.skill[i].flag != 13) {
 					skill_point += (sd->status.skill[i].flag - 2);
 				}
 			}
@@ -728,8 +736,8 @@ int pc_calc_skilltree(struct map_session_data *sd)
 	}
 
 	for(i=0;i<MAX_SKILL;i++){
-		sd->status.skill[i].id=0;
-		if (sd->status.skill[i].flag){	// cardスキルなら、
+		if (sd->status.skill[i].flag != 13) sd->status.skill[i].id=0;
+		if (sd->status.skill[i].flag && sd->status.skill[i].flag != 13){	// cardスキルなら、
 			sd->status.skill[i].lv=(sd->status.skill[i].flag==1)?0:sd->status.skill[i].flag-2;	// 本当のlvに
 			sd->status.skill[i].flag=0;	// flagは0にしておく
 		}
@@ -3246,7 +3254,8 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 {
 	struct map_session_data *sd;
 	struct block_list *bl;
-//	struct WeaponDamage wd;
+	struct status_change *sc_data;
+	short *opt;
 	int dist,skill,range;
 
 	sd=map_id2sd(id);
@@ -3266,6 +3275,9 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 	if(bl==NULL || bl->prev == NULL)
 		return 0;
 
+	if(bl->type == BL_PC && pc_isdead((struct map_session_data *)bl))
+		return 0;
+
 	// 同じmapでないなら攻撃しない
 	// PCが死んでても攻撃しない
 	if(sd->bl.m != bl->m || pc_isdead(sd))
@@ -3275,6 +3287,11 @@ int pc_attack_timer(int tid,unsigned int tick,int id,int data)
 		return 0;
 
 	if(sd->sc_data[SC_AUTOCOUNTER].timer != -1)
+		return 0;
+
+	if((opt = battle_get_option(bl)) != NULL && *opt&0x46)
+		return 0;
+	if((sc_data = battle_get_sc_data(bl)) != NULL && sc_data[SC_TRICKDEAD].timer != -1)
 		return 0;
 
 	if(sd->skilltimer != -1 && pc_checkskill(sd,SA_FREECAST) <= 0)
@@ -3709,7 +3726,7 @@ int pc_allskillup(struct map_session_data *sd)
 	
 	for(i=0;i<MAX_SKILL;i++){
 		sd->status.skill[i].id=0;
-		if (sd->status.skill[i].flag){	// cardスキルなら、
+		if (sd->status.skill[i].flag && sd->status.skill[i].flag != 13){	// cardスキルなら、
 			sd->status.skill[i].lv=(sd->status.skill[i].flag==1)?0:sd->status.skill[i].flag-2;	// 本当のlvに
 			sd->status.skill[i].flag=0;	// flagは0にしておく
 				}
@@ -3786,7 +3803,7 @@ int pc_resetskill(struct map_session_data* sd)
 			if(!(skill_get_inf2(i)&0x01) || battle_config.quest_skill_learn) {
 				if(!sd->status.skill[i].flag)
 					sd->status.skill_point += skill;
-				else if(sd->status.skill[i].flag > 2) {
+				else if(sd->status.skill[i].flag > 2 && sd->status.skill[i].flag != 13) {
 					sd->status.skill_point += (sd->status.skill[i].flag - 2);
 				}
 				sd->status.skill[i].lv = 0;

@@ -1,4 +1,64 @@
 --------------------
+//0867 by 死神
+
+・スキル関係の細かい修正。
+・battle_athena.confにplayer_undead_nofreeze追加。
+・新しいアイテムパケットに対応。(PACKETVERを5以上にする必要があります。)
+・mob_avail.txtでプレイヤーの姿を指定した時ペコペコや鷹を付けることができるように変更。頭下段次にオプションを設定できます。(ただハイディングとクローキングは指定できないようになっています。)
+	makefile 修正。
+	(conf/)
+	battle_athena.conf 修正。
+	(doc/)
+	conf_ref.txt 修正。
+	client_packet.txt 修正。
+	(map/)
+	battle.h 修正。
+	battle.c
+		battle_calc_pet_weapon_attack()、battle_calc_mob_weapon_attack() 修正。
+		battle_calc_pc_weapon_attack()、battle_config_read() 修正。
+	clif.c
+		clif_mob_class_change()、clif_spawnmob()、clif_spawnpet() 修正。
+		clif_damage()、clif_skill_damage()、clif_skill_damage2() 修正。
+		clif_itemlist()、clif_cart_itemlist()、clif_storageitemlist() 修正。
+		clif_mob0078()、clif_mob007b()、clif_pet0078()、clif_pet007b() 修正。
+	pc.c
+		pc_attack_timer() 修正。
+	skill.c
+		skill_castend_nodamage_id()、skill_additional_effect() 修正。
+		skill_status_change_start() 修正。
+	mob.h 修正。
+	mob.c
+		mobskill_castend_id()、mob_getfriendstatus_sub() 修正。
+		mob_readdb_mobavail() 修正。
+
+--------------------
+//0866 by ぴざまん
+
+・MOTDのメッセージを全て編集できるように変更。
+・クローンスキル実装。
+　ドル服のヒールアタックによるヒール習得は未テストです。
+・ギルド宝箱仮実装。
+　ヴァルキリー１のみです。
+　商業投資による宝箱個数の算出式は適当です(初期個数4個としか知らないので)。
+　Onclockイベントで動作させています。任意の時刻に変更してください。
+・AthenaDB計画のmob_db.txtとmapflag.txtを入れておきました。
+
+	(map/)
+	pc.c
+		pc_makesavestatus()、pc_calc_skilltree() 修正。
+		pc_allskillup()、pc_calc_skillpoint() 修正。
+		pc_resetskill()、pc_authok() 修正。
+	skill.c
+		skill_attack() 修正。
+	map.h 修正。
+	(conf/)
+	gvg/TEST_prtg_cas01_AbraiJ.txt 修正。
+	motd.txt 修正。
+	mapflag.txt 修正。
+	(db/)
+	mob_db.txt 修正。
+
+--------------------
 //0865 by ぴざまん
 
 ・自分が占領しているアジトのエンペリウムを攻撃できたバグ修正。

@@ -1523,7 +1523,7 @@ static struct Damage battle_calc_pet_weapon_attack(
 			case NPC_HOLYATTACK:
 			case NPC_DARKNESSATTACK:
 			case NPC_TELEKINESISATTACK:
-				damage = damage*(100+25*skill_lv)/100;
+				damage = damage*(100+25*(skill_lv-1))/100;
 				break;
 			case NPC_GUIDEDATTACK:
 				hitrate = 1000000;
@@ -1923,7 +1923,7 @@ static struct Damage battle_calc_mob_weapon_attack(
 			case NPC_HOLYATTACK:
 			case NPC_DARKNESSATTACK:
 			case NPC_TELEKINESISATTACK:
-				damage = damage*(100+25*skill_lv)/100;
+				damage = damage*(100+25*(skill_lv-1))/100;
 				break;
 			case NPC_GUIDEDATTACK:
 				hitrate = 1000000;
@@ -3929,6 +3929,7 @@ int battle_config_read(const char *cfgName)
 	battle_config.mob_changetarget_byskill = 0;
 	battle_config.pc_attack_direction_change = 1;
 	battle_config.monster_attack_direction_change = 1;
+	battle_config.pc_undead_nofreeze = 0;
 	battle_config.item_rate_common = 100;
 	battle_config.item_rate_equip = 100;
 	battle_config.item_rate_card = 100;
@@ -4065,18 +4066,19 @@ int battle_config_read(const char *cfgName)
 			{ "mob_changetarget_byskill" ,&battle_config.mob_changetarget_byskill },
 			{ "player_attack_direction_change" ,&battle_config.pc_attack_direction_change },
 			{ "monster_attack_direction_change" ,&battle_config.monster_attack_direction_change },			
-		{ "item_rate_common",	&battle_config.item_rate_common	},	// Added by RoVeRT
-		{ "item_rate_equip",	&battle_config.item_rate_equip	},
-		{ "item_rate_card",	&battle_config.item_rate_card	},	// End Addition
-		{ "item_drop_common_min",	&battle_config.item_drop_common_min	},	// Added by TyrNemesis^
-		{ "item_drop_common_max",	&battle_config.item_drop_common_max	},
-		{ "item_drop_equip_min",	&battle_config.item_drop_equip_min	},
-		{ "item_drop_equip_max",	&battle_config.item_drop_equip_max	},
-		{ "item_drop_card_min",		&battle_config.item_drop_card_min	},
-		{ "item_drop_card_max",		&battle_config.item_drop_card_max	},
-		{ "item_drop_mvp_min",		&battle_config.item_drop_mvp_min	},
-		{ "item_drop_mvp_max",		&battle_config.item_drop_mvp_max	},	// End Addition
-		{ "prevent_logout", 		&battle_config.prevent_logout		},	/// Added by RoVeRT
+			{ "player_undead_nofreeze" ,&battle_config.pc_undead_nofreeze },
+			{ "item_rate_common",	&battle_config.item_rate_common	},	// Added by RoVeRT
+			{ "item_rate_equip",	&battle_config.item_rate_equip	},
+			{ "item_rate_card",	&battle_config.item_rate_card	},	// End Addition
+			{ "item_drop_common_min",	&battle_config.item_drop_common_min	},	// Added by TyrNemesis^
+			{ "item_drop_common_max",	&battle_config.item_drop_common_max	},
+			{ "item_drop_equip_min",	&battle_config.item_drop_equip_min	},
+			{ "item_drop_equip_max",	&battle_config.item_drop_equip_max	},
+			{ "item_drop_card_min",		&battle_config.item_drop_card_min	},
+			{ "item_drop_card_max",		&battle_config.item_drop_card_max	},
+			{ "item_drop_mvp_min",		&battle_config.item_drop_mvp_min	},
+			{ "item_drop_mvp_max",		&battle_config.item_drop_mvp_max	},	// End Addition
+			{ "prevent_logout", 		&battle_config.prevent_logout		},	/// Added by RoVeRT
 		};
 		
 		if(line[0] == '/' && line[1] == '/')

@@ -170,6 +170,7 @@ struct map_session_data {
 	struct skill_unit_group skillunit[MAX_SKILLUNITGROUP];
 	struct skill_unit_group_tickset skillunittick[MAX_SKILLUNITGROUPTICKSET];
 	struct skill_timerskill skilltimerskill[MAX_SKILLTIMERSKILL];
+	int cloneskill_id,cloneskill_lv;
 	short sg_count;
 
 	int invincible_timer;
@@ -472,22 +473,6 @@ struct chat_data {
 	char npc_event[50];
 	int trigger;		// Added by RoVeRT
 };
-
-/*struct mons_data {
-	int type;
-	int max_hp;
-	int npc_num;
-	int job_exp;
-	int base_exp;
-	int atk;
-	int hit;
-	int flee;
-	int def;
-	struct {
-		int nameid,p;
-	} dropitem[16];
-};*/
-
 
 extern struct map_data map[];
 extern int map_num;
