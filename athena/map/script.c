@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.18 2004/02/05 18:54:22 rovert Exp $
+// $Id: script.c,v 1.19 2004/02/05 19:04:04 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -163,6 +163,9 @@ int buildin_inittimer(struct script_state *st);
 int buildin_stoptimer(struct script_state *st);
 int buildin_cmdothernpc(struct script_state *st);
 int buildin_mobcount(struct script_state *st);
+int buildin_getequipcardcnt(struct script_state *st);
+int buildin_successremovecards(struct script_state *st);
+int buildin_failedremovecards(struct script_state *st);
 
 void push_val(struct script_stack *stack,int type,int val);
 int run_func(struct script_state *st);
@@ -268,6 +271,9 @@ struct {
 	{buildin_stoptimer,"stoptimer",""},
 	{buildin_cmdothernpc,"cmdothernpc","ss"},
 	{buildin_mobcount,"mobcount","s"},		// End Additions
+	{buildin_getequipcardcnt,"getequipcardcnt","i"},
+	{buildin_successremovecards,"successremovecards","i"},
+	{buildin_failedremovecards,"failedremovecards","ii"},
 	{NULL,NULL,NULL},
 };
 enum {
@@ -2989,6 +2995,151 @@ int buildin_mobcount(struct script_state *st)	// Added by RoVeRT
 
 	push_val(st->stack,C_INT, (c - 1));
 
+	return 0;
+}
+
+/* =====================================================================
+ * NPC command checks number of cards compounded on equipped items
+ * Usage: getequipcardcnt(x)  returns number of cards on equipped item x
+ * Returns 0 if item has no cards or is a blacksmith-made item.
+ * ---------------------------------------------------------------------
+ */
+
+int buildin_getequipcardcnt(struct script_state *st)
+{
+	int i,num;
+	struct map_session_data *sd;
+
+	num=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	sd=map_id2sd(st->rid);
+	i=pc_checkequip(sd,equip[num-1]);
+	if(sd->status.inventory[i].card[0] == 0x00ff){		/* If item was made by a Blacksmith, exit */
+		push_val(st->stack,C_INT,0);
+		return 0;
+	}
+	int c=4;
+	do{
+		if((sd->status.inventory[i].card[c-1] > 4000) && (sd->status.inventory[i].card[c-1] < 5000)){
+			push_val(st->stack,C_INT,(c));
+			return 0;
+		}
+	}while(c--);
+	push_val(st->stack,C_INT,0);
+	return 0;
+}
+
+/* ================================================================
+ * Card removal success command. Cards are removed and given to PC.
+ * ----------------------------------------------------------------
+ */
+
+// Added by TyrNemesis^
+int buildin_successremovecards(struct script_state *st)
+{
+	int i,num,cardflag=0,flag;
+	struct map_session_data *sd;
+	struct item item_tmp;
+
+	num=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	sd=map_id2sd(st->rid);
+	i=pc_checkequip(sd,equip[num-1]);
+	if(sd->status.inventory[i].card[0]==0x00ff){	/* If item was made by a Blacksmith, exit */
+		return 0;
+	}
+	int c=4;
+	do{	/* Check if the item HAS any cards */
+		if((sd->status.inventory[i].card[c-1] > 4000) && (sd->status.inventory[i].card[c-1] < 5000)){ 
+
+			cardflag = 1;	/* This tells the code that at least one card was found and awarded */
+				item_tmp.id=0,item_tmp.nameid=sd->status.inventory[i].card[c-1];
+				item_tmp.equip=0,item_tmp.identify=1,item_tmp.refine=0;
+				item_tmp.attribute=0;
+				item_tmp.card[0]=0,item_tmp.card[1]=0,item_tmp.card[2]=0,item_tmp.card[3]=0;
+
+			if((flag=pc_additem(sd,&item_tmp,1))){	/* If there is a card in the slot, award it. */
+				clif_additem(sd,0,0,flag);
+				map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+			}
+		}
+	}while(c--);
+
+	if(cardflag == 1){	/* If any cards were awarded, clear the item and return it. */
+		flag=0;
+		item_tmp.id=0,item_tmp.nameid=sd->status.inventory[i].nameid;
+		item_tmp.equip=0,item_tmp.identify=1,item_tmp.refine=sd->status.inventory[i].refine;
+		item_tmp.attribute=sd->status.inventory[i].attribute;
+		item_tmp.card[0]=0,item_tmp.card[1]=0,item_tmp.card[2]=0,item_tmp.card[3]=0;
+		pc_delitem(sd,i,1,0);
+		if((flag=pc_additem(sd,&item_tmp,1))){
+			clif_additem(sd,0,0,flag);
+			map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+		}
+		clif_misceffect(&sd->bl,3);
+		return 0;
+	}
+	return 0;
+}
+
+/* ================================================================
+ * Card removal failure command. Parm1 = equip slot, Parm2 = Type
+ * 0: Lose item and cards. 1: Lose cards. 2: Lose item. 3: No loss.
+ * ----------------------------------------------------------------
+ */
+
+// Added by TyrNemesis^
+int buildin_failedremovecards(struct script_state *st)
+{
+	int i,num,cardflag=0,flag,typefail;
+	struct map_session_data *sd;
+	struct item item_tmp;
+
+	num=conv_num(st,& (st->stack->stack_data[st->start+2]));
+	typefail=conv_num(st,& (st->stack->stack_data[st->start+3]));
+	sd=map_id2sd(st->rid);
+	i=pc_checkequip(sd,equip[num-1]);
+	if(sd->status.inventory[i].card[0]==0x00ff){	/* If item was made by a Blacksmith, exit */
+		return 0;
+	}
+	int c=4;
+	do{	/* Check if the item HAS any cards */
+		if((sd->status.inventory[i].card[c-1] > 4000) && (sd->status.inventory[i].card[c-1] < 5000)){
+			cardflag = 1; /* This tells the code that at least one card was found */
+
+			if(typefail == 2){	/* If destroying item only, award cards before item is destroyed */
+				item_tmp.id=0,item_tmp.nameid=sd->status.inventory[i].card[c-1];
+				item_tmp.equip=0,item_tmp.identify=1,item_tmp.refine=0;
+				item_tmp.attribute=0;
+				item_tmp.card[0]=0,item_tmp.card[1]=0,item_tmp.card[2]=0,item_tmp.card[3]=0;
+				if((flag=pc_additem(sd,&item_tmp,1))){
+					clif_additem(sd,0,0,flag);
+					map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+				}
+			}
+		}
+	}while(c--);
+
+	if(cardflag == 1){	/* If item had any cards, perform required failure actions */
+
+		if(typefail == 0 || typefail == 2){	/* Delete the item */
+			pc_delitem(sd,i,1,0);
+			clif_misceffect(&sd->bl,2);
+			return 0;
+		}
+		if(typefail == 1){	/* Strip the cards and return the item */
+			flag=0;
+			item_tmp.id=0,item_tmp.nameid=sd->status.inventory[i].nameid;
+			item_tmp.equip=0,item_tmp.identify=1,item_tmp.refine=sd->status.inventory[i].refine;
+			item_tmp.attribute=sd->status.inventory[i].attribute;
+			item_tmp.card[0]=0,item_tmp.card[1]=0,item_tmp.card[2]=0,item_tmp.card[3]=0;
+			pc_delitem(sd,i,1,0);
+			if((flag=pc_additem(sd,&item_tmp,1))){
+				clif_additem(sd,0,0,flag);
+				map_addflooritem(&item_tmp,1,sd->bl.m,sd->bl.x,sd->bl.y);
+			}
+		}
+		clif_misceffect(&sd->bl,2);
+		return 0;
+	}
 	return 0;
 }
 

@@ -3552,9 +3552,6 @@ int battle_config_read(const char *cfgName)
 	battle_config.random_monster_checklv=1;
 	battle_config.attr_recover=1;
 	battle_config.flooritem_lifetime=LIFETIME_FLOORITEM*1000;
-	battle_config.item_rate_common=100;	// Modified by RoVeRT
-	battle_config.item_rate_equip=100;	// Added by RoVeRT
-	battle_config.item_rate_card=100;	// Added by RoVeRT
 	battle_config.drop_rate0item=0;
 	battle_config.base_exp_rate=100;
 	battle_config.job_exp_rate=100;
@@ -3636,6 +3633,14 @@ int battle_config_read(const char *cfgName)
 	battle_config.gvg_misc_damage_rate = 100;
 	battle_config.gvg_invincible_time = 10000;
 	battle_config.gvg_continuous_attack = 0;
+	battle_config.min_item_drop_common=1;	// Added by TyrNemesis^
+	battle_config.max_item_drop_common=10000;
+	battle_config.min_item_drop_equip=1;
+	battle_config.max_item_drop_equip=10000;
+	battle_config.min_item_drop_card=1;
+	battle_config.max_item_drop_card=10000;
+	battle_config.min_item_drop_mvp=1;
+	battle_config.max_item_drop_mvp=10000;	// End Addition
 	battle_config.prevent_logout = 1;	// Added by RoVeRT
 
 	fp=fopen(cfgName,"r");
@@ -3666,7 +3671,6 @@ int battle_config_read(const char *cfgName)
 			{ "random_monster_checklv",		&battle_config.random_monster_checklv	},
 			{ "attribute_recover",		&battle_config.attr_recover			},
 			{ "flooritem_lifetime",		&battle_config.flooritem_lifetime	},
-			{ "item_rate_common",				&battle_config.item_rate_common			},	// Modified by RoVeRT
 			{ "drop_rate0item",				&battle_config.drop_rate0item			},
 			{ "base_exp_rate",			&battle_config.base_exp_rate		},
 			{ "job_exp_rate",			&battle_config.job_exp_rate			},
@@ -3748,9 +3752,18 @@ int battle_config_read(const char *cfgName)
 			{ "gvg_misc_attack_damage_rate" ,&battle_config.gvg_misc_damage_rate },
 			{ "gvg_invincible_time" ,&battle_config.gvg_invincible_time },
 			{ "gvg_continuous_attack" ,&battle_config.gvg_continuous_attack },
-		{ "item_rate_equip",	&battle_config.item_rate_equip },		// Added by RoVeRT
-		{ "item_rate_card",	&battle_config.item_rate_card },
-		{ "prevent_logout", 	&battle_config.prevent_logout },		/// End Addition
+		{ "item_drop_common",	&battle_config.min_item_drop_common	},	// Added by RoVeRT
+		{ "item_drop_equip",	&battle_config.min_item_drop_common	},
+		{ "item_drop_card",	&battle_config.min_item_drop_common	},	// End Addition
+		{ "item_drop_common_min",	&battle_config.item_drop_common_min	},	// Added by TyrNemesis^
+		{ "item_drop_common_max",	&battle_config.item_drop_common_max	},
+		{ "item_drop_equip_min",	&battle_config.item_drop_equip_min	},
+		{ "item_drop_equip_max",	&battle_config.item_drop_equip_max	},
+		{ "item_drop_card_min",		&battle_config.item_drop_card_min	},
+		{ "item_drop_card_max",		&battle_config.item_drop_card_max	},
+		{ "item_drop_mvp_min",		&battle_config.item_drop_mvp_min	},
+		{ "item_drop_mvp_max",		&battle_config.item_drop_mvp_max	},	// End Addition
+		{ "prevent_logout", 		&battle_config.prevent_logout		},	/// Added by RoVeRT
 		};
 		
 		if(line[0] == '/' && line[1] == '/')
@@ -3817,12 +3830,22 @@ int battle_config_read(const char *cfgName)
 	if(battle_config.vit_penaly_count < 2)
 		battle_config.vit_penaly_count = 2;
 
-	if(battle_config.item_rate_common < 100)		// Added by RoVeRT
-		battle_config.item_rate_common = 100;
-	if(battle_config.item_rate_equip < 100)
-		battle_config.item_rate_equip = 100;
-	if(battle_config.item_rate_card < 100)
-		battle_config.item_rate_card= 100;		// End Addition
+	if(battle_config.min_item_drop_common < 1)		// Added by TyrNemesis^
+		battle_config.min_item_drop_common = 1;
+	if(battle_config.max_item_drop_common > 10000)
+		battle_config.max_item_drop_common = 10000;
+	if(battle_config.min_item_drop_equip < 1)
+		battle_config.min_item_drop_equip = 1;
+	if(battle_config.max_item_drop_equip > 10000)
+		battle_config.max_item_drop_equip = 10000;
+	if(battle_config.min_item_drop_card < 1)
+		battle_config.min_item_drop_card = 1;
+	if(battle_config.max_item_drop_card > 10000)
+		battle_config.max_item_drop_card = 10000;
+	if(battle_config.min_item_drop_mvp < 1)
+		battle_config.min_item_drop_mvp = 1;
+	if(battle_config.max_item_drop_mvp > 10000)
+		battle_config.max_item_drop_mvp = 10000;	// End Addition
 
 	add_timer_func_list(battle_delay_damage_sub,"battle_delay_damage_sub");
 

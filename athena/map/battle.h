@@ -137,7 +137,7 @@ extern struct Battle_Config {
 	int random_monster_checklv;
 	int attr_recover;
 	int flooritem_lifetime;
-	int item_rate_common,base_exp_rate,job_exp_rate;
+	int base_exp_rate,job_exp_rate;
 	int drop_rate0item;
 	int death_penalty_type;
 	int death_penalty_base,death_penalty_job;
@@ -213,9 +213,14 @@ extern struct Battle_Config {
 	int gvg_misc_damage_rate;
 	int gvg_invincible_time;
 	int gvg_continuous_attack;
-	int item_rate_equip;	// Modified by RoVeRT
-	int item_rate_card;
-	int prevent_logout;	// End Modification
+	int item_drop_common,item_drop_card,item_drop_equip;	// Added by RoVeRT
+	int item_drop_common_min,item_drop_common_max;	// Added by TyrNemesis^
+	int min_item_drop_equip,max_item_drop_equip;
+	int item_drop_card_min,item_drop_card_max;
+	int item_drop_equip_min.item_drop_equip_max
+	int item_drop_mvp_min,item_drop_mvp_max;	// End Addition
+
+	int prevent_logout;	// Added by RoVeRT
 } battle_config;
 
 #define BATTLE_CONF_FILENAME	"conf/battle_athena.conf"

@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.29 2004/02/05 18:04:42 rovert Exp $
+// $Id: mob.c,v 1.30 2004/02/05 19:04:04 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1839,6 +1839,10 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			drop_rate = mob_db[md->class].mvpitem[i].p;
 			if(drop_rate <= 0 && battle_config.drop_rate0item)
 				drop_rate = 1;
+			if(drop_rate < battle_config.item_drop_mvp_min)
+				drop_rate = battle_config.item_drop_mvp_min;
+			if(drop_rate > battle_config.max_item_drop_mvp)
+				drop_rate = battle_config.item_drop_mvp_max;
 			if(drop_rate <= rand()%10000)
 				continue;
 			memset(&item,0,sizeof(item));
@@ -2701,17 +2705,26 @@ static int mob_readdb(void)
 			mob_db[class].dmotion=atoi(str[28]);
 	
 			for(i=0;i<8;i++){
-				int rate = 100,type;
+				int rate = 0,type,ratemin,ratemax;
 				mob_db[class].dropitem[i].nameid=atoi(str[29+i*2]);
 				type = itemdb_type(mob_db[class].dropitem[i].nameid);
-				if (type == 4 || type == 5 )
+				if (type == 4 || type == 5 ) {
 					rate = battle_config.item_rate_equip;
-				if (type == 6)
+					ratemin = battle_config.item_drop_equip_min;
+					ratemax = battle_config.item_drop_equip_max;
+				}
+				else if (type == 6) {
 					rate = battle_config.item_rate_card;
-				else
+					ratemin = battle_config.item_drop_card_min;
+					ratemax = battle_config.item_drop_card_max;
+				}
+				else {
 					rate = battle_config.item_rate_common;
-	
-				mob_db[class].dropitem[i].p=atoi(str[30+i*2])* rate /100;
+					ratemin = battle_config.item_drop_common_min;
+					ratemax = battle_config.item_drop_common_max;
+				}
+				rate /= 100 * atoi(str[30+i*2]);
+				mob_db[class].dropitem[i].p = rate;
 			}
 			// Item1,Item2
 			mob_db[class].mexp=atoi(str[47])*battle_config.mvp_exp_rate/100;
