@@ -398,14 +398,14 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	case AL_CRUCIS:		// -- calcs chance of inflicting SIGNUM status (defense down) for demons/undead caught in radius
 		if( (battle_get_race(bl)==6 || battle_get_race(bl)==1) && (rand()%100 < ( skilllv*2 + battle_get_lv(src) + 28 - battle_get_lv(bl)) )){
-			skill_status_change_start(bl,SC_SIGNUMCRUCIS,skilllv,0,skill_get_time2(skillid,skilllv),0);
+			skill_status_change_start(bl,SC_SIGNUMCRUCIS,skilllv,0,0,0,skill_get_time2(skillid,skilllv),0);
 			clif_emotion(bl,04);
 		}
 		break;
 
 	case PR_STRECOVERY:		// Added by AppleGirl
 		if( battle_get_race(bl)==1 && battle_get_race(bl)==6 )
-			skill_status_change_start(bl,SC_BLIND,1,0,5000,0);
+			skill_status_change_start(bl,SC_BLIND,1,0,0,0,5000,0);
 		break;
 
 	case TF_POISON:			/* インベナ? */
@@ -469,7 +469,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	case CR_REFLECTSHIELD:		/* ランド?イン */	// Added by AppleGirl
 		if( rand()%100 < 3*skilllv ){
-			skill_status_change_start(bl,SC_REFLECTSHIELD,skilllv,0,skilllv*500+1000,0);
+			skill_status_change_start(bl,SC_REFLECTSHIELD,skilllv,0,0,0,skilllv*500+1000,0);
 		}
 		break;
 	case CR_HOLYCROSS:		/* ホ?リ?クロス */
@@ -1262,7 +1262,7 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	case NPC_TELEKINESISATTACK:
 	case NPC_LICK:
 		if(skillid==CR_SHIELDCHARGE && rand()%100 < 5*skilllv+15 )
-			skill_status_change_start(bl,SC_STAN,1,0,3000,0);
+			skill_status_change_start(bl,SC_STAN,1,0,0,0,3000,0);
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
 		break;
 	case KN_BRANDISHSPEAR:		/* ブランディッシュスピア */
@@ -1708,17 +1708,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 					heal_get_jobexp = 1;
 				pc_gainexp((struct map_session_data *)src,0,heal_get_jobexp);
 			}
-		}
-		break;
-
-	case AL_CRUCIS:		// -- checks area of effect for potential targets as skill is cast
-		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		{
-			int x=bl->x,y=bl->y;
-			map_foreachinarea(skill_area_sub,
-				bl->m,x-AREA_SIZE,y-AREA_SIZE,x+AREA_SIZE,y+AREA_SIZE,0,
-				src,skillid,skilllv,tick, flag|BCT_ENEMY|1,
-				skill_additional_effect);
 		}
 		break;
 
@@ -2288,7 +2277,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 				if (rand()%100 < (5+skilllv*2)) {
 					equip=2;
 					pc_unequipitem(dstsd,item_pos,0);
-					skill_status_change_start( bl,SkillStatusChangeTable[skillid], skilllv, 0, 60000,0 );
+					skill_status_change_start( bl,SkillStatusChangeTable[skillid], skilllv, 0, 0, 0, 60000,0 );
 				}
 			}
 			if(equip==0){clif_displaymessage(sd->fd,"Nothing Equiped.");}
@@ -2297,7 +2286,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		}
 		clif_skill_nodamage(src,bl,skillid,0,1);
 		if(bl->type==BL_MOB && rand()%100 < (5+skilllv*2)) {
-			skill_status_change_start( bl,SkillStatusChangeTable[skillid], skilllv, 0 ,60000,0);
+			skill_status_change_start( bl,SkillStatusChangeTable[skillid], skilllv, 0 , 0 , 0 ,60000,0);
 		}
 		break;
 
@@ -2314,11 +2303,11 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 						if (rand()%100 < (3+skilllv*2)) {
 							equip=2;
 							pc_unequipitem(dstsd,i,0);
-//fix							skill_status_change_start( bl, SkillStatusChangeTable[skillid], skilllv, 0 );
+//fix							skill_status_change_start( bl, SkillStatusChangeTable[skillid], skilllv, 0 , 0 , 0, 60000, 0 );
 						}
  					}
  			}
-			if(equip==0){clif_displaymessage(sd->fd,"Nothing Equiped.");}
+			if(equip==0){clif_displaymessage(sd->fd,"Nothing Equipped.");}
 			else if (equip==1){clif_skill_fail(sd,skillid,0,0);}
  			}
 		}
@@ -2770,7 +2759,7 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 
 			if ((m=mob_once_spawn(sd,"this",x,y,"--ja--",1118, 1,""))){
 				md=(struct mob_data*)map_id2bl(m);
-				skill_status_change_start((struct block_list *)map_id2bl(m), SC_CANNIBALIZE, skilllv, 0, skilllv * 20000,0 );
+				skill_status_change_start((struct block_list *)map_id2bl(m), SC_CANNIBALIZE, skilllv, 0, 0, 0, skilllv * 20000,0 );
 				md->hp = md->hp * skilllv * 10 / 100;
 			}
 		}
@@ -2794,7 +2783,7 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 				if ((m=mob_once_spawn(sd,"this",x,y,"--ja--",1142, 1,""))){
 					/* Permanent residence time of suicide bombing being 5 seconds, drift speed 300 (per 0.1 seconds becomes quick 5 at a time) */
 					md=(struct mob_data*)map_id2bl(m);
-					skill_status_change_start((struct block_list *)map_id2bl(m), SC_SPHEREMINE, skilllv, 0, skilllv * 20000,0);
+					skill_status_change_start((struct block_list *)map_id2bl(m), SC_SPHEREMINE, skilllv, 0, 0, 0, skilllv * 20000,0);
 					/* md->hp = md->hp * skilllv * 10 / 100;		/. == instant explode */
 				}
 			}
@@ -2863,13 +2852,12 @@ int skill_castend_map( struct map_session_data *sd,int skill_num, const char *ma
 			if(x==0 || y==0)	/* 不正パケット？ */
 				return 0;
 
-/* fix so gemstone actually removed here only as its correct spot to do it
 			if(!sd->special_state.no_gemstone && (itid=pc_search_inventory(sd, 717)) <= 0){		// Added by RoVeRT
 				clif_skill_fail(sd,sd->skillid,8,0);
 				break;
 			}else if (!sd->special_state.no_gemstone)
 				pc_delitem(sd, itid, 1, 0);
-*/
+
 			group=skill_unitsetting(&sd->bl,sd->skillid,sd->skilllv,sd->skillx,sd->skilly,0);
 			group->valstr=malloc(24);
 			if(group->valstr==NULL){
@@ -3271,15 +3259,6 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 			}
 			break;
 
-		case WZ_SIGHTRASHER:
-			{
-				static const int dx[]={
-					-5, 0, 5, -4, 0, 4, -3, 0, 3, -2, 0, 2, -1, 0, 1, -5,-4,-3,-2,-1, 0, 1, 2, 3, 4, 5, -1, 0, 1, -2, 0, 2, -3, 0, 3, -4, 0, 4, -5, 0, 5 };
-				static const int dy[]={
-					-5,-5,-5, -4,-4,-4, -3,-3,-3, -2,-2,-2, -1,-1,-1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  1, 1, 1,  2, 2, 2,  3, 3, 3,  4, 4, 4,  5, 5, 5 };
-				ux+=dx[i];
-				uy+=dy[i];
-			}
 /*
 		case SA_VOLCANO: 
 			{
