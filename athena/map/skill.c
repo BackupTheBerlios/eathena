@@ -2725,7 +2725,6 @@ int skill_castend_pos2( struct block_list *src, int x,int y,int skillid,int skil
 		break;
 
 	case MG_SAFETYWALL:			/* セイフティウォール */
-	case MG_FIREWALL:			/* ファイヤーウォール */
 	case MG_THUNDERSTORM:		/* サンダーストーム */
 	case AL_PNEUMA:				/* ニューマ */
 	case WZ_ICEWALL:			/* アイスウォール */
@@ -5892,15 +5891,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 		case SC_STRIPSHIELD:				/* Strip Shield */
 			tick = 1000 * 60;
 			break;
-// fix
-		case SC_REFLECTSHIELD:
-			tick = 1000 * val1;
-			if(val1 == 4)
-				tick = 1500;
-			if(val1 == 5)
-				tick = 2000;
-			break;
-
 
 		case SC_SPEEDPOTION0:		/* 増速??ション */
 		case SC_SPEEDPOTION1:
