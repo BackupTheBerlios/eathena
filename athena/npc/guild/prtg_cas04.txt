@@ -3,11 +3,10 @@
 //===================================================================
 prt_gld.gat,120,243,6	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -17,11 +16,10 @@ prt_gld.gat,120,243,6	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -33,11 +31,10 @@ LStartg:
 }
 prt_gld.gat,120,236,6	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -47,11 +44,10 @@ prt_gld.gat,120,236,6	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -63,11 +59,10 @@ LStartg:
 }
 prt_gld.gat,122,243,6	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -77,11 +72,10 @@ prt_gld.gat,122,243,6	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -93,11 +87,10 @@ LStartg:
 }
 prt_gld.gat,122,236,6	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -107,11 +100,10 @@ prt_gld.gat,122,236,6	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -123,11 +115,10 @@ LStartg:
 }
 prtg_cas04.gat,82,29,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -137,11 +128,10 @@ prtg_cas04.gat,82,29,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -153,11 +143,10 @@ LStartg:
 }
 prtg_cas04.gat,75,29,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -167,11 +156,10 @@ prtg_cas04.gat,75,29,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -183,11 +171,10 @@ LStartg:
 }
 prtg_cas04.gat,75,27,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -197,11 +184,10 @@ prtg_cas04.gat,75,27,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -213,11 +199,10 @@ LStartg:
 }
 prtg_cas04.gat,82,27,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -227,11 +212,10 @@ prtg_cas04.gat,82,27,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -243,11 +227,10 @@ LStartg:
 }
 prtg_cas04.gat,59,29,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -257,11 +240,10 @@ prtg_cas04.gat,59,29,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -273,11 +255,10 @@ LStartg:
 }
 prtg_cas04.gat,67,29,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -287,11 +268,10 @@ prtg_cas04.gat,67,29,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -303,11 +283,10 @@ LStartg:
 }
 prtg_cas04.gat,258,25,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -317,11 +296,10 @@ prtg_cas04.gat,258,25,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -333,11 +311,10 @@ LStartg:
 }
 prtg_cas04.gat,258,20,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -347,11 +324,10 @@ prtg_cas04.gat,258,20,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -363,11 +339,10 @@ LStartg:
 }
 prtg_cas04.gat,263,20,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -377,11 +352,10 @@ prtg_cas04.gat,263,20,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -393,11 +367,10 @@ LStartg:
 }
 prtg_cas04.gat,263,27,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -407,11 +380,10 @@ prtg_cas04.gat,263,27,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Prontera ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -498,7 +470,7 @@ L4:
 L7:
 	mes "[Kafra Service]";
 	mes "Kafra Service always trying to offer best service for you.";
-	mes "Thank you for using our service.";";
+	mes "Thank you for using our service.";
 L_EXIT:
 	cutin "kafra_01",255;
 	close;
@@ -514,7 +486,7 @@ LStartg:
 	close;
 }
 //-----------------------------Switch-------------------------------
-prtg_cas04.gat,274,161,0	script	 	111,{
+prtg_cas04.gat,274,161,0	script	Switch	111,{
 	mes " ";
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
@@ -525,7 +497,7 @@ L2:
 	close;
 }
 //-----------------------------Switch 2------------------------------
-prtg_cas04.gat,56,283,0	script	 	111,{
+prtg_cas04.gat,56,283,0	script	Switch 2	111,{
 	mes "[ Vibration of Man's Voice ]";
 	mes " ' Only brave man get to lead the guild base.. '";
 	next;

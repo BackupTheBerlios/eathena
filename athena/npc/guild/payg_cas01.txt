@@ -3,11 +3,10 @@
 //===================================================================
 pay_gld.gat,125,236,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -17,11 +16,10 @@ pay_gld.gat,125,236,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -33,11 +31,10 @@ LStartg:
 }
 pay_gld.gat,110,233,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -47,11 +44,10 @@ pay_gld.gat,110,233,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -63,11 +59,10 @@ LStartg:
 }
 pay_gld.gat,116,233,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -77,11 +72,10 @@ pay_gld.gat,116,233,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -93,11 +87,10 @@ LStartg:
 }
 pay_gld.gat,91,239,2	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -107,11 +100,10 @@ pay_gld.gat,91,239,2	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -123,11 +115,10 @@ LStartg:
 }
 payg_cas01.gat,238,67,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -137,11 +128,10 @@ payg_cas01.gat,238,67,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -153,11 +143,10 @@ LStartg:
 }
 payg_cas01.gat,233,67,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -167,11 +156,10 @@ payg_cas01.gat,233,67,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -183,11 +171,10 @@ LStartg:
 }
 payg_cas01.gat,221,123,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -197,11 +184,10 @@ payg_cas01.gat,221,123,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -213,11 +199,10 @@ LStartg:
 }
 payg_cas01.gat,221,116,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -227,11 +212,10 @@ payg_cas01.gat,221,116,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -243,11 +227,10 @@ LStartg:
 }
 payg_cas01.gat,206,108,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -257,11 +240,10 @@ payg_cas01.gat,206,108,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -273,11 +255,10 @@ LStartg:
 }
 payg_cas01.gat,212,108,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -287,11 +268,10 @@ payg_cas01.gat,212,108,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Payon ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Payon";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -378,7 +358,7 @@ L4:
 L7:
 	mes "[Kafra Service]";
 	mes "Kafra Service always trying to offer best service for you.";
-	mes "Thank you for using our service.";";
+	mes "Thank you for using our service.";
 L_EXIT:
 	cutin "kafra_01",255;
 	close;
@@ -394,7 +374,7 @@ LStartg:
 	close;
 }
 //-----------------------------Switch-------------------------------
-payg_cas01.gat,287,5,0	script	 	111,{
+payg_cas01.gat,287,5,0	script	Switch	111,{
 	mes " ";
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
@@ -405,7 +385,7 @@ L2:
 	close;
 }
 //-----------------------------Switch 2------------------------------
-payg_cas01.gat,101,25,0	script	 	111,{
+payg_cas01.gat,101,25,0	script	Switch 2	111,{
 	mes "[ Vibration of Man's Voice ]";
 	mes " ' Only brave man get to lead the guild base.. '";
 	next;

@@ -13,37 +13,37 @@
 prtg_cas01.gat,104,26,0	script	yobidashi	-1,{
 OnInit:
 //if ($prtg01==1) goto L2;
-	monster "prtg_cas01.gat",99,201,"レイドリック",1163,15;
-	monster "prtg_cas01.gat",112,182,"カーリッツバーグ",1132,10;
-	monster "prtg_cas01.gat",101,174,"深淵の騎士",1219,5;
-	monster "prtg_cas01.gat",85,193,"ブラッディナイト",1268,5;
-	monster "prtg_cas01.gat",146,100,"ストームナイト",1251,1;
-	monster "prtg_cas01.gat",156,66,"ハティー",1252,1;
-	monster "prtg_cas01.gat",75,53,"レイドリックアーチャー",1276,5;
-	monster "prtg_cas01.gat",64,53,"グリフォン",1259,4;
-	monster "prtg_cas01.gat",71,40,"アリス",1275,1;
-	monster "prtg_cas01.gat",66,28,"ジルタス",1200,1;
+	monster "prtg_cas01.gat",99,201,"--ja--",1163,15;
+	monster "prtg_cas01.gat",112,182,"--ja--",1132,10;
+	monster "prtg_cas01.gat",101,174,"--ja--",1219,5;
+	monster "prtg_cas01.gat",85,193,"--ja--",1268,5;
+	monster "prtg_cas01.gat",146,100,"--ja--",1251,1;
+	monster "prtg_cas01.gat",156,66,"--ja--",1252,1;
+	monster "prtg_cas01.gat",75,53,"--ja--",1276,5;
+	monster "prtg_cas01.gat",64,53,"--ja--",1259,4;
+	monster "prtg_cas01.gat",71,40,"--ja--",1275,1;
+	monster "prtg_cas01.gat",66,28,"--ja--",1200,1;
 //---ここまで本来ランダム沸き(monsterコマンドにて0,0を指定するとハング)
 //monster コマンドで0,0を指定すると本来話しかけたPCの座標に沸くので
 //OnInitすると沸く座標がなくてハングする
-	monster "prtg_cas01.gat",197,197,"ブラッディナイト",1268,1;
-	monster "prtg_cas01.gat",197,197,"ストームナイト",1251,1;
-	monster "prtg_cas01.gat",197,197,"ハティー",1252,1;
-	monster "prtg_cas01.gat",197,197,"深淵の騎士",1219,2;
-	monster "prtg_cas01.gat",197,197,"レイドリックアーチャー",1276,1;
-	monster "prtg_cas01.gat",197,197,"エンペリウム",1288,1,"mobdes";
-	monster "prtg_cas01.gat",107,179,"ナイトガーディアン",1286,1;
-	monster "prtg_cas01.gat",153,86,"ソルジャーガーディアン",1287,1;
-	monster "prtg_cas01.gat",182,68,"ソルジャーガーディアン",1287,1;
-	monster "prtg_cas01.gat",182,116,"ソルジャーガーディアン",1287,1;
-	monster "prtg_cas01.gat",184,183,"ナイトガーディアン",1286,1;
-	monster "prtg_cas01.gat",196,189,"ナイトガーディアン",1286,1;
-	monster "prtg_cas01.gat",50,36,"アーチャーガーディアン",1285,1;
-	monster "prtg_cas01.gat",59,28,"アーチャーガーディアン",1285,1;
+	monster "prtg_cas01.gat",197,197,"--ja--",1268,1;
+	monster "prtg_cas01.gat",197,197,"--ja--",1251,1;
+	monster "prtg_cas01.gat",197,197,"--ja--",1252,1;
+	monster "prtg_cas01.gat",197,197,"--ja--",1219,2;
+	monster "prtg_cas01.gat",197,197,"--ja--",1276,1;
+	monster "prtg_cas01.gat",197,197,"--ja--",1288,1,"mobdes";
+	monster "prtg_cas01.gat",107,179,"--ja--",1286,1;
+	monster "prtg_cas01.gat",153,86,"--ja--",1287,1;
+	monster "prtg_cas01.gat",182,68,"--ja--",1287,1;
+	monster "prtg_cas01.gat",182,116,"--ja--",1287,1;
+	monster "prtg_cas01.gat",184,183,"--ja--",1286,1;
+	monster "prtg_cas01.gat",196,189,"--ja--",1286,1;
+	monster "prtg_cas01.gat",50,36,"--ja--",1285,1;
+	monster "prtg_cas01.gat",59,28,"--ja--",1285,1;
 //disablenpc "カプラ職員";
 	end;
 L2:
-	monster "prtg_cas01.gat",197,197,"エンペリウム",1288,1,"mobdes";
+	monster "prtg_cas01.gat",197,197,"--ja--",1288,1,"mobdes";
 	set $mob_prt01,1;
 LEnd:
 	end;
@@ -67,9 +67,8 @@ prontera.gat,151,187,4	script	テストギルドフラッグ	722,{
 	if ($prtg01 == 1) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -81,15 +80,13 @@ prontera.gat,151,187,4	script	テストギルドフラッグ	722,{
 LStartg:
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Prontera";
+		mes "    this guild base isn't taken by";
 		mes "ギルド ^ff0000 " + getguildname($prtg01id) + " ^000000の";
 		mes "    base.";
 		mes " ";
-		mes "2.";
-		mes "^ff0000 " + getguildname($prtg01id) + " ^000000 のマスターは";
-		mes "^ff0000 GUILDMASTER ^000000である。";
+		mes "2. ^ff0000 " + getguildname($prtg01id) + " ^000000 のマスターは";
+		mes "    ^ff0000 GUILDMASTER ^000000である。";
 		mes "    have a beef, raise your sword to";
 		mes "    honor yourself.";
 		close;

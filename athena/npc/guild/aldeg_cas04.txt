@@ -572,7 +572,7 @@ L4:
 L7:
 	mes "[Kafra Service]";
 	mes "Kafra Service always trying to offer best service for you.";
-	mes "Thank you for using our service.";";
+	mes "Thank you for using our service.";
 L_EXIT:
 	cutin "kafra_01",255;
 	close;
@@ -588,7 +588,7 @@ LStartg:
 	close;
 }
 //-----------------------------Switch-------------------------------
-aldeg_cas04.gat,79,15,0	script	 	111,{
+aldeg_cas04.gat,79,15,0	script	 Switch	111,{
 	mes " ";
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
@@ -599,7 +599,7 @@ L2:
 	close;
 }
 //-----------------------------Switch 2------------------------------
-aldeg_cas04.gat,76,64,0	script	 	111,{
+aldeg_cas04.gat,76,64,0	script	Switch 2	111,{
 	mes "[ Vibration of Man's Voice ]";
 	mes " ' Only brave man get to lead the guild base.. '";
 	next;

@@ -2,11 +2,10 @@
 //gefg_cas02         by kalen
 //===================================================================
 gef_fild13.gat,303,243,4	script	Flag	722,{
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -16,11 +15,10 @@ gef_fild13.gat,303,243,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -31,11 +29,10 @@ LStartg:
 		close;
 }
 gef_fild13.gat,312,243,4	script	Flag	722,{
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -45,11 +42,10 @@ gef_fild13.gat,312,243,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -61,11 +57,10 @@ LStartg:
 }
 gef_fild13.gat,290,243,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -75,11 +70,10 @@ gef_fild13.gat,290,243,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -91,11 +85,10 @@ LStartg:
 }
 gef_fild13.gat,324,243,4	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -105,11 +98,10 @@ gef_fild13.gat,324,243,4	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -121,11 +113,10 @@ LStartg:
 }
 gefg_cas02.gat,65,130,5	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -135,11 +126,10 @@ gefg_cas02.gat,65,130,5	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -151,11 +141,10 @@ LStartg:
 }
 gefg_cas02.gat,30,123,5	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -165,11 +154,10 @@ gefg_cas02.gat,30,123,5	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -181,11 +169,10 @@ LStartg:
 }
 gefg_cas02.gat,65,139,6	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -195,11 +182,10 @@ gefg_cas02.gat,65,139,6	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -211,11 +197,10 @@ LStartg:
 }
 gefg_cas02.gat,37,177,6	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -225,11 +210,10 @@ gefg_cas02.gat,37,177,6	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -241,11 +225,10 @@ LStartg:
 }
 gefg_cas02.gat,37,168,6	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -255,11 +238,10 @@ gefg_cas02.gat,37,168,6	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -271,11 +253,10 @@ LStartg:
 }
 gefg_cas02.gat,68,47,2	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -285,11 +266,10 @@ gefg_cas02.gat,68,47,2	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -301,11 +281,10 @@ LStartg:
 }
 gefg_cas02.gat,68,36,2	script	Flag	722,{
 //チェック
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    any guild yet.";
 		mes " ";
 		mes "2. In order to take this guild base,";
@@ -315,11 +294,10 @@ gefg_cas02.gat,68,36,2	script	Flag	722,{
 		mes "    take over the guild base.";
 		close;
 LStartg:
-		mes "       [ Kingdom of Albedaran ]";
+		mes "       [ Kingdom of Geffen ]";
 		mes " ";
-		mes "1.";
-		mes "こちらはルーンミッドガッツ王国に";
-		mes "よって";
+		mes "1. As Law of Geffen";
+		mes "    this guild base isn't taken by";
 		mes "    ^ff0000GUILDNAME^000000 guild's guild";
 		mes "    base.";
 		mes " ";
@@ -406,7 +384,7 @@ L4:
 L7:
 	mes "[Kafra Service]";
 	mes "Kafra Service always trying to offer best service for you.";
-	mes "Thank you for using our service.";";
+	mes "Thank you for using our service.";
 L_EXIT:
 	cutin "kafra_01",255;
 	close;
@@ -422,7 +400,7 @@ LStartg:
 	close;
 }
 //-----------------------------Switch-------------------------------
-gefg_cas02.gat,137,113,0	script	 	111,{
+gefg_cas02.gat,137,113,0	script	Switch	111,{
 	mes " ";
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
@@ -433,7 +411,7 @@ L2:
 	close;
 }
 //-----------------------------Switch 2------------------------------
-gefg_cas02.gat,167,40,0	script	 	111,{
+gefg_cas02.gat,167,40,0	script	Switch 2	111,{
 	mes "[ Vibration of Man's Voice ]";
 	mes " ' Only brave man get to lead the guild base.. '";
 	next;
