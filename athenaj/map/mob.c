@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.23 2004/02/10 04:28:59 rovert Exp $
+// $Id: mob.c,v 1.24 2004/02/10 21:35:27 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1588,7 +1588,7 @@ int mob_damage(struct block_list *src,struct mob_data *md,int damage,int type)
 			printf("mob_damage : BlockError!!\n");
 		return 0;
 	}
-	if(src->type==BL_PC && md->first_attacked_id<=0)
+	if(src && src->type==BL_PC && md->first_attacked_id<=0)
 		md->first_attacked_id = sd->bl.id;
 
 	if(md->state.state==MS_DEAD || md->hp<=0) {
