@@ -1,5 +1,6 @@
 //Pick Stone
-morocc.gat,165,124,4    script	Rocko-san	722,{
+morocc.gat,165,124,4    script	Rocko-san	82,{
+
 		if (getskilllv(151)>0) goto LstartTwice;
 		if (((countitem(912)>=1) && (countitem(948)>=1) && (countitem(908)>=5))) goto L3;
 		if ((Class == Job_Thief) && (JobLevel < 20)) goto LStartLowlv;

@@ -1,5 +1,6 @@
 //Back Slide
-morocc.gat,165,124,4    script	Moo-san	719,{
+morocc.gat,165,124,4    script	Moo-san	102,{
+
 		if (getskilllv(150)>0) goto LstartTwice;
 		if ((Class == Job_Thief) && (JobLevel < 35)) goto LStartLowlv;
 		if (!((Class == Job_Theif) || (Class == Job_Rouge) || (Class == Job_Assassin))) goto LStartOther;

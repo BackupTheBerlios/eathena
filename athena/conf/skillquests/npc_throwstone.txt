@@ -1,5 +1,5 @@
 //Throw Stone
-morocc.gat,165,124,4	Script	Sono-san	721,{
+morocc.gat,165,124,4	Script	Sono-san	60,{
 		if (getskilllv(152)>0) goto LstartTwice;
 		if (((countitem(910)>=2) && (countitem(911)>=2))) goto L3;
 		if ((Class == 6) && (JobLevel < 15)) goto LStartLowlv;
