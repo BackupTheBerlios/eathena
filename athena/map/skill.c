@@ -3194,8 +3194,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 				range=-1;	/* 中心じゃない場合は範囲を-1にオーバーライド */
 			break;
 		}
-		if(alive && !((c=read_gat(src->m,ux,uy))==1 || c==5) ){
-			unit=skill_initunit(group,i,ux,uy);
+		if(alive && !((c=read_gat(src->m,ux,uy))==1 || (c==5 && skillid!=WZ_ICEWALL)) ){			unit=skill_initunit(group,i,ux,uy);
 			unit->val1=val1;
 			unit->val2=val2;
 			unit->limit=limit;
