@@ -1,6 +1,6 @@
 //Payon City for Athena by Script&DB Team 
 
-payg_cas01.gat,287,5,0 script	Switch	111,{
+payg_cas01.gat,287,5,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -11,7 +11,7 @@ L2:
   close;
 }
 
-payg_cas01.gat,101,25,0 script	Switch	111,{
+payg_cas01.gat,101,25,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -22,7 +22,7 @@ L2:
 close;
 }
 
-payg_cas02.gat,141,141,0 script	Switch	111,{
+payg_cas02.gat,141,141,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -33,7 +33,7 @@ L2:
   close;
 }
 
-payg_cas02.gat,278,247,0 script	Switch	111,{
+payg_cas02.gat,278,247,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -45,7 +45,7 @@ close;
 }
 
 
-payg_cas03.gat,155,165,0 script	Switch	111,{
+payg_cas03.gat,155,165,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -56,7 +56,7 @@ L2:
   close;
 }
 
-payg_cas03.gat,38,42,0 script	Switch	111,{
+payg_cas03.gat,38,42,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -68,7 +68,7 @@ close;
 }
 
 
-payg_cas04.gat,143,45,0 script	Switch	111,{
+payg_cas04.gat,143,45,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -79,7 +79,7 @@ L2:
   close;
 }
 
-payg_cas04.gat,52,48,0 script	Switch	111,{
+payg_cas04.gat,52,48,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -91,7 +91,7 @@ close;
 }
 
 
-payg_cas05.gat,153,129,0 script	Switch	111,{
+payg_cas05.gat,153,129,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -102,7 +102,7 @@ L2:
   close;
 }
 
-payg_cas05.gat,248,14,0 script	Switch	111,{
+payg_cas05.gat,248,14,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -113,7 +113,7 @@ L2:
 close;
 }
 
-prtg_cas01.gat,15,208,0 script	Switch	111,{
+prtg_cas01.gat,15,208,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -124,7 +124,7 @@ L2:
 close;
 }
 
-prtg_cas01.gat,94,200,0 script	Switch	111,{
+prtg_cas01.gat,94,200,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -135,7 +135,7 @@ L2:
 close;
 }
 
-prtg_cas02.gat,206,228,0 script	Switch	111,{
+prtg_cas02.gat,206,228,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -146,7 +146,7 @@ L2:
 close;
 }
 
-prtg_cas02.gat,84,72,0 script	Switch	111,{
+prtg_cas02.gat,84,72,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -157,7 +157,7 @@ L2:
 close;
 }
 
-prtg_cas03.gat,192,134,0 script	Switch	111,{
+prtg_cas03.gat,192,134,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -168,7 +168,7 @@ L2:
 close;
 }
 
-prtg_cas03.gat,5,70,0 script	Switch	111,{
+prtg_cas03.gat,5,70,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -179,7 +179,7 @@ L2:
 close;
 }
 
-prtg_cas04.gat,274,160,0 script	Switch	111,{
+prtg_cas04.gat,274,160,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -190,7 +190,7 @@ L2:
 close;
 }
 
-prtg_cas04.gat,56,283,0 script	Switch	111,{
+prtg_cas04.gat,56,283,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -201,7 +201,7 @@ L2:
 close;
 }
 
-prtg_cas05.gat,280,177,0 script	Switch	111,{
+prtg_cas05.gat,280,177,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -212,7 +212,7 @@ L2:
 close;
 }
 
-prtg_cas05.gat,212,95,0 script	Switch	111,{
+prtg_cas05.gat,212,95,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -223,7 +223,7 @@ L2:
 close;
 }
 
-aldeg_cas01.gat,123,223,0 script	Switch	111,{
+aldeg_cas01.gat,123,223,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -234,7 +234,7 @@ L2:
   close;
 }
 
-aldeg_cas01.gat,123,233,0 script	Switch	111,{
+aldeg_cas01.gat,123,233,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -245,7 +245,7 @@ L2:
 close;
 }
 
-aldeg_cas02.gat,139,234,0 script	Switch	111,{
+aldeg_cas02.gat,139,234,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -256,7 +256,7 @@ L2:
   close;
 }
 
-aldeg_cas02.gat,194,236,0 script	Switch	111,{
+aldeg_cas02.gat,194,236,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -267,7 +267,7 @@ L2:
 close;
 }
 
-aldeg_cas03.gat,219,259,0 script	Switch	111,{
+aldeg_cas03.gat,219,259,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -278,7 +278,7 @@ L2:
   close;
 }
 
-aldeg_cas03.gat,200,177,0 script	Switch	111,{
+aldeg_cas03.gat,200,177,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -289,7 +289,7 @@ L2:
 close;
 }
 
-aldeg_cas04.gat,79,15,0 script	Switch	111,{
+aldeg_cas04.gat,79,15,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -300,7 +300,7 @@ L2:
   close;
 }
 
-aldeg_cas04.gat,76,64,0 script	Switch	111,{
+aldeg_cas04.gat,76,64,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -311,7 +311,7 @@ L2:
 close;
 }
 
-aldeg_cas05.gat,68,13,0 script	Switch	111,{
+aldeg_cas05.gat,68,13,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -322,7 +322,7 @@ L2:
   close;
 }
 
-aldeg_cas05.gat,22,205,0 script	Switch	111,{
+aldeg_cas05.gat,22,205,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -333,7 +333,7 @@ L2:
 close;
 }
 
-gefg_cas01.gat,151,109,0 script	Switch	111,{
+gefg_cas01.gat,151,109,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -344,7 +344,7 @@ L2:
 close;
 }
 
-gefg_cas01.gat,78,84,0 script	Switch	111,{
+gefg_cas01.gat,78,84,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -355,7 +355,7 @@ L2:
 close;
 }
 
-gefg_cas02.gat,137,113,0 script	Switch	111,{
+gefg_cas02.gat,137,113,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -366,7 +366,7 @@ L2:
 close;
 }
 
-gefg_cas02.gat,167,40,0 script	Switch	111,{
+gefg_cas02.gat,167,40,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -377,7 +377,7 @@ L2:
 close;
 }
 
-gefg_cas03.gat,267,287,0 script	Switch	111,{
+gefg_cas03.gat,267,287,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -388,7 +388,7 @@ L2:
 close;
 }
 
-gefg_cas03.gat,221,43,0 script	Switch	111,{
+gefg_cas03.gat,221,43,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -399,7 +399,7 @@ L2:
 close;
 }
 
-gefg_cas04.gat,113,115,0 script	Switch	111,{
+gefg_cas04.gat,113,115,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -410,7 +410,7 @@ L2:
 close;
 }
 
-gefg_cas04.gat,58,75,0 script	Switch	111,{
+gefg_cas04.gat,58,75,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -421,7 +421,7 @@ L2:
 close;
 }
 
-gefg_cas05.gat,141,187,0 script	Switch	111,{
+gefg_cas05.gat,141,187,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
@@ -432,7 +432,7 @@ L2:
 close;
 }
 
-gefg_cas05.gat,62,22,0 script	Switch	111,{
+gefg_cas05.gat,62,22,0	script	Switch	111,{
 mes " ";
 mes "There is a little switch here. Would you like to pull the switch down?";
 next;
