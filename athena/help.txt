@@ -1,127 +1,176 @@
-At inside the message window following to the following prescribed
-form, to input, the Enter depression.
+GM Commands Help File
+By Akaru
+-----------------------
+To use these commands, type them inside the message window where you usually type to chat.
 
-@GM ---- it becomes GM! To pass through all ??? of the same dirt from PT, the warehouse please makes the sky.
-@die ---- suicide
-@kill <char name> - Killes specified character
-@alive - Revives yourself from death
-@save - Sets respawn point to current spot
-@load - Warps you to your save point
-@warp <mapname> <xpos> <ypos> - Warps you to the selected position
-	@rura morocc 150 160
-@charwarp <mapname> <x> <y> <char name> - Warps character to location of choice
-	@charwarp morocc 150 160 testet
- 
-@jump - Randomly warps you like a flywing.
-@jumpto <char name> - Warps you to selected character
-@go <number> - Warps you to a city.
-    0: prontera   6: aldebaran
-    1: morocc     7: xmas
-    2: geffen     8: comodo
-    3: payon      9: yuno
-    4: aplerta   10: amatsu
-    5: izlude    11: gonryun
+<ANNOUNCEMENT COMMANDS>
 
-@jobchange <job ID> - Changes your job
-   0 Novice        7 Knight        14 Crusader    22 Formal
-   1 Swordman      8 Priest        15 Monk        23 Super Novice
-   2 Mage          9 Wizard        16 Sage
-   3 Archer       10 Blacksmith    17 Rogue
-   4 Acolyte      11 Hunter        18 Alchem
-   5 Merchant     12 Assassin      19 Bard
-   6 Thief        13 Knight2       20 Dancer
-                                   21 Crusader2
+/nb <message>
+@kami <message>
+Lets you make a GM global announcement without a name
 
-@option <param1> <param2> <param3> - Adds different visual effects on or around your character
-	@option 0 0 16 - would give falcon
-	<param1>			<param2>	   <param3>
-	01 petrification?		01 poison	   01 sight or ruwach?
-	02 frozen with frostdiver?	02 back spirit	   02 hiding?
-	03 ???				04 silence state   04 cloaking
-	04 sleep			16 darkness	   08 cart attachment
-	06 darkness(you can still walk)			   16 Falcon
-							   32 Peco Peco riding
-							   64 hidden
- 
-@who - Display a listin of who is online and where
-@where <char name> - Tells you the location of a character
+/b <message>
+Lets you make a GM global announcement with your name
 
-@hide - Makes you character invisible. Do command "@option 00 00 00" to become visible again
+<INFORMATION COMMANDS>
+
+@who
+Lists who is currently online in your server and their location
+
+@where <char name>
+Tells you the location of a character
+
+<CONTROL COMMANDS>
+
+@die
+Kill yourself :)
+
+@alive
+Revive yourself from death
+
+@kill <char name>
+Kills specified character name
+Example:
+@kill TestChar -> The character named TestChar is dead
+
+@save
+Sets save point as current location
+
+@load
+Warps you to your save point (a.k.a. butterfly wing)
+
+@warp <map name> <x> <y>
+@rura <map name> <x> <y>
+/mm <map name> <x> <y>
+/mapmove <map name> <x> <y>
+Warps you to the selected position
+Example:
+@warp morocc 150 160 -> Warps you to Morroc (X:150, Y:160)
+@rura prontera 50 80 -> Warps you to Prontera (X:50, Y:80)
+
+@jump
+Teleports you randomly in the map (a.k.a. fly wing)
+
+@jumpto <char name>
+Warps you to selected character
+Example:
+@jumpto TestChar -> You are warped to TestChar's current location
+
+@go <number>
+Warps you to a set city:
+	0: Prontera	6: Al de Baran	12: Umbala
+	1: Morroc	7: Lutie
+	2: Geffen	8: Comodo
+	3: Payon	9: Yuno
+	4: Alberta	10: Amatsu
+	5: Izlude	11: Gon Ryun
+
+@hide
+GM Hide. Perfect hide that's totally invinsible.
+
 @heal <HP> <SP> - Heals the desired amount of HP and SP. No value specified will do a full heal.
 @storage - Opens storage
+
+@recall <char name> - Warps target character to you.
+@revive <char name> - Revives target character.
+
+<SPAWNING COMMANDS>
+
 @item <item name or ID> <quantity> - Gives you the desired item.
-@speed <1-1000> - Changes you walking speed. 1 being the fastest and 1000 the slowest. Default 140
-@kami <message> - Broadcasts a GM message
+
+@monster <desired monster name> <actual monster name or monster ID> <number to spawn>
+@spawn <desired monster name> <actual monster name or monster ID> <number to spawn>
+	Spawns the desired monster with any desired name.
+
+<MAP OPTIONS COMMANDS>
 
 @pvpon - Turns pvp on on the current map
 @pvpoff - Turns pvp off on the current map
 @gvgon - Turns gvg on on the current map
-
 @gvgoff -  Turns gvg off on the current map
 
-
+<CHARACTER CONTROL COMMANDS>
 @baselvlup <number of levels> - Raises your base level the desired number of levels. The max is 99
 @joblvlup <number of levels> - Raises your job level the desired number of levels. The max is 50
 
-@model <hair ID> <hair color> <clothes color> - Changes your characters appearence.
-	@model 15 4 0
-	    hair ID [0~17]
-	    hair color [0~8]
-	    clothes color [0~4]
- 
-@monster <desired monster name> <actual monster name or monster ID> <number to spawn>
-	Spawns the desired monster with any desired name.
- 
-@refine <equip position> <+ ammount>
 
-@produce <equip name or equip ID> <element> <# of very's>
-	Element: 0=None 1=Ice 2=Earth 3=Fire 4=Wind
-	It has separately with fragment 3 of the attribute + stars, you can apply.
+@jobchange <job ID>
+Changes your job to the job assigned to the ID
+	0: Novice	7: Knight	14: Crusader	21: Crusader2
+	1: Swordsman	8: Priest	15: Monk	22: Wedding
+	2: Mage		9: Wizard	16: Sage	23: Super Novice
+	3: Archer	10: Blacksmith	17: Rogue
+	4: Acolyte	11: Hunter	18: Alchemist
+	5: Merchant	12: Assassin	19: Bard
+	6: Thief	13: Knight2	20: Dancer
+					
 
-@stpoint <number of points> - Gives you the desired number of stat points.
-@skpoint <number of points> - Gives you the desired number of skill points.
-@zeny <amount> - Gives you desired amount of Zeny.
-@str,@agi,@vit,@int,@dex,@luk <amount> - Adds desired amount to any stat. For example "@str 10" raises your str by 10
+@option <param1> <param2> <param3>
+Changes options for your character
+	<param1>		<param2> (Stackable)	<param3> (Stackable)
+	01 Petrified		01 Poison		01 Sight
+	02 Frozen		02 Cursed		02 Hide
+	03 Stunned		04 Silenced		04 Cloak
+	04 Sleeping		08 ???			08 Level 1 Cart
+	06 ???			16 Darkness		16 Falcon
+							32 Peco Peco/Grand Peco
+							64 GM Perfect Hide
+							128 Level 2 Cart
+							256 Level 3 Cart
+							512 Level 4 Cart
+							1024 Level 5 Cart
+							2048 Orc Head
+							4096 Wedding Sprites
+							8192 Ruwach
 
-@guildlvlup <# of levels> - Raise Guild by desired number of levels
-@makepet <make pet> - Gives pet egg for monster number in pet DB
-@petfriendly <#> - Set pet friendly amount (0-1000) 1000 = Max
-@pethungry <#> - Set pet hungry amount (0-100) 100 = Max
-@petrename - Re-enable pet rename
+@speed <1-1000>
+Changes you walking speed.
+1(Fastest)<---140(Default)----------------->1000(Slowest)
 
-@recall <char name> - Warps target character to you.
-@revive <char name> - Revives target character.
-@charstats <charname> - Displays a characters stats.
-@charoption <param1> <param2> <param3> <charname> - Does the same as the @option command only to target character.
-@charsave <map> <x> <y> <charname> - Changes the target players respawn point.
-@charbaselvl <#> <nickname> - Change a characters base level.
-@charjlvl <#> <nickname> - Change a characters job level.
-@charjob <job ID> <char name> - Changes target characters job.
-@charzeny <amount> <name> - Give/take a players Zeny
-@charstpoint <ammount> <name> - Give/take a players stat points
-@charskpoint <ammount> <name> - give/take a players skill points
-@charmodel <hair type> <hair color> <clothes color> <name>
-@charstats - Displays stats of a character
-@charoption x y z <name> - same as option
-@charsave - Saves a characters current status
+@model <hair ID> <hair color> <clothes color>
+Changes your characters appearance (Hair type, Hair Colour and/or Clothes Colour)
 
-@night - Uses @option 00 16 00 on all characters.
-@day - Uses @option 00 00 00 on all characters.
-@doom - Kills all NON GM chars on the server.
-@doommap - Kills all non GM characters on the map.
-@raise - Resurrects all characters on the server.
-@raisemap - Resurrects all characters on the map.
-@kick <charname>    ---- Kicks specified character off the server
-@kickall            ---- Kick all characters off the server
+	Hair ID (0-17)		Hair Colour (0-8)	Clothes Colour (0-4)
+				0 Default		0 Default
+				1 Blonde		1 Red
+				2 Purple		2 Green
+				3 Brown			3 White
+				4 Green			4 Brown
+				5 Blue
+				6 White
+				7 Black
+				8 Red
 
-@gat                ---- デバッグ用(周辺gatを調べる)
-@packet             ---- デバッグ用(パケット色々)
+@stpoint <number of points>
+Gives you the desired number of stat points.
 
-@spiritball <number>     ---- Number [1~1000]Gives you "spirit spheres" like from the skill "Call Spirits"
-				(If the number you use is > 1000, your server may become instable or crash)
+@skpoint <number of points>
+Gives you the desired number of skill points.
 
-@questskill スキル番号   ---- Gives you the specified quest skill
-@lostskill スキル番号    ---- Takes away the specified quest skill from you
+@zeny <amount>
+Gives you desired amount of Zeny.
+
+@str <amount>
+@agi <amount>
+@vit <amount>
+@int <amount>
+@dex <amount>
+@luk <amount>
+Adds desired amount to any stat. For example "@str 10" raises your str by 10
+
+@spiritball <number>
+Number = 1-1000
+Gives you monk "spirit spheres" like from the skill "Call Spirits"
+(If the number you use is > 1000, your server may become instable or crash)
+
+
+@questskill <id>
+Gives you the specified quest skill
+
+@lostskill <id>
+Takes away the specified quest skill from you
+
+Quest Skill ID:
   Swordsman
   144 = Moving HP Recovery
   145 = Attack Weak Point
@@ -142,4 +191,105 @@ form, to input, the Enter depression.
   150 = Back Sliding
   151 = Take Stone
   152 = Stone Throw
+ 
+<GUILD CONTROL COMMANDS>
 
+@guildlvlup <# of levels> - Raise Guild by desired number of levels
+
+<EQUIPMENT COMMANDS>
+
+@refine <position> <amount>
+Upgrades equipment at the position specified (Stackable)
+0 - All
+1 - Lower Head
+2 - Right Hand
+4 - Robe/Garment
+8 - Left Accessory
+16 - Body/Armor
+32 - Left Hand
+64 - Feet
+128 - Right Accessory
+256 - Top Head
+512 - Mid Head
+
+Example:
+@refine 34 10 - Refines a 2 handed weapon to +10
+@refine 16 4 - Refines the body/armor to +4
+
+@produce <equip name or equip ID> <element> <# of very's>
+Element: 0=None 1=Ice 2=Earth 3=Fire 4=Wind
+# of very's: 0=None 1=Very Strong 2=Very Very Strong 3=Very Very Very Strong
+
+Example: @produce 1163 3 3 - Produces a Very Very Very Strong (Your Nick)'s Fire Claymore
+
+<Q-PET/cutePET COMMANDS>
+@makepet <ID> - Gives pet egg for monster ID in pet DB
+@petfriendly <#> - Set pet friendly amount (0-1000) 0 = Min, 1000 = Max
+@pethungry <#> - Set pet hungry amount (0-100) 0 = Min, 100 = Max
+@petrename - Re-enable pet rename
+
+<REMOTE CHAR COMMANDS>
+@charwarp <map name> <x> <y> <char name>
+Warps character to location of choice
+Example:
+@charwarp morocc 150 160 TestChar -> Warps TestChar to Morroc (X:150, Y:160)
+
+@charstats <char name>
+Displays the character's stats.
+
+@charoption <param1> <param2> <param3> <char name>
+Does the same as the @option command only to target character.
+
+@charsave <map> <x> <y> <char name>
+Changes the target player's respawn point.
+
+@charbaselvl <#> <char name>
+Change a character's base level.
+
+@charjlvl <#> <char name>
+Change a character's job level.
+
+@charjob <job ID> <char name>
+Changes target character's job.
+
+@charzeny <amount> <char name>
+Give/take a player's Zeny
+
+@charstpoint <amount> <char name>
+Give/take a player's stat points
+
+@charskpoint <amount> <char name>
+give/take a player's skill points
+
+@charmodel <hair type> <hair color> <clothes color> <char name>
+Changes a player's model
+
+<MASS CONTROL COMMANDS>
+@night
+All characters are in darkness
+
+@day
+@option 00 00 00 are used on all characters
+
+@doom
+Kills all NON GM chars on the server.
+
+@doommap
+Kills all non GM characters on the map.
+
+@raise
+Resurrects all characters on the server.
+
+@raisemap
+Resurrects all characters on the map.
+
+@kick <charname>
+Kicks specified character off the server
+
+@kickall
+Kick all characters off the server
+
+<OTHER COMMANDS>
+
+@gat                ---- デバッグ用(周辺gatを調べる)
+@packet             ---- デバッグ用(パケット色々)
