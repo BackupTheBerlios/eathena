@@ -305,7 +305,7 @@
 1552,Tablet,2,27,8,16
 1553,Book_of_Billows,2,27,8,16
 1554,Book_of_Mother_Earth,2,27,8,16
-1555,Book_of_Blazing_Sun,2,278,16
+1555,Book_of_Blazing_Sun,2,27,8,16
 1556,Book_of_Gust_of_Wind,2,27,8,16
 1557,Book_of_the_Apocalypse,2,40,8,16
 1558,Girl's_Diary,2,40,8,16
