@@ -320,13 +320,6 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		sc_def_mdef=100-mob_db[md->class].mdef;
 		sc_def_vit=100-(mob_db[md->class].vit+mob_db[md->class].luk/3);
 		sc_def_int=100-(mob_db[md->class].int_+mob_db[md->class].luk/3);
-		if(sc_def_mdef<50)
-			sc_def_mdef=50;
-		if(sc_def_vit<50)
-			sc_def_vit=50;
-		if(sc_def_int<50)
-			sc_def_int=50;
-
 	}
 	if(sc_def_mdef<0)
 		sc_def_mdef=0;
@@ -376,6 +369,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	case MG_FROSTDIVER:		/* フロストダイバー */
 	case WZ_FROSTNOVA:		/* フロストノヴァ */
+	case WZ_STORMGUST:		/* ストームガスト */
 	case HT_FREEZINGTRAP:	/* フリージングトラップ */
 	case BA_FROSTJOKE:		/* 寒いジョーク */
 /*
@@ -385,12 +379,6 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		rate=skilllv*3+35;
 		if(battle_get_elem_type(bl)!=9 && rand()%100 < rate*sc_def_mdef/100)
 			skill_status_change_start(bl,SC_FREEZE,skilllv,0);
-		break;
-
-	case WZ_STORMGUST:		/* ストームガスト */
-		rate=skilllv*3+35;
-		if(battle_get_elem_type(bl)!=9 && rand()%100 < rate*sc_def_mdef/100)
-			skill_status_change_start(bl,SC_FREEZE,skilllv,10000);/* SG用凍結 */
 		break;
 
 	case HT_LANDMINE:		/* ランドマイン */
@@ -946,6 +934,7 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		return 0;
 	if(bl->type == BL_PC && pc_isdead((struct map_session_data *)bl))
 		return 0;
+
 	switch(skillid)
 	{
 	/* 武器攻撃系スキル */
@@ -1300,8 +1289,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	else if(bl->type==BL_MOB){
 		dstmd=(struct mob_data *)bl;
 		sc_def_vit=100-(mob_db[dstmd->class].vit+mob_db[dstmd->class].luk/3);
-		if(sc_def_vit<50)
-			sc_def_vit=50;
 	}
 	if(sc_def_vit<0)
 		sc_def_vit=0;
@@ -3185,7 +3172,6 @@ int skill_check_condition( struct map_session_data *sd )
 			break;
 
 		case MC_VENDING:		// 露店開設	
-		case MC_CARTREVOLUTION:		// カートレボリューション
 			if(!pc_iscarton(sd)) {
 				clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
@@ -4089,9 +4075,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2)
 		battle_stopwalking(bl,1);
 
 	if(sc_data[type].timer != -1){	/* すでに同じ異常になっている場合タイマ解除 */
-		if(type==SC_STAN || type==SC_POISON || type==SC_BLIND || type==SC_SILENCE){
-			return 0;/* 継ぎ足しができない状態異常である時は状態異常を行わない */
-			}
 		(*sc_count)--;
 		delete_timer(sc_data[type].timer, skill_status_change_timer);
 		sc_data[type].timer = -1;
@@ -4832,6 +4815,7 @@ int skill_unit_timer_sub_ondelete( struct block_list *bl, va_list ap )
 	return 0;
 }
 
+static int del_count = 0;
 /*==========================================
  * スキルユニットタイマー処理用(foreachobject)
  *------------------------------------------
@@ -4864,8 +4848,8 @@ int skill_unit_timer_sub( struct block_list *bl, va_list ap )
 	}
 	if(group->unit_id == 0x8d) {
 		unit->val1 -= 5;
-		if(unit->val1 <= 0 && unit->limit + group->tick > tick + 500)
-			unit->limit = DIFF_TICK(tick+500,group->tick);
+		if(unit->val1 <= 0 && del_count == 0)
+			skill_delunit(unit);
 	}
 
 	return 0;
@@ -4882,6 +4866,8 @@ int skill_unit_timer( int tid,unsigned int tick,int id,int data)
 	map_foreachobject( skill_unit_timer_sub, BL_SKILL, tick );
 
 	map_freeblock_unlock();
+	del_count++;
+	del_count%=5;
 
 	return 0;
 }
