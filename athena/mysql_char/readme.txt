@@ -1,18 +1,14 @@
 ﻿//Encoded with UTF-8 (UNICODE)
 //---------------------------------------------
-// v.015 - by Aarlex
-This version support Wan client connect Lan server
-added lan_support.conf.
-if you don't want to enable Lan support.
-you can set subnetmask:0.0.0.0
-Lan IP check will pass.
-1. add lan_support.conf
-2. add login_lan_config_read().
-3. add lan_ip_check().
-4. modify parse_char().
-	WFIFOL(fd, 22) =server[i].ip; -> if(lan_ip_check(p)) WFIFOL(fd, 22)=inet_addr(lan_map_ip);
-                                         else WFIFOL(fd, 22) =server[i].ip;
+// V.017 - Aarlex
+1. fix guild member view job update.(For mod-0728)
+   inter.c
+   int_guild.c
 
+// V.016 - by Aarlex
+1. Add e-mail check when you Delete char data.
+2. modify storage save func like 014.
+2. remove Lan_support func.
 
 // v.014 - by Aarlex
 I rewrite save function.

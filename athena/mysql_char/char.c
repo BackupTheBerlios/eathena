@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.1 2004/01/09 03:00:19 rovert Exp $
+// $Id: char.c,v 1.2 2004/01/25 16:45:36 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 //
 // original code from athena
@@ -186,7 +186,6 @@ int mmo_char_tosql(int char_id, struct mmo_charstatus *p){
 	
 	
 	//sql query
-	mysql_query(&mysql_handle,"LOCK TABLES a WRITE;");
 	//`char`( `char_id`,`account_id`,`char_num`,`name`,`class`,`base_level`,`job_level`,`base_exp`,`job_exp`,`zeny`, //9
 	//`str`,`agi`,`vit`,`int`,`dex`,`luk`, //15
 	//`max_hp`,`hp`,`max_sp`,`sp`,`status_point`,`skill_point`, //21
@@ -266,7 +265,6 @@ int mmo_char_tosql(int char_id, struct mmo_charstatus *p){
 			}
 		}
 	}
-	mysql_query(&mysql_handle,"UNLOCK TABLES;");
 	printf("saving char is done... (%d)\n",char_id);
 	save_flag = 0;
 	
@@ -294,13 +292,17 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 			sprintf(tablename,"cart_inventory");
 			sprintf(selectoption,"char_id");
 			break;
+		case TABLE_STORAGE:
+			sprintf(tablename,"storage");
+			sprintf(selectoption,"account_id");
+			break;
 	}
 	//printf("Working Table : %s \n",tablename);
 	
 	//=======================================mysql database data > memory===============================================	
 	
 	sprintf (tmp_sql, "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `card0`, `card1`, `card2`, `card3` "
-		"FROM `%s` WHERE `char_id`='%d'",tablename ,char_id);
+		"FROM `%s` WHERE `%s`='%d'",tablename ,selectoption ,char_id);
 	if(mysql_query(&cmysql_handle, tmp_sql) ) {
 		printf("DB server Error (select `%s` to Memory)- %s\n",tablename ,mysql_error(&cmysql_handle) );
 	}
@@ -342,7 +344,8 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 	}
 	//==============================================Memory data > SQL ===============================
 		//======================================Equip ITEM=======================================
-	if((eqcount==1) && (dbeqcount==1)){printf("%s Equip Empty\n",tablename);}//item empty
+	if((eqcount==1) && (dbeqcount==1)){//printf("%s Equip Empty\n",tablename);
+	}//item empty
 	else{
 	
 	for(i=1;i<eqcount;i++){
@@ -364,7 +367,7 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 						tablename, mapitem.equip[i].equip, mapitem.equip[i].identify, mapitem.equip[i].refine,mapitem.equip[i].attribute, mapitem.equip[i].card[0],
 						mapitem.equip[i].card[1], mapitem.equip[i].card[2], mapitem.equip[i].card[3], selectoption, char_id, dbitem.equip[j].nameid, dbitem.equip[j].equip, dbitem.equip[j].identify,
 						dbitem.equip[j].refine,dbitem.equip[j].attribute, dbitem.equip[j].card[0], dbitem.equip[j].card[1], dbitem.equip[j].card[2], dbitem.equip[j].card[3]);
-						printf("%s\n",tmp_sql);
+						//printf("%s\n",tmp_sql);
 						if(mysql_query(&cmysql_handle, tmp_sql) )
 							printf("DB server Error (UPdate `equ %s`)- %s\n", tablename, mysql_error(&cmysql_handle) );						
 						mapitem.equip[i].flag=1;
@@ -381,7 +384,7 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 			sprintf(tmp_sql,"DELETE from `%s` where `%s`='%d' AND `nameid`='%d' AND `equip`='%d' AND `identify`='%d' AND `refine`='%d' AND `attribute`='%d' AND "
 			"`card0`='%d' AND `card1`='%d' AND `card2`='%d' AND `card3`='%d'\n",tablename , selectoption, char_id, dbitem.equip[i].nameid, dbitem.equip[i].equip, dbitem.equip[i].identify,dbitem.equip[i].refine, 
 			dbitem.equip[i].attribute, dbitem.equip[i].card[0], dbitem.equip[i].card[1], dbitem.equip[i].card[2], dbitem.equip[i].card[3]);
-			printf("%s", tmp_sql);
+			//printf("%s", tmp_sql);
 			if(mysql_query(&cmysql_handle, tmp_sql) )
 				printf("DB server Error (DELETE `equ %s`)- %s\n", tablename ,mysql_error(&cmysql_handle) );
 		}
@@ -392,7 +395,7 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 			" VALUES ('%d', '%d','%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d')\n",
 			tablename, selectoption, mapitem.equip[i].id, char_id, mapitem.equip[i].nameid, mapitem.equip[i].amount, mapitem.equip[i].equip, mapitem.equip[i].identify, mapitem.equip[i].refine,
 			mapitem.equip[i].attribute, mapitem.equip[i].card[0], mapitem.equip[i].card[1], mapitem.equip[i].card[2], mapitem.equip[i].card[3]);
-			printf("%s", tmp_sql);
+			//printf("%s", tmp_sql);
 			if(mysql_query(&cmysql_handle, tmp_sql) )
 				printf("DB server Error (INSERT `equ %s`)- %s\n",tablename ,mysql_error(&cmysql_handle) );
 		}
@@ -401,29 +404,31 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 
 	//======================================DEBUG=================================================
 	
-	gettimeofday(&tv,NULL);
-	strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
-	printf("\n\n");
-	printf("Working Table Name : EQU %s,  Count : map %3d | db %3d \n",tablename ,eqcount ,dbeqcount);
-	printf("*********************************************************************************\n");
-	printf("======================================MAP===================Char ID %10d===\n",char_id);
-	printf("==flag ===name ===equip===ident===amoun===attri===card0===card1===card2===card3==\n");
-	for(j=1;j<eqcount;j++)
-		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", mapitem.equip[j].flag,mapitem.equip[j].nameid, mapitem.equip[j].equip, mapitem.equip[j].identify, mapitem.equip[j].refine,mapitem.equip[j].attribute, mapitem.equip[j].card[0], mapitem.equip[j].card[1], mapitem.equip[j].card[2], mapitem.equip[j].card[3]);
-	printf("======================================DB=========================================\n");
-	printf("==flag ===name ===equip===ident===refin===attri===card0===card1===card2===card3==\n");
-	for(j=1;j<dbeqcount;j++)
- 		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", dbitem.equip[j].flag ,dbitem.equip[j].nameid, dbitem.equip[j].equip, dbitem.equip[j].identify, dbitem.equip[j].amount,dbitem.equip[j].attribute, dbitem.equip[j].card[0], dbitem.equip[j].card[1], dbitem.equip[j].card[2], dbitem.equip[j].card[3]);
- 	printf("=================================================================================\n");
-	printf("=================================================Data Time %s===\n", tmpstr);
-	printf("=================================================================================\n");
+//	gettimeofday(&tv,NULL);
+//	strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
+//	printf("\n\n");
+//	printf("Working Table Name : EQU %s,  Count : map %3d | db %3d \n",tablename ,eqcount ,dbeqcount);
+//	printf("*********************************************************************************\n");
+//	printf("======================================MAP===================Char ID %10d===\n",char_id);
+//	printf("==flag ===name ===equip===ident===amoun===attri===card0===card1===card2===card3==\n");
+//	for(j=1;j<eqcount;j++)
+//		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", mapitem.equip[j].flag,mapitem.equip[j].nameid, mapitem.equip[j].equip, mapitem.equip[j].identify, mapitem.equip[j].refine,mapitem.equip[j].attribute, mapitem.equip[j].card[0], mapitem.equip[j].card[1], mapitem.equip[j].card[2], mapitem.equip[j].card[3]);
+//	printf("======================================DB=========================================\n");
+//	printf("==flag ===name ===equip===ident===refin===attri===card0===card1===card2===card3==\n");
+//	for(j=1;j<dbeqcount;j++)
+ //		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", dbitem.equip[j].flag ,dbitem.equip[j].nameid, dbitem.equip[j].equip, dbitem.equip[j].identify, dbitem.equip[j].amount,dbitem.equip[j].attribute, dbitem.equip[j].card[0], dbitem.equip[j].card[1], dbitem.equip[j].card[2], dbitem.equip[j].card[3]);
+ //	printf("=================================================================================\n");
+//	printf("=================================================Data Time %s===\n", tmpstr);
+//	printf("=================================================================================\n");
 	
 	}
 	
 	//======================================DEBUG==================================================
 	
 		//=============================Not Equip ITEM==========================================
-	if((noteqcount==1) && (dbnoteqcount==1)){printf("%s Not Equip Empty\n",tablename);}//item empty
+	if((noteqcount==1) && (dbnoteqcount==1)){
+		//printf("%s Not Equip Empty\n",tablename);
+	}//item empty
 	else{
 		
 	for(i=1;i<noteqcount;i++){
@@ -442,7 +447,7 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 						"`attribute`='%d' WHERE `%s`='%d' AND `nameid`='%d'\n",
 						tablename, mapitem.notequip[i].amount, mapitem.notequip[i].equip, mapitem.notequip[i].identify, mapitem.notequip[i].attribute,
 						selectoption, char_id, mapitem.notequip[i].nameid);
-						printf("%s",tmp_sql);
+						//printf("%s",tmp_sql);
 						if(mysql_query(&cmysql_handle, tmp_sql) )
 							printf("DB server Error (UPdate `notequ %s`)- %s\n",tablename ,mysql_error(&cmysql_handle) );
 						
@@ -458,7 +463,7 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 			sprintf(tmp_sql,"DELETE from `%s` where `%s`='%d' AND `nameid`='%d' AND `equip`='%d' AND `identify`='%d' AND `refine`='%d' AND `attribute`='%d' AND "
 			"`card0`='%d' AND `card1`='%d' AND `card2`='%d' AND `card3`='%d'\n", tablename, selectoption, char_id, dbitem.notequip[i].nameid, dbitem.notequip[i].equip, dbitem.notequip[i].identify,dbitem.notequip[i].refine, 
 			dbitem.notequip[i].attribute, dbitem.notequip[i].card[0], dbitem.notequip[i].card[1], dbitem.notequip[i].card[2], dbitem.notequip[i].card[3]);
-			printf("%s", tmp_sql);
+			//printf("%s", tmp_sql);
 			if(mysql_query(&cmysql_handle, tmp_sql) )
 				printf("DB server Error (DELETE `notequ %s`)- %s\n", tablename ,mysql_error(&cmysql_handle) );
 		}
@@ -469,7 +474,7 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 			" VALUES ('%d', '%d','%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d')\n",
 			tablename ,selectoption ,mapitem.notequip[i].id, char_id, mapitem.notequip[i].nameid, mapitem.notequip[i].amount, mapitem.notequip[i].equip, mapitem.notequip[i].identify, mapitem.notequip[i].refine,
 			mapitem.notequip[i].attribute, mapitem.notequip[i].card[0], mapitem.notequip[i].card[1], mapitem.notequip[i].card[2], mapitem.notequip[i].card[3]);
-			printf("%s", tmp_sql);
+			//printf("%s", tmp_sql);
 			if(mysql_query(&cmysql_handle, tmp_sql) )
 				printf("DB server Error (INSERT `notequ %s`)- %s\n", tablename, mysql_error(&cmysql_handle) );
 		}
@@ -477,23 +482,23 @@ int memitemdata_to_sql(struct itemtemp mapitem, int eqcount, int noteqcount, int
 	
 	//======================================DEBUG=================================================
 	
-	gettimeofday(&tv,NULL);
-	strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
-	printf("\n\n");
-	printf("Working Table Name : Not EQU %s,  Count : map %3d | db %3d \n",tablename ,noteqcount ,dbnoteqcount);
-	printf("*********************************************************************************\n");
-	printf("======================================MAP===================Char ID %10d===\n",char_id);
-	printf("==flag ===name ===equip===ident===refin===attri===card0===card1===card2===card3==\n");
-	for(j=1;j<noteqcount;j++)
-		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", mapitem.notequip[j].flag,mapitem.notequip[j].nameid, mapitem.notequip[j].equip, mapitem.notequip[j].identify, mapitem.notequip[j].refine,mapitem.notequip[j].attribute, mapitem.notequip[j].card[0], mapitem.notequip[j].card[1], mapitem.notequip[j].card[2], mapitem.notequip[j].card[3]);
-	printf("======================================DB=========================================\n");
-	printf("==flag ===name ===equip===ident===refin===attri===card0===card1===card2===card3==\n");
-	for(j=1;j<dbnoteqcount;j++)
- 		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", dbitem.notequip[j].flag ,dbitem.notequip[j].nameid, dbitem.notequip[j].equip, dbitem.notequip[j].identify, dbitem.notequip[j].refine,dbitem.notequip[j].attribute, dbitem.notequip[j].card[0], dbitem.notequip[j].card[1], dbitem.notequip[j].card[2], dbitem.notequip[j].card[3]);
- 	printf("=================================================================================\n");
-	printf("=================================================Data Time %s===\n", tmpstr);
-	printf("=================================================================================\n");
-	
+//	gettimeofday(&tv,NULL);
+//	strftime(tmpstr,24,"%Y-%m-%d %H:%M:%S",localtime(&(tv.tv_sec)));
+//	printf("\n\n");
+//	printf("Working Table Name : Not EQU %s,  Count : map %3d | db %3d \n",tablename ,noteqcount ,dbnoteqcount);
+//	printf("*********************************************************************************\n");
+//	printf("======================================MAP===================Char ID %10d===\n",char_id);
+//	printf("==flag ===name ===equip===ident===refin===attri===card0===card1===card2===card3==\n");
+//	for(j=1;j<noteqcount;j++)
+//		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", mapitem.notequip[j].flag,mapitem.notequip[j].nameid, mapitem.notequip[j].equip, mapitem.notequip[j].identify, mapitem.notequip[j].refine,mapitem.notequip[j].attribute, mapitem.notequip[j].card[0], mapitem.notequip[j].card[1], mapitem.notequip[j].card[2], mapitem.notequip[j].card[3]);
+//	printf("======================================DB=========================================\n");
+//	printf("==flag ===name ===equip===ident===refin===attri===card0===card1===card2===card3==\n");
+//	for(j=1;j<dbnoteqcount;j++)
+ //		printf("| %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d | %5d |\n", dbitem.notequip[j].flag ,dbitem.notequip[j].nameid, dbitem.notequip[j].equip, dbitem.notequip[j].identify, dbitem.notequip[j].refine,dbitem.notequip[j].attribute, dbitem.notequip[j].card[0], dbitem.notequip[j].card[1], dbitem.notequip[j].card[2], dbitem.notequip[j].card[3]);
+ //	printf("=================================================================================\n");
+//	printf("=================================================Data Time %s===\n", tmpstr);
+//	printf("=================================================================================\n");
+//	
 	}
 	return 0;
 }
@@ -1366,6 +1371,7 @@ int search_mapserver(char *map){
 
 int parse_char(int fd){
 	int i, ch;
+	char email[40];
 	struct char_session_data *sd;
 	unsigned char *p=(unsigned char *) &session[fd]->client_addr.sin_addr;
 	
@@ -1472,9 +1478,8 @@ int parse_char(int fd){
 					if(i<0)
 						i=0;
 				}
-				memcpy(WFIFOP(fd, 6), char_dat[0].last_point.map, 16);
-				if(lan_ip_check(p)) WFIFOL(fd, 22)=inet_addr(lan_map_ip);
-				else WFIFOL(fd, 22) =server[i].ip;
+				memcpy(WFIFOP(fd, 6), char_dat[0].last_point.map, 16);				
+				WFIFOL(fd, 22) =server[i].ip;
 				WFIFOW(fd, 26) =server[i].port;
 				WFIFOSET(fd, 28);
 
@@ -1560,6 +1565,38 @@ int parse_char(int fd){
 			printf("0x68> request char del %d(%d)\n",sd->account_id,RFIFOL(fd, 2));
 			if(RFIFOREST(fd)<46)
 				return 0;
+			strcpy(email,RFIFOP(fd,6));
+			sprintf (tmp_sql, "SELECT `email` FROM `login` WHERE `account_id`='%d'",sd->account_id);
+			
+			
+			if(mysql_query(&cmysql_handle, tmp_sql) ) {
+				printf("DB server Error Delete Char data - %s\n", mysql_error(&cmysql_handle) );
+			} 
+			sql_cres = mysql_store_result(&cmysql_handle);
+			if (sql_cres) {
+				sql_crow = mysql_fetch_row(sql_cres);
+									
+				if(strcmp(email,sql_crow[0])==0){					
+					mysql_free_result(sql_cres);
+				}
+				else{
+					WFIFOW(fd, 0) =0x70;
+					WFIFOB(fd, 2)=0;
+					WFIFOSET(fd, 3);
+					RFIFOSKIP(fd, 46);
+					mysql_free_result(sql_cres);
+					break;
+				}				
+			}
+			else{
+					WFIFOW(fd, 0) =0x70;
+					WFIFOB(fd, 2)=0;
+					WFIFOSET(fd, 3);
+					RFIFOSKIP(fd, 46);
+					mysql_free_result(sql_cres);
+				break;
+			}
+
 			sprintf (tmp_sql, "SELECT `name` FROM `char` WHERE `char_id`='%d'",RFIFOL(fd,2));
 			if(mysql_query(&cmysql_handle, tmp_sql) ) {
 				printf("DB server Error - %s\n", mysql_error(&cmysql_handle) );
@@ -1764,89 +1801,6 @@ void do_final(void){
 	printf ("ok! all done...\n");
 }
 
-//-----------------------------------------------------
-//Check IP Comes Form Lan or Wan.
-//-----------------------------------------------------
-int lan_ip_check(unsigned char *p){
-	int i;
-	int lancheck=0;
-	
-	
-	//printf("SubnetMask : %d.%d.%d.%d\n",subnetmaski[0],subnetmaski[1],subnetmaski[2],subnetmaski[3]);
-	//printf("Subnet : %d.%d.%d.%d\n",subneti[0],subneti[1],subneti[2],subneti[3]);
-	for(i=0;i<4;i++){				
-		if(subnetmaski[i]==255){
-			//printf("Sub Comp : %d , %d\n",subneti[i],p[i]);
-			if(subneti[i]== p[i]){
-				lancheck=1;
-				//printf("Check Lan !!!\n");
-			}
-			else{
-				lancheck=0;
-				break;
-			}
-		}
-	}
-	printf("Lan Check Value : %d\n",lancheck);
-	return lancheck;
-}
-//-----------------------------------------------------
-// reading Lan Support configuration
-//-----------------------------------------------------
-int login_lan_config_read(const char *lancfgName){
-	int i;
-	int j;
-	char subnet[128];
-	char subnetmask[128];	
-	struct hostent * subnets=NULL;
-	struct hostent * subnetmasks=NULL;
-	char line[1024], w1[1024], w2[1024];
-	FILE *fp;
-
-	fp=fopen(lancfgName,"r");
-	
-	if(fp==NULL){
-		printf("file not found: %s\n", lancfgName);
-		return 1;
-	}
-	printf ("start reading Lan Support configuration...\n");
-	while(fgets(line, 1020, fp)){
-		if(line[0] == '/' && line[1] == '/')
-			continue;
-
-		i=sscanf(line,"%[^:]: %[^\r\n]",w1,w2);
-		if(i!=2)
-			continue;
-
-		else if(strcmpi(w1,"lan_map_ip")==0){	//Read Char Server Lan IP Address
-			strcpy(lan_map_ip, w2);
-			printf ("set Lan_Map_IP : %s\n",w2);
-			
-		}
-		else if(strcmpi(w1,"subnet")==0){	//Read Subnet
-			strcpy(subnet, w2);
-			subnets = gethostbyname (subnet);
-			printf ("set Subet : %s\n",w2);
-			for(j=0;j<4;j++){
-				subneti[j]=(unsigned char)subnets->h_addr[j];
-			}
-			
-		}
-		else if(strcmpi(w1,"subnetmask")==0){	//Read SubnetMask
-			strcpy(subnetmask, w2);
-			subnetmasks = gethostbyname (subnetmask);
-			printf ("set SubnetMask : %s\n",w2);
-			for(j=0;j<4;j++){
-				subnetmaski[j]=(unsigned char)subnetmasks->h_addr[j];
-			}
-		}
-	}
-	fclose(fp);
-
-	printf ("End reading Lan Support configuration...\n");
-	return 0;
-}
-
 int char_config_read(const char *cfgName){
 	int i;
 	char line[1024], w1[1024], w2[1024];
@@ -1947,13 +1901,11 @@ int do_init(int argc, char **argv){
 		server_fd[i]=-1;
 
 	char_config_read((argc<2)? CHAR_CONF_NAME:argv[1]);
-	login_lan_config_read( (argc>1)?argv[1]:LOGIN_LAN_CONF_NAME );
 	printf("charserver configuration reading done.....\n");
 	
 	inter_init((argc>2)?argv[2]:inter_cfgName);	// inter server √ ±‚»≠
 	printf("interserver configuration reading done.....\n");
 
-	
 	printf("start char server initializing.....\n");
 	mmo_char_sql_init();
 	printf("char server initializing done.....\n");

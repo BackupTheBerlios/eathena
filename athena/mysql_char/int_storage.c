@@ -15,33 +15,48 @@ struct storage *storage=NULL;
 
 // storage data -> DB conversion
 int storage_tosql(int account_id,struct storage *p){
-	// id -> DB dump
-	// storage {`account_id`/`id`/`nameid`/`amount`/`equip`/`identify`/`refine`/`attribute`/`card0`/`card1`/`card2`/`card3`}
 	int i,j;
-	
-	//delete old data.
-	sprintf(tmp_sql,"DELETE FROM `storage` WHERE `account_id`='%d'",account_id);
-	if(mysql_query(&mysql_handle, tmp_sql) ) {
-			printf("DB server Error - %s\n", mysql_error(&mysql_handle) );
-	}
-	
-	for(i=0;i<MAX_STORAGE;i++) {
-		if( (p->storage[i].nameid) && (p->storage[i].amount) ){
-			
-			sprintf(tmp_sql,"INSERT delayed INTO `storage` (`account_id`,`id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2`,`card3`) VALUES ('%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d');",
-			  p->account_id, p->storage[i].id, p->storage[i].nameid, p->storage[i].amount, p->storage[i].equip,
-			  p->storage[i].identify, p->storage[i].refine, p->storage[i].attribute,
-			  p->storage[i].card[0], p->storage[i].card[1], p->storage[i].card[2], p->storage[i].card[3]);
-			mysql_query(&mysql_handle,"LOCK TABLES a WRITE;");
-			if(mysql_query(&mysql_handle, tmp_sql) ) {
-				printf("DB server Error - %s\n", mysql_error(&mysql_handle) );
+	int eqcount=1;
+	int noteqcount=1;
+	struct itemtemp mapitem;
+	for(i=0;i<MAX_INVENTORY;i++){
+		if(p->storage[i].nameid>0){
+			if(itemdb_isequip(p->storage[i].nameid)==1){				
+				mapitem.equip[eqcount].flag=0;
+				mapitem.equip[eqcount].id = p->storage[i].id;
+				mapitem.equip[eqcount].nameid=p->storage[i].nameid;
+				mapitem.equip[eqcount].amount = p->storage[i].amount;
+				mapitem.equip[eqcount].equip = p->storage[i].equip;
+				mapitem.equip[eqcount].identify = p->storage[i].identify;
+				mapitem.equip[eqcount].refine = p->storage[i].refine;
+				mapitem.equip[eqcount].attribute = p->storage[i].attribute;
+				mapitem.equip[eqcount].card[0] = p->storage[i].card[0];
+				mapitem.equip[eqcount].card[1] = p->storage[i].card[1];
+				mapitem.equip[eqcount].card[2] = p->storage[i].card[2];
+				mapitem.equip[eqcount].card[3] = p->storage[i].card[3];				
+				eqcount++;
 			}
-			mysql_query(&mysql_handle,"UNLOCK TABLES;");
-			j ++;
+			else if(itemdb_isequip(p->storage[i].nameid)==0){				
+				mapitem.notequip[noteqcount].flag=0;
+				mapitem.notequip[noteqcount].id = p->storage[i].id;
+				mapitem.notequip[noteqcount].nameid=p->storage[i].nameid;
+				mapitem.notequip[noteqcount].amount = p->storage[i].amount;
+				mapitem.notequip[noteqcount].equip = p->storage[i].equip;
+				mapitem.notequip[noteqcount].identify = p->storage[i].identify;
+				mapitem.notequip[noteqcount].refine = p->storage[i].refine;
+				mapitem.notequip[noteqcount].attribute = p->storage[i].attribute;
+				mapitem.notequip[noteqcount].card[0] = p->storage[i].card[0];
+				mapitem.notequip[noteqcount].card[1] = p->storage[i].card[1];
+				mapitem.notequip[noteqcount].card[2] = p->storage[i].card[2];
+				mapitem.notequip[noteqcount].card[3] = p->storage[i].card[3];				
+				noteqcount++;
+			}
 		}
 	}
 
-	printf ("storage dump to DB - id: %d (total: %d)\n", account_id, j);
+	memitemdata_to_sql(mapitem, eqcount, noteqcount, account_id,TABLE_STORAGE);
+
+	//printf ("storage dump to DB - id: %d (total: %d)\n", account_id, j);
 	return 0;
 }
 
@@ -96,7 +111,7 @@ int inter_storage_init(){
 //---------------------------------------------------------
 // storage data saving - nothing to do here.
 int inter_storage_save(){
-	printf("inter_storage_save() - no works to do....\n");
+	//printf("inter_storage_save() - no works to do....\n");
 	//no work to do.
 	return 0;
 }

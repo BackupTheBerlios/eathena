@@ -19,7 +19,8 @@ CREATE TABLE `cart_inventory` (
   `card0` int(11) NOT NULL default '0',
   `card1` int(11) NOT NULL default '0',
   `card2` int(11) NOT NULL default '0',
-  `card3` int(11) NOT NULL default '0'
+  `card3` int(11) NOT NULL default '0',
+  KEY `char_id` (`char_id`)
 ) TYPE=MyISAM;
 
 # --------------------------------------------------------
@@ -82,7 +83,8 @@ CREATE TABLE `char` (
 CREATE TABLE `global_reg_value` (
   `char_id` int(11) NOT NULL default '0',
   `str` varchar(255) NOT NULL default '',
-  `value` int(11) NOT NULL default '0'
+  `value` int(11) NOT NULL default '0',
+  KEY `char_id` (`char_id`)
 ) TYPE=MyISAM;
 
 # --------------------------------------------------------
@@ -103,7 +105,8 @@ CREATE TABLE `inventory` (
   `card0` int(11) NOT NULL default '0',
   `card1` int(11) NOT NULL default '0',
   `card2` int(11) NOT NULL default '0',
-  `card3` int(11) NOT NULL default '0'
+  `card3` int(11) NOT NULL default '0',
+  KEY `char_id` (`char_id`)
 ) TYPE=MyISAM;
 
 # --------------------------------------------------------
@@ -152,7 +155,8 @@ CREATE TABLE `pet` (
 CREATE TABLE `skill` (
   `char_id` int(11) NOT NULL default '0',
   `id` int(11) NOT NULL default '0',
-  `lv` tinyint(4) NOT NULL default '0'
+  `lv` tinyint(4) NOT NULL default '0',
+  KEY `char_id` (`char_id`)
 ) TYPE=MyISAM;
 
 # --------------------------------------------------------
@@ -173,5 +177,6 @@ CREATE TABLE `storage` (
   `card0` int(11) NOT NULL default '0',
   `card1` int(11) NOT NULL default '0',
   `card2` int(11) NOT NULL default '0',
-  `card3` int(11) NOT NULL default '0'
+  `card3` int(11) NOT NULL default '0',
+  KEY `account_id` (`account_id`)
 ) TYPE=MyISAM;

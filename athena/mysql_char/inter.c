@@ -29,7 +29,7 @@ int inter_send_packet_length[]={
 	-1,-1, 27, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	-1, 7, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	35,-1, 11,15, 34,29, 7,-1,  0, 0, 0, 0,  0, 0,  0, 0,
-	10,-1, 15, 0, 79,17, 7,-1,  0,-1,-1,-1, 14,67,186,-1,
+	10,-1, 15, 0, 79,19, 7,-1,  0,-1,-1,-1, 14,67,186,-1,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
@@ -41,7 +41,7 @@ int inter_recv_packet_length[]={
 	-1,-1, 5, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	 6,-1, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	72, 6,52,14, 10,29, 6,-1, 34, 0, 0, 0,  0, 0,  0, 0,
-	-1, 6,-1, 0, 55,17, 6,-1, 14,-1,-1,-1, 14,19,186,-1,
+	-1, 6,-1, 0, 55,19, 6,-1, 14,-1,-1,-1, 14,19,186,-1,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
 	 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0,  0, 0,
@@ -137,13 +137,7 @@ int inter_config_read(const char *cfgName) {
 		i=sscanf(line,"%[^:]: %[^\r\n]",w1,w2);
 		if(i!=2)
 			continue;
-		/*if(strcmpi(w1,"storage_txt")==0){
-			printf ("set storage_txt : %s\n",w2);
-			strncpy(storage_txt, w2, sizeof(storage_txt));
-		} else if(strcmpi(w1,"pet_txt")==0){
-			printf ("set pet_txt : %s\n",w2);
-			strncpy(pet_txt, w2, sizeof(pet_txt));
-		}*/ //no more to use.
+
 		if(strcmpi(w1,"party_txt")==0){
 			printf ("set party_txt : %s\n",w2);
 			strncpy(party_txt, w2, sizeof(party_txt));
@@ -189,7 +183,7 @@ int inter_save() {
 }
 
 int inter_save_timer(int tid, unsigned int tick, int id, int data){
-	printf ("interserver save count-tic...\n");
+	//printf ("interserver save count-tic...\n");
 	inter_save();
 	return 0;
 }
@@ -222,7 +216,7 @@ int inter_init(const char *file)
 	inter_pet_sql_init();
 
 	printf ("interserver timer initializing : %d sec...\n",autosave_interval);
-	i=add_timer_interval(gettick()+10, inter_save_timer, 0,0, autosave_interval);
+	i=add_timer_interval(gettick()+autosave_interval,inter_save_timer,0,0,autosave_interval);
 
 	return 0;
 }
