@@ -1323,7 +1323,7 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			aspd_rate -= sd->sc_data[SC_SPEARSQUICKEN].val2;
 		if(sd->sc_data[SC_ASSNCROS].timer!=-1 && // 夕陽のアサシンクロス
 			sd->sc_data[SC_TWOHANDQUICKEN].timer==-1 && sd->sc_data[SC_ADRENALINE].timer==-1 && sd->sc_data[SC_SPEARSQUICKEN].timer==-1)
-			aspd_rate -= sd->sc_data[SC_ASSNCROS].val2;
+				aspd_rate -= 5+sd->sc_data[SC_ASSNCROS].val1+sd->sc_data[SC_ASSNCROS].val2/2+sd->sc_data[SC_ASSNCROS].val3/20;
 		if(sd->sc_data[SC_DONTFORGETME].timer!=-1){		// 私を忘れないで
 			aspd_rate += sd->sc_data[SC_DONTFORGETME].val2;
 			sd->speed= sd->speed* sd->sc_data[SC_DONTFORGETME].val3/100;
@@ -1342,7 +1342,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		if(sd->sc_data[SC_VIOLENTGALE].timer!=-1 && sd->def_ele == 4)
 			sd->flee += (int)(sd->sc_data[SC_VIOLENTGALE].val1 * 3);
 		if(sd->sc_data[SC_WHISTLE].timer!=-1){  // 口笛
-			sd->flee += sd->sc_data[SC_WHISTLE].val1 * sd->flee/100;
+			sd->flee += sd->flee * (sd->sc_data[SC_WHISTLE].val1
+					+sd->sc_data[SC_WHISTLE].val2/2+sd->sc_data[SC_WHISTLE].val3/10)/100;
 			sd->flee2+= sd->sc_data[SC_WHISTLE].val1 * 10;
 			sd->status.sp--;		// Added by AppleGirl
 			clif_updatestatus(sd,SP_SP);
@@ -1374,7 +1375,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 				sd->status.max_hp = battle_config.max_hp;
 		}
 		if(sd->sc_data[SC_APPLEIDUN].timer!=-1){	// イドゥンの林檎
-			sd->status.max_hp += (sd->sc_data[SC_APPLEIDUN].val2 * sd->status.max_hp)/100;
+			sd->status.max_hp += ((5+sd->sc_data[SC_APPLEIDUN].val1*2+sd->sc_data[SC_APPLEIDUN].val2
+						+sd->sc_data[SC_APPLEIDUN].val3/10) * sd->status.max_hp)/100;
 			if(sd->status.max_hp < 0 || sd->status.max_hp > battle_config.max_hp)
 				sd->status.max_hp = battle_config.max_hp;
 		}
@@ -2037,15 +2039,6 @@ int pc_skill(struct map_session_data *sd,int id,int level,int flag)
 		pc_calcstatus(sd,0);
 		clif_skillinfoblock(sd);
 	}
-	/*else if(sd->status.skill[id].lv < level){	// 覚えられるがlvが小さいなら
-		if(sd->status.skill[id].id==id)
-			sd->status.skill[id].flag=sd->status.skill[id].lv+2;	// lvを記憶
-		else {
-			sd->status.skill[id].id=id;
-			sd->status.skill[id].flag=1;	// cardスキルとする
-		}
-		sd->status.skill[id].lv=level;
-	}*/
 	else {
 		if(battle_config.gm_allskill>0 && pc_isGM(sd)>=battle_config.gm_allskill) {	// GMで全てのスキルを取得するようにしているかを判断
 			if(sd->status.skill[id].lv < level) {	// 覚えられるがlvが小さいなら
@@ -3646,7 +3639,7 @@ int pc_allskillup(struct map_session_data *sd)
 			if(sd->status.skill[i].id==i) {	// 覚えられる場合で
 				if(sd->status.skill[i].flag)	// cardスキルの場合は
 					for(j=0;j<100;j++)
-						if(skill_tree[sd->status.class][j].id==i)	// 現在の職業で覚えられるスキルかを判断
+						if((battle_config.gm_allskill>0 && pc_isGM(sd)>=battle_config.gm_allskill) || skill_tree[sd->status.class][j].id==i)	// 現在の職業で覚えられるスキルかを判断
 							sd->status.skill[i].flag=0;	// cardスキルを解除し、lv上げへ
 				if(!sd->status.skill[i].flag && sd->status.skill[i].lv < skill_get_max(i)) {	// cardスキルではなく、lvが小さいなら
 					sd->status.skill[i].lv=skill_get_max(i);	// lvを最大にして

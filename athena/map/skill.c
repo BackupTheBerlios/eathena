@@ -1814,7 +1814,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			int lv = sd->status.base_level-dstsd->status.base_level;
 			lv = (lv<0)?-lv:lv;
 			if((dstsd->bl.type!=BL_PC)	// 相手はPCじゃないとだめ
-			 ||(dstsd->bl.id == bl->id)	// 相手が自分はだめ
+			 ||(sd->bl.id == dstsd->bl.id)	// 相手が自分はだめ
 			 ||(lv > 10)			// レベル差±10まで
 			 ||(sd->status.party_id != dstsd->status.party_id)	// 同じパーティーじゃないとだめ
 			 ||(dstsd->status.class==14||dstsd->status.class==21)){	// クルセだめ
@@ -1824,6 +1824,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			for(i=0;i<skilllv;i++){
 				if(!sd->dev.val1[i]){		// 空きがあったら入れる
 					sd->dev.val1[i] = bl->id;
+					sd->dev.val2[i] = bl->id;
 					break;
 				}else if(i==skilllv-1){		// 空きがなかった
 					clif_skill_fail(sd,skillid,0,0);
@@ -2053,7 +2054,10 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;
 
 	case BD_ADAPTATION:			/* アドリブ */
-		skill_stop_dancing(src);
+		if(sd->sc_data[SC_DANCING].timer!=-1){
+			clif_skill_nodamage(src,bl,skillid,skilllv,1);
+			skill_stop_dancing(src);
+		}
 		break;
 
 	case BA_FROSTJOKE:			/* 寒いジョーク */
@@ -2161,7 +2165,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			if(map[sd->bl.m].flag.noteleport)	/* テレポ禁止 */
 				break;
 			if( sd->skilllv==1 )
-				pc_randomwarp(sd,3);
+				clif_skill_warppoint(sd,sd->skillid,"Random","","","");
 			else{
 				clif_skill_warppoint(sd,sd->skillid,"Random",
 					sd->status.save_point.map,"","");
@@ -3942,6 +3946,10 @@ int skill_check_condition(struct map_session_data *sd,int type)
 		clif_skill_fail(sd,skill,0,0);		// 氣球不足
 		return 0;
 	}
+	if( sd->weight*100/sd->max_weight >= 90) {
+		clif_skill_fail(sd,skill,9,0);
+		return 0;
+	}
 
 	switch(state) {
 	case ST_HIDING:
@@ -4084,7 +4092,8 @@ int skill_castfix( struct block_list *bl, int time )
 	}
 	/* ブラギの詩 */
 	if( (sc_data = battle_get_sc_data(bl))[SC_POEMBRAGI].timer!=-1 )
-		time=time*(100-sc_data[SC_POEMBRAGI].val2)/100;
+		time=time*(100-(sc_data[SC_POEMBRAGI].val1*3+sc_data[SC_POEMBRAGI].val2
+				+sc_data[SC_POEMBRAGI].val3/10))/100;
 
 	return (time>0)?time:0;
 }
@@ -4105,7 +4114,8 @@ int skill_delayfix( struct block_list *bl, int time )
 	
 	/* ブラギの詩 */
 	if( (sc_data = battle_get_sc_data(bl))[SC_POEMBRAGI].timer!=-1 )
-		time=time*(100-sc_data[SC_POEMBRAGI].val2)/100;
+		time=time*(100-(sc_data[SC_POEMBRAGI].val1*3+sc_data[SC_POEMBRAGI].val2
+				+sc_data[SC_POEMBRAGI].val5/5))/100;
 	
 	return (time>0)?time:0;
 }
@@ -5201,7 +5211,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 	struct status_change* sc_data;
 	short *sc_count, *option, *opt1, *opt2;
 	int opt_flag = 0, calc_flag = 0;
-	int val3=0,val4=val2;
+	int val5=0,val3=0,val4=val2;
 
 	if(bl->type == BL_SKILL)
 		return 0;
@@ -5417,17 +5427,23 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_WHISTLE:			/* 口笛 */
 			calc_flag = 1;
+			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
+			val3 = battle_get_agi(bl);
 			break;
 		case SC_ASSNCROS:			/* 夕陽のアサシンクロス */
 			calc_flag = 1;
-			val2 = 10+val1;
+			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
+			val3 = battle_get_agi(bl);
 			break;
 		case SC_POEMBRAGI:			/* ブラギの詩 */
-			val2 = val1 * 3;
+			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
+			val3 = battle_get_dex(bl);
+			val5 = battle_get_int(bl);
 			break;
 		case SC_APPLEIDUN:			/* イドゥンの林檎 */
 			calc_flag = 1;
-			val2 = val1*2+5;
+			val2 = pc_checkskill(sd,BA_MUSICALLESSON);
+			val3 = battle_get_vit(bl);
 			break;
 		case SC_UGLYDANCE:			/* 自分勝手なダンス */
 			val2 = 10;
@@ -5735,6 +5751,8 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 	sc_data[type].val2 = val2;
 	sc_data[type].val3 = val3;
 	sc_data[type].val4 = val4;
+	sc_data[type].val5 = val5;
+
 	/* タイマー設定 */
 	sc_data[type].timer = add_timer(
 		gettick() + tick, skill_status_change_timer, bl->id, type);
