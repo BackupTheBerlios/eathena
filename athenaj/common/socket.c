@@ -1,4 +1,4 @@
-// $Id: socket.c,v 1.4 2004/02/11 15:54:46 rovert Exp $
+// $Id: socket.c,v 1.5 2004/02/15 15:09:24 rovert Exp $
 // original : core.c 2003/02/26 18:03:12 Rev 1.7
 
 #include <stdio.h>
@@ -21,8 +21,8 @@
 fd_set readfds;
 int fd_max;
 
-int rfifo_size = 32768;
-int wfifo_size = 32768;
+int rfifo_size = 65536;
+int wfifo_size = 65536;
 
 struct socket_data *session[FD_SETSIZE];
 
