@@ -473,6 +473,9 @@ int pc_isequip(struct map_session_data *sd,int n)
 {
 	struct item_data *item = sd->inventory_data[n];
 
+ 	if( battle_config.gm_allequip>0 && pc_isGM(sd)>=battle_config.gm_allequip )
+		return 1;
+
 	if(item == NULL)
 		return 0;
 	if(item->sex != 2 && sd->status.sex != item->sex)
@@ -1170,6 +1173,8 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 	sd->paramc[3]=sd->status.int_+sd->paramb[3]+sd->parame[3];
 	sd->paramc[4]=sd->status.dex+sd->paramb[4]+sd->parame[4];
 	sd->paramc[5]=sd->status.luk+sd->paramb[5]+sd->parame[5];
+	for(i=0;i<6;i++)
+		if(sd->paramc[i] < 0) sd->paramc[i] = 0;
 
 	if(sd->status.weapon == 11 || sd->status.weapon == 13 || sd->status.weapon == 14) {
 		str = sd->paramc[4];
@@ -3173,9 +3178,7 @@ int pc_stop_walking(struct map_session_data *sd,int type)
 		clif_fixpos(&sd->bl);
 	if(type&0x02 && battle_config.pc_damage_delay) {
 		unsigned int tick = gettick();
-		int delay = sd->dmotion;
-		if(battle_config.pc_damage_delay_rate != 100)
-			delay = delay*battle_config.pc_damage_delay_rate/100;
+		int delay = battle_get_dmotion(&sd->bl);
 		if(sd->canmove_tick < tick)
 			sd->canmove_tick = tick + delay;
 	}
@@ -3961,7 +3964,7 @@ int pc_damage(struct block_list *src,struct map_session_data *sd,int damage)
 	}
 
 	// 歩 いていたら足を止める
-	if(sd->sc_data[SC_ENDURE].timer == -1)
+	if(sd->sc_data[SC_ENDURE].timer == -1 && !sd->special_state.infinite_endure)
 		pc_stop_walking(sd,3);
 	// 演奏/ダンスの中断
 	if(damage > sd->status.max_hp>>2)
@@ -4219,6 +4222,12 @@ int pc_itemheal(struct map_session_data *sd,int hp,int sp)
 	int bonus;
 //	if(battle_config.battle_log)
 //		printf("heal %d %d\n",hp,sp);
+	if(sd->state.potionpitcher_flag) {
+		sd->potion_hp = hp;
+		sd->potion_sp = sp;
+		return 0;
+	}
+
 	if(pc_checkoverhp(sd)) {
 		if(hp > 0)
 			hp = 0;
@@ -4228,7 +4237,7 @@ int pc_itemheal(struct map_session_data *sd,int hp,int sp)
 			sp = 0;
 	}
 	if(hp > 0) {
-		bonus = sd->paramc[2] + 100 + pc_checkskill(sd,SM_RECOVERY)*10;
+		bonus = (sd->paramc[2]<<1) + 100 + pc_checkskill(sd,SM_RECOVERY)*10;
 		if(bonus != 100)
 			hp = hp * bonus / 100;
 		bonus = 100 + pc_checkskill(sd,AM_LEARNINGPOTION)*5;
@@ -4236,7 +4245,7 @@ int pc_itemheal(struct map_session_data *sd,int hp,int sp)
 			hp = hp * bonus / 100;
 	}
 	if(sp > 0) {
-		bonus = sd->paramc[3] + 100 + pc_checkskill(sd,MG_SRECOVERY)*10;
+		bonus = (sd->paramc[3]<<1) + 100 + pc_checkskill(sd,MG_SRECOVERY)*10;
 		if(bonus != 100)
 			sp = sp * bonus / 100;
 		bonus = 100 + pc_checkskill(sd,AM_LEARNINGPOTION)*5;
@@ -4271,6 +4280,12 @@ int pc_itemheal(struct map_session_data *sd,int hp,int sp)
  */
 int pc_percentheal(struct map_session_data *sd,int hp,int sp)
 {
+	if(sd->state.potionpitcher_flag) {
+		sd->potion_per_hp = hp;
+		sd->potion_per_sp = sp;
+		return 0;
+	}
+
 	if(pc_checkoverhp(sd)) {
 		if(hp > 0)
 			hp = 0;
@@ -4831,7 +4846,7 @@ int pc_equipitem(struct map_session_data *sd,int n,int pos)
 	if(sd->status.inventory[n].equip & 0x0040)
 		clif_changelook(&sd->bl,LOOK_SHOES,0);
 
-	pc_checkallowskill(sd);	// 装備品でスキルか解除されるか?ェック
+	pc_checkallowskill(sd);	// 装備品でスキルか解除されるかチェック
 	if (itemdb_look(sd->status.inventory[n].nameid) == 11 && arrow){	// Added by RoVeRT
 		clif_arrowequip(sd,arrow);
 		sd->status.inventory[arrow].equip=32768;
@@ -4912,8 +4927,6 @@ int pc_unequipitem(struct map_session_data *sd,int n,int type)
 	}
 	if(!type) {
 		pc_calcstatus(sd,0);
-		if(!sd->special_state.infinite_endure && sd->sc_data[SC_ENDURE].timer != -1 && sd->sc_data[SC_ENDURE].val2)
-			skill_status_change_end(&sd->bl,SC_ENDURE,-1);
 		if(sd->sc_data[SC_SIGNUMCRUCIS].timer != -1 && !battle_check_undead(7,sd->def_ele))
 			skill_status_change_end(&sd->bl,SC_SIGNUMCRUCIS,-1);
 	}

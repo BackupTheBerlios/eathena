@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.26 2004/03/10 18:50:33 moonsoul Exp $
+// $Id: map.c,v 1.27 2004/03/10 21:06:19 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1405,6 +1405,7 @@ void do_final(void)
 {
 	do_final_itemdb();
 	do_final_storage();
+	do_final_bank();
 }
 
 /*==========================================
@@ -1442,6 +1443,7 @@ int do_init(int argc,char *argv[])
 	do_init_npc();
 	do_init_pc();
 	do_init_storage();
+	do_init_bank();
 	do_init_party();
 	do_init_guild();
 	do_init_skill();

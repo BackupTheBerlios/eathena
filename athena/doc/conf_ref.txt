@@ -59,7 +59,7 @@ new_account
 
 account_filename
 	アカウントセーブファイルを指定します。
-	省略可能で、デフォルトはaccount.txtです。
+	省略可能で、デフォルトはsave/account.txtです。
 
 gm_account_filename
 	GMアカウントファイルを指定します。
@@ -81,8 +81,8 @@ order
 
 allow
 	アクセスコントロールで許可するホストを指定します。
-	表記はIPアドレスの前方一致です。ホスト名の後方一致や、
-	ネットマスク付きのIPアドレスを記述することは出来ません。
+	表記はIPアドレスの前方一致やネットマスク付きのIPアドレスを記述します。
+	ホスト名の後方一致はサポートしていません。
 	また、IPアドレスの変わりに all と記述すると全てのホストになります。
 	複数行書くことが出来ます。省略可能です。
 	アクセスコントロールを有効にするには少なくとも１つ以上の
@@ -93,18 +93,25 @@ deny
 	アクセスコントロールで禁止するホストを指定します。
 	表記の仕方はallowと同じです。
 
+login_log_filename
+	ログインサーバーのログファイルを指定します。
+	省略可能で、デフォルトはlog/login.logです。
+
 < 例 >
 
 login_port: 6900
 admin_pass: admin
 gm_pass: gm
 new_account: 1
-account_filename: account.txt
+account_filename: save/account.txt
 gm_account_filename: conf_GM_account.txt
 order: deny,allow
 deny: all
-allow: 192.168.
 allow: 127.0.0.1
+allow: 10.0.
+allow: 172.16.0.0/16
+allow: 192.168.0.0/255.255.255.0
+login_log_filename: log/login.log
 
 ==========================================================================
 2. conf/char_athena.conf
@@ -176,6 +183,19 @@ start_point
 	「mapファイル名,X座標,Y座標」のように記述します。
 	省略可能で、デフォルトは new_1-1.gat,53,111 です。
 
+start_zeny
+	新しいキャラを作った時初めから持っているゼニの量を設定します。
+	省略可能で、デフォルトは500です。
+
+unknown_char_name
+	キャラクターサーバーに存在しないキャラの名前要請された時返す名前を
+	設定します。省略可能で、デフォルトはUnknownです。
+
+char_log_filename
+	キャラクターサーバーのログファイルを指定します。
+	省略可能で、デフォルトはlog/char.logです。
+
+
 < 例 >
 userid: s1
 passwd: p1
@@ -184,12 +204,15 @@ login_ip: 127.0.0.1
 login_port: 6900
 char_ip: 127.0.0.1
 char_port: 6121
-char_txt: athena.txt
+char_txt: save/athena.txt
 max_connect_user: 0
 autosave_time: 300
 char_maintenance: 0
 char_new: 0
 start_point: new_,150,120
+start_zeny: 500
+unknown_char_name: Unknown
+char_log_filename: log/char.log
 
 
 ==========================================================================
@@ -207,25 +230,41 @@ start_point: new_,150,120
 
 storage_txt
 	倉庫データを格納するファイル名です。
-	省略可能で、デフォルトは storage.txt です。
+	省略可能で、デフォルトは save/storage.txt です。
 
 party_txt
 	パーティデータを格納するファイル名です。
-	省略可能で、デフォルトは party.txt です。
+	省略可能で、デフォルトは save/party.txt です。
 
 guild_txt
 	ギルドデータを格納するファイル名です。
-	省略可能で、デフォルトは guild.txt です。
+	省略可能で、デフォルトは save/guild.txt です。
 
 pet_txt
 	ペットデータを格納するファイル名です。
-	省略可能で、デフォルトは pet.txt です。
+	省略可能で、デフォルトは save/pet.txt です。
+
+castle_txt
+	ギルドの城データを格納するファイル名です。
+	省略可能で、デフォルトは save/castle.txt です。
+
+party_share_level
+	公平分配パーティの制限レベルを設定します。
+	省略可能で、デフォルトは10です。
+
+inter_log_filename
+	インターサーバーのログファイルを指定します。
+	省略可能で、デフォルトはlog/inter.logです。
+
 
 < 例 >
-storage_txt: storage.txt
-party_txt: party.txt
-guild_txt: guild.txt
-pet_txt: pet.txt
+storage_txt: save/storage.txt
+party_txt: save/party.txt
+guild_txt: save/guild.txt
+pet_txt: save/pet.txt
+castle_txt: save/castle.txt
+party_share_level: 10
+inter_log_file: log/inter.log
 
 
 ==========================================================================
@@ -509,6 +548,21 @@ gm_all_skill
 	これを0以外にすると、そのGMレベル以上のGMはJOBやスキル所得条件に関係なく全スキルが覚えられます。(クェストスキルも含めて)
 	デフォルトは 0 です。0の場合はGMではない全てのキャラの意味ではなく全てのGMが全てのスキルを覚えられないと言うことです。
 
+gm_all_equipment
+	全ての装備品を装備できるようにするGMのレベルを設定します。
+	これを0以外にすると、そのGMレベル以上のGMはJOBやレベル、性別に関係なく
+	全装備品を装備できるようになります。ただし、クライアント側でエラーを
+	起こす組み合わせもあると思います。デフォルトは 0 です。
+	0の場合は全てのGMは通常プレイヤーと同じ判定が行われます。
+
+gm_skill_unconditional
+	無条件にスキルを使用できるようにするGMのレベルを設定します。
+	これを0以外にすると、そのGMレベル以上のGMは装備武器や消費アイテムの有無
+	などに関係なく、そして何も消費することなくスキルを使用できるように
+	なります。判定処理を無視するので動作に不都合がでる可能性があります。
+	デフォルトは 0 です。 0の場合は全てのGMは通常プレイヤーと同じ判定が
+	行われます。
+
 player_skillfree
 	スキルツリーに関係なくスキルを上げることができるかどうかです。
 	これをyesにすればプレイヤーの職業で習うことができるスキル全てを
@@ -741,7 +795,7 @@ save_clothcolor
 undead_detect_type
 	アンデッドを認識する方法を設定します。0で属性のみ、1で種族のみ、
 	2で属性と種族の両方のどちらでもあってる場合になります。
-	デフォルトは2です。
+	デフォルトは0です。
 
 player_auto_counter_type
 	プレイヤーのオートカウンターの仕様を設定します。0で100%クリティカル
@@ -838,6 +892,64 @@ gvg_misc_attack_damage_rate
 mob_changetarget_byskill: no
 	条件がskillusedのスキルをMOBがPCに使用するとき、その対象をスキル使用者にするかどうかです。
 	MOBスキル使用後にタゲは戻ります。デフォルトはnoです。
+
+player_attack_direction_change
+	プレイヤーが攻撃した時方向を変更するかどうかです。本鯖では動けない限り方向が変えらないのですがバグぽい仕様なのでデフォルトはyesです。
+	noにすれば動くことだけで方向が変えるようになります。
+
+monster_attack_direction_change
+	モンスターが攻撃した時方向を変更するかどうかです。本鯖では動けない限り方向が変えらないのですがバグぽい仕様なのでデフォルトはyesです。
+	noにすれば動くことだけで方向が変えるようになります。
+
+player_undead_nofreeze: no
+	プレイヤーが装備等によってアンデッドとして認識されている時
+	氷化するかどうかです。これをyesにすればアンデッドと認識されると
+	氷化しなくなります。デフォルトはnoです。
+
+player_land_skill_limit
+	skill_db.txtで設定されている地面スキルの数制限をプレイヤーに
+	適用するかどうかです。これをyesにすれば設定されている数以上は
+	地面に設置することができなくなりますが数制限をどう変えても
+	MAX_SKILLUNITGROUPを越える数の設置はできません。
+	デフォルトはyesです。
+
+monster_land_skill_limit
+	skill_db.txtで設定されている地面スキルの数制限をモンスターに
+	適用するかどうかです。これをyesにすれば設定されている数以上は
+	地面に設置することができなくなりますが数制限をどう変えても
+	MAX_MOBSKILLUNITGROUPを越える数の設置はできません。
+	デフォルトはyesです。
+
+party_skill_penaly
+	一部のパーティスキルを使用者とパーティでスキル効果が違うように
+	するかどうかです。これの影響を受けるスキルは今の所
+	アドレナリンラッシュ、ウエポンパーフェクション、オーバートラストのみです。
+	デフォルトはyesです。
+
+monster_class_change_full_recover
+	モンスターがメタモルフォーシスとトランスフォーメーション等によって
+	他のモンスターに変わった時そのモンスターのHPを最大なで回復させるか
+	どうかです。これをyesにすると変わったモンスターの最大HPまで
+	回復します。noなら変わる前のHPと最大HPの比率の分のHPになります。
+	デフォルトはnoです。
+
+produce_item_name_input
+	製造で作られた鉄や属性石に製造者の名前を付けるかどうかです。
+	デフォルトはyesです。
+
+produce_potion_name_input
+	製造で作られたポーションに製造者の名前を付けるかどうかです。
+	デフォルトはyesです。
+
+making_arrow_name_input
+	矢作成で作られた矢に製造者の名前を付けるかどうかです。
+	デフォルトはyesです。
+
+holywater_name_input
+	アクアベネディクタで作られた聖水に製造者の名前を付けるかどうかです。
+	デフォルトはyesです。
+
+
 < 例 >
 
 warp_point_debug: no
@@ -880,6 +992,8 @@ monster_hp_rate: 100
 monster_max_aspd: 199
 atcommand_gm_only: no
 gm_all_skill: 0
+gm_all_equipment: 0
+gm_skill_unconditional: 0
 player_skillfree: no
 player_skillup_limit: no
 weapon_produce_rate: 100
@@ -949,6 +1063,17 @@ gvg_long_attack_damage_rate: 100
 gvg_magic_attack_damage_rate: 100
 gvg_misc_attack_damage_rate: 100
 mob_changetarget_byskill: no
+player_attack_direction_change:yes
+monster_attack_direction_change:yes
+player_undead_nofreeze: no
+player_land_skill_limit: yes
+monster_land_skill_limit: yes
+party_skill_penaly: yes
+monster_class_change_full_recover: no
+produce_item_name_input: yes
+produce_potion_name_input: yes
+making_arrow_name_input: yes
+holywater_name_input: yes
 
 
 =====================================================================ghos6. atcommand_athena.conf
@@ -1004,7 +1129,7 @@ kami
 heal
 	@コマンド @heal
 item
-	@コマンド @item
+	@コマンド @item、@item2
 itemreset
 	@コマンド @itemreset
 itemcheck
@@ -1031,6 +1156,8 @@ go
 	@コマンド @go
 monster
 	@コマンド @monster
+killmonster
+	@コマンド @killmonster
 refine
 	@コマンド @refine
 produce
@@ -1148,6 +1275,7 @@ gvgon: 1
 model: 1
 go: 1
 monster: 1
+killmonster: 1
 refine: 1
 produce: 1
 memo: 1

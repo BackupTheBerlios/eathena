@@ -1,4 +1,4 @@
-// $Id: chrif.c,v 1.7 2004/02/15 15:05:24 rovert Exp $
+// $Id: chrif.c,v 1.8 2004/03/10 21:06:19 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -441,6 +441,7 @@ int check_connect_char_server(int tid,unsigned int tick,int id,int data)
 		chrif_state = 0;
 		char_fd=make_connection(char_ip,char_port);
 		session[char_fd]->func_parse=chrif_parse;
+		realloc_fifo(char_fd,FIFOSIZE_SERVERLINK,FIFOSIZE_SERVERLINK);	
 
 		chrif_connect(char_fd);
 	}

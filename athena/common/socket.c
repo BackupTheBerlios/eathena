@@ -1,4 +1,4 @@
-// $Id: socket.c,v 1.4 2004/02/18 18:10:57 rovert Exp $
+// $Id: socket.c,v 1.5 2004/03/10 21:06:19 sara-chan Exp $
 // original : core.c 2003/02/26 18:03:12 Rev 1.7
 
 #include <stdio.h>
@@ -269,6 +269,40 @@ int delete_session(int fd)
 	}
 	session[fd]=NULL;
 	//printf("delete_session:%d\n",fd);
+	return 0;
+}
+
+int realloc_fifo(int fd,int rfifo_size,int wfifo_size)
+{
+	struct socket_data *s=session[fd];
+	if( s->max_rdata != rfifo_size && s->rdata_size < rfifo_size){
+	
+		s->rdata      = realloc(s->rdata, rfifo_size);
+		if(s->rdata==NULL){
+			printf("out of memory : realloc_fifo rdata\n");
+		}
+		s->max_rdata  = rfifo_size;
+	}
+	if( s->max_wdata != wfifo_size && s->wdata_size < wfifo_size){
+		s->wdata      = realloc(s->wdata, wfifo_size);
+		if(s->wdata==NULL){
+			printf("out of memory : realloc_fifo wdata\n");
+			exit(1);
+		}
+		s->max_wdata  = wfifo_size;
+	}
+	return 0;
+}
+
+int WFIFOSET(int fd,int len)
+{
+	struct socket_data *s=session[fd];
+	if( s->wdata_size+len+16384 > s->max_wdata ){
+		realloc_fifo(fd,s->max_rdata, s->max_wdata <<1 );
+		printf("socket: %d wdata expanded to %d bytes.\n",fd, s->max_wdata);
+	}
+	s->wdata_size=(s->wdata_size+(len)+2048 < s->max_wdata) ?
+		 s->wdata_size+len : (printf("socket: %d wdata lost !!\n",fd),s->wdata_size);
 	return 0;
 }
 

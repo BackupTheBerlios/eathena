@@ -1,4 +1,210 @@
 --------------------
+//0880 by 死神
+
+・ポーションピッチャーを正しく実装とちょっと機能拡張。
+・ポーションピッチャーでレベル別に使えるアイテムをskill_require_db.txtに設定できるようにしました。ただポーションピッチャーで使えるアイテムはitemheal、percentheal、sc_start、sc_end以外の物が入っていると正しく動作しません。
+レベル5までは本鯖に合わせていますが最大レベルを10まで拡張するとレベル6 - マステラの実、7 - ローヤルゼリー、8 - イグドラシルの種、9 - イグドラシルの実、10 - バーサークポーションに設定しています。skill_db.txtを修正すればこれが有効になります。(どこを修正するかもわからない人は諦めることです。) ポーションピッチャーによるアイテム使用は使用条件を無視します。少しはアルケミストに希望ができたかも...(多分無理...)
+・battle_athane.confにproduce_item_name_input、produce_potion_name_input、making_arrow_name_input、holywater_name_input 追加。
+・パーティ員にだけ使うスキルとギルド員にだけ使うスキルを設定できるように修正。
+・その他細かい修正。
+	(conf/)
+	battle_athane.conf 修正。
+	(doc/)
+	conf_ref.txt 修正。
+	db_ref.txt 修正。
+	(db/)
+	skill_db.txt 修正。
+	skill_require_db.txt 修正。
+	(map/)
+	map.h 修正。
+	skill.h 修正。
+	skill.c
+		skill_status_change_timer()、skill_attack()、skill_use_id() 修正。
+		skill_castend_nodamage_id()、skill_castend_damage_id() 修正。
+		skill_castend_id()、skill_castend_pos()、skill_produce_mix() 修正。
+		skill_arrow_create()、skill_check_condition() 修正。
+		skill_status_change_clear()、skill_readdb() 修正。
+	mob.c
+		mobskill_use_id()、mob_changestate() 修正。
+	pc.c
+		pc_itemheal()、pc_percentheal()、pc_calcstatus() 修正。
+	battle.h 修正。
+	battle.c
+		battle_delay_damage()、battle_damage()、battle_heal() 修正。
+		battle_get_adelay()、battle_get_amotion() 修正。
+		battle_calc_mob_weapon_attack()、battle_calc_pc_weapon_attack() 修正。
+		battle_weapon_attack()、battle_config_read() 修正。
+	clif.c
+		clif_skill_fail() 修正。
+	script.c
+		buildin_sc_start()、buildin_sc_end() 修正。
+	makefile 修正。
+
+--------------------
+//0879 by 胡蝶蘭
+
+・送信FIFOのバッファオーバーフローの脆弱性の修正
+	・2048バイト以上のパケットを送るとき、FIFOが満杯に近ければ
+	  バッファオーバーフローによる不正アクセスが起こっていた問題修正。
+	・FIFOが満杯に近いときWFIFOSETされたパケットが捨てられていた問題修正。
+	・FIFOがオーバーフローする場合、自動的にFIFOを拡張するようにした。
+	  （ただし、一度にWFIFOSETするパケットが16384バイト以下と仮定している）
+	・「socket: ? wdata expanded to ???? bytes」はFIFOが拡張されたときに
+	  でるログだが、エラーではなく、パケットは正しく送信される。
+	・「socket: ? wdata lost !!」はパケットが喪失したことを表すログで、
+	  エラーであるが64KBを超える超巨大なパケットをWFIFOSETしないと出ない。
+	・16384バイトを超えるパケットをWFIFOSETするとエラーメッセージなしに、
+	  不正アクセスが起こる可能性があるので、超えないようにすること。
+	
+	(common/)
+	socket.c /socket.h
+		WFIFOSET()をマクロから関数に変更
+		realloc_fifo()追加
+	
+・サーバー間通信FIFOのバッファサイズを大きくした
+	・大量のデータが通信されたときにデータ処理遅延が起きにくくするため。
+	・メモリ使用量が増えた。(ぎりぎりの人は65536に設定すると元通りになる)
+	・サーバー間通信のFIFOサイズは mmo.h で定義されている。
+	  変更する場合は64KB(65536)以上の値にすること。
+	  大きくすると巨大データ受信時の遅延が減るがメモリを多く使う。
+	・@kickall時などにデータ送信が激しくなるので変更したが、
+	  同時ログイン人数が少ないと増やしても意味は無い。
+
+	(common/)
+	mmo.h
+		FIFOSIZE_SERVERLINKマクロ追加。
+	(login/)
+	login.c
+		2710パケットでrealloc_fifo()を呼ぶように
+	(char/)
+	char.c
+		2af8パケットでrealloc_fifo()を呼ぶように
+		check_connect_login_server()でrealloc_fifo()を呼ぶように
+	(map/)
+	chrif.c
+		check_connect_char_server()でrealloc_fifo()を呼ぶように
+
+--------------------
+//0878 by huge
+
+・カプラ銀行サービス。
+	自分の鯖で実装してたんですが、意外と好感触だったので出してみます。
+	NPCscriptで、openbank(0);で預金額を返して、中に数字を入れると出し入れします。
+	詳しくはサンプルを同封したので、それを参照。
+
+	(common/)
+	mmo.h
+		struct bank 追加。
+	(map/)
+	map.c
+		do_final(),do_init() 修正。
+	script.c
+		buildin_openbank() 追加。
+	storage.c
+	storage.h
+		グローバル変数追加。
+		do_init_bank(),do_final_bank(),account2bank() 追加。
+		storage_bank(),storage_readbank() 追加。
+
+--------------------
+//0877 by 胡蝶蘭
+
+・login鯖のアクセスコントロールがネットマスク表記に対応
+	192.168.0.0/24 や 192.168.0.0/255.255.0.0 といった表記に対応。
+・battle_athena.confにGMが無条件で装備品を装備できる＆
+  無条件でスキルを使用できる設定追加
+	これらはデバグ用なので動作に不都合があるかもしれません。
+
+	(login/)
+	login.c
+		check_ip()修正,check_ipmask()追加
+	(map/)
+	battle.c/battle.h
+		battle_configにgm_allequip,gm_skilluncond追加
+		battle_config_read()修正更
+	skill.c
+		skill_check_conditio()修正
+	pc.c
+		pc_isequp()修正
+	(doc/)
+	conf_ref.txt
+		allow変更、gm_all_equipment、gm_skill_unconditional追加
+
+--------------------
+//0876 by 死神
+
+・細かいバグ修正。
+・@コマンドにテストの為に入れていた物が入っていたので修正。
+・ハンマーフォールの射程を5から4に修正(本鯖射程は不明)とリザレクションが無属性だったのを聖属性に修正。
+	(db/)
+	skill_db.txt 修正。
+	(map/)
+	mob.c
+		mob_catch_delete()、mob_stop_walking() 修正。
+	storage.c
+		storage_additem() 修正。
+	pc.c
+		pc_damage()、pc_stop_walking() 修正。
+	clif.c
+		clif_parse_UseSkillToId()、clif_parse_UseSkillToPos() 修正。
+	battle.c
+		battle_calc_magic_attack() 修正。
+	skill.c
+		skill_check_condition() 修正。
+	atcommand.c 修正。
+
+--------------------
+//0875 by 胡蝶蘭
+
+・party_share_levelをinter_athena.confに移した
+  (パーティ関連の処理の管轄がinter鯖のため)
+・inter_athena.confにinter_log_file項目追加
+・ギルド作成/解散/城占領/城破棄がログに残るように
+・ギルド解散時にメモリリークしていた問題を修正
+	(char/)
+	char.c/char.h
+		party_share_level関連
+	(inter/)
+	inter.c/inter.h
+		party_share_level / inter_log_file 関連
+		ログ出力用にinter_log()追加
+	int_guild.c
+		作成/解散/城占領/城破棄をログに出力
+		メモリリーク修正
+	(doc/)
+	conf_ref.txt
+		修正
+
+・サーバー状態確認用CGIスクリプト添付など
+	・自己責任＆詳細な解説無し、質問されてもスルーする可能性有り
+	・エディタで開いたら少し説明有り
+	・CGI設置の基本さえわかれば問題ないはず
+	
+	(tool/cgi/)
+	serverstatus.cgi
+		サーバー状態確認用CGIスクリプト
+	addaccount.cgi
+		説明修正
+
+--------------------
+//0874 by Kalen
+・WhiteDayイベント追加
+	conf/npc/npc_event_whiteday.txt(新規)
+	 ただ、お菓子売ってるだけみたい…GMがなにやるのかは知りませんが。
+	 sakROのほうではホワイトチョコらしきものが追加されたのに
+	 jROで追加されたのは雛壇撤去パッチのみ(*´д`;)…
+
+・Alchemistギルドで乳鉢、製造書を変えるように
+	conf/npc/npc_job_alchemist.txt(新規)
+	 転職クエストが分からなかったので温めていましたが
+	 買えないと不便と聞いたので、追加
+
+・染色NPC実装
+	conf/npc/npc_event_dye.txt(更新)
+	 髪型変更がsakROに来たらしいので
+	 なんとなーく更新
+
+--------------------
 //0873 by 死神
 
 ・@コマンドitem2とkillmonster 追加。

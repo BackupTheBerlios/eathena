@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.13 2004/03/07 21:57:14 sara-chan Exp $
+// $Id: char.c,v 1.14 2004/03/10 21:06:19 sara-chan Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -70,7 +70,6 @@ struct mmo_charstatus *char_dat;
 int char_num,char_max;
 int max_connect_user=0;
 int autosave_interval=DEFAULT_AUTOSAVE_INTERVAL;
-int party_share_level = 10;
 int start_zeny = 500;
 
 // 初期位置（confファイルから再設定可能）
@@ -1194,6 +1193,7 @@ int parse_char(int fd)
 				memset(server[i].map,0,sizeof(server[i].map));
 				WFIFOSET(fd,3);
 				RFIFOSKIP(fd,60);
+				realloc_fifo(fd,FIFOSIZE_SERVERLINK,FIFOSIZE_SERVERLINK);	
 				return 0;
 			}
 			break;
@@ -1302,6 +1302,7 @@ int check_connect_login_server(int tid,unsigned int tick,int id,int data)
   if(login_fd<=0 || session[login_fd]==NULL){
     login_fd=make_connection(login_ip,login_port);
     session[login_fd]->func_parse=parse_tologin;
+	realloc_fifo(login_fd,FIFOSIZE_SERVERLINK,FIFOSIZE_SERVERLINK);	
     WFIFOW(login_fd,0)=0x2710;
     memcpy(WFIFOP(login_fd,2),userid,24);
     memcpy(WFIFOP(login_fd,26),passwd,24);
@@ -1450,10 +1451,6 @@ int char_config_read(const char *cfgName)
 			memcpy(start_point.map,map,16);
 			start_point.x=x;
 			start_point.y=y;
-		}
-		else if(strcmpi(w1,"party_share_level")==0){
-			party_share_level=atoi(w2);
-			if(party_share_level < 0) party_share_level = 0;
 		}
 		else if(strcmpi(w1,"start_zeny")==0){
 			start_zeny=atoi(w2);

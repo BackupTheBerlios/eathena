@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.35 2004/03/08 20:36:08 sara-chan Exp $
+// $Id: script.c,v 1.36 2004/03/10 21:06:19 sara-chan Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -124,6 +124,7 @@ int buildin_setfalcon(struct script_state *st);
 int buildin_setriding(struct script_state *st);
 int buildin_savepoint(struct script_state *st);
 int buildin_openstorage(struct script_state *st);
+int buildin_openbank(struct script_state *st);
 int buildin_itemskill(struct script_state *st);
 int buildin_produce(struct script_state *st);
 int buildin_monster(struct script_state *st);
@@ -244,6 +245,7 @@ struct {
 	{buildin_setriding,"setriding",""},
 	{buildin_savepoint,"savepoint","sii"},
 	{buildin_openstorage,"openstorage",""},
+	{buildin_openbank,"openbank","i"},
 	{buildin_itemskill,"itemskill","iis"},
 	{buildin_produce,"produce","i"},
 	{buildin_monster,"monster","siisii*"},
@@ -1563,7 +1565,7 @@ int buildin_getitem(struct script_state *st)	// Modified by RoVeRT
 		if(!flag)
 			item_tmp.identify=1;
 		else
-			item_tmp.identify=!itemdb_isequip(nameid);
+			item_tmp.identify=!itemdb_isequip3(nameid);
 		if((flag = pc_additem(sd,&item_tmp,amount))) {
 			clif_additem(sd,0,0,flag);
 			map_addflooritem(&item_tmp,amount,sd->bl.m,sd->bl.x,sd->bl.y,NULL,NULL,NULL,0);
@@ -2342,6 +2344,24 @@ int buildin_openstorage(struct script_state *st)
 	return 0;
 }
 /*==========================================
+ * カプラ銀行サービス
+ *------------------------------------------
+ */
+int buildin_openbank(struct script_state *st)
+{
+	int amount=0;
+	amount=conv_num(st,& (st->stack->stack_data[st->start+2]));
+
+	if(amount==0){
+		amount = storage_readbank(map_id2sd(st->rid));
+		push_val(st->stack,C_INT,amount);
+		return 0;
+	}
+	storage_bank(map_id2sd(st->rid),amount);
+
+	return 0;
+}
+/*==========================================
  * アイテムによるスキル発動
  *------------------------------------------
  */
@@ -2719,11 +2739,15 @@ int buildin_disablearena(struct script_state *st)	// Added by RoVeRT
  */
 int buildin_sc_start(struct script_state *st)
 {
+	struct block_list *bl;
 	int type,tick,val1;
 	type=conv_num(st,& (st->stack->stack_data[st->start+2]));
 	tick=conv_num(st,& (st->stack->stack_data[st->start+3]));
 	val1=conv_num(st,& (st->stack->stack_data[st->start+4]));
-	skill_status_change_start(map_id2bl(st->rid),type,val1,0,0,0,tick,0);
+	bl = map_id2bl(st->rid);
+	if(bl->type == BL_PC && ((struct map_session_data *)bl)->state.potionpitcher_flag)
+		bl = map_id2bl(((struct map_session_data *)bl)->skilltarget);
+	skill_status_change_start(bl,type,val1,0,0,0,tick,0);
 	return 0;
 }
 
@@ -2733,9 +2757,13 @@ int buildin_sc_start(struct script_state *st)
  */
 int buildin_sc_end(struct script_state *st)
 {
+	struct block_list *bl;
 	int type;
 	type=conv_num(st,& (st->stack->stack_data[st->start+2]));
-	skill_status_change_end(map_id2bl(st->rid),type,-1);
+	bl = map_id2bl(st->rid);
+	if(bl->type == BL_PC && ((struct map_session_data *)bl)->state.potionpitcher_flag)
+		bl = map_id2bl(((struct map_session_data *)bl)->skilltarget);
+	skill_status_change_end(bl,type,-1);
 //	if(battle_config.etc_log)
 //		printf("sc_end : %d %d\n",st->rid,type);
 	return 0;
@@ -2905,7 +2933,7 @@ int buildin_warpwaitingpc(struct script_state *st)	// Modified by RoVeRT
 		if(strcmp(str,"Random")==0)
 			pc_randomwarp(sd,3);
 		else if(strcmp(str,"SavePoint")==0){
-			if(map[sd->bl.m].flag.noteleport)	// テレ?禁?
+			if(map[sd->bl.m].flag.noteleport)	// テレポ禁止
 				return 0;
 	
 			pc_setpos(sd,sd->status.save_point.map,

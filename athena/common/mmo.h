@@ -10,6 +10,8 @@
 #define RETCODE "\n"	// (LFÅFUnixånÅj
 #endif
 
+#define FIFOSIZE_SERVERLINK	128*1024
+
 #define MAX_MAP_PER_SERVER 512
 #define MAX_INVENTORY 100
 #define MAX_AMOUNT 30000
@@ -97,6 +99,10 @@ struct storage {
 	short storage_status;
 	short storage_amount;
 	struct item storage[MAX_STORAGE];
+};
+struct bank {
+	int account_id;
+	int amount;
 };
 
 struct map_session_data;

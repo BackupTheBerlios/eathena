@@ -1593,6 +1593,18 @@ z [0`4]•‚ÌF
  			return 1;
 		}
 
+		if(strcmpi(command, "@test") == 0){
+			sscanf(message, "%s %d %d %d", command, &x, &y, &z);
+			clif_skill_nodamage(&sd->bl,&sd->bl,x,y,z);
+			return 1;
+		}
+			
+		if(strcmpi(command, "@test2") == 0){
+			sscanf(message, "%s %d", command, &x);
+			clif_skill_damage(&sd->bl,&sd->bl,gettick(),battle_get_amotion(&sd->bl),battle_get_dmotion(&sd->bl),100,1,x,10,6);
+			return 1;
+		}
+			
 		if(strcmpi(command, "@test3") == 0){
 			sscanf(message, "%s %d", command, &x);
 			clif_emotion(&sd->bl,x);

@@ -1,4 +1,4 @@
-// $Id: mob.c,v 1.59 2004/03/08 20:36:08 sara-chan Exp $
+// $Id: mob.c,v 1.60 2004/03/10 21:06:19 sara-chan Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -521,7 +521,7 @@ int mob_changestate(struct mob_data *md,int state,int type)
 		// 死んだのでこのmobへの攻撃者全員の攻撃を止める
 		clif_foreachclient(mob_stopattacked,md->bl.id);
 		skill_unit_out_all(&md->bl,gettick(),1);
-		skill_status_change_clear(&md->bl,1);	// ステータス異常を解除する
+		skill_status_change_clear(&md->bl,2);	// ステータス異常を解除する
 		skill_clear_unitgroup(&md->bl);	// 全てのスキルユニットグループを削除する
 		skill_cleartimerskill(&md->bl);
 		md->hp=md->target_id=md->attacked_id=0;
@@ -807,10 +807,8 @@ int mob_stop_walking(struct mob_data *md,int type)
 	if(type&0x01)
 		clif_fixmobpos(md);
 	if(type&0x02) {
-		int delay=mob_db[md->class].dmotion;
+		int delay=battle_get_dmotion(&md->bl);
 		unsigned int tick = gettick();
-		if(battle_config.monster_damage_delay_rate != 100)
-			delay = delay*battle_config.monster_damage_delay_rate/100;
 		if(md->canmove_tick < tick)
 			md->canmove_tick = tick + delay;
 	}
@@ -1612,8 +1610,6 @@ int mob_catch_delete(struct mob_data *md)
 	mob_changestate(md,MS_DEAD,0);
 	clif_clearchar_area(&md->bl,0);
 	map_delblock(&md->bl);
-	if(mob_get_viewclass(md->class) <= 1000)
-		clif_clearchar_delay(gettick()+3000,&md->bl,0);
 	mob_setdelayspawn(md->bl.id);
 	return 0;
 }
@@ -2362,13 +2358,13 @@ int mobskill_castend_id( int tid, unsigned int tick, int id,int data )
 		if(bl->type != BL_SKILL && (dist == 0 || map_check_dir(dir,t_dir)))
 			return 0;
 	}
+	if( ( (skill_get_inf(md->skillid)&1) || (skill_get_inf2(md->skillid)&4) ) &&	// 彼我敵対関係チェック
+		battle_check_target(&md->bl,bl, BCT_ENEMY)<=0 )
+		return 0;
 	range = skill_get_range(md->skillid,md->skilllv);
 	if(range < 0)
 		range = battle_get_range(&md->bl) - (range + 1);
 	if(range + battle_config.mob_skill_add_range < distance(md->bl.x,md->bl.y,bl->x,bl->y))
-		return 0;
-	if( ( (skill_get_inf(md->skillid)&1) || (skill_get_inf2(md->skillid)&4) ) &&	// 彼我敵対関係チェック
-		battle_check_target(&md->bl,bl, BCT_ENEMY)<=0 )
 		return 0;
 
 	md->skilldelay[md->skillidx]=tick;
