@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.6 2004/02/11 15:54:47 rovert Exp $
+// $Id: itemdb.c,v 1.7 2004/02/16 19:36:00 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -577,12 +577,14 @@ static int itemdb_read_itemnametable(void)
 
 		if(	sscanf(p,"%d#%[^#]#",&nameid,buf2)==2 ){
 
-			if( itemdb_exists(nameid) &&
-				strncmp(itemdb_search(nameid)->jname,buf2,24)!=0 )
 #ifdef ITEMDB_OVERRIDE_NAME_VERBOSE
+			if( itemdb_exists(nameid) &&
+				strncmp(itemdb_search(nameid)->jname,buf2,24)!=0 ){
 				printf("[override] %d %s => %s\n",nameid
 					,itemdb_search(nameid)->jname,buf2);
+			}
 #endif
+
 			memcpy(itemdb_search(nameid)->jname,buf2,24);
 		}
 		
