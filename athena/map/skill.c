@@ -2012,7 +2012,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		{
 		int equip=0,item_pos;
 		if(bl->type==BL_PC) {
-			if ((item_pos = pc_checkequip(dstsd,skillid-215))) {
+			if ((item_pos = pc_checkequip(dstsd,RG_STRIPWEAPON-skillid+4))) {
 				equip=1;
 				if (rand()%100 < (5+skilllv*2)) {
 					equip=2;
