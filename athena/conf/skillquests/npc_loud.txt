@@ -1,5 +1,6 @@
 //Loud Roar
-alberta.gat,83,96,5	script	ƒlƒR	98,{
+alberta.gat,83,96,5	script	Brynolf	98,{
+
 	if ((Class == Job_Merchant) && (JobLevel < 15)) goto LStartLowlv;
 	if (!((Class == Job_Merchant) || (Class == Job_Blacksmith) || (Class == Job_Alchem))) goto LStartOther;
 	if (getskilllv(155)>0) goto LStartTwice;

@@ -3,7 +3,7 @@
 
 payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 	
-	if(@test_AR !=0) goto ContM0BeArc;
+	if(jobq_arc !=0) goto ContM0BeArc;
 	mes "[Archer Guildsman]";
 	mes "Good Day.How may I help you?";
 	next;
@@ -50,7 +50,7 @@ payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 				mes "[Archer Guildsman]";
 				mes "OK, first sign here... Now that's that done, let's move on to your TEST!";
 				mes "You weren't thinking that I would let you be an archer that easily, did you?";
-				set @test_AR,1;
+				set jobq_arc,1;
 				next;
 				mes "[Archer Guildsman]";
 				mes "Okay then, now I shall give you the instructions for your test";

@@ -14,9 +14,9 @@ sword_1-1.gat,193,168,0	warp	sword2	1,1,sword_1-1.gat,214,167
 izlude_in.gat,30,163,8	script	Test Hall Staff	105,{
 	set @TEMP,0;
 	if(Class != 0) goto L1;
-	if(@jobq_swo==1) goto jobswordqE1;
-	if(@jobq_swo==2) goto jobswordqE2;
-	if(@jobq_swo==3) goto jobswordqE3;
+	if(jobq_swo==1) goto jobswordqE1;
+	if(jobq_swo==2) goto jobswordqE2;
+	if(jobq_swo==3) goto jobswordqE3;
 
 	set @TEMP,rand(2);
 	if(@TEMP !=0) goto L0;
@@ -37,7 +37,7 @@ izlude_in.gat,30,163,8	script	Test Hall Staff	105,{
 		mes "[Test Hall Staff]";
 		mes "So are you the one who wants be a swordy? Alright! You look reliable!!";
 		mes "Relax yourself and keep up the good work. This is not a diffecult course.";
-		set @jobq_swo,@jobq_swo+1;
+		set jobq_swo,jobq_swo+1;
 		next;
 		warp "sword_1-1.gat",10,245;
 		close;
@@ -45,7 +45,7 @@ izlude_in.gat,30,163,8	script	Test Hall Staff	105,{
 		mes "[Test Hall Staff]";
 		mes "Retesting....? Whatsoever, I like the man like you who never be afraid of challange! Now,drink this and cheer up!";
 		getitem 512,5;
-		set @jobq_swo,@jobq_swo+1;
+		set jobq_swo,jobq_swo+1;
 		next;
 		warp "sword_1-1.gat",10,245;
 		close;
@@ -87,8 +87,8 @@ izlude_in.gat,62,170,6	script	Swordman	85,{
 	if(Class==1) goto JobSwo;
 	if(Class !=0) goto NotNov;
 	if(joblevel<9) goto JobLess9;
-	if(@jobq_swo==4) goto JobQ4;
-	if(@jobq_swo==0) goto JobQ0;
+	if(jobq_swo==4) goto JobQ4;
+	if(jobq_swo==0) goto JobQ0;
 		mes "Hmm let's see, " + strcharinfo(0) + "..." + strcharinfo(0) + "...Aha! There you are " + strcharinfo(0) + "! Come right this way!";
 		next;
 	savepoint "izlude_in.gat",65,165;
@@ -136,7 +136,7 @@ izlude_in.gat,74,172,5	script	Sword Master	119,{
 			mes "You have occupied with another Job,haven't you?";
 			close;
 		L0c:
-			if(@jobq_swo==0) goto L0d;
+			if(jobq_swo==0) goto L0d;
 			goto L00a;
 		L0d:
 			mes "[Sword Master]";
@@ -146,7 +146,7 @@ izlude_in.gat,74,172,5	script	Sword Master	119,{
 
 			L00:
 				savepoint "izlude_in.gat",65,165;
-				set @jobq_swo,1;
+				set jobq_swo,1;
 				mes "[Sword Master]";
 				mes "Sign there....Okay. You are '" + strcharinfo(0) + "', right? I will present your registration as soon as I can.";
 				mes "... if you already met the requirements, you can take an interview right now.";
@@ -172,8 +172,8 @@ izlude_in.gat,74,172,5	script	Sword Master	119,{
 		L00a:
 			mes "[Sword Master]";
 			if(joblevel<9) goto NotJob9;
-			if(@jobq_swo<=3) goto jobswordqLE3;
-			if(@jobq_swo==4) goto jobswordqE4;
+			if(jobq_swo<=3) goto jobswordqLE3;
+			if(jobq_swo==4) goto jobswordqE4;
 		
 		NotJob9:
 			mes "Yo, You haven't learn all Basic Skills you needed to be a Swordsman.";
@@ -193,7 +193,7 @@ izlude_in.gat,74,172,5	script	Sword Master	119,{
 			next;
 //			Release_All;
 			jobchange 1;
-			set @jobq_swo,0;
+			set jobq_swo,0;
 			announce strcharinfo(0) + " has become a Swordsman!",3;
 			mes "[Sword Master]";
 			mes "Once again, I congratulate you " + strcharinfo(0) + ", in the meantime - I expect you will be on the go and promote the Swordman Assosiation.";
@@ -307,7 +307,7 @@ sword_1-1.gat,230,204,2	script	Test Hall Staff	105,{
 				
 sword_1-1.gat,223,167,2	script	Mae	92,{
 	announce "Applicant " + strcharinfo(0) + ", has successfully passed the test.",1;
-	set @jobq_swo,4;
+	set jobq_swo,4;
     mes "[Mae]";
 	mes "I sincerely congratulate you " + strcharinfo(0) + " for passing the test!";
 	mes "I already sent your test result to the Job Department. Please inquire at the Officer in Centre. Thank you.";
