@@ -363,7 +363,7 @@ dturtle:	warp "tur_dun01.gat",	149,	238;	close;
 
 // Warp Morroc:
 
-Morocc.gat,156,97,4	script	Warp NPC	115,{
+morocc.gat,156,97,4	script	Warp NPC	115,{
 	mes "[Warp NPC]";
 	mes "Hello,";
 	mes "I can warp you to any Town and Dungeon!";
