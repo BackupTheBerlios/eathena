@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.2 2004/01/25 14:28:11 RoVeRT Exp $
+// $Id: login.c,v 1.3 2004/01/28 21:21:54 RoVeRT Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -435,6 +435,26 @@ int parse_fromchar(int fd)
 		WFIFOL(fd,2)=oldacc;
 		WFIFOL(fd,6)=newacc;
 		WFIFOSET(fd,10);
+	  }
+	  return 0;
+
+	case 0x2722:	// changesex
+	  {
+	  	int acc,sex,i=0,j=0;
+		acc=RFIFOL(fd,4);
+		sex=RFIFOB(fd,8);
+		for(i=0;i<auth_num;i++){
+			printf("%d,",auth_dat[i].account_id);
+			if(auth_dat[i].account_id==acc){
+				auth_dat[i].sex=sex;
+				j=1;
+			}
+		}
+		RFIFOSKIP(fd,RFIFOW(fd,2));
+		WFIFOW(fd,0)=0x2723;
+		WFIFOL(fd,2)=acc;
+		WFIFOB(fd,6)=sex;
+		WFIFOSET(fd,7);
 	  }
 	  return 0;
 
