@@ -285,9 +285,11 @@ int pc_setrestartvalue(struct map_session_data *sd,int type)
 static int pc_counttargeted_sub(struct block_list *bl,va_list ap)
 {
 	int id,*c;
+	struct block_list *src;
 	id=va_arg(ap,int);
 	c=va_arg(ap,int *);
-	if(id == bl->id) return 0;
+	src=va_arg(ap,struct block_list *);
+	if(id == bl->id || (src && id == src->id)) return 0;
 	if(bl->type == BL_PC) {
 		if(((struct map_session_data *)bl)->attacktarget == id && ((struct map_session_data *)bl)->attacktimer != -1)
 			(*c)++;
@@ -299,12 +301,12 @@ static int pc_counttargeted_sub(struct block_list *bl,va_list ap)
 	return 0;
 }
 
-int pc_counttargeted(struct map_session_data *sd)
+int pc_counttargeted(struct map_session_data *sd,struct block_list *src)
 {
 	int c=0;
 	map_foreachinarea(pc_counttargeted_sub, sd->bl.m,
 		sd->bl.x-AREA_SIZE,sd->bl.y-AREA_SIZE,
-		sd->bl.x+AREA_SIZE,sd->bl.y+AREA_SIZE,0,sd->bl.id,&c );
+		sd->bl.x+AREA_SIZE,sd->bl.y+AREA_SIZE,0,sd->bl.id,&c,src);
 	return c;
 }
 
@@ -1291,7 +1293,6 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		if(sd->sc_data[SC_POISON].timer!=-1){	// プロボック
 			sd->def = sd->def*75/100;
 			sd->def2 = sd->def2*75/100;
-			sd->status.hp -= sd->hprate /100;
 		}
 		if(sd->sc_data[SC_DRUMBATTLE].timer!=-1){	// 戦太鼓の響き
 			sd->watk += sd->sc_data[SC_DRUMBATTLE].val2;
@@ -2673,7 +2674,6 @@ int pc_setpos(struct map_session_data *sd,char *mapname_org,int x,int y,int clrt
 			}
 		}
 		clif_changemap(sd,mapname,x,y);
-		memset(sd->skill_limit,0,sizeof(sd->skill_limit));
 	}
 
 	memcpy(sd->mapname,mapname,24);
@@ -3629,6 +3629,7 @@ int pc_damage(struct block_list *src,struct map_session_data *sd,int damage)
 		pc_setstand(sd);
 		skill_gangsterparadise(sd,0);
 	}
+
 	// 歩 いていたら足を止める
 	if(sd->sc_data[SC_ENDURE].timer == -1)
 		pc_stop_walking(sd,3);

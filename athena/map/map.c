@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.11 2004/01/28 00:06:40 rovert Exp $
+// $Id: map.c,v 1.12 2004/01/28 21:26:00 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -773,6 +773,7 @@ int map_quit(struct map_session_data *sd)
 	pc_stopattack(sd);
 	pc_delghosttimer(sd);
 	pc_delspiritball(sd,sd->spiritball,1);
+	skill_gangsterparadise(sd,0);
 
 	pc_calcstatus(sd,4);
 
@@ -1351,4 +1352,3 @@ int do_init(int argc,char *argv[])
 
 	return 0;
 }
-
