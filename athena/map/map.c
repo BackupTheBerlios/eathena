@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.25 2004/03/08 20:36:08 sara-chan Exp $
+// $Id: map.c,v 1.26 2004/03/10 18:50:33 moonsoul Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -418,6 +418,63 @@ void map_foreachinmovearea(int (*func)(struct block_list*,va_list),int m,int x0,
 	if(bl_list_count>=BL_LIST_MAX) {
 		if(battle_config.error_log)
 			printf("map_foreachinarea: *WARNING* block count too many!\n");
+	}
+
+	map_freeblock_lock();	// メモリからの解放を禁止する
+		
+	for(i=blockcount;i<bl_list_count;i++)
+		if(bl_list[i]->prev)	// 有効かどうかチェック
+			func(bl_list[i],ap);
+
+	map_freeblock_unlock();	// 解放を許可する
+
+	va_end(ap);
+	bl_list_count = blockcount;
+}
+
+// -- moonsoul	(added map_foreachincell which is a rework of map_foreachinarea but
+//			 which only checks the exact single x/y passed to it rather than an
+//			 area radius - may be more useful in some instances)
+//
+void map_foreachincell(int (*func)(struct block_list*,va_list),int m,int x,int y,int type,...)
+{
+	int bx,by;
+	struct block_list *bl;
+	va_list ap;
+	int blockcount=bl_list_count,i,c;
+
+	va_start(ap,type);
+
+	by=y/BLOCK_SIZE;
+	bx=x/BLOCK_SIZE;	
+
+	if(type==0 || type!=BL_MOB)
+	{
+		bl = map[m].block[bx+by*map[m].bxs];
+		c = map[m].block_count[bx+by*map[m].bxs];
+		for(i=0;i<c && bl;i++,bl=bl->next)
+		{
+			if(type && bl->type!=type)
+				continue;
+			if(bl->x==x && bl->y==y && bl_list_count<BL_LIST_MAX)
+				bl_list[bl_list_count++]=bl;
+		}
+	}
+
+	if(type==0 || type==BL_MOB)
+	{
+		bl = map[m].block_mob[bx+by*map[m].bxs];
+		c = map[m].block_mob_count[bx+by*map[m].bxs];
+		for(i=0;i<c && bl;i++,bl=bl->next)
+		{
+			if(bl->x==x && bl->y==y && bl_list_count<BL_LIST_MAX)
+				bl_list[bl_list_count++]=bl;
+		}
+	}	
+
+	if(bl_list_count>=BL_LIST_MAX) {
+		if(battle_config.error_log)
+			printf("map_foreachincell: *WARNING* block count too many!\n");
 	}
 
 	map_freeblock_lock();	// メモリからの解放を禁止する

@@ -498,6 +498,7 @@ int map_addblock(struct block_list *);
 int map_delblock(struct block_list *);
 void map_foreachinarea(int (*)(struct block_list*,va_list),int,int,int,int,int,int,...);
 void map_foreachinmovearea(int (*)(struct block_list*,va_list),int,int,int,int,int,int,int,int,...);
+void map_foreachincell(int (*)(struct block_list*,va_list),int,int,int,int,...);
 int map_countnearpc(int,int,int);
 // ˆê“IobjectŠÖ˜A
 int map_addobject(struct block_list *);

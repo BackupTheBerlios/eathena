@@ -1347,6 +1347,9 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 			sd->def2 = sd->def2*(100-sd->sc_data[SC_CONCENTRATION].val2)/100;
 		}
 
+		if(sd->sc_data[SC_MAGICPOWER].timer!=-1)
+			sd->matk_rate = sd->matk_rate*(100+sd->sc_data[SC_MAGICPOWER].val1)/100;
+
 		if(sd->sc_data[SC_VOLCANO].timer!=-1 && sd->def_ele == 3)	// エ?ジェ?ス
 			sd->watk += (sd->sc_data[SC_VOLCANO].val1 * 10);
 		if(sd->sc_data[SC_ANGELUS].timer!=-1)	// エンジェラス

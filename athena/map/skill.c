@@ -227,6 +227,8 @@ static const int diry[8]={1,1,0,-1,-1,-1,0,1};
 
 static int rdamage;
 
+int skill_ensemble(struct map_session_data *sd,int);
+
 /* スキルデータベース */
 struct skill_db skill_db[MAX_SKILL_DB];
 
@@ -307,7 +309,7 @@ int skill_get_unit_id(int id,int flag)
 	case HT_FLASHER:		return 0x96;				/* フラッシャ? */
 	case HT_FREEZINGTRAP:	return 0x97;				/* フリ?ジングトラップ */
 	case HT_CLAYMORETRAP:	return 0x98;				/* クレイモア?トラップ */
-	case AM_DEMONSTRATION:	return 0xb3;				/* Demonstration */
+	case AM_DEMONSTRATION:	return 0xb1;				/* Demonstration */
 //	case CR_HOLYCROSS:		return 0x86;				/* Test */
 //	case MO_EXTREMITYFIST:	return 0x86;				/* Practice */
 	case SA_VOLCANO:		return 0x9a;				/* Volcano */
@@ -2361,14 +2363,6 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 // -- moonsoul (testing new ground skills for Paladin/High Priest)
 	case PA_GOSPEL:		// - Paladin - Gospel (369)
 	case HP_BASILICA:		// - High Priest - Basilica (362)
-	case BD_LULLABY:			/* 子守唄 */
-	case BD_RICHMANKIM:			/* ニヨルドの宴 */
-	case BD_ETERNALCHAOS:		/* 永遠の混沌 */
-	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
-	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
-	case BD_ROKISWEIL:			/* ロキの叫び */
-	case BD_INTOABYSS:			/* 深淵の中に */
-	case BD_SIEGFRIED:			/* 不死身のジークフリード */
 	case BA_DISSONANCE:			/* 不協和音 */
 	case BA_POEMBRAGI:			/* ブラギの詩 */
 	case BA_WHISTLE:			/* 口笛 */
@@ -2381,6 +2375,18 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case DC_SERVICEFORYOU:		/* サービスフォーユー */
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		skill_unitsetting(src,skillid,skilllv,src->x,src->y,0);
+		break;
+
+	case BD_LULLABY:			/* 子守唄 */
+	case BD_RICHMANKIM:			/* ニヨルドの宴 */
+	case BD_ETERNALCHAOS:		/* 永遠の混沌 */
+	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
+	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
+	case BD_ROKISWEIL:			/* ロキの叫び */
+	case BD_INTOABYSS:			/* 深淵の中に */
+	case BD_SIEGFRIED:			/* 不死身のジークフリード */
+		if(src->type==BL_PC)		
+			skill_ensemble((struct map_session_data *)src,skillid);
 		break;
 
 	case BD_ADAPTATION:			/* アドリブ */
@@ -5337,6 +5343,63 @@ int skill_gangsterparadise(struct map_session_data *sd ,int type)
 	}
 	return 0;
 }
+
+static int skill_ensemble_count(struct block_list *bl,va_list ap)
+{
+	if(bl->type!=BL_PC)
+		return 0;
+
+	int *c,skill_num;
+	short s_class,t_class;
+	struct map_session_data *sd,*t_sd=(struct map_session_data*)bl;
+	c=va_arg(ap,int *);
+	sd=va_arg(ap,struct map_session_data *);
+	skill_num=va_arg(ap,int);
+
+	s_class=sd->status.class;
+	t_class=t_sd->status.class;
+
+	if((s_class == 19 || s_class == 4020) && (t_class != 20 && t_class != 4021))
+		return 0;
+	if((s_class == 20 || s_class == 4021) && (t_class != 19 && t_class != 4020))
+		return 0;
+
+	if(pc_checkskill(sd,skill_num) > 0 && pc_checkskill(t_sd,skill_num) > 0){
+		struct block_list *src = (struct block_list *)sd;
+		int skill_av = (pc_checkskill(sd,skill_num)+pc_checkskill(t_sd,skill_num))/2;
+		int tick = gettick();
+
+		clif_skill_nodamage(src,src,skill_num,skill_av,1);
+		clif_skill_nodamage(bl,bl,skill_num,skill_av,1);
+		skill_unitsetting(src,skill_num,skill_av,src->x,src->y,0);	
+
+		sd->canmove_tick = tick + skill_get_time(skill_num,skill_av);
+		t_sd->canmove_tick = tick + skill_get_time(skill_num,skill_av);	
+
+		(*c)++;
+	}
+
+	return 0;
+}
+
+int skill_ensemble(struct map_session_data *sd,int skill_num)
+{
+	int c=0,count=0;
+	static int inc_x[4]={1,0,-1,0};
+	static int inc_y[4]={0,-1,0,1};
+
+	if(pc_checkskill(sd,skill_num) <= 0)
+		return 0;
+
+	while(c<1 && count<4){
+		map_foreachincell(skill_ensemble_count,sd->bl.m,
+			sd->bl.x+inc_x[count],sd->bl.y+inc_y[count],BL_PC,&c,sd,skill_num);
+		count++;
+	}
+
+	return 0;
+}
+
 /*==========================================
  * 寒いジョーク・スクリーム判定処理(foreachinarea)
  *------------------------------------------
