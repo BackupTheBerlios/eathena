@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.6 2004/01/14 19:35:42 rovert Exp $
+// $Id: clif.c,v 1.7 2004/01/15 01:00:04 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -2771,7 +2771,7 @@ int clif_skillinfo(struct map_session_data *sd,int skillid,int type,int range)
 	WFIFOW(fd,8) = sd->status.skill[skillid].lv;
 	WFIFOW(fd,10) = skill_get_sp(id,sd->status.skill[skillid].lv);
 	if(range < 0)
-		WFIFOW(fd,12)= skill_get_range(id);
+		WFIFOW(fd,12)= skill_get_range(id,sd->status.skill[skillid].lv);
 	else
 		WFIFOW(fd,12)= range;
 	memset(WFIFOP(fd,14),0,24);
