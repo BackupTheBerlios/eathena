@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.25 2004/02/16 19:48:53 rovert Exp $
+// $Id: script.c,v 1.26 2004/02/16 21:20:24 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN
@@ -1664,6 +1664,9 @@ int buildin_getpartyname(struct script_state *st)
 	name=buildin_getpartyname_sub(party_id);
 	if(name!=0)
 		push_str(st->stack,C_STR,name);
+	else
+		push_str(st->stack,C_STR,"null");
+
 	return 0;
 }
 /*==========================================
@@ -1696,6 +1699,8 @@ int buildin_getguildname(struct script_state *st)
 	name=buildin_getguildname_sub(guild_id);
 	if(name!=0)
 		push_str(st->stack,C_STR,name);
+	else
+		push_str(st->stack,C_STR,"null");
 	return 0;
 }
 
@@ -1729,6 +1734,8 @@ int buildin_getguildmaster(struct script_state *st)
 	master=buildin_getguildmaster_sub(guild_id);
 	if(master!=0)
 		push_str(st->stack,C_STR,master);
+	else
+		push_str(st->stack,C_STR,"null");
 	return 0;
 }
 

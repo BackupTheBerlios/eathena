@@ -340,11 +340,11 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 	else if(bl->type==BL_MOB)
 		md=(struct mob_data *)src;
 
-	sc_def_mdef=100 - battle_get_mdef(bl);
 	luk = battle_get_luk(bl);
-	sc_def_vit=100 - (battle_get_vit(bl) + luk/3);
-	sc_def_int=100 - (battle_get_int(bl) + luk/3);
-	sc_def_luk=100 - luk;
+	sc_def_mdef=100 - (3 + battle_get_mdef(bl) + luk/3);
+	sc_def_vit=100 - (3 + battle_get_vit(bl) + luk/3);
+	sc_def_int=100 - (3 + battle_get_int(bl) + luk/3);
+	sc_def_luk=100 - (3 + luk);
 	if(bl->type==BL_PC)
 		dstsd=(struct map_session_data *)bl;
 	else if(bl->type==BL_MOB){
@@ -412,7 +412,6 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 	case MG_FROSTDIVER:		/* フロストダイバー */
 	case WZ_FROSTNOVA:		/* フロストノヴァ */
 	case HT_FREEZINGTRAP:	/* フリージングトラップ */
-	case BA_FROSTJOKE:		/* 寒いジョーク */
 /*
 		rate=battle_get_lv(src)/2 +battle_get_int(src)/3+ skilllv*2 +15 -battle_get_mdef(bl);
 		if(rate>95)rate=95;
@@ -503,6 +502,15 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 			skill_status_change_start(bl,SC_STAN,skilllv,0,skill_get_time2(skillid,skilllv),0);
 		if( rand()%100 < (10+3*skilllv)*sc_def_int/100 )
 			skill_status_change_start(bl,SC_BLIND,skilllv,0,skill_get_time2(skillid,skilllv),0);
+		break;
+	case BA_FROSTJOKE:
+		if( rand()%100 < (15+5*skilllv)*sc_def_mdef/100)
+			skill_status_change_start(bl,SC_FREEZE,skilllv,0,skill_get_time2(skillid,skilllv),0);
+		break;
+
+	case DC_SCREAM:
+		if( rand()%100 < (25+5*skilllv)*sc_def_vit/100 )
+			skill_status_change_start(bl,SC_STAN,skilllv,0,skill_get_time2(skillid,skilllv),0);
 		break;
 
 	case BD_LULLABY:	/* 子守唄 */
@@ -942,6 +950,7 @@ static int skill_timerskill(int tid, unsigned int tick, int id,int data )
 	struct mob_data *md = NULL;
 	struct block_list *src,*target;
 	struct skill_timerskill *skl = NULL;
+	int range;
 	
 	src = map_id2bl(id);
 	if(src == NULL || src->prev == NULL)
@@ -1007,6 +1016,15 @@ static int skill_timerskill(int tid, unsigned int tick, int id,int data )
 					}
 				}
 				break;
+
+			case BA_FROSTJOKE:			/* 寒いジョーク */
+			case DC_SCREAM:				/* スクリーム */
+				range=15;		//視界全体
+				map_foreachinarea(skill_frostjoke_scream,sd->bl.m,
+					sd->bl.x-range,sd->bl.y-range,
+					sd->bl.x+range,sd->bl.y+range,BL_NUL,src,skl->skill_id,skl->skill_lv,tick);
+				break;
+
 			default:
 				skill_attack(skl->type,src,src,target,skl->skill_id,skl->skill_lv,tick,skl->flag);
 				break;
@@ -1536,8 +1554,6 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	return 0;
 }
 
-
-
 /*==========================================
  * スキル使用（詠唱完了、ID指定支援系）
  *------------------------------------------
@@ -1556,7 +1572,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	else if(src->type==BL_MOB)
 		md=(struct mob_data *)src;
 
-	sc_def_vit = 100 - (battle_get_vit(bl) + battle_get_luk(bl)/3);
+	sc_def_vit = 100 - (3 + battle_get_vit(bl) + battle_get_luk(bl)/3);
 	if(bl->type==BL_PC)
 		dstsd=(struct map_session_data *)bl; 
 	else if(bl->type==BL_MOB){
@@ -1701,6 +1717,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 
 	case AL_INCAGI:			/* 速度増加 */
 	case AL_BLESSING:		/* ブレッシング */
+	case KN_AUTOCOUNTER:		/* オートカウンター */
 	case PR_SLOWPOISON:
 	case PR_IMPOSITIO:		/* イムポシティオマヌス */
 	case PR_ASPERSIO:		/* アスペルシオ */
@@ -1758,9 +1775,31 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			mob_target((struct mob_data *)bl,src,range);
 		}
 		break;
-	case KN_AUTOCOUNTER:	/* オートカウンター */
-		clif_skill_nodamage(src,bl,skillid,skilllv,1);
-		skill_status_change_start(bl,SkillStatusChangeTable[skillid], skilllv, 0,skill_get_time(skillid,skilllv),0 );
+	case CR_DEVOTION:		/* ディボーション */
+		if(sd && dstsd){
+			int lv = sd->status.base_level-dstsd->status.base_level;
+			lv = (lv<0)?-lv:lv;
+			if((sd->bl.type!=BL_PC)		// 相手はPCじゃないとだめ
+			 ||(sd->bl.id == bl->id)	// 相手が自分はだめ
+			 ||(lv > 10)			// レベル差±10まで
+			 ||(sd->status.party_id != dstsd->status.party_id)	// 同じパーティーじゃないとだめ
+			 ||(dstsd->status.class==14||dstsd->status.class==21)){	// クルセだめ
+				clif_skill_fail(sd,skillid,0,0);
+				return 0;
+			}
+			for(i=0;i<skilllv;i++){
+				if(!sd->dev.val1[i]){		// 空きがあったら入れる
+					sd->dev.val1[i] = bl->id;
+					break;
+				}else if(i==skilllv-1){		// 空きがなかった
+					clif_skill_fail(sd,skillid,0,0);
+					return 0;
+				}
+			}
+			clif_skill_nodamage(src,bl,skillid,skilllv,1);
+			clif_devotion(sd,bl->id);
+			skill_status_change_start( bl, SkillStatusChangeTable[skillid], src->id ,1, 1000*(15+15*skilllv),0 );
+		}
 			break;
 
 	case CR_REFLECTSHIELD:
@@ -1839,7 +1878,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		{
 			int c,n=4,ar;
 			int dir = map_calc_dir(src,bl->x,bl->y);
-			struct brandish tc;
+			struct square tc;
 			int x=bl->x,y=bl->y;
 			ar=skilllv/3;
 			skill_brandishspear_first(&tc,dir,x,y);
@@ -1848,7 +1887,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			if(skilllv == 10){
 				for(c=1;c<4;c++){
 				map_foreachinarea(skill_area_sub,
-					bl->m,tc.tar_x[c],tc.tar_y[c],tc.tar_x[c],tc.tar_y[c],0,
+						bl->m,tc.val1[c],tc.val2[c],tc.val1[c],tc.val2[c],0,
 					src,skillid,skilllv,tick, flag|BCT_ENEMY|n,
 					skill_castend_damage_id);
 			}
@@ -1865,7 +1904,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			if(skilllv > 3){
 			for(c=0;c<5;c++){
 				map_foreachinarea(skill_area_sub,
-					bl->m,tc.tar_x[c],tc.tar_y[c],tc.tar_x[c],tc.tar_y[c],0,
+						bl->m,tc.val1[c],tc.val2[c],tc.val1[c],tc.val2[c],0,
 					src,skillid,skilllv,tick, flag|BCT_ENEMY|n,
 					skill_castend_damage_id);
 					if(skilllv > 6 && n==3 && c==4){
@@ -1878,7 +1917,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			for(c=0;c<10;c++){
 				if(c==0||c==5) skill_brandishspear_dir(&tc,dir,-1);
 					map_foreachinarea(skill_area_sub,
-					bl->m,tc.tar_x[c%5],tc.tar_y[c%5],tc.tar_x[c%5],tc.tar_y[c%5],0,
+					bl->m,tc.val1[c%5],tc.val2[c%5],tc.val1[c%5],tc.val2[c%5],0,
 					src,skillid,skilllv,tick, flag|BCT_ENEMY|1,
 						skill_castend_damage_id);
 				}
@@ -1969,6 +2008,12 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 
 	case BD_ADAPTATION:			/* アドリブ */
 		skill_stop_dancing(src);
+		break;
+
+	case BA_FROSTJOKE:			/* 寒いジョーク */
+	case DC_SCREAM:				/* スクリーム */
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		skill_addtimerskill(src,tick+3000,bl->id,0,0,skillid,skilllv,0,flag);
 		break;
 
 	case TF_STEAL:			// スティール
@@ -4302,102 +4347,102 @@ int skill_castcancel(struct block_list *bl,int type)
  * ブランディッシュスピア 初期範囲決定
  *----------------------------------------
  */
-void skill_brandishspear_first(struct brandish *tc,int dir,int x,int y){
+void skill_brandishspear_first(struct square *tc,int dir,int x,int y){
 	if(dir == 0){
-		tc->tar_x[0]=x-2;
-		tc->tar_x[1]=x-1;
-		tc->tar_x[2]=x;
-		tc->tar_x[3]=x+1;
-		tc->tar_x[4]=x+2;
-		tc->tar_y[0]=
-		tc->tar_y[1]=
-		tc->tar_y[2]=
-		tc->tar_y[3]=
-		tc->tar_y[4]=y-1;
+		tc->val1[0]=x-2;
+		tc->val1[1]=x-1;
+		tc->val1[2]=x;
+		tc->val1[3]=x+1;
+		tc->val1[4]=x+2;
+		tc->val2[0]=
+		tc->val2[1]=
+		tc->val2[2]=
+		tc->val2[3]=
+		tc->val2[4]=y-1;
 	}
 	else if(dir==2){
-		tc->tar_x[0]=
-		tc->tar_x[1]=
-		tc->tar_x[2]=
-		tc->tar_x[3]=
-		tc->tar_x[4]=x+1;
-		tc->tar_y[0]=y+2;
-		tc->tar_y[1]=y+1;
-		tc->tar_y[2]=y;
-		tc->tar_y[3]=y-1;
-		tc->tar_y[4]=y-2;
+		tc->val1[0]=
+		tc->val1[1]=
+		tc->val1[2]=
+		tc->val1[3]=
+		tc->val1[4]=x+1;
+		tc->val2[0]=y+2;
+		tc->val2[1]=y+1;
+		tc->val2[2]=y;
+		tc->val2[3]=y-1;
+		tc->val2[4]=y-2;
 	}
 	else if(dir==4){
-		tc->tar_x[0]=x-2;
-		tc->tar_x[1]=x-1;
-		tc->tar_x[2]=x;
-		tc->tar_x[3]=x+1;
-		tc->tar_x[4]=x+2;
-		tc->tar_y[0]=
-		tc->tar_y[1]=
-		tc->tar_y[2]=
-		tc->tar_y[3]=
-		tc->tar_y[4]=y+1;
+		tc->val1[0]=x-2;
+		tc->val1[1]=x-1;
+		tc->val1[2]=x;
+		tc->val1[3]=x+1;
+		tc->val1[4]=x+2;
+		tc->val2[0]=
+		tc->val2[1]=
+		tc->val2[2]=
+		tc->val2[3]=
+		tc->val2[4]=y+1;
 	}
 	else if(dir==6){
-		tc->tar_x[0]=
-		tc->tar_x[1]=
-		tc->tar_x[2]=
-		tc->tar_x[3]=
-		tc->tar_x[4]=x-1;
-		tc->tar_y[0]=y+2;
-		tc->tar_y[1]=y+1;
-		tc->tar_y[2]=y;
-		tc->tar_y[3]=y-1;
-		tc->tar_y[4]=y-2;
+		tc->val1[0]=
+		tc->val1[1]=
+		tc->val1[2]=
+		tc->val1[3]=
+		tc->val1[4]=x-1;
+		tc->val2[0]=y+2;
+		tc->val2[1]=y+1;
+		tc->val2[2]=y;
+		tc->val2[3]=y-1;
+		tc->val2[4]=y-2;
 	}
 	else if(dir==1){
-		tc->tar_x[0]=x-1;
-		tc->tar_x[1]=x;
-		tc->tar_x[2]=x+1;
-		tc->tar_x[3]=x+2;
-		tc->tar_x[4]=x+3;
-		tc->tar_y[0]=y-4;
-		tc->tar_y[1]=y-3;
-		tc->tar_y[2]=y-1;
-		tc->tar_y[3]=y;
-		tc->tar_y[4]=y+1;
+		tc->val1[0]=x-1;
+		tc->val1[1]=x;
+		tc->val1[2]=x+1;
+		tc->val1[3]=x+2;
+		tc->val1[4]=x+3;
+		tc->val2[0]=y-4;
+		tc->val2[1]=y-3;
+		tc->val2[2]=y-1;
+		tc->val2[3]=y;
+		tc->val2[4]=y+1;
 	}
 	else if(dir==3){
-		tc->tar_x[0]=x+3;
-		tc->tar_x[1]=x+2;
-		tc->tar_x[2]=x+1;
-		tc->tar_x[3]=x;
-		tc->tar_x[4]=x-1;
-		tc->tar_y[0]=y-1;
-		tc->tar_y[1]=y;
-		tc->tar_y[2]=y+1;
-		tc->tar_y[3]=y+2;
-		tc->tar_y[4]=y+3;
+		tc->val1[0]=x+3;
+		tc->val1[1]=x+2;
+		tc->val1[2]=x+1;
+		tc->val1[3]=x;
+		tc->val1[4]=x-1;
+		tc->val2[0]=y-1;
+		tc->val2[1]=y;
+		tc->val2[2]=y+1;
+		tc->val2[3]=y+2;
+		tc->val2[4]=y+3;
 	}
 	else if(dir==5){
-		tc->tar_x[0]=x+1;
-		tc->tar_x[1]=x;
-		tc->tar_x[2]=x-1;
-		tc->tar_x[3]=x-2;
-		tc->tar_x[4]=x-3;
-		tc->tar_y[0]=y+3;
-		tc->tar_y[1]=y+2;
-		tc->tar_y[2]=y+1;
-		tc->tar_y[3]=y;
-		tc->tar_y[4]=y-1;
+		tc->val1[0]=x+1;
+		tc->val1[1]=x;
+		tc->val1[2]=x-1;
+		tc->val1[3]=x-2;
+		tc->val1[4]=x-3;
+		tc->val2[0]=y+3;
+		tc->val2[1]=y+2;
+		tc->val2[2]=y+1;
+		tc->val2[3]=y;
+		tc->val2[4]=y-1;
 	}
 	else if(dir==7){
-		tc->tar_x[0]=x-3;
-		tc->tar_x[1]=x-2;
-		tc->tar_x[2]=x-1;
-		tc->tar_x[3]=x;
-		tc->tar_x[4]=x+1;
-		tc->tar_y[1]=y;
-		tc->tar_y[0]=y+1;
-		tc->tar_y[2]=y-1;
-		tc->tar_y[3]=y-2;
-		tc->tar_y[4]=y-3;
+		tc->val1[0]=x-3;
+		tc->val1[1]=x-2;
+		tc->val1[2]=x-1;
+		tc->val1[3]=x;
+		tc->val1[4]=x+1;
+		tc->val2[1]=y;
+		tc->val2[0]=y+1;
+		tc->val2[2]=y-1;
+		tc->val2[3]=y-2;
+		tc->val2[4]=y-3;
 	}
 
 }
@@ -4406,27 +4451,86 @@ void skill_brandishspear_first(struct brandish *tc,int dir,int x,int y){
  * ブランディッシュスピア 方向判定 範囲拡張
  *-----------------------------------------
  */
-void skill_brandishspear_dir(struct brandish *tc,int dir,int are){
+void skill_brandishspear_dir(struct square *tc,int dir,int are){
 
 	int c;
 
 	for(c=0;c<5;c++){
 		if(dir==0){
-			tc->tar_y[c]+=are; }
-		else if(dir==1){
-			tc->tar_x[c]-=are; tc->tar_y[c]+=are; }
-		else if(dir==2){
-			tc->tar_x[c]-=are; }
-		else if(dir==3){
-			tc->tar_x[c]-=are; tc->tar_y[c]-=are; }
-		else if(dir==4){
-			tc->tar_y[c]-=are; }
-		else if(dir==5){
-			tc->tar_x[c]+=are; tc->tar_y[c]-=are; }
-		else if(dir==6){
-			tc->tar_x[c]+=are; }
-		else if(dir==7){
-			tc->tar_x[c]+=are; tc->tar_y[c]+=are; }
+			tc->val2[c]+=are;
+		}else if(dir==1){
+			tc->val1[c]-=are; tc->val2[c]+=are;
+		}else if(dir==2){
+			tc->val1[c]-=are;
+		}else if(dir==3){
+			tc->val1[c]-=are; tc->val2[c]-=are;
+		}else if(dir==4){
+			tc->val2[c]-=are;
+		}else if(dir==5){
+			tc->val1[c]+=are; tc->val2[c]-=are;
+		}else if(dir==6){
+			tc->val1[c]+=are;
+		}else if(dir==7){
+			tc->val1[c]+=are; tc->val2[c]+=are;
+		}
+	}
+}
+
+/*==========================================
+ * ディボーション 有効確認
+ *------------------------------------------
+ */
+void skill_devotion(struct map_session_data *md,int target)
+{
+	// 総確認
+	int n;
+	for(n=0;n<5;n++){
+		if(md && md->dev.val1[n]){
+			struct map_session_data *sd = map_id2sd(md->dev.val1[n]);
+			// 相手が見つからない // 相手をディボしてるのが自分じゃない // 距離が離れてる
+			if(!sd || md->bl.id != sd->sc_data[SC_DEVOTION].val1 || skill_devotion3(&md->bl,md->dev.val1[n])){
+				skill_devotion_end(md,sd,n);
+			}
+		}
+	}
+}
+void skill_devotion2(struct block_list *bl,int crusader)
+{
+	// 被ディボーションが歩いた時の距離チェック
+	struct map_session_data *sd = map_id2sd(crusader);
+	if(sd) skill_devotion3(&sd->bl,bl->id);
+
+}
+int skill_devotion3(struct block_list *bl,int crusader)
+{
+	// クルセが歩いた時の距離チェック
+	struct map_session_data *sd = map_id2sd(crusader);
+	int x,y,r;
+
+	if(!sd) return 1;
+
+	x = bl->x - sd->bl.x;
+	y = bl->y - sd->bl.y;
+	x = (x<0)?-x:x;
+	y = (y<0)?-y:y;
+	r = (x>y)?x:y;
+
+	if(pc_checkskill(sd,CR_DEVOTION)+6 < r){	// 許容範囲を超えてた
+		clif_devotion(sd,bl->id);		// 離れた時は、糸を切るだけ
+		return 1;
+	}
+	return 0;
+}
+
+void skill_devotion_end(struct map_session_data *md,struct map_session_data *sd,int target)
+{
+	// クルセと被ディボキャラのリセット
+	md->dev.val1[target]=md->dev.val2[target]=0;
+	if(sd){
+	//	skill_status_change_end(sd->bl,SC_DEVOTION,-1);
+		sd->sc_data[SC_DEVOTION].val1=0;
+		sd->sc_data[SC_DEVOTION].val2=0;
+		clif_status_change(&sd->bl,SC_DEVOTION,0);// 3c:0x60
 	}
 }
 
@@ -4493,6 +4597,31 @@ int skill_gangsterparadise(struct map_session_data *sd ,int type)
 				sd->bl.x+range,sd->bl.y+range,BL_PC);
 		sd->state.gangsterparadise = 0;
 		return 0;
+	}
+	return 0;
+}
+int skill_frostjoke_scream(struct block_list *bl,va_list ap)
+{
+	struct block_list *src;
+	struct map_session_data *sd=NULL;
+	struct mob_data *md=NULL;
+
+	src=va_arg(ap,struct block_list*);
+	int skillnum=va_arg(ap,int);
+	int skilllv=va_arg(ap,int);
+	unsigned int tick=va_arg(ap,unsigned int);
+
+	if(bl->type == BL_PC)
+		sd=(struct map_session_data*)bl;
+	if(bl->type == BL_MOB)
+		md=(struct mob_data*)bl;
+
+	if(sd){
+		if(map[bl->m].flag.pvp || map[bl->m].flag.gvg)
+			skill_additional_effect(src,bl,skillnum,skilllv,0,tick);
+	}
+	if(md){
+		skill_additional_effect(src,bl,skillnum,skilllv,0,tick);
 	}
 	return 0;
 }
@@ -4658,6 +4787,14 @@ int skill_status_change_end( struct block_list* bl , int type,int tid )
 			case SC_SPEEDPOTION1:
 			case SC_SPEEDPOTION2:
 				calc_flag = 1;
+				break;
+			case SC_DEVOTION:		/* ディボーション */
+				{
+					struct map_session_data *md = map_id2sd(sc_data[type].val1);
+					sc_data[type].val1=sc_data[type].val2=0;
+					skill_devotion(md,bl->id);
+					calc_flag = 1;
+				}
 				break;
 
 		/* option1 */
@@ -5138,6 +5275,9 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 		case SC_SEISMICWEAPON:		/* サイズミックウェポン */
 			skill_encchant_eremental_end(bl,SC_SEISMICWEAPON);
+			break;
+		case SC_DEVOTION:			/* ディボーション */
+			calc_flag = 1;
 			break;
 		case SC_PROVIDENCE:			/* プロヴィデンス */
 			calc_flag = 1;

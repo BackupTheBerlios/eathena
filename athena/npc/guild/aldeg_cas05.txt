@@ -2,7 +2,7 @@
 //aldeg_cas05         by kalen
 //===================================================================
 aldeg_cas05.gat,170,85,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -29,7 +29,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,142,212,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -56,7 +56,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,149,196,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -83,7 +83,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,41,180,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -110,7 +110,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,38,201,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -137,7 +137,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,65,182,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -164,7 +164,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,65,205,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -191,7 +191,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,10,218,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -218,7 +218,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,164,201,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -245,7 +245,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,216,96,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -272,7 +272,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,217,80,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -299,7 +299,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,14,117,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -326,7 +326,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,10,225,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -353,7 +353,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,187,59,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -380,7 +380,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,154,51,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -407,7 +407,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,22,211,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -434,7 +434,7 @@ L2:
 		close;
 }
 aldeg_cas05.gat,150,202,2	script	Flag	722,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (@GIDa5 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -463,7 +463,7 @@ L2:
 //------------------------------ƒJƒvƒ‰--------------------------------
 aldeg_cas05.gat,31,190,0	script	Kafra Service	117,{
 	cutin "kafra_01",2;
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (getcharid(2) == @GIDa5) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDa5) + " + "^000000 members, please use different Kafra Service. thank you.";
@@ -545,7 +545,7 @@ L_EXIT:
 }
 //-------------------------------Ž·Ž–---------------------------------
 aldeg_cas05.gat,51,179,0	script	Brimhemsen	55,{
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (getcharid(2) == @GIDa5) goto LStartg;
 	mes "NO MSG";
 	close;
@@ -577,7 +577,7 @@ aldeg_cas05.gat,22,205,0	script	Script 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	getcastledata "aldeg_cas05.gat",1,@GIDa5;
+	set @GIDa5,getcastledata("aldeg_cas05.gat",1)
 	if (getcharid(2) != @GIDa5) goto L1n;
 	warp "gld_dun02",103,169;
 	end;

@@ -2,7 +2,7 @@
 //aldeg_cas03         by kalen
 //===================================================================
 aldeg_cas03.gat,176,175,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -29,7 +29,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,85,103,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -56,7 +56,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,77,115,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -83,7 +83,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,77,215,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -110,7 +110,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,112,107,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -137,7 +137,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,112,117,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -164,7 +164,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,69,71,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -191,7 +191,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,91,69,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -218,7 +218,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,108,60,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -245,7 +245,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,121,73,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -272,7 +272,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,121,73,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -299,7 +299,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,75,102,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -326,7 +326,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,199,169,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -353,7 +353,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,181,179,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -380,7 +380,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,192,44,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -407,7 +407,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,88,108,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -434,7 +434,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,208,145,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -461,7 +461,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,207,75,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -488,7 +488,7 @@ L2:
 		close;
 }
 aldeg_cas03.gat,96,62,2	script	Flag	722,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (@GIDa3 != 0) goto LStartg;
 		mes "       [ Kingdom of Albedaran ]";
 		mes " ";
@@ -517,7 +517,7 @@ L2:
 //------------------------------ƒJƒvƒ‰--------------------------------
 aldeg_cas03.gat,118,76,0	script	Kafra Service	117,{
 	cutin "kafra_01",2;
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (getcharid(2) == @GIDa3) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDa3) + " + "^000000 members, please use different Kafra Service. thank you.";
@@ -599,7 +599,7 @@ L_EXIT:
 }
 //-------------------------------Ž·Ž–---------------------------------
 aldeg_cas03.gat,110,118,0	script	Najarf	55,{
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (getcharid(2) == @GIDa3) goto LStartg;
 	mes "NO MSG";
 	close;
@@ -631,7 +631,7 @@ aldeg_cas03.gat,200,177,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	getcastledata "aldeg_cas03.gat",1,@GIDa3;
+	set @GIDa3,getcastledata("aldeg_cas03.gat",1)
 	if (getcharid(2) != @GIDa3) goto L1n;
  	warp "gld_dun02",165,38;
 	end;

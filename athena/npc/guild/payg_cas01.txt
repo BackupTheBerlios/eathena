@@ -2,7 +2,7 @@
 //pay_gld01         by kalen
 //===================================================================
 pay_gld.gat,125,236,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -31,7 +31,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,110,233,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -60,7 +60,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,116,233,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -89,7 +89,7 @@ LStartg:
 		close;
 }
 pay_gld.gat,91,239,2	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -118,7 +118,7 @@ LStartg:
 		close;
 }
 payg_cas01.gat,238,67,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -147,7 +147,7 @@ LStartg:
 		close;
 }
 payg_cas01.gat,233,67,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -176,7 +176,7 @@ LStartg:
 		close;
 }
 payg_cas01.gat,221,123,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -205,7 +205,7 @@ LStartg:
 		close;
 }
 payg_cas01.gat,221,116,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -234,7 +234,7 @@ LStartg:
 		close;
 }
 payg_cas01.gat,206,108,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -263,7 +263,7 @@ LStartg:
 		close;
 }
 payg_cas01.gat,212,108,4	script	Flag	722,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (@GIDf1 != 0) goto LStartg;
 		mes "       [ Kingdom of Payon ]";
 		mes " ";
@@ -294,7 +294,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 payg_cas01.gat,128,58,3	script	Kafra Service	117,{
 	cutin "kafra_01",2;
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (getcharid(2) == @GIDf1) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDf1) + " + "^000000 members, please use different Kafra Service. thank you.";
@@ -376,7 +376,7 @@ L_EXIT:
 }
 //-------------------------------Ž·Ž–---------------------------------
 payg_cas01.gat,120,58,4	script	Grunnady	55,{
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (getcharid(2) == @GIDf1) goto LStartg;
 	mes "NO MSG";
 	close;
@@ -408,7 +408,7 @@ payg_cas01.gat,101,25,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	getcastledata "payg_cas01.gat",1,@GIDf1;
+	set @GIDf1,getcastledata("payg_cas01.gat",1)
 	if (getcharid(2) != @GIDf1) goto L1n;
 	warp "gld_dun01",186,165;
 	end;

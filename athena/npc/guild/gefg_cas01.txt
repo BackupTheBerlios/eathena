@@ -2,7 +2,7 @@
 //gefg_cas01         by kalen
 //===================================================================
 gef_fild13.gat,148,51,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -31,7 +31,7 @@ LStartg:
 		close;
 }
 gef_fild13.gat,155,54,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -60,7 +60,7 @@ LStartg:
 		close;
 }
 gef_fild13.gat,212,79,6	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -89,7 +89,7 @@ LStartg:
 		close;
 }
 gef_fild13.gat,211,71,6	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -118,7 +118,7 @@ LStartg:
 		close;
 }
 gefg_cas01.gat,28,157,4	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -147,7 +147,7 @@ LStartg:
 		close;
 }
 gefg_cas01.gat,22,156,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -176,7 +176,7 @@ LStartg:
 		close;
 }
 gefg_cas01.gat,68,185,3	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -205,7 +205,7 @@ LStartg:
 		close;
 }
 gefg_cas01.gat,17,171,5	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -234,7 +234,7 @@ LStartg:
 		close;
 }
 gefg_cas01.gat,59,16,4	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -263,7 +263,7 @@ LStartg:
 		close;
 }
 gefg_cas01.gat,64,16,4	script	Flag	722,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (@GIDg1 != 0) goto LStartg;
 		mes "       [ Kingdom of Geffen ]";
 		mes " ";
@@ -294,7 +294,7 @@ LStartg:
 //------------------------------ƒJƒvƒ‰--------------------------------
 gefg_cas01.gat,83,47,3	script	Kafra Service	117,{
 	cutin "kafra_01",2;
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (getcharid(2) == @GIDg1) goto LStartg;
 	mes "[Kafra Service]";
 	mes "I am here to help only ^ff0000" + " + GetGuildName(@GIDg1) + " + "^000000 members, please use different Kafra Service. thank you.";
@@ -376,7 +376,7 @@ L_EXIT:
 }
 //-------------------------------Ž·Ž–---------------------------------
 gefg_cas01.gat,40,48,5	script	Gnahucher	55,{
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (getcharid(2) == @GIDg1) goto LStartg;
 	mes "NO MSG";
 	close;
@@ -408,7 +408,7 @@ gefg_cas01.gat,78,84,0	script	Switch 2	111,{
 	mes "There is little switch over here would you like to pull the switch down?";
 	next;
 	menu "Yes",-,"No",L2;
-	getcastledata "gefg_cas01.gat",1,@GIDg1;
+	set @GIDg1,getcastledata("gefg_cas01.gat",1)
 	if (getcharid(2) != @GIDg1) goto L1n;
 	warp "gld_dun04",39,258;
 	end;

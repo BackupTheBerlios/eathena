@@ -4,7 +4,7 @@ OnAgitInit:
 	End;
 OnAgitStart:
 	MapRespawnGuildID "payg_cas01.gat",GetCastleData("payg_cas01.gat",1),2;
-	Monster "payg_cas01.gat",139,139,"エンペリウム",1288,1,"Agit_C01::OnAgitBreak";
+	Monster "payg_cas01.gat",139,139,"EMPELIUM",1288,1,"Agit_C01::OnAgitBreak";
 	GvgOn "payg_cas01.gat";
 	End;
 OnAgitBreak:
@@ -12,11 +12,11 @@ OnAgitBreak:
 	if (@GIDf1 <= 0) end;
 	SetCastleData "payg_cas01.gat",1,@GIDf1;
 	Announce "Guild Base [" + GetCastleName("payg_cas01.gat") + "] has been taken by [" + GetGuildName(@GIDf1) + "] guild."
-	MapAnnounce "payg_cas01.gat","エンペリウムが破壊されました",17;
+	MapAnnounce "payg_cas01.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "payg_cas01.gat",GetCastleData("payg_cas01.gat",1),6;
-	Monster "payg_cas01.gat",139,139,"エンペリウム",1288,1,"Agit_C01::OnAgitBreak";
+	Monster "payg_cas01.gat",139,139,"EMPELIUM",1288,1,"Agit_C01::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "payg_cas01.gat",GetCastleData("payg_cas01.gat",1),4;
@@ -31,7 +31,7 @@ OnAgitInit:
 	End;
 OnAgitStart:
 	MapRespawnGuildID "payg_cas02.gat",GetCastleData("payg_cas02.gat",1),2;
-	Monster "payg_cas02.gat",39,25,"エンペリウム",1288,1,"Agit_C02::OnAgitBreak";
+	Monster "payg_cas02.gat",39,25,"EMPELIUM",1288,1,"Agit_C02::OnAgitBreak";
 	GvgOn "payg_cas02.gat";
 	End;
 OnAgitBreak:
@@ -39,11 +39,11 @@ OnAgitBreak:
 	if (@GIDf2 <= 0) end;
 	SetCastleData "payg_cas02.gat",1,@GIDf2;
 	Announce "Guild Base [" + GetCastleName("payg_cas02.gat") + "] has been taken by [" + GetGuildName(@GIDf2) + "] guild.",0;
-	MapAnnounce "payg_cas02.gat","エンペリウムが破壊されました",17;
+	MapAnnounce "payg_cas02.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "payg_cas02.gat",GetCastleData("payg_cas02.gat",1),6;
-	Monster "payg_cas02.gat",39,25,"エンペリウム",1288,1,"Agit_C02::OnAgitBreak";
+	Monster "payg_cas02.gat",39,25,"EMPELIUM",1288,1,"Agit_C02::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "payg_cas02.gat",GetCastleData("payg_cas02.gat",1),4;
@@ -58,7 +58,7 @@ OnAgitInit:
 	End;
 OnAgitStart:
 	MapRespawnGuildID "payg_cas03.gat",GetCastleData("payg_cas03.gat",1),2;
-	Monster "payg_cas03.gat",269,265,"エンペリウム",1288,1,"Agit_C03::OnAgitBreak";
+	Monster "payg_cas03.gat",269,265,"EMPELIUM",1288,1,"Agit_C03::OnAgitBreak";
 	GvgOn "payg_cas03.gat";
 	End;
 OnAgitBreak:
@@ -66,11 +66,11 @@ OnAgitBreak:
 	if (@GIDf3 <= 0) end;
 	SetCastleData "payg_cas03.gat",1,@GIDf3;
 	Announce "Guild Base [" + GetCastleName("payg_cas03.gat") + "] has been taken by [" + GetGuildName(@GIDf3) + "] guild.",0;
-	MapAnnounce "payg_cas03.gat","エンペリウムが破壊されました",17;
+	MapAnnounce "payg_cas03.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "payg_cas03.gat",GetCastleData("payg_cas03.gat",1),6;
-	Monster "payg_cas03.gat",269,265,"エンペリウム",1288,1,"Agit_C03::OnAgitBreak";
+	Monster "payg_cas03.gat",269,265,"EMPELIUM",1288,1,"Agit_C03::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "payg_cas03.gat",GetCastleData("payg_cas03.gat",1),4;
@@ -85,7 +85,7 @@ OnAgitInit:
 	End;
 OnAgitStart:
 	MapRespawnGuildID "payg_cas04.gat",GetCastleData("payg_cas04.gat",1),2;
-	Monster "payg_cas04.gat",271,29,"エンペリウム",1288,1,"Agit_C04::OnAgitBreak";
+	Monster "payg_cas04.gat",271,29,"EMPELIUM",1288,1,"Agit_C04::OnAgitBreak";
 	GvgOn "payg_cas04.gat";
 	End;
 OnAgitBreak:
@@ -93,11 +93,11 @@ OnAgitBreak:
 	if (@GIDf4 <= 0) end;
 	SetCastleData "payg_cas04.gat",1,@GIDf4;
 	Announce "Guild Base [" + GetCastleName("payg_cas04.gat") + "] has been taken by [" + GetGuildName(@GIDf4) + "] guild.",0;
-	MapAnnounce "payg_cas04.gat","エンペリウムが破壊されました",17;
+	MapAnnounce "payg_cas04.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "payg_cas04.gat",GetCastleData("payg_cas04.gat",1),6;
-	Monster "payg_cas04.gat",271,29,"エンペリウム",1288,1,"Agit_C04::OnAgitBreak";
+	Monster "payg_cas04.gat",271,29,"EMPELIUM",1288,1,"Agit_C04::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "payg_cas04.gat",GetCastleData("payg_cas04.gat",1),4;
@@ -112,7 +112,7 @@ OnAgitInit:
 	End;
 OnAgitStart:
 	MapRespawnGuildID "payg_cas05.gat",GetCastleData("payg_cas05.gat",1),2;
-	Monster "payg_cas05.gat",30,30,"エンペリウム",1288,1,"Agit_C05::OnAgitBreak";
+	Monster "payg_cas05.gat",30,30,"EMPELIUM",1288,1,"Agit_C05::OnAgitBreak";
 	GvgOn "payg_cas05.gat";
 	End;
 OnAgitBreak:
@@ -120,11 +120,11 @@ OnAgitBreak:
 	if (@GIDf5 <= 0) end;
 	SetCastleData "payg_cas05.gat",1,@GIDf5;
 	Announce "Guild Base [" + GetCastleName("payg_cas05.gat") + "] has been taken by [" + GetGuildName(@GIDf5) + "] guild.",0;
-	MapAnnounce "payg_cas05.gat","エンペリウムが破壊されました",17;
+	MapAnnounce "payg_cas05.gat","Emperium has been destroyed.",17;
 	End;
 OnAgitEliminate:
 	MapRespawnGuildID "payg_cas05.gat",GetCastleData("payg_cas05.gat",1),6;
-	Monster "payg_cas05.gat",30,30,"エンペリウム",1288,1,"Agit_C05::OnAgitBreak";
+	Monster "payg_cas05.gat",30,30,"EMPELIUM",1288,1,"Agit_C05::OnAgitBreak";
 	End;
 OnAgitEnd:
 	MapRespawnGuildID "payg_cas05.gat",GetCastleData("payg_cas05.gat",1),4;
