@@ -2859,7 +2859,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		range=skilllv+4;
 		aoe_diameter=skilllv+skilllv%2+3;
 		target=BCT_ALL;
-		count=aoe_diameter^2;
+		count=aoe_diameter*aoe_diameter;	// -- this will not function if changed to ^2 (moonsoul)
 		break;
 
 	case SA_LANDPROTECTOR:	/* グランドクロス */
@@ -2867,7 +2867,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		val1=skilllv*15+10;
 		aoe_diameter=skilllv+skilllv%2+5;
 		target=BCT_ALL;
-		count=aoe_diameter^2;
+		count=aoe_diameter*aoe_diameter;	// -- this will not function if changed to ^2 (moonsoul)
 		break;
 
 	case BD_LULLABY:			/* 子守唄 */
