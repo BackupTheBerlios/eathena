@@ -420,7 +420,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 
 	case PR_STRECOVERY:		// Added by AppleGirl
 		if( battle_get_race(bl)==1 && battle_get_race(bl)==6 )
-			skill_status_change_start(bl,SC_BLIND,1,0);
+			skill_status_change_start(bl,SC_BLIND,1,5000);
 		break;
 
 	case TF_POISON:			/* インベナム */
@@ -1602,11 +1602,11 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case BD_LULLABY:			/* 子守唄 */
 	case BD_RICHMANKIM:			/* ニヨルドの宴 */
 	case BD_ETERNALCHAOS:		/* 永遠の混沌 */
-	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
-	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
+//	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
+//	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
 	case BD_ROKISWEIL:			/* ロキの叫び */
-	case BD_INTOABYSS:			/* 深淵の中に */
-	case BD_SIEGFRIED:			/* 不死身のジークフリード */
+//	case BD_INTOABYSS:			/* 深淵の中に */
+//	case BD_SIEGFRIED:			/* 不死身のジークフリード */
 	case BA_DISSONANCE:			/* 不協和音 */
 	case BA_POEMBRAGI:			/* ブラギの詩 */
 	case BA_WHISTLE:			/* 口笛 */
@@ -1619,6 +1619,23 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case DC_SERVICEFORYOU:		/* サービスフォーユー */
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		skill_unitsetting(src,skillid,skilllv,src->x,src->y,0);
+		break;
+
+	case BD_DRUMBATTLEFIELD:	/* 戦太鼓の響き */
+	case BD_RINGNIBELUNGEN:		/* ニーベルングの指輪 */
+	case BD_INTOABYSS:			/* 深淵の中に */
+	case BD_SIEGFRIED:			/* 不死身のジークフリード */
+		if( sd==NULL || sd->status.party_id==0 || (flag&1) ){
+			/* 個別の処理 */
+			clif_skill_nodamage(bl,bl,skillid,skilllv,1);
+			skill_unitsetting(src,skillid,skilllv,src->x,src->y,0);
+		}else{
+			/* パーティ全体への処理 */
+			party_foreachsamemap(skill_area_sub,
+				sd,1,
+				src,skillid,skilllv,tick, flag|BCT_PARTY|1,
+				skill_castend_nodamage_id);
+		}
 		break;
 
 	case BD_ADAPTATION:			/* アドリブ */
