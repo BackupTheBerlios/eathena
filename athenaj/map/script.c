@@ -1,4 +1,4 @@
-// $Id: script.c,v 1.21 2004/02/20 20:50:19 rovert Exp $
+// $Id: script.c,v 1.22 2004/02/21 14:40:22 rovert Exp $
 //#define DEBUG_FUNCIN
 //#define DEBUG_DISP
 //#define DEBUG_RUN

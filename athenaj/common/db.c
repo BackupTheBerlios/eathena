@@ -1,4 +1,4 @@
-// $Id: db.c,v 1.4 2004/02/11 15:54:46 rovert Exp $
+// $Id: db.c,v 1.5 2004/02/21 14:40:21 rovert Exp $
 #define MALLOC_DBN
 #include <stdio.h>
 #include <stdlib.h>
