@@ -1,4 +1,4 @@
-// $Id: npc_MrSmile.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
+// $Id: npc_MrSmile.txt,v 1.2 2004/01/13 18:01:18 rovert Exp $
 alberta.gat,113,53,3	script	Smile Assistance	92,{
 
 	mes "Hi.";
@@ -45,7 +45,7 @@ alberta.gat,113,53,3	script	Smile Assistance	92,{
 
 	L1:
 
-		if((countitem(705)<10) | (countitem(909)<10) | (countitem(914)<10)) goto L10;
+		if((countitem(705)<10) || (countitem(909)<10) || (countitem(914)<10)) goto L10;
 
 		mes "[Smile Girl]";
 
@@ -229,7 +229,7 @@ geffen.gat,119,107,4	script	Smile Assistance	92,{
 		mes "And will try to make Ragnarok the most enjoyable game in the world.";
 		close;
 	L1:
-		if((countitem(705)<10) | (countitem(909)<10) | (countitem(914)<10)) goto L10;
+		if((countitem(705)<10) || (countitem(909)<10) || (countitem(914)<10)) goto L10;
 		mes "[Smile Girl]";
 		mes "Missing text";
 		delitem 705,10;
@@ -280,7 +280,7 @@ izlude.gat,129,118,4	script	Smile Assistance	92,{
 		mes "And will try to make Ragnarok the most enjoyable game in the world.";
 		close;
 	L1:
-		if((countitem(705)<10) | (countitem(909)<10) | (countitem(914)<10)) goto L10;
+		if((countitem(705)<10) || (countitem(909)<10) || (countitem(914)<10)) goto L10;
 		mes "[Smile Girl]";
 		mes "Congratulations !";
 		mes "Now please take this Mr. Smile.";

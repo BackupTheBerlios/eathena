@@ -5,15 +5,15 @@ alberta_in.gat,53,43,6	script	Merchant	86,{
 	mes "[Chief Mahnsoo]";
 	if(job_merchant_q==2) goto JobMercQE2;
 	if((job_merchant_q==10) || (job_merchant_q==9)) goto JobMerQE10o9;
-	if(((job_merchant_q==8) || (job_merchant_q==7)) & (job_merchant_q != 0)) goto JobMerQE8o7aN0;
-	if((job_merchant_q <= 6) & (job_merchant_q != 0)) goto JobMerQLE6aN0;
+	if(((job_merchant_q==8) || (job_merchant_q==7)) && (job_merchant_q != 0)) goto JobMerQE8o7aN0;
+	if((job_merchant_q <= 6) && (job_merchant_q != 0)) goto JobMerQLE6aN0;
 	mes "What brings you here? Have something to say?";
 	next;
 	menu "I want to be a Merchant.",M0,"Show me the way of Merchant.",M1,"Give me the Requirements.",M2,"Nope, Sir.",MEnd;
 
      	M0:
      		if(Class==5) goto JobMer;
-		if((Class !=5) & (Class !=0)) goto JNMaJNN;
+		if((Class !=5) && (Class !=0)) goto JNMaJNN;
 		mes "[Chief Mahnsoo]";
 		mes "Do you want to be a Merchant? Well...";
 		next;
@@ -264,7 +264,7 @@ alberta_in.gat,53,43,6	script	Merchant	86,{
 			JobChange 5;
 			mes "I am so Pleased that you join the Merchant Guild and I hope you will play an Active Part in Rune Midgard Economy.";
 			next;
-			if((job_merchant_q2==7) | (job_merchant_q2==8)) goto JobMerQ2E7o8;
+			if((job_merchant_q2==7) || (job_merchant_q2==8)) goto JobMerQ2E7o8;
 			mes "[Chief Mahnsoo]";
 			mes "(The Message you delivered by my personal request....errr.....You've forgotten...???...Never Mind...Well done.)";
 			goto JobMerQua1;
@@ -290,10 +290,10 @@ alberta_in.gat,53,43,6	script	Merchant	86,{
 		close;
 	JobMerQLE6aN0:
 		mes "You, What are you doing here and not yet to Leave? You are supposed to be on your way now.";
-		if((job_merchant_q2==1) | (job_merchant_q2==2)) goto JobMerQ2E1oE2;
-		if((job_merchant_q2==3) | (job_merchant_q2==4)) goto JobMerQ2E3oE4;
-		if((job_merchant_q2==5) | (job_merchant_q2==6)) goto JobMerQ2E5oE6;
-		if((job_merchant_q2==7) | (job_merchant_q2==8)) goto JobMerQ2E7oE8;
+		if((job_merchant_q2==1) || (job_merchant_q2==2)) goto JobMerQ2E1oE2;
+		if((job_merchant_q2==3) || (job_merchant_q2==4)) goto JobMerQ2E3oE4;
+		if((job_merchant_q2==5) || (job_merchant_q2==6)) goto JobMerQ2E5oE6;
+		if((job_merchant_q2==7) || (job_merchant_q2==8)) goto JobMerQ2E7oE8;
 
 		JobMerQ2E1oE2:
 			mes "Receive the Product from the Storehouse, go to the Former Swordman Association in Prontera. Then visit  the Chief Girl in the Prontera Chapter of Kapra's Corp. Get that???";
@@ -337,7 +337,7 @@ alberta_in.gat,53,43,6	script	Merchant	86,{
 
 		JobMerQ2Cont:
 			mes "The Storehouse is a Room on the right side of me.";
-			if((job_merchant_q2==7) | (job_merchant_q2==8)) goto JobMerQ2ContE7o8;
+			if((job_merchant_q2==7) || (job_merchant_q2==8)) goto JobMerQ2ContE7o8;
 			goto JobMerQ2Cont1;
 
 			JobMerQ2ContE7o8:
@@ -362,10 +362,10 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 	M0:
 		mes "[Union Staff Kay]";
 		if(Class==5) goto JobMer;
-		if((job_merchant_q==10) | (job_merchant_q==9) | (job_merchant_q==2)) goto JobMerQE10oE9oE2;
-		if((job_merchant_q==8) | (job_merchant_q==7)) goto JobMerQE8oE7;
-		if(((job_merchant_q==6) | (job_merchant_q==5)) & ((countitem(1081)==0) | (countitem(1082)==0) | (countitem(1083)==0))) goto JobMerQE6oE5aBoxE0;
-		if(((job_merchant_q==6) | (job_merchant_q==5)) & ((countitem(1081) !=0) | (countitem(1082) !=0) | (countitem(1083) !=0))) goto JobMerQE6oE5aBoxNE0;
+		if((job_merchant_q==10) || (job_merchant_q==9) || (job_merchant_q==2)) goto JobMerQE10oE9oE2;
+		if((job_merchant_q==8) || (job_merchant_q==7)) goto JobMerQE8oE7;
+		if(((job_merchant_q==6) || (job_merchant_q==5)) && ((countitem(1081)==0) || (countitem(1082)==0) || (countitem(1083)==0))) goto JobMerQE6oE5aBoxE0;
+		if(((job_merchant_q==6) || (job_merchant_q==5)) && ((countitem(1081) !=0) || (countitem(1082) !=0) || (countitem(1083) !=0))) goto JobMerQE6oE5aBoxNE0;
 
 		mes "Name? " + strcharinfo(0) + "....";
 		if(job_merchant_q==0) goto M0JobMerQE0;
@@ -403,7 +403,7 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 			next;
 			input @input;
 			if(@input ==0 ) goto WCancel; 
-			if((@input < 1000000) | (@input > 5000000)) goto inputErr;
+			if((@input < 1000000) || (@input > 5000000)) goto inputErr;
 			goto inputM0;
 			
 		WCancel:
@@ -464,8 +464,8 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 			M000Cont:
 				set job_merchant_q3,1;
-				if((job_merchant_q2==1) & (@input==2485741)) goto M000JobMerQ2E1;
-				if((job_merchant_q2==2) & (@input==2328137)) goto M000JobMerQ2E2;
+				if((job_merchant_q2==1) && (@input==2485741)) goto M000JobMerQ2E1;
+				if((job_merchant_q2==2) && (@input==2328137)) goto M000JobMerQ2E2;
 				getitem 1083,1;
 				goto M0Cont3;
 
@@ -479,8 +479,8 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 			M001Cont:
 				set job_merchant_q3,2;
-				if((job_merchant_q2==3) & (@input==2989396)) goto M000JobMerQ2E3;
-				if((job_merchant_q2==4) & (@input==2191737)) goto M000JobMerQ2E4;
+				if((job_merchant_q2==3) && (@input==2989396)) goto M000JobMerQ2E3;
+				if((job_merchant_q2==4) && (@input==2191737)) goto M000JobMerQ2E4;
 				getitem 1083,1;
 				goto M0Cont3;
 
@@ -494,8 +494,8 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 			M002Cont:
 				set job_merchant_q3,3;
-				if((job_merchant_q2==5) & (@input==3012685)) goto M000JobMerQ2E5;
-				if((job_merchant_q2==6) & (@input==3487372)) goto M000JobMerQ2E6;
+				if((job_merchant_q2==5) && (@input==3012685)) goto M000JobMerQ2E5;
+				if((job_merchant_q2==6) && (@input==3487372)) goto M000JobMerQ2E6;
 				getitem 1083,1;
 				goto M0Cont3;
 
@@ -509,8 +509,8 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 			M003Cont:
 				set job_merchant_q3,4;
-				if((job_merchant_q2==7) & (@input==3318702)) goto M000JobMerQ2E7;
-				if((job_merchant_q2==8) & (@input==3543625)) goto M000JobMerQ2E8;
+				if((job_merchant_q2==7) && (@input==3318702)) goto M000JobMerQ2E7;
+				if((job_merchant_q2==8) && (@input==3543625)) goto M000JobMerQ2E8;
 				getitem 1083,1;
 				goto M0Cont3;
 
@@ -552,15 +552,15 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 			next;
 			mes "[Union Staff Kay]";
 			mes "Your destination was....";
-			if((job_merchant_q2==1) | (job_merchant_q2==2)) goto JobMerQ2E1oE2;
-			if((job_merchant_q2==3) | (job_merchant_q2==4)) goto JobMerQ2E3oE4;
-			if((job_merchant_q2==5) | (job_merchant_q2==6)) goto JobMerQ2E5oE6;
-			if((job_merchant_q2==7) | (job_merchant_q2==8)) goto JobMerQ2E7oE8;
+			if((job_merchant_q2==1) || (job_merchant_q2==2)) goto JobMerQ2E1oE2;
+			if((job_merchant_q2==3) || (job_merchant_q2==4)) goto JobMerQ2E3oE4;
+			if((job_merchant_q2==5) || (job_merchant_q2==6)) goto JobMerQ2E5oE6;
+			if((job_merchant_q2==7) || (job_merchant_q2==8)) goto JobMerQ2E7oE8;
 			
 			JobMerQ2E1oE2:
 				mes "Wow! You met Kapra's Babe in Prontera. Cool.. Receipt?";
-				if((job_merchant_q2==1) & (countitem(1073) != 0)) goto JobMerQ2E1;
-				if((job_merchant_q2==2) & (countitem(1074) != 0)) goto JobMerQ2E2;
+				if((job_merchant_q2==1) && (countitem(1073) != 0)) goto JobMerQ2E1;
+				if((job_merchant_q2==2) && (countitem(1074) != 0)) goto JobMerQ2E2;
 				goto JobNotQua;
 
 				JobMerQ2E1:
@@ -573,8 +573,8 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 			JobMerQ2E3oE4:
 				mes "Geffen Magic Academy. Ok, Receipt?";
-				if((job_merchant_q2==3) & (countitem(1075) != 0)) goto JobMerQ2E3;
-				if((job_merchant_q2==4) & (countitem(1076) != 0)) goto JobMerQ2E4;
+				if((job_merchant_q2==3) && (countitem(1075) != 0)) goto JobMerQ2E3;
+				if((job_merchant_q2==4) && (countitem(1076) != 0)) goto JobMerQ2E4;
 				goto JobNotQua;
 
 				JobMerQ2E3:
@@ -587,8 +587,8 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 			JobMerQ2E5oE6:
 				mes "Morroc, The Dyermaker. Not bad... Receipt?";
-				if((job_merchant_q2==5) & (countitem(1077) != 0)) goto JobMerQ2E5;
-				if((job_merchant_q2==6) & (countitem(1078) != 0)) goto JobMerQ2E6;
+				if((job_merchant_q2==5) && (countitem(1077) != 0)) goto JobMerQ2E5;
+				if((job_merchant_q2==6) && (countitem(1078) != 0)) goto JobMerQ2E6;
 				goto JobNotQua;
 
 				JobMerQ2E5:
@@ -601,8 +601,8 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
     			JobMerQ2E7oE8:
 				mes "Oh-hohohoho~! Kapra's Babe in Bybialan~ Awesome. Anyway, Didn't forget to bring the Receipt?";
-				if((job_merchant_q2==7) & (countitem(1079) != 0)) goto JobMerQ2E7;
-				if((job_merchant_q2==8) & (countitem(1080) != 0)) goto JobMerQ2E8;
+				if((job_merchant_q2==7) && (countitem(1079) != 0)) goto JobMerQ2E7;
+				if((job_merchant_q2==8) && (countitem(1080) != 0)) goto JobMerQ2E8;
 				goto JobNotQua;
 
 				JobMerQ2E7:
@@ -653,7 +653,7 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 			JobMerQE6oE5aBoxNE00:
 				mes "[Union Staff Kay]";
-				if((countitem(1081)==0) & (countitem(1082)==0) & (countitem(1083)==0)) goto MerBoxE0;
+				if((countitem(1081)==0) && (countitem(1082)==0) && (countitem(1083)==0)) goto MerBoxE0;
 				mes "Sigh... What a Dumbass! Haven't you realised you could be pain in my ass?";
 				if(countitem(1081) !=0) goto MerBox1NE0;
 				if(countitem(1082) !=0) goto MerBox2NE0;
@@ -711,13 +711,13 @@ alberta_in.gat,28,29,2	script	Merchant Guildsman	83,{
 
 geffen_in.gat,155,122,4	script	Guild Staff	47,{
 	if(job_merchant_q3 != 2) goto QuestNE2;
-	if((job_merchant_q==8) | (job_merchant_q==7)) goto JobMerQE8o7;
-	if((job_merchant_q==6) | (job_merchant_q==5)) goto JobMerQE6o5;
+	if((job_merchant_q==8) || (job_merchant_q==7)) goto JobMerQE8o7;
+	if((job_merchant_q==6) || (job_merchant_q==5)) goto JobMerQE6o5;
 	
 	JobMerQE6o5:
 		mes "[Guild Staff]";
 		mes "Woah! It's arrived~ Arrived~ They sent the Box~ Ok ok , Put down here....";
-		if ((countitem(1081)==1) | (countitem(1082)==1) | (countitem(1083)==1)) goto MerBox123E1;
+		if ((countitem(1081)==1) || (countitem(1082)==1) || (countitem(1083)==1)) goto MerBox123E1;
 		mes "Huh? Where? Where is the Box?";
 		close;
 
@@ -726,8 +726,8 @@ geffen_in.gat,155,122,4	script	Guild Staff	47,{
 			next;
 			mes "[Guild Staff]";
 			mes "Alright, Let's get checked the Serial Numbers? Ehh....";
-			if((job_merchant_q2==3) | (countitem(1081) !=0)) goto JobMerQ2E3oMerBox1NE0;
-			if((job_merchant_q2==4) | (countitem(1082) !=0)) goto JobMerQ2E4oMerBox2NE0;
+			if((job_merchant_q2==3) || (countitem(1081) !=0)) goto JobMerQ2E3oMerBox1NE0;
+			if((job_merchant_q2==4) || (countitem(1082) !=0)) goto JobMerQ2E4oMerBox2NE0;
 			mes ".....! Ehh??? Wrong Numbers!?";
 			next;
 			mes "[Guild Staff]";
@@ -778,13 +778,13 @@ geffen_in.gat,155,122,4	script	Guild Staff	47,{
 
 morocc_in.gat,140,102,4	script	Student	86,{
 	if(job_merchant_q3 !=3) goto JobQNE3;
-	if((job_merchant_q==8) | (job_merchant_q==7)) goto JobMerQE8oE7;
-	if((job_merchant_q==6) | (job_merchant_q==5)) goto JobMerQE6oE5;
+	if((job_merchant_q==8) || (job_merchant_q==7)) goto JobMerQE8oE7;
+	if((job_merchant_q==6) || (job_merchant_q==5)) goto JobMerQE6oE5;
 	
 	JobMerQE6oE5:
 			mes "[Dyer's Student]";
 			mes "From the Merchant Guild...? Ah, Yes! You visit the Right place~";
-			if((countitem(1081)==1) | (countitem(1082)==1) | (countitem(1083)==1)) goto MerBox123E1;
+			if((countitem(1081)==1) || (countitem(1082)==1) || (countitem(1083)==1)) goto MerBox123E1;
 			mes "But where's the Product? Muhahahaha~";
 			close;
 
@@ -793,8 +793,8 @@ morocc_in.gat,140,102,4	script	Student	86,{
 			next;
 			mes "[Dyer's Student]";
 			mes "Let me check the Serial Numbers of it,because I have to give you the Receipt, right?";
-			if((job_merchant_q2==5) & (countitem(1081) !=0)) goto JobMerQ2E5oMerBox1NE0;
-			if((job_merchant_q2==6) & (countitem(1082) !=0)) goto JobMerQ2E5oMerBox2NE0;
+			if((job_merchant_q2==5) && (countitem(1081) !=0)) goto JobMerQ2E5oMerBox1NE0;
+			if((job_merchant_q2==6) && (countitem(1082) !=0)) goto JobMerQ2E5oMerBox2NE0;
 			next;
 			mes "[Dyer's Student]";
 			mes "....Excuse me. I don't think this is the Right one we ordered..? Its serial numbers should be 3012685 or 3487372, either of two Kinds...";
@@ -846,13 +846,13 @@ morocc_in.gat,140,102,4	script	Student	86,{
 prontera.gat,248,42,8	script	Kafra	115,{
 	cutin "kafra_03",2;
 	if(job_merchant_q3 !=1) goto Kafra;
-	if((job_merchant_q==8) | (job_merchant_q==7)) goto JobMerQE8oE7;
-	if((job_merchant_q==6) | (job_merchant_q==5)) goto JobMerQE6oE5;
+	if((job_merchant_q==8) || (job_merchant_q==7)) goto JobMerQE8oE7;
+	if((job_merchant_q==6) || (job_merchant_q==5)) goto JobMerQE6oE5;
 
 	JobMerQE6oE5:
 		mes "[Kafra]";
 		mes "Delivery from the Merchant Guild? Oh, yes! Alright, Please put down here....";
-		if((countitem(1081)==1) | (countitem(1082)==1) | (countitem(1083)==1)) goto MerBox123E1;
+		if((countitem(1081)==1) || (countitem(1082)==1) || (countitem(1083)==1)) goto MerBox123E1;
 		mes "Excuse me.. Where's the Delivery....?";
 		cutin "kafra_03",255;
 		close;

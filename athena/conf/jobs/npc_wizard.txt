@@ -179,7 +179,7 @@ Part3:
 		mes "Did you get all the items?";
 		mes "Let's see......";
 		next;
-			if ((countitem("Red_Gemstone") < 10) & (countitem("Blue_Gemstone") < 10) & (countitem("Yellow_Gemstone") < 10)) goto ShortItem1;
+			if ((countitem("Red_Gemstone") < 10) && (countitem("Blue_Gemstone") < 10) && (countitem("Yellow_Gemstone") < 10)) goto ShortItem1;
 				mes "[Cartlin]";
 				mes "Great! You've brought everything!";
 				mes "The guild will use these well.";
@@ -219,7 +219,7 @@ Part4:
 		mes "Did you get all the items?";
 		mes "Then, lets see!";
 		next;
-		if ((countitem("Crystal_Blue") < 5) & (countitem("Yellow_Live") < 5) &  (countitem("Bloody_Red") < 5) & (countitem("Wind_Of_verdure") < 5)) goto ShortItem2;
+		if ((countitem("Crystal_Blue") < 5) && (countitem("Yellow_Live") < 5) && (countitem("Bloody_Red") < 5) && (countitem("Wind_Of_verdure") < 5)) goto ShortItem2;
 			mes "[Cartlin]";
 			mes "Great! You've found them all!";
 			mes "The guild will use them well.";

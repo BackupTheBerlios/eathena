@@ -28,7 +28,7 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 		
 		L00:
 			mes "[Grampa Pharmacist]";
-			if(((countitem(507) < 2) | (countitem(713) < 0)) | (Zeny < 3)) goto NeedOther;
+			if(((countitem(507) < 2) || (countitem(713) < 0)) || (Zeny < 3)) goto NeedOther;
 			set l0,507;
 			set l1,501;
 			mes "How many?";
@@ -37,7 +37,7 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 			menu "As many as I can?",L00a,"Um I will set the Numbers.",L00b,"Nah, forget about it",L00c;
 			
 			L00a:
-				if(((countitem(507) < 2) | (countitem(713) < 0)) | (Zeny < 3)) goto L00ab;
+				if(((countitem(507) < 2) || (countitem(713) < 0)) || (Zeny < 3)) goto L00ab;
 				goto L00aa;
 				
 				L00aa:

@@ -32,7 +32,7 @@ gef_fild10.gat,73,340,4	script	Kafra	115,{
                 	cutin "kafra_02",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) | (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
 		mes "[Kafra]";
 		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
 		cutin "kafra_02",255;
@@ -92,8 +92,8 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 	set @TEMP,0;
 	cutin "kafra_03",2;
 	if(frst_job_quest != 4) goto Kafra;
-	if(job_merchant_q==8) | (job_merchant_q==7)) goto JobMerQE8oE7;
-	if(job_merchant_q==6) | (job_merchant_q==5)) goto JobMerQE6oE5;
+	if((job_merchant_q==8) || (job_merchant_q==7)) goto JobMerQE8oE7;
+	if((job_merchant_q==6) || (job_merchant_q==5)) goto JobMerQE6oE5;
 
 	JobMerQE8oE7:
 		if(countitem(Delivery_Message) != 0) goto JobMerQE8oE7Cont;
@@ -111,7 +111,7 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 		mes "[Kafra]";
 		mes "Delivery fro the Merchant Guild?? Ah, Right! Yes! I almost forgot.";
 		mes "Okay,Please put down here....";
-		if((countitem(1081)==1) | (countitem(1082)==1) | (countitem(1083)==1)) goto MerBox123E1;
+		if((countitem(1081)==1) || (countitem(1082)==1) || (countitem(1083)==1)) goto MerBox123E1;
 		mes ".... I think our orders are almost one Box of Oversized and Heavy....But you seem to carry it on without difficulty.";
 		close;
 
@@ -2777,384 +2777,759 @@ prontera.gat,151,29,8	script	Kafra	115,{
 }
 
 //Yuno Npc Kafra @ 328 108
+
 yuno.gat,328,108,6	script	Kafra	117,{
+
 	cutin "kafra_02",2;
+
 	mes "[Kafra]";
+
 	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
+
 	next;
+
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
 
+
+
 	Lsave:
+
 		save "yuno.gat",332,107;
+
 		mes "[Kafra]";
+
 		mes "Your respawn point has saved. Thank you.";
+
 		cutin "kafra_02",255;
+
 		close;
+
 	Lstorage:
+
 		if((class ==Job_Novice) && (JobLevel<6)) goto NeedJobLevel;
+
 		if(Zeny<30) goto NeedZenys;
+
 		set Zeny, Zeny-30;
+
 		openstorage;
+
 		cutin "kafra_02",255;
+
 		close;
+
+
 
                 NeedJobLevel:
+
                 	mes "[Kafra]";
+
                 	mes "I am sorry but you have to be at least Novice level 6 if you want to use the storage.";
+
 			next;
+
                 	cutin "kafra_02",255;
+
                 	close;
+
                 NeedZenys:
+
 	                mes "[Kafra]";
+
                 	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+
                 	cutin "kafra_02",255;
+
                 	close;
+
 	Lcart:
-		if((class ==Job_Merchant) | (class==Job_Blacksmith)) goto UseCart;
+
+		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+
 		mes "[Kafra]";
+
 		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+
 		cutin "kafra_02",255;
+
 		close;
+
+
 
 		UseCart:
+
 			mes "[Kafra]";
+
 			mes "The Cart Fee is 800 Zeny. Do you want to Rent a Cart?";
+
 			next;
+
 			menu "Rent a Cart.",RentCart,"Cancel.",RCCancel;
 
+
+
 			RentCart:
+
 				if(Zeny<800) goto RCNeedZenys;
+
 				set Zeny, Zeny-800;
+
 				if((CheckCart)==0) goto NoCartSkill;
+
 				if((CheckCart)==1) goto GetCart;
+
 			
+
 				GetCart:
+
 					set Zeny,Zeny-800;
+
 					setcart;
+
 					mes "[Kafra]";
+
 					mes "There you go..";
+
 					cutin "kafra_08",255;
+
 					close;
 
+
+
 				RCNeedZenys:
+
 					mes "[Kafra]";
+
 					mes "Dear,you don't have enough Money. You need 800 Zeny.";
+
 					cutin "kafra_02",255;
+
 					close;
+
 			RCCancel:
+
 				cutin "kafra_02",255;
+
 				close;
+
 	Lpass:
+
 		if(countitem(1084)<1) goto NeedKafraPass;
+
 		
+
 		NeedKafraPass:
+
 			mes "[Kafra]";
+
 			mes "Dear you need at least 1 passport.";
+
 			cutin "kafra_02",255;
+
 			close;
+
 		mes "[Kafra]";
+
 		mes "Now you are Using a Kapra's Pass.";
+
 		delitem 1084,1;
+
 		next;
+
 		mes "[Kafra]";
+
 		mes "Under development";
+
 		cutin "kafra_02",255;
+
 		close;
+
 	Lteleport:
+
 		mes "[Kafra]";
+
 		mes "Set your destination.";
+
 		next;
+
 		menu "Izlude -> 900 z",Izlude,"Geffen -> 1400 z",Geffen,"Payon -> 1700 z",Payon,"Morroc -> 1800 z",Morroc,"Cancel",Cancel;
+
 		
+
 		Izlude:
+
 			if(Zeny<900) goto cantTeleport;
+
 			set Zeny, Zeny-900;
+
 			warp "izlude.gat",91,105;
+
 			cutin "kafra_03",255;
+
 			close;
+
 		Geffen:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "geffen.gat",120,39;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Morroc:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "morroc.gat",156,46;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Payon:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "payon.gat",100,100;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Cancel:
+
 			cutin "kafra_03",255;
+
 			close;
+
 	Lcancel:
+
 		cutin "kafra_02",255;
+
 		close;
+
 			CantTeleport:
+
 				mes "[Kafra]";
+
 				mes "Dear you don't have enough money. Please check again.";
+
 				cutin "kafra_03",255;
+
 				close;
+
 }
 
 //Yuno Kafra @ 151 87
+
 yuno.gat,151,87,4	script	Kafra	115,{
+
 	cutin "kafra_02",2;
+
 	mes "[Kafra]";
+
 	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
+
 	next;
+
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
 
+
+
 	Lsave:
+
 		save "yuno.gat",154,75;
+
 		mes "[Kafra]";
+
 		mes "Your respawn point has saved. Thank you.";
+
 		cutin "kafra_02",255;
+
 		close;
+
 	Lstorage:
+
 		if((class ==Job_Novice) && (JobLevel<6)) goto NeedJobLevel;
+
 		if(Zeny<30) goto NeedZenys;
+
 		set Zeny, Zeny-30;
+
 		openstorage;
+
 		cutin "kafra_02",255;
+
 		close;
+
+
 
                 NeedJobLevel:
+
                 	mes "[Kafra]";
+
                 	mes "I am sorry but you have to be at least Novice level 6 if you want to use the storage.";
+
 			next;
+
                 	cutin "kafra_02",255;
+
                 	close;
+
                 NeedZenys:
+
 	                mes "[Kafra]";
+
                 	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+
                 	cutin "kafra_02",255;
+
                 	close;
+
 	Lcart:
-		if((class ==Job_Merchant) | (class==Job_Blacksmith)) goto UseCart;
+
+		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+
 		mes "[Kafra]";
+
 		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+
 		cutin "kafra_02",255;
+
 		close;
+
+
 
 		UseCart:
+
 			mes "[Kafra]";
+
 			mes "The Cart Fee is 800 Zeny. Do you want to Rent a Cart?";
+
 			next;
+
 			menu "Rent a Cart.",RentCart,"Cancel.",RCCancel;
 
+
+
 			RentCart:
+
 				if(Zeny<800) goto RCNeedZenys;
+
 				set Zeny, Zeny-800;
+
 				if((CheckCart)==0) goto NoCartSkill;
+
 				if((CheckCart)==1) goto GetCart;
+
 			
+
 				GetCart:
+
 					set Zeny,Zeny-800;
+
 					setcart;
+
 					mes "[Kafra]";
+
 					mes "There you go..";
+
 					cutin "kafra_08",255;
+
 					close;
 
+
+
 				RCNeedZenys:
+
 					mes "[Kafra]";
+
 					mes "Dear,you don't have enough Money. You need 800 Zeny.";
+
 					cutin "kafra_02",255;
+
 					close;
+
 			RCCancel:
+
 				cutin "kafra_02",255;
+
 				close;
+
 	Lpass:
+
 		if(countitem(1084)<1) goto NeedKafraPass;
+
 		
+
 		NeedKafraPass:
+
 			mes "[Kafra]";
+
 			mes "Dear you need at least 1 passport.";
+
 			cutin "kafra_02",255;
+
 			close;
+
 		mes "[Kafra]";
+
 		mes "Now you are Using a Kapra's Pass.";
+
 		delitem 1084,1;
+
 		next;
+
 		mes "[Kafra]";
+
 		mes "Under development";
+
 		cutin "kafra_02",255;
+
 		close;
+
 	Lteleport:
+
 		mes "[Kafra]";
+
 		mes "Set your destination.";
+
 		next;
+
 		menu "Izlude -> 900 z",Izlude,"Geffen -> 1400 z",Geffen,"Payon -> 1700 z",Payon,"Morroc -> 1800 z",Morroc,"Cancel",Cancel;
+
 		
+
 		Izlude:
+
 			if(Zeny<900) goto cantTeleport;
+
 			set Zeny, Zeny-900;
+
 			warp "izlude.gat",91,105;
+
 			cutin "kafra_03",255;
+
 			close;
+
 		Geffen:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "geffen.gat",120,39;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Morroc:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "morroc.gat",156,46;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Payon:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "payon.gat",100,100;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Cancel:
+
 			cutin "kafra_03",255;
+
 			close;
+
 	Lcancel:
+
 		cutin "kafra_02",255;
+
 		close;
+
 			CantTeleport:
+
 				mes "[Kafra]";
+
 				mes "Dear you don't have enough money. Please check again.";
+
 				cutin "kafra_03",255;
+
 				close;
+
 }
 
 //Yuno Kafra @ 278 221
+
 yuno.gat,278,221,6	script	Kafra	117,{
+
 	cutin "kafra_02",2;
+
 	mes "[Kafra]";
+
 	mes "Welcome to Kafra Corp. We will stay with you wherever you go.";
+
 	next;
+
 	menu "Save",Lsave,"Use Storage",Lstorage,"Use Teleport Service",Lteleport,"Rent a Cart",Lcart,"Use Kafra Pass",Lpass,"Other Information Check",Linfo,"Cancel",Lcancel;
 
+
+
 	Lsave:
+
 		save "yuno.gat",332 107;
+
 		mes "[Kafra]";
+
 		mes "Your respawn point has saved. Thank you.";
+
 		cutin "kafra_02",255;
+
 		close;
+
 	Lstorage:
+
 		if((class ==Job_Novice) && (JobLevel<6)) goto NeedJobLevel;
+
 		if(Zeny<30) goto NeedZenys;
+
 		set Zeny, Zeny-30;
+
 		openstorage;
+
 		cutin "kafra_02",255;
+
 		close;
+
+
 
                 NeedJobLevel:
+
                 	mes "[Kafra]";
+
                 	mes "I am sorry but you have to be at least Novice level 6 if you want to use the storage.";
+
 			next;
+
                 	cutin "kafra_02",255;
+
                 	close;
+
                 NeedZenys:
+
 	                mes "[Kafra]";
+
                 	mes "Dear. you don't have enough Money. The Storage fee is 30 Zeny.";
+
                 	cutin "kafra_02",255;
+
                 	close;
+
 	Lcart:
-		if((class ==Job_Merchant) | (class==Job_Blacksmith)) goto UseCart;
+
+		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
+
 		mes "[Kafra]";
+
 		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
+
 		cutin "kafra_02",255;
+
 		close;
+
+
 
 		UseCart:
+
 			mes "[Kafra]";
+
 			mes "The Cart Fee is 800 Zeny. Do you want to Rent a Cart?";
+
 			next;
+
 			menu "Rent a Cart.",RentCart,"Cancel.",RCCancel;
 
+
+
 			RentCart:
+
 				if(Zeny<800) goto RCNeedZenys;
+
 				set Zeny, Zeny-800;
+
 				if((CheckCart)==0) goto NoCartSkill;
+
 				if((CheckCart)==1) goto GetCart;
+
 			
+
 				GetCart:
+
 					set Zeny,Zeny-800;
+
 					setcart;
+
 					mes "[Kafra]";
+
 					mes "There you go..";
+
 					cutin "kafra_08",255;
+
 					close;
 
+
+
 				RCNeedZenys:
+
 					mes "[Kafra]";
+
 					mes "Dear,you don't have enough Money. You need 800 Zeny.";
+
 					cutin "kafra_02",255;
+
 					close;
+
 			RCCancel:
+
 				cutin "kafra_02",255;
+
 				close;
+
 	Lpass:
+
 		if(countitem(1084)<1) goto NeedKafraPass;
+
 		
+
 		NeedKafraPass:
+
 			mes "[Kafra]";
+
 			mes "Dear you need at least 1 passport.";
+
 			cutin "kafra_02",255;
+
 			close;
+
 		mes "[Kafra]";
+
 		mes "Now you are Using a Kapra's Pass.";
+
 		delitem 1084,1;
+
 		next;
+
 		mes "[Kafra]";
+
 		mes "Under development";
+
 		cutin "kafra_02",255;
+
 		close;
+
 	Lteleport:
+
 		mes "[Kafra]";
+
 		mes "Set your destination.";
+
 		next;
+
 		menu "Izlude -> 900 z",Izlude,"Geffen -> 1400 z",Geffen,"Payon -> 1700 z",Payon,"Morroc -> 1800 z",Morroc,"Cancel",Cancel;
+
 		
+
 		Izlude:
+
 			if(Zeny<900) goto cantTeleport;
+
 			set Zeny, Zeny-900;
+
 			warp "izlude.gat",91,105;
+
 			cutin "kafra_03",255;
+
 			close;
+
 		Geffen:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "geffen.gat",120,39;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Morroc:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "morroc.gat",156,46;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Payon:
+
 			if(Zeny<2100) goto cantTeleport;
+
 			set Zeny, Zeny-2100;
+
 			warp "payon.gat",100,100;
+
 			cutin "kafra_03",255;
+
 			close;		
+
 		Cancel:
+
 			cutin "kafra_03",255;
+
 			close;
+
 	Lcancel:
+
 		cutin "kafra_02",255;
+
 		close;
+
 			CantTeleport:
+
 				mes "[Kafra]";
+
 				mes "Dear you don't have enough money. Please check again.";
+
 				cutin "kafra_03",255;
+
 				close;
+
 }
 
 //Umbala	
@@ -3191,7 +3566,7 @@ umbala.gat,128,133,4	script	Kafra	115,{
                 	cutin "kafra_02",255;
                 	close;
 	Lcart:
-		if((class ==Job_Merchant) | (class==Job_Blacksmith)) goto UseCart;
+		if((class ==Job_Merchant) || (class==Job_Blacksmith)) goto UseCart;
 		mes "[Kafra]";
 		mes "I am sorry.The Cart service is only provided for Merchant and Blacksmith Class.";
 		cutin "kafra_02",255;
@@ -3283,5 +3658,6 @@ umbala.gat,128,133,4	script	Kafra	115,{
 				cutin "kafra_03",255;
 				close;
 }
+
 
 

@@ -246,9 +246,9 @@ new_1-2.gat,81,110,4	script	Newbie Instructor	84,{
 }
 
 new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
-	if ((nov_1_2_cos_c<7) & (nov_1_2_cos_c>1)) goto Lcontinue;
+	if ((nov_1_2_cos_c<7) && (nov_1_2_cos_c>1)) goto Lcontinue;
 	if (nov_1_2_cos_c>7) goto nov12coscM7;
-	if ((nov_1_2_cos_c<7) & (nov_1_2_cos_c>1)) goto nov12coscL7M1;
+	if ((nov_1_2_cos_c<7) && (nov_1_2_cos_c>1)) goto nov12coscL7M1;
 	if (nov_1_2_cos_c==7) goto nov12coscE0;
 	mes "[Leo Von Frisch]";
 	mes "Come on! Beginner!! Now You are with an Expert of Ragnarok!!";

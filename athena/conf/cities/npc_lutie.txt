@@ -291,7 +291,7 @@ xmas_in.gat,165,174,4	script	Christmas Girl	711,{
 }
 
 xmas.gat,117,304,4	script	Christmas Guy	712,{
-	if((xmas_npc==3) | (xmas_npc==4)) goto Xmas34;
+	if((xmas_npc==3) || (xmas_npc=4)) goto Xmas34;
 	mes "[Poze]";
 	mes "Merry Christmas!";
 	mes "This is Blessed Christmas Town for every visitors!";
@@ -756,7 +756,7 @@ xmas.gat,176,236,4	script	Uncle Hairy	712,{
 	close;
 
 	Xmas4:
-//		if(((countitem(Chinese_Ink)>0) & (countitem(Sticky_Mucus>0))) goto XmasL0;
+//		if(((countitem(Chinese_Ink)>0) && (countitem(Sticky_Mucus>0))) goto XmasL0;
 		mes "[Cantata]";
 		mes "Oh yeah ? Did you hear of me from ' Poze ',didn't you?";
 		mes "Haw Haw Haw ! ! Yeah - Yeah";

@@ -14,7 +14,7 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 	set @TEMP,0;
 	set @s_flag,0;
 	if(Class==6) goto L00;
-	if((Class !=0) & (Class !=6)) goto L01;
+	if((Class !=0) && (Class !=6)) goto L01;
 	if(job_thief_q==3) goto L02;
 	if(job_thief_q==2) goto L03;
 	if(job_thief_q==1) goto L04;
@@ -127,8 +127,8 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 
 moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 	if(Class==6) goto ImThief;
-	if((Class !=0) & (Class !=6)) goto ImOther;
-	if((job_thief_q==3) & ((countitem(1069)>0) | (countitem(1070)>0))) goto L00;
+	if((Class !=0) && (Class !=6)) goto ImOther;
+	if((job_thief_q==3) && ((countitem(1069)>0) || (countitem(1070)>0))) goto L00;
 	if(job_thief_q==3) goto L01;
 	if(job_thief_q==2) goto L02;
 	if(job_thief_q==0) goto L03;
@@ -389,7 +389,7 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 
 moc_prydb1.gat,42,133,2	script	Comrade	118,{
 	if(Class==6) goto L00;
-	if((Class !=0) & (Class !=6)) goto L01;
+	if((Class !=0) && (Class !=6)) goto L01;
 	if((job_thief_q==0) || (job_thief_q==1)) goto L0100;
 	if(job_thief_q==2) goto L0101;
 	if(job_thief_q==3) goto L0102;

@@ -53,7 +53,7 @@ izlude.gat,58,126,1	script	Red	98,{
 	menu "Bash",L0,"Magnum Break",L1;
 	
 	L0:
-		if((GetJob==Job_Swordman) | (GetJob==Job_Knight)) goto L00;
+		if((GetJob==Job_Swordman) || (GetJob==Job_Knight)) goto L00;
 		mes "[Red]";
 		mes "Hahahaha!! See!? Someone who pursues a different job agrees with me~! You really are a great guy!";
 		mes "Hahaha!! Undoubtedly only 'Bash' suits a Swordman..";
@@ -69,7 +69,7 @@ izlude.gat,58,126,1	script	Red	98,{
 			mes "Hm, Let me give you a bit of advice. After you achieve level 5 'Bash', the amount of SP the skill consumes increases greatly, so watch out for your SP.";
 			close;
 	L1:
-		if((GetJob==Job_Swordman) | (GetJob==Job_Knight)) goto L01;
+		if((GetJob==Job_Swordman) || (GetJob==Job_Knight)) goto L01;
 		mes "[Cebalis]";
 		mes "Right?! 'Magnum Break' is THE BEST!!! You know what you're talking about, huh? I don't know why this bonehead is sooooo stubborn.";
 		close;
@@ -113,7 +113,7 @@ izlude.gat,56,126,7	script	Cebalis	85,{
 	menu "Bash",L0,"Magnum Break",L1;
 	
 	L0:
-		if((GetJob==Job_Swordman) | (GetJob==Job_Knight)) goto L00;
+		if((GetJob==Job_Swordman) || (GetJob==Job_Knight)) goto L00;
 		mes "[Red]";
 		mes "Hahahaha!! See!? Someone who pursues a different job agrees with me~! You really are a great guy!";
 		mes "Hahaha!! Undoubtedly only 'Bash' suits a Swordman..";
@@ -129,7 +129,7 @@ izlude.gat,56,126,7	script	Cebalis	85,{
 			mes "Hm, Let me give you a bit of advice. After you achieve level 5 'Bash', the amount of SP the skill consumes increases greatly, so watch out for your SP.";
 			close;
 	L1:
-		if((GetJob==Job_Swordman) | (GetJob==Job_Knight)) goto L01;
+		if((GetJob==Job_Swordman) || (GetJob==Job_Knight)) goto L01;
 		mes "[Cebalis]";
 		mes "Right?! 'Magnum Break' is THE BEST!!! You know what you're talking about, huh? I don't know why this bonehead is sooooo stubborn.";
 		close;
