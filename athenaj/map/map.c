@@ -1,4 +1,4 @@
-// $Id: map.c,v 1.11 2004/02/08 21:30:41 rovert Exp $
+// $Id: map.c,v 1.12 2004/02/10 04:28:59 rovert Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -655,6 +655,7 @@ int map_addflooritem(struct item *item_data,int amount,int m,int x,int y)
 	fitem->subx=(r&3)*3+3;
 	fitem->suby=((r>>2)&3)*3+3;
 	fitem->cleartimer=add_timer(gettick()+battle_config.flooritem_lifetime,map_clearflooritem_timer,fitem->bl.id,0);
+	fitem->item_data.first_get_id = item_data->first_get_id;
 
 	map_addblock(&fitem->bl);
 	clif_dropflooritem(fitem);
