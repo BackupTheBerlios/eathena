@@ -30,6 +30,7 @@ char *get_param(char in_string[500], char swhat[500])
 	int i = 0;
 	int marker, iswitch, pint, dint;
 	char flux[500];
+	memset(flux, 0x0, 500);
 
 	//Get the path of out "page"
 	if (swhat == 0)
@@ -77,6 +78,7 @@ char *get_param(char in_string[500], char swhat[500])
 			}
 			else
 			{
+
 				//we have a param, now we must dig through it
 
 				//clear temp vars
@@ -90,7 +92,7 @@ char *get_param(char in_string[500], char swhat[500])
 				//split result into param_n and param_d
 				while(i != 500)
 				{
-					if (flux[i] != '=')
+					if ( (flux[i] != '=') && (flux[i] != '\0') )
 					{
 						if (iswitch == 0)
 						{
