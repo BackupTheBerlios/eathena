@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.7 2004/01/25 14:28:11 RoVeRT Exp $
+// $Id: clif.c,v 1.8 2004/01/26 18:35:05 RoVeRT Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -2531,6 +2531,7 @@ int clif_getareachar_skillunit(struct map_session_data *sd,struct skill_unit *un
 {
 	int fd=sd->fd;
 #if PACKETVER < 3
+	memset(WFIFOP(fd,0),0,packet_len_table[0x11f]);
 	WFIFOW(fd, 0)=0x11f;
 	WFIFOL(fd, 2)=unit->bl.id;
 	WFIFOL(fd, 6)=unit->group->src_id;
@@ -3002,6 +3003,7 @@ int clif_skill_setunit(struct skill_unit *unit)
 {
 	unsigned char buf[128];
 #if PACKETVER < 3
+	memset(WBUFP(buf, 0),0,packet_len_table[0x11f]);
 	WBUFW(buf, 0)=0x11f;
 	WBUFL(buf, 2)=unit->bl.id;
 	WBUFL(buf, 6)=unit->group->src_id;
