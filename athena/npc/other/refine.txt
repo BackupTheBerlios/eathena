@@ -1,5 +1,5 @@
 //Phracon Seller
-prt_in.gat,56,69,4 script Miner 119,{
+prt_in.gat,56,69,4	script	Vurewell	86,{
 	mes "[Miner]";
 	mes "Hello, Im selling metals I just mined.";
 	mes "They are Pharacon and Emvertacon.";
@@ -20,7 +20,7 @@ CONTINUE:
 	input @ammount;
 	if (@ammount <= 0) goto BELOW;
 	if (zeny<@value*@ammount) goto NO;
-	if (checkweight(@item,@amount) == 0) goto FAIL;
+	if (checkweight(@item,@ammount) == 0) goto FAIL;
 	getitem @itemid,@ammount;
 	set zeny,zeny-@value*@ammount;
 close;
@@ -38,7 +38,7 @@ BELOW:
 	close;
 }
 
-payon_in01.gat,84,26,4	script	Miner	88,{
+payon_in01.gat,84,26,4	script	Begnahd	88,{
 	mes "[Miner]";
 	mes "Hello, Im selling metals I just mined.";
 	mes "They are Pharacon and Emvertacon.";
@@ -59,7 +59,7 @@ CONTINUE:
 	input @ammount;
 	if (@ammount <= 0) goto BELOW;
 	if (zeny<@value*@ammount) goto NO;
-	if (checkweight(@item,@amount) == 0) goto FAIL;
+	if (checkweight(@item,@ammount) == 0) goto FAIL;
 	getitem @itemid,@ammount;
 	set zeny,zeny-@value*@ammount;
 	close;
@@ -77,7 +77,7 @@ BELOW:
 	close;
 }
 
-morocc_in.gat,65,37,4	script	Miner	99,{
+morocc_in.gat,65,37,4	script	Sade	99,{
 mes "[Miner]";
 mes "Hello, Im selling metals I just mined.";
 mes "They are Pharacon and Emvertacon.";
@@ -98,7 +98,7 @@ CONTINUE:
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
-if (checkweight(@item,@amount) == 0) goto FAIL;
+if (checkweight(@item,@ammount) == 0) goto FAIL;
 getitem @itemid,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
@@ -116,7 +116,7 @@ mes "You have to buy a POSITIVE amount of items!";
 close;
 }
 
-alberta_in.gat,18,59,5	script	Miner	84,{
+alberta_in.gat,18,59,5	script	Kahlamanlith	86,{
 mes "[Miner]";
 mes "Hello, Im selling metals I just mined.";
 mes "They are Pharacon and Emvertacon.";
@@ -137,7 +137,7 @@ CONTINUE:
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
-if (checkweight(@item,@amount) == 0) goto FAIL;
+if (checkweight(@item,@ammount) == 0) goto FAIL;
 getitem @itemid,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
@@ -155,9 +155,8 @@ mes "You have to buy a POSITIVE amount of items!";
 close;
 }
 
-//Yuno NPC @ 171 26
 
-yuno_in01.gat,171,26,6	script	Miner	88,{
+yuno_in01.gat,171,26,6	script	Dillemat	88,{
 
 mes "[Miner]";
 mes "Hello, Im selling metals I just mined.";
@@ -179,7 +178,7 @@ CONTINUE:
 input @ammount;
 if (@ammount <= 0) goto BELOW;
 if (zeny<@value*@ammount) goto NO;
-if (checkweight(@item,@amount) == 0) goto FAIL;
+if (checkweight(@item,@ammount) == 0) goto FAIL;
 getitem @itemid,@ammount;
 set zeny,zeny-@value*@ammount;
 close;
