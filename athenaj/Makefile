@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2004/01/20 04:39:28 RoVeRT Exp $
+# $Id: Makefile,v 1.2 2004/01/25 14:28:10 RoVeRT Exp $
 
 CC = gcc -pipe
 PACKETDEF = -DPACKETVER=4 -DNEW_006b

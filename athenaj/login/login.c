@@ -1,4 +1,4 @@
-// $Id: login.c,v 1.1 2004/01/20 04:39:32 RoVeRT Exp $
+// $Id: login.c,v 1.2 2004/01/25 14:28:11 RoVeRT Exp $
 // original : login2.c 2003/01/28 02:29:17 Rev.1.1.1.1
 
 #include <sys/types.h>
@@ -780,13 +780,12 @@ int do_init(int argc,char **argv)
     auth_fifo[i].delflag=1;
   }
   for(i=0;i<MAX_SERVERS;i++){
-memse‚Ì¶¬
-  memset(mf	str_SERVE fR}ame);
-	 // ˆÃe			lognsig
-			log=rand(oid)
-{
-	FILE 			ct()
-{
-	char line[randize_ketmse_f();
-	return 10=randize_Íˆê‚¾;
-		}(%d %d %d\n"=ra
+    server_fd[i]=-1;
+  }
+  make_listen_port(login_port);
+  mmo_auth_init();
+	read_gm_account();
+  set_termfunc(mmo_auth_sync);
+  set_defaultparse(parse_login);
+  return 0;
+}

@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.2 2004/01/23 15:34:24 RoVeRT Exp $
+// $Id: char.c,v 1.3 2004/01/25 14:28:10 RoVeRT Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>

@@ -1,4 +1,4 @@
-// $Id: pc.h,v 1.2 2004/01/25 14:27:02 RoVeRT Exp $
+// $Id: pc.h,v 1.3 2004/01/25 14:28:11 RoVeRT Exp $
 
 #ifndef _PC_H_
 #define _PC_H_
