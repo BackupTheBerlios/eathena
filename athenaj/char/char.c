@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.3 2004/01/25 14:28:10 RoVeRT Exp $
+// $Id: char.c,v 1.4 2004/01/27 21:20:17 RoVeRT Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -44,7 +44,7 @@ int char_ip;
 int char_port = 6121;
 int char_maintenance;
 int char_new;
-char char_txt[256];
+char char_txt[1024];
 
 #define CHAR_STATE_WAITAUTH 0
 #define CHAR_STATE_AUTHOK 1
