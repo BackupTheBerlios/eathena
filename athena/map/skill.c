@@ -1149,7 +1149,7 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	case TF_SPRINKLESAND:	/* 砂まき */
 	case AC_CHARGEARROW:	/* チャージアロー */
 	case KN_SPEARSTAB:		/* スピアスタブ */
-	case RG_RAID:		/* サプライズアタック */
+//	case RG_RAID:		/* サプライズアタック */
 	case RG_INTIMIDATE:		/* インティミデイト */
 	case BA_MUSICALSTRIKE:	/* ミュージカルストライク */
 	case DC_THROWARROW:		/* 矢撃ち */
