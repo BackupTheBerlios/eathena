@@ -143,3 +143,5 @@ form, to input, the Enter depression.
   151 = Take Stone
   152 = Stone Throw
 
+@agitstart    ---- UéíŠJn
+@agitend      ---- UéíI—¹

@@ -12,9 +12,9 @@ OnAgitBreak:
 	SetCastleData "gefg_cas01.gat",1,@GID;
 	Announce "Guild Base [" + GetCastleName("gefg_cas01.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild."
 	MapAnnounce "gefg_cas01.gat","Emperium has been destroyed.",17;
-	MapRespawnGuildID "gefg_cas01.gat",GetCastleData("gefg_cas01.gat",1),0;
 	End;
 OnAgitEliminate:
+	MapRespawnGuildID "gefg_cas01.gat",GetCastleData("gefg_cas01.gat",1),0;
 	Monster "gefg_cas01.gat",198,182,"EMPELIUM",1288,1,"Agit_B01::OnAgitBreak";
 	End;
 OnAgitEnd:
@@ -37,9 +37,9 @@ OnAgitBreak:
 	SetCastleData "gefg_cas02.gat",1,@GID;
 	Announce "Guild Base [" + GetCastleName("gefg_cas02.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
 	MapAnnounce "gefg_cas02.gat","Emperium has been destroyed.",17;
-	MapRespawnGuildID "gefg_cas02.gat",GetCastleData("gefg_cas02.gat",1),0;
 	End;
 OnAgitEliminate:
+	MapRespawnGuildID "gefg_cas02.gat",GetCastleData("gefg_cas02.gat",1),0;
 	Monster "gefg_cas02.gat",176,178,"EMPELIUM",1288,1,"Agit_B02::OnAgitBreak";
 	End;
 OnAgitEnd:
@@ -62,9 +62,9 @@ OnAgitBreak:
 	SetCastleData "gefg_cas03.gat",1,@GID;
 	Announce "Guild Base [" + GetCastleName("gefg_cas03.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
 	MapAnnounce "gefg_cas03.gat","Emperium has been destroyed.",17;
-	MapRespawnGuildID "gefg_cas03.gat",GetCastleData("gefg_cas03.gat",1),0;
 	End;
 OnAgitEliminate:
+	MapRespawnGuildID "gefg_cas03.gat",GetCastleData("gefg_cas03.gat",1),0;
 	Monster "gefg_cas03.gat",245,167,"EMPELIUM",1288,1,"Agit_B03::OnAgitBreak";
 	End;
 OnAgitEnd:
@@ -87,9 +87,9 @@ OnAgitBreak:
 	SetCastleData "gefg_cas04.gat",1,@GID;
 	Announce "Guild Base [" + GetCastleName("gefg_cas04.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
 	MapAnnounce "gefg_cas04.gat","Emperium has been destroyed.",17;
-	MapRespawnGuildID "gefg_cas04.gat",GetCastleData("gefg_cas04.gat",1),0;
 	End;
 OnAgitEliminate:
+	MapRespawnGuildID "gefg_cas04.gat",GetCastleData("gefg_cas04.gat",1),0;
 	Monster "gefg_cas04.gat",174,178,"EMPELIUM",1288,1,"Agit_B04::OnAgitBreak";
 	End;
 OnAgitEnd:
@@ -112,9 +112,9 @@ OnAgitBreak:
 	SetCastleData "gefg_cas05.gat",1,@GID;
 	Announce "Guild Base [" + GetCastleName("gefg_cas05.gat") + "] has been taken by [" + GetGuildName(@GID) + "] guild.",0;
 	MapAnnounce "gefg_cas05.gat","Emperium has been destroyed.",17;
-	MapRespawnGuildID "gefg_cas05.gat",GetCastleData("gefg_cas05.gat",1),0;
 	End;
 OnAgitEliminate:
+	MapRespawnGuildID "gefg_cas05.gat",GetCastleData("gefg_cas05.gat",1),0;
 	Monster "gefg_cas05.gat",194,184,"EMPELIUM",1288,1,"Agit_B05::OnAgitBreak";
 	End;
 OnAgitEnd:
