@@ -2747,7 +2747,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		limit=180000;
 		aoe_diameter=skilllv+skilllv%2+3;
 		target=BCT_ALL;
-		count=aoe_diameter^2;
+		count=aoe_diameter*aoe_diameter; // moonsoul - statement needs to be this way to work
 		break;
 
 	case SA_LANDPROTECTOR:	/* グランドクロス */
@@ -2756,7 +2756,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		val1=skilllv*15+10;
 		aoe_diameter=skilllv+skilllv%2+5;
 		target=BCT_ALL;
-		count=aoe_diameter^2;
+		count=aoe_diameter*aoe_diameter; // moonsoul - statement needs to be this way to work
 		break;
 
 	case BD_LULLABY:			/* 子守唄 */
@@ -3004,7 +3004,7 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 		case SA_VIOLENTGALE:	/* グランドクロス */
 		case SA_LANDPROTECTOR:	/* グランドクロス */
 			ux+=(i%aoe_diameter- aoe_diameter/2);
-			uy+=(i%aoe_diameter- aoe_diameter/2);
+			uy+=(i/aoe_diameter- aoe_diameter/2);	// moonsoul - % changed back to division
 			if(i==count/2)
 				range= aoe_diameter/2;	/* 中心の場合は範囲を4にオーバーライド */
 			else
