@@ -1,4 +1,65 @@
 --------------
+//0718 by 死神
+
+・色々と修正。
+・毒によって防御が減るように変更。(HPはまだ減りません。)
+・アイスウォールに攻撃できるように変更。(今は全ての攻撃に当たります。)
+ただ鞍のバグらしくアイスウォールをクリックすると鞍から0x89パケットが30回以上連続で送ってくることが起こりますが原因は不明です。多分鞍のバグだと思いますが...)
+・戦闘に関わる計算等を修正。
+・ゼニが増えるバグ修正。(多分これでこのバグはなくなると思いますがどうなのか報告をお願いします。)
+・二刀流の左手武器の種族、属性、Sizeのダメージ補正を右手武器に適用するかどうかを設定できるように変更。
+・その他修正はしたはずですが覚えてません。(修正してない物もありますがdiff当ての途中でどれを作業したのかを忘れたので...)
+	(common/)
+	mmo.h 修正。
+	(conf/)
+	battle_athena.conf 修正。
+	(doc/)
+	conf_ref.txt 修正。
+	(map/)
+	battle.h 修正。
+	battle.c
+		battle_get_baseatk()、battle_get_speed()、battle_get_adelay() 追加。
+		battle_get_amotion() 、battle_calc_pet_weapon_attack() 修正。
+		battle_calc_mob_weapon_attack()、battle_calc_pc_weapon_attack() 修正。
+		battle_get_atk()、battle_get_atk_()、battle_get_atk2() 修正。
+		battle_get_attack_element()、battle_get_attack_element2() 修正。
+		battle_get_str()、battle_get_agi()、battle_get_vit()、battle_get_int() 修正。
+		battle_get_dex()、battle_get_luk()、battle_get_flee() 修正。
+		battle_get_flee2()、battle_get_hit()、battle_get_critical() 修正。
+		battle_get_def()、battle_get_def2()、battle_get_mdef() 修正。
+		battle_get_element()、battle_check_target()、battle_check_range() 修正。
+		battle_weapon_attack()、battle_config_read() 修正。
+	clif.c
+		clif_skill_estimation()、clif_mob0078()、clif_mob007b() 修正。
+	pc.c
+		pc_attack_timer()、pc_attack()、pc_calcstatus()、pc_payzeny() 修正。
+		pc_getzeny() 修正。
+	npc.c
+		npc_buylist()、npc_selllist() 修正。
+	pet.c
+		pet_attack()、pet_randomwalk()、pet_ai_sub_hard() 修正。
+	mob.h 修正。
+	mob.c
+		calc_next_walk_step()、mob_attack()、mobskill_castend_id() 修正。
+		mobskill_use_id()、mobskill_use_pos()、mob_ai_sub_hard() 修正。
+		mob_damage()、mob_changestate() 修正。
+		mob_get_adelay()、mob_get_speed() 削除。
+	skill.h 修正。
+	skill.c
+		skill_unitsetting()、skill_unit_ondamaged()、skill_unit_timer_sub() 修正。
+		skill_unit_timer()、skill_area_sub()、skill_unit_onplace() 修正。
+		skill_status_change_start() 修正。
+	chat.c 修正。
+	makefile 修正。
+	chrif.c 修正。
+	guild.c 修正。
+	itemdb.c 修正。
+	map.c 修正。
+	party.c 修正。
+	script.c 修正。
+	path.c 修正。
+
+--------------
 //0717 by 聖
 
 ・大量にモンスターを召還して一度に倒すとmap-serverが落ちる問題を修正。
@@ -35,7 +96,7 @@
 //0715 by 死神
 
 ・マップサーバーから表示される物を表示するかどうかの設定ができるようにしました。スキル表示だけでもなくしてやるとサーバーがかなり楽になったりもします。
-開発やバグトレースの時は表示する床をお勧めします。
+開発やバグトレースの時は表示することをお勧めします。
 ・その他細かい修正。
 ・修正した所を全て書けないのでファイルだけ。
 	(doc/)
@@ -55,17 +116,19 @@
 	intif.c
 	guild.c
 	chat.c
+	battle.h
 	battle.c
 	chrif.c
 	atcommand.c
 	clif.c
 	mob.c
+	map.c
 
 --------------
 //0714 by 死神
 
 ・細かい修正。
-・シールドブーメランで盾の重量と精錬によって増えるように修正。精錬ダメージを足す時適用してダメージ+重量+盾精錬*4(この4はrefine_db.txtの防具の過剰精錬ボーナスを使ってるので変更可能です。)になります。
+・シールドブーメランで盾の重量と精錬によってダメージが増えるように修正。精錬ダメージを足す時適用でダメージ+重量+盾精錬*4(この4はrefine_db.txtの防具の過剰精錬ボーナスを使ってるので変更可能です。)になります。
 ・スキルによる吹き飛ばし処理で0x88パケットを使っていましたがそのパケットの優先順位がかなり低いらしく後で来るパケットによって無視されることもあるようなのでプレイヤーだけに適用してモンスターには0x78を使うように変更しました。
 でも位置ずれは完全になくならないようです。(恐らく鞍のバグだと思います。鯖の
 座標を確認してみましたが鯖の方は問題がありませんでした。)
