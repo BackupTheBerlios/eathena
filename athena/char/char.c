@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.6 2004/01/28 21:26:00 rovert Exp $
+// $Id: char.c,v 1.7 2004/02/03 23:57:16 sara-chan Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -1046,10 +1046,14 @@ int parse_char(int fd)
 				WFIFOL(fd,2)=char_dat[sd->found_char[ch]].char_id;
 				i=search_mapserver(char_dat[sd->found_char[ch]].last_point.map);
 				if(i<0){
-					memcpy(char_dat[sd->found_char[ch]].last_point.map,"prontera.gat",16);
-					i=search_mapserver(char_dat[sd->found_char[ch]].last_point.map);
-					if(i<0)
+					i=search_mapserver("prontera.gat");
+					if(i<0){
 						i=0;
+						} else {
+							memcpy(char_dat[sd->found_char[ch]].last_point.map,"prontera.gat",16);
+							i=search_mapserver(char_dat[sd->found_char[ch]].last_point.map);
+					}
+				
 				}
 				memcpy(WFIFOP(fd,6),char_dat[sd->found_char[ch]].last_point.map,16);
 				if(lan_ip_check(p)) WFIFOL(fd, 22)=inet_addr(lan_map_ip); 
