@@ -1,6 +1,4 @@
-// $Id: npc_blacksmith.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
-//<--------------- Blacksmith Job Quest [Update: Sep. 02, 2003] --------------->\\
-//EDITED BY KOOK SWU 09/10/2003
+//BlackSmith NPC for Athena by RoVeRT
 
 geffen_in.gat,110,170,5	script	Blacksmith Guildsman	63,{
 	mes "[Blacksmith Guildsman]";

@@ -1,4 +1,4 @@
-// $Id: npc_IceCream.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
+// $Id: npc_IceCream.txt,v 1.2 2004/01/09 20:24:22 rovert Exp $
 //<--------------- Ice Cream Event [Update: Aug. 10, 2003] --------------->\\
 //EDITED BY KOOK SWU 09/10/2003
 
@@ -17,16 +17,16 @@ alberta.gat,120,53,5	script	Ice Cream Maker	85,{
 		mes "Fresh Ice Cream made with snow from Lutie!";
 		mes "Everyone wants our delicious ice cream, but we have limited amount,";
 		mes "so you can only purchase 5 at a time!!";
-		set Script_flag_num;
+		set @input;
 		next;
-		input Script_flag_num;
-		if(Script_flag_num==0) goto inpC;
-		if(Script_flag_num>5) goto inpM;
-		if(Zeny<Script_flag_num*100) goto NoZ;
-		getitem 536,Script_flag_num;
-		set Zeny,Zeny-100*Script_flag_num;
+		input @input;
+		if(@input==0) goto inpC;
+		if(@input>5) goto inpM;
+		if(Zeny<@input*100) goto NoZ;
+		getitem 536,@input;
+		set Zeny,Zeny-100*@input;
 		mes "[Ice Cream Maker]";
-		mes "Here you go  " +Script_flag_num+ "  Ice Cream for you.";
+		mes "Here you go  " +@input+ "  Ice Cream for you.";
 		close;
 		
 		inpC:
@@ -62,16 +62,16 @@ moc_fild16.gat,88,304,4	script	Ice Cream Maker	85,{
 		mes "Fresh Ice Cream made with snow from Lutie!";
 		mes "Everyone wants our delicious ice cream, but we have limited amount,";
 		mes "so you can only purchase 5 at a time!!";
-		set Script_flag_num;
+		set @input;
 		next;
-		input Script_flag_num;
-		if(Script_flag_num==0) goto inpC;
-		if(Script_flag_num>5) goto inpM;
-		if(Zeny<Script_flag_num*100) goto NoZ;
-		getitem 536,Script_flag_num;
-		set Zeny,Zeny-100*Script_flag_num;
+		input @input;
+		if(@input==0) goto inpC;
+		if(@input>5) goto inpM;
+		if(Zeny<@input*100) goto NoZ;
+		getitem 536,@input;
+		set Zeny,Zeny-100*@input;
 		mes "[Ice Cream Maker]";
-		mes "Here you go  " +Script_flag_num+ "  Ice Cream for you.";
+		mes "Here you go  " +@input+ "  Ice Cream for you.";
 		close;
 		
 		inpC:
@@ -108,16 +108,16 @@ morocc.gat,160,144,4	script	Ice Cream Maker	85,{
 		mes "Fresh Ice Cream made with snow from Lutie!";
 		mes "Everyone wants our delicious ice cream, but we have limited amount,";
 		mes "so you can only purchase 5 at a time!!";
-		set Script_flag_num;
+		set @input;
 		next;
-		input Script_flag_num;
-		if(Script_flag_num==0) goto inpC;
-		if(Script_flag_num>5) goto inpM;
-		if(Zeny<Script_flag_num*100) goto NoZ;
-		getitem 536,Script_flag_num;
-		set Zeny,Zeny-100*Script_flag_num;
+		input @input;
+		if(@input==0) goto inpC;
+		if(@input>5) goto inpM;
+		if(Zeny<@input*100) goto NoZ;
+		getitem 536,@input;
+		set Zeny,Zeny-100*@input;
 		mes "[Ice Cream Maker]";
-		mes "Here you go  " +Script_flag_num+ "  Ice Cream for you.";
+		mes "Here you go  " +@input+ "  Ice Cream for you.";
 		close;
 		
 		inpC:

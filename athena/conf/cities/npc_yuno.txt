@@ -1,16 +1,4 @@
-//Yuno NPC's By KitsuneStarwind Owner & GM of SilverMoon RO
-//Credits goto my friend Snow (Lord_Uller) and Iris Amathyst (from iRO) for translating it for me
-//and a Special Thanks to Dovac who spent and hour or more taking happy snaps of Yuno for me :)
-//These are no way the Official NPC's but are just a very close imitation of them
-//
-//
-//                             Aegis To Athena Conversion v1.0
-//                                        By DiaDz
-//
-//
-
-
-
+//Yuno City for Athena By KitsuneStarwind 
 //Yuno Welcome Font Gate - Doesn't seem complete! >_<!
 //No coordinates were different!!!
 //

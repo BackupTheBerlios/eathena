@@ -1,7 +1,4 @@
-// $Id: npc_assassin.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
-//<--------------- Assassin Job Quest [Update: Sep. 02, 2003] --------------->\\
-//EDITED BY KOOK SWU 09/10/2003
-
+//Assassin NPC for Athena by RoVeRT
 in_moc_16.gat,71,88,4	script	Assassin Clan Member	99,{
 	mes "[Assassin Clan Member]";
 	mes "Welcome to Assassin Clan, the Fang of Desert.";

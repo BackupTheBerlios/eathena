@@ -1,6 +1,4 @@
-// $Id: npc_wizard.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
-//<--------------- Wizard Job Quest [Update: Sep. 02, 2003] --------------->\\
-//EDITED BY KOOK SWU 09/10/2003
+//Wizzard NPC for Athena by RoVeRT
 
 gef_tower.gat,111,37,4	script	Wizard	70,{
 	mes "[Wizard]";

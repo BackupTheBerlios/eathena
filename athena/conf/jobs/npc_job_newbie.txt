@@ -2,15 +2,14 @@
 
 new_1-1.gat,66,114,1	script	Bulletin Board	111,{
 	mes "^FF0000=================================^000000";
-	mes "^FF0000 ==^000000 ^E40CAAWelcome to ^CC0000to^FF90004Athena^0000FFRO^E40CAAServer! ^FF0000==^000000";
+	mes "^FF0000 ==^000000 ^E40CAA[Welcome] ^CC0000to^FF9000Training ^0000FFGround^E40CAA [Welcome] ^FF0000==^000000";
 	mes "^FF0000=================================^000000";
 	close;
 }
 
 new_1-1.gat,117,107,2	script	Guard	105,{
-	set @TEMP,0;
-	random @TEMP,2;
-	if(@TEMP !=0) goto L0;
+	set @TEMP,rand(2);
+	if (@TEMP !=0) goto L0;
 	mes "[Guard]";
 	mes "Go! Newbie! Go! You will see a New sun tomorrow!";
 	close;
@@ -57,8 +56,8 @@ new_1-1.gat,157,124,3	script	Training Ground Chief	56,{
 }
 
 new_1-2.gat,16,183,5	script	Helper	84,{
-	if(countitem(3023)==10) goto Lstep2;
-	if(countitem(3023)>=11) goto Lrespawn;
+	if (nov_1_2_cos_c==10) goto Lstep2;
+	if (nov_1_2_cos_c>=11) goto Lrespawn;
 	mes "[Helper]";
 	mes "Heh... I can't find your name on the list.";
 	mes "Could you register first at the front desk?";
@@ -67,12 +66,12 @@ new_1-2.gat,16,183,5	script	Helper	84,{
 	Lstep2:
 		mes "[Helper]";
 		mes "Heh... I can't find your name on the list.....";
-		mes "Ah! Here you are. Ok $CharName . Are you ready?";
+		mes "Ah! Here you are. Ok " + strcharinfo(0) + ". Are you ready?";
 		next;
 		menu "Yes.",Lyes,"No.",Lno;
 
 		Lyes:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Helper]";
 			mes "Well ..We wish you luck.";
 			savepoint "new_1-3.gat",96,21;
@@ -94,7 +93,7 @@ new_1-2.gat,16,183,5	script	Helper	84,{
 }
 
 new_1-2.gat,39,183,3	script	Helper	92,{
-	if(countitem(3023)>=10) goto Lend;
+	if (nov_1_2_cos_c>=10) goto Lend;
 	mes "[Helper]";
 	mes "Your registration has confirmed.I would like to say `Congratulations' also.";
 	mes "I will let you know about 2nd course breifly.";
@@ -108,11 +107,11 @@ new_1-2.gat,39,183,3	script	Helper	92,{
 	mes "[Helper]";
 	mes "Ask the helper located in the left side about the entrance of 2nd Course.";
 	mes "OK,We wish you luck.";
-	if(countitem(3023)<10) goto Lset;
+	if (nov_1_2_cos_c<10) goto Lset;
 	close;
 
 	Lset:
-		getitem 3023,1;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		close;
 	Lend:
 		mes "[Helper]";
@@ -121,7 +120,7 @@ new_1-2.gat,39,183,3	script	Helper	92,{
 }
 
 new_1-2.gat,78,101,6	script	Helper	105,{
-	if(countitem(3023)>= 9) goto Lcourse2;
+	if (nov_1_2_cos_c>= 9) goto Lcourse2;
 	mes "[Helper]";
 	mes "I am a helper who will guide you to the 2nd registration office. Please attend all classes in 1st course First.";
 	close;
@@ -227,7 +226,7 @@ new_1-2.gat,81,110,4	script	Newbie Instructor	84,{
 	mes "I know you don't think this is not important right now,but be careful,it causes you the cumulative effects on your character."; 
 	mes "Somehow I believe nice persons will play fair even without this kind of restriction!";
 	next;
-	if(countitem(519)<1) goto Lmilk;
+	if (nov_1_2_cos_c<1) goto Lmilk;
 	mes "[Newbie Instructor]";
 	mes "Well...This is all I can tell you,buddy.Leo Von Frisch will take care of you from now on.";
 	mes "Do your best,Ok? Ragnarok is a worthwhile game.";
@@ -244,10 +243,10 @@ new_1-2.gat,81,110,4	script	Newbie Instructor	84,{
 }
 
 new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
-	if((countitem(3023)<7) & (countitem(3023)>1)) goto Lcontinue;
-	if(countitem(3023)>7) goto nov12coscM7;
-//	if((countitem(3023)<7) & (countitem(3023)>1)) goto nov12coscL7M1;
-	if(countitem(3023)==7) goto nov12coscE0;
+	if ((nov_1_2_cos_c<7) & (nov_1_2_cos_c>1)) goto Lcontinue;
+	if (nov_1_2_cos_c>7) goto nov12coscM7;
+//	if ((nov_1_2_cos_c<7) & (nov_1_2_cos_c>1)) goto nov12coscL7M1;
+	if (nov_1_2_cos_c==7) goto nov12coscE0;
 	mes "[Leo Von Frisch]";
 	mes "Come on! Beginner!! Now You are with an Expert of Ragnarok!!";
 	mes "Me! I am God of beginners and I enlighten your pathetic souls from the Darkened World.";
@@ -304,11 +303,11 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		mes "[Leo Von Frisch]";
 		mes "Are you ready!? Answer me!";
 		next;
-		if(countitem(3023)==1) goto Lc2;
-		if(countitem(3023)==2) goto Lc2;
-		if(countitem(3023)==3) goto Lc4;
-		if(countitem(3023)==4) goto Lc5;
-		if(countitem(3023)==5) goto Lc6;
+		if (nov_1_2_cos_c==1) goto Lc2;
+		if (nov_1_2_cos_c==2) goto Lc2;
+		if (nov_1_2_cos_c==3) goto Lc4;
+		if (nov_1_2_cos_c==4) goto Lc5;
+		if (nov_1_2_cos_c==5) goto Lc6;
 		close;
 		Lc2:
 			menu "Yes sir!",LQ2,"No,I am not ready yet.",Lno;
@@ -337,7 +336,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 				next;
 				goto LQ2;
 		LQ1_1:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Umm...Be cooperate with other people. The world will be end without nothing.";
 			mes "Answer is ^FF0000War between human beings and monsters^000000.";
@@ -350,7 +349,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			goto LQ2;
 		LQ1_2:
 			getitem 513,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Yes,that's right. You know well. We are fighting with evil creatures. In most of MMORPG games,they are known as Monsters or commonly just called as Mob.";
 			next;
@@ -361,7 +360,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			next;
 			goto LQ2;
 		LQ1_3:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "...What the bloody hell are you saying? Why would humans torment creatures for?";
 			mes "Answer is ^FF0000War between human beings and monsters^000000.";
@@ -373,7 +372,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			next;
 			goto LQ2;
 		LQ1_4:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Oh well...I fully understand your pursue ideal world...Not now,not now.";
 			mes "Answer is ^FF0000War between human beings and monsters^000000.";
@@ -401,7 +400,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		mes "^FF0000You can arrange beginning Stats of your character.With that, Your character could be the best for job you wish for.^000000.";
 		mes "So You should consider beginning Stats as well fitting for the job you want your character to be in the future.";
 		next;
-		if(S_FLAG > 1) goto LQ3; 
+		if(@S_FLAG > 1) goto LQ3; 
 		mes "[Leo Von Frisch]";
 		mes "I give you one easy question!";
 		mes "What is the wrong description for each Stat? You should choose wrong one not right one!!";
@@ -409,14 +408,14 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		menu "STR - Increase hit point and maximum weight.",LQ2_1,"AGI - Increase flee rate and attack speed.",LQ2_2,"DEX - Increase accuracy and magic defence.",LQ2_3,"INT - Increase magic attack/defence.",LQ2_4;
 
 		LQ2_1:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "That's wrong!";
 			mes "'DEX -  Increase accuracy and magic defence.'is not correct, it should be:";
 			mes "^FF0000'DEX - Increase accuracy and weapon damage.'^000000.";
 			next;
 			goto LQ3;
 		LQ2_2:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "That's wrong!";
 			mes "'DEX -  Increase accuracy and magic defence.'is not correct, it should be:";
 			mes "^FF0000'DEX - Increase accuracy and weapon damage.'^000000.";
@@ -424,7 +423,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			goto LQ3;
 		LQ2_3:
 			getitem 513,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Alright! You got it.";
 			mes "It is not 'DEX - Increase accuracy and magic defence.',correct description is:";
@@ -433,7 +432,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			next;
 			goto LQ3;
 		LQ2_4:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "That's wrong!";
 			mes "'DEX -  Increase accuracy and magic defence.'is not correct, it should be:";
 			mes "^FF0000'DEX - Increase accuracy and weapon damage.'^000000.";
@@ -464,7 +463,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		mes "If you don't want to be murdered due to your stupidity, lighten your weight as you can.";
 		mes "You can use Kafra Wearhouse to store items. And it will cost you the different local fee from 35 Zeny to 50 Zeny.";
 		next;
-		if(S_FLAG > 2) goto LQ4; 
+		if(@S_FLAG > 2) goto LQ4; 
 		mes "[Leo Von Frisch]";
 		mes "Let's take a break~ Phew....";
 		mes "Ah~ I have an idea~ I will give you a 'for-Fun' question.";
@@ -480,13 +479,13 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		menu "Instructor.",LQ3_1,"An Intelligence Officer in the 4th Chivarly of Prontera.",LQ3_2,"Public Prosecutor.",LQ3_3,"I have no idea.",LQ3_4;
 
 		LQ3_1:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Damn you!...... Next!";
 			next;
 			goto LQ4;
 		LQ3_2:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Damn you!...... Next!";
 			next;
@@ -496,13 +495,13 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			mes "Fine! I am not a 'Public Prosecutor' but a ^ff0000'Newbie Tutor^000000!";
 			next;
 			getitem 516,3;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Take this. It is nothing, but I am so pleased that you remembered me in detail.Share with your pals.";
 			next;
 			goto LQ4;
 		LQ3_4:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Damn you!...... Next!";
 			next;
@@ -527,7 +526,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		mes "Passive skill means ^FF0000You don't have to spend your SP to use it.It is always in effect^000000.The opposite from Active skill.";
 		mes "Also skills are  ^FF0000possible to register on the Hot key window^000000,you can use your favorite skills quickly and easily this way.";
 		next;
-		if(S_FLAG > 3) goto LQ5; 
+		if(@S_FLAG > 3) goto LQ5; 
 		mes "[Leo Von Frisch]";
 		mes "One Question for you!";
 		mes "How to see each item's description and the picture with the mouse?";
@@ -535,7 +534,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		menu "Double Click",LQ4_1,"Right Click",LQ4_2,"Drag & Drop",LQ4_3;
 
 		LQ4_1:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "It is ^FF0000'Right Click'^000000!";
@@ -543,14 +542,14 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			goto LQ5;
 		LQ4_2:
 			getitem 512,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "It is ^FF0000'Right Click'^000000!Correct!";
 			mes "I will reward you for the correct answer.Take it.";
 			next;
 			goto LQ5;
 		LQ4_3:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "It is ^FF0000'Right Click'^000000!";
@@ -585,7 +584,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		mes "The 'Option'button opens the window that allows you to controll the BGM and Sound Effect and turn on/off them .Shorcut is 'Alt + O'.";
 		mes "After Feb 2002,you can also select a window skin from self-made skins shared in fansites."; 
 		next;
-		if(S_FLAG > 4) goto LQ6; 
+		if(@S_FLAG > 4) goto LQ6; 
 		mes "[Leo Von Frisch]";
 		mes "Another Question!";
 		mes "Which one is the shortcut for hot key window that hleps you to play easier ?"; 
@@ -593,21 +592,21 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		menu "F1",LQ5_1,"F15",LQ5_2,"F16",LQ5_3,"F12",LQ5_4;
 
 		LQ5_1:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "The right key is 'F12'";
 			next;
 			goto LQ6;
 		LQ5_2:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "The right key is 'F12'";
 			next;
 			goto LQ6;
 		LQ5_3:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's wrong!";
 			mes "The right key is 'F12'";
@@ -615,7 +614,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 			goto LQ6;
 		LQ5_4:
 			getitem 517,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "That's right.'F12'is correct answer.";
 			mes "This is for you.";
@@ -628,34 +627,34 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		mes "[Leo Von Frisch]";
 		mes "The End.";
 		next;
-		if(S_FLAG > 5) goto LQ7; 
+		if(@S_FLAG > 5) goto LQ7; 
 		mes "[Leo Von Frisch]";
 		mes "Quiz time!";
 		mes "Choose One showing the Right Shortcut for `Sit' and the Command you type in the Chat Box.";
 		menu "'insert' - /Sit",LQ6_1,"'page down' - /Sitting",LQ6_2,"'home' - /Sitdown",LQ6_3,"'delete' - /stand",LQ6_4;
 
 		LQ6_1:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Wrong. `'delete' - /stand` is the correct one.";
 			next;
 			goto LQ7;
 		LQ6_2:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Wrong. `'delete' - /stand` is the correct one.";
 			next;
 			goto LQ7;
 		LQ6_3:
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			mes "[Leo Von Frisch]";
 			mes "Wrong. `'delete' - /stand` is the correct one.";
 			next;
 			goto LQ7;
 		LQ6_4:
 			getitem 519,1;
-			getitem 3023,1;
-			set S_FLAG,S_FLAG+1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
+			set @S_FLAG,@S_FLAG+1;
 			mes "[Leo Von Frisch]";
 			mes "Yeah,correct.";
 			next;
@@ -666,20 +665,20 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 		mes "If you can't get it,play by yourself. 'The proof of the pudding is in the eating.',the proverb.";
 		mes "I hope my class will be helpful to your wretched future in Ragnarok.";
 		next;
-		if(countitem(3023)>5) goto Lherb4;
+		if(nov_1_2_cos_c>5) goto Lherb4;
 		getitem 507,2;
-		getitem 3023,1;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		mes "[Leo Von Frisch]";
 		mes "I will reward you for the successful lesson. Take it. They will be useful when you have a hard time.";
 		next;
 		mes "[Leo Von Frisch]";
 		mes "Anyway,Let's call it a day with me,you may go to the 'NPC' master.";
 		mes "If you can't find him, inquire at the sly dog at the centre";
-		getitem 3023,1;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		close;
 
 		Lherb4:
-			if(countitem(3023)<7) goto Lget4;
+			if(nov_1_2_cos_c<7) goto Lget4;
 			mes "[Leo Von Frisch]";
 			mes "I will reward you for the successful lesson. Take it. They will be useful when you have a hard time.";
 			next;
@@ -696,7 +695,7 @@ new_1-2.gat,84,115,4	script	Leo Von Frisch	85,{
 				mes "[Leo Von Frisch]";
 				mes "Anyway,Let's call it a day with me,you may go to the 'NPC' master.";
 				mes "If you can't find him, inquire at the sly dog at the centre";
-				getitem 3023,1;
+				set nov_1_2_cos_c,nov_1_2_cos_c+1;
 				close;
 }
 
@@ -708,7 +707,6 @@ new_1-2.gat,99,156,4	script	Guide	105,{
 }
 
 new_1-2.gat,100,29,4	script	Usher	86,{
-	set @TEMP,0;
 	mes "[Usher]";
 	mes "Welcome to the ^FF0000Traning Ground^000000 .";
 	mes "Please choose ^0099FFIntroduction^000000 first if you need to check detailed information about Training Ground.";
@@ -719,9 +717,10 @@ new_1-2.gat,100,29,4	script	Usher	86,{
 		mes "Registration has been confirmed.";
 		mes "Please inquire at each Guide on the course when you need.";
 		next;
-		if(countitem(3025)==0) goto Lsign1;
-		set Zeny,50;
-		getitem 3025,1;
+		if (nov_get_item01 != 0) goto Lsign1;
+
+		set nov_get_item01,1;
+		set Zeny,Zeny+150;
 		mes "[Usher]";
 		mes "Training Subsidy 50 Zeny supplied.Please inquire at a Guide on the Centre when you need to know your Current Progress.";
 		mes "I will lead you into the Hall.";
@@ -729,19 +728,54 @@ new_1-2.gat,100,29,4	script	Usher	86,{
 
 		Lsign1:
 			warp "new_1-2.gat",100,70;
-			close;
+			end;
 	Ldirect:
 		mes "[Usher]";
 		mes "I see.";
 		mes "Hopefully you will contribute to public welfare in near future, good luck.";
 		next;
-		savepoint "izlude.gat",124,120;
-		warp "izlude.gat",124,120;
-		close;
+		set nov_3_merchant,0;
+		set nov_1st_cos,0;
+		set nov_get_item01,0;
+		set nov_3_swordman,0;
+		set nov_3_archer,0;
+		set nov_3_thief,0;
+		set nov_3_magician,0;
+		set nov_3_acolyte,0;
+		set nov_3_merchant,0;
+		set @TEMP,rand(6);
 
+		if(@TEMP !=0) goto Ldirect0;
+			savepoint "prontera.gat",273,354;
+			warp "prontera.gat",273,354;
+			end;
+		Ldirect0:
+			if(@TEMP !=1) goto Ldirect1;
+			savepoint "morocc.gat",160,94;
+			warp "morocc.gat",160,94;
+			end;
+		Ldirect1:
+			if(@TEMP !=2) goto Ldirect2;
+			savepoint "geffen.gat",120,100;
+			warp "geffen.gat",120,100;
+			end;
+		Ldirect2:
+			if(@TEMP !=3) goto Ldirect3;
+			savepoint "payon.gat",87,117;
+			warp "payon.gat",87,117;
+			end;
+		Ldirect3:
+			if(@TEMP !=4) goto Ldirect4;
+			savepoint "alberta.gat",116,57;
+			warp "alberta.gat",116,57;
+			end;
+		Ldirect4:
+			savepoint "izlude.gat",94,103;
+			warp "izlude.gat",94,103;
+			end;
 	Lintro:
 		mes "[Usher]";
-		mes "The Training Grounds were founded to support New Players of Ragnarok Onlinem,";
+		mes "The Training Grounds were founded to support New Players of Ragnarok Online,";
 		mes "under the Auspices of the Minstry of Education in Rune Midgard Kingdom."; 
 		next;
 		mes "[Usher]";
@@ -779,28 +813,26 @@ new_1-2.gat,100,29,4	script	Usher	86,{
 }
 
 new_1-2.gat,100,113,4	script	Guide	97,{
-	set @TEMP,0;
+	set @R_SEL_NUM,rand(2);
 	mes "[Guide]";
-	random @TEMP,2;
-		if(@TEMP !=0) goto tmp1;
-		mes "Mumble~Mumble~Life is getting Suck~What a boring Job I have~~ I was stupid enough to choose this Boring and Solitary thing!Ah~";
+	if (@R_SEL_NUM != 0) goto tmp1;
+		mes "Mumble~Mumble~Life is getting Sick~What a boring Job I have~~ I was stupid enough to choose this Boring and Solitary thing!Ah~";
 		goto NMes;
 	tmp1:
 		mes "I miss my good-for-nothing day~ Phew~ I should never accepted the Full time job.... Eh?!";
-		goto NMes;
 	NMes:
 	mes "Hey Buddy~ Want some Help?";
 	next;
-	menu "Current Course State.",L0,"Quit.",L1;
+		menu "Current Course State.",-, "Quit.",L0;
 
-	L0:
 		mes "[Guide]";
 		mes "Hmm.. Let me see...";
-		if(countitem(3023)==9) goto L00a;
-		if(countitem(3023)==8) goto L00b;
-		if(countitem(3023)==7) goto L00c;
+		if (nov_1_2_cos_c != 9) goto L00a;
+		if (nov_1_2_cos_c != 8) goto L00b;
+		if (nov_1_2_cos_c != 7) goto L00c;
 		mes "I assure you are at the first place with this empty list of yours. You must go toward the Northwest.";
 		mes "And meet 'Leo Von Frisch',the odd veteran Knight.He is a little bit boring,but that's ok.If you work out a correct answer to his question,he will give you some Snacks. So concentrate on him,Okay?";
+			close;
 
 		L00a:
 			mes "Ah....? finished the First Course?";
@@ -847,9 +879,9 @@ new_1-2.gat,158,158,8	script	Kafra	117,{
 }
 
 new_1-2.gat,160,183,5	script	NPC Master	83,{
-	if(countitem(3023)<=6) goto nov12coscL6;
-	if(countitem(3023)>=8) goto nov12coscM8;
-	if(countitem(3023)==7) goto nov12coscE7;
+	if(nov_1_2_cos_c<=6) goto nov12coscL6;
+	if(nov_1_2_cos_c>=8) goto nov12coscM8;
+	if(nov_1_2_cos_c==7) goto nov12coscE7;
 
 	nov12coscL6:
 		mes "[NPC Master]";
@@ -897,7 +929,7 @@ new_1-2.gat,160,183,5	script	NPC Master	83,{
 			next;
 			mes "[NPC Master]";
 			mes "And you can store your extra items in 'Kafra Wearhouse'. You can access the Storage wherever Kafra Staffs are located.";
-			if(countitem(3023)==7) goto Ltell7;
+			if(nov_1_2_cos_c==7) goto Ltell7;
 			mes "I always think, but still I think 'Use storage' Service is the best for Infrastructure among MMORPG world!!Muhahahaha!!!"; 
 			mes "Heh Heh~ And they are all beautiful girls~ What about their boss..? Is it a she or He? I am curious....";
 			goto LtellNext;
@@ -922,7 +954,7 @@ new_1-2.gat,160,183,5	script	NPC Master	83,{
 			mes "Now let's check how they look like. So You will find them easily next time.";
 			mes "We display figures of them over there. Just take a look before you go the next course.";
 			next;
-			if(countitem(3023)==7) goto Ltell7a;
+			if(nov_1_2_cos_c==7) goto Ltell7a;
 			goto CloseMes;
 
 			Ltell7a:
@@ -930,7 +962,7 @@ new_1-2.gat,160,183,5	script	NPC Master	83,{
 				mes "Those figures...... they were supposed to be right beside me first time...For me they felt really spooky....Imagine,Someone behind you without motion..spooky,huh?";
 				mes "That's why I moved them over there... And now I can see them in front of my eyes... They feel more spooky now...";
 				next;
-				getitem 3023,1;
+				set nov_1_2_cos_c,nov_1_2_cos_c+1;
 				goto CloseMes;
 			CloseMes:
 				mes "[NPC Master]";
@@ -944,8 +976,8 @@ new_1-2.gat,161,158,8	script	Guide	105,{
 }
 
 new_1-2.gat,183,183,3	script	Guide	95,{
-	if(countitem(3023)==8) goto Lstart;
-	if(countitem(3023)>=9) goto Lagain;
+	if(nov_1_2_cos_c==8) goto Lstart;
+	if(nov_1_2_cos_c>=9) goto Lagain;
 	mes "[Manner Master]";
 	mes "Eh..Ah...Not here not yet.. Well..What I mean is...Well..uh...";
 	mes "What I mean is.. You should attend to ^FF0000Leo Von Frisch's class on beginner help^000000 first....";
@@ -956,7 +988,7 @@ new_1-2.gat,183,183,3	script	Guide	95,{
 		mes "Greetings~ I am just simple man who will inform you of 'Various examples of Ill-mannered players and cheaters'.";
 		mes "Shall we begin?";
 		next;
-		getitem 3023,1;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		goto Ltell;
 		Ltell:
 			mes "[Manner Master]";
@@ -1073,15 +1105,14 @@ new_1-2.gat,183,183,3	script	Guide	95,{
 }
 
 new_1-4.gat,100,29,4	script	Helper	54,{
-	set @TEMP,4;
+	set nov_1_2_cos_c,0;
 	mes "[Helper]";
 	mes "Welcome, Newbie!! I don't have much time to talk. I just tell you the basic details.";
 	mes "Your registration has been confirmed at the time you arrived here! You can go directly through the 3rd course...";
 	mes "Are you gonna start now?";
 	next;
-	menu "Choose the 3rd course.",L0,"Quit",L1;
+	menu "Choose the 3rd course.",-,"Quit",L1;
 	
-	L0:
 		mes "[Helper]";
 		mes "The guide will inform you details!";
 		mes "Bye!";
@@ -1108,7 +1139,6 @@ new_1-4.gat,100,29,4	script	Helper	54,{
 }
 
 new_1-4.gat,20,109,4	script	Helper	48,{
-	set @TEMP,0;
 	mes "[Helper]";
 	mes "We start your 2nd test now!";
 	mes "Take it easy and choose the right answer for you!";
@@ -1123,16 +1153,16 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "Feel irritated.",LQ1a,"I like it.",LQ1b,"Doesn't come to my mind.",LQ1c;
 		
 		LQ1a:
-			getitem 3026,1;
-			getitem 3030,1;
+			set nov_3_swordman,nov_3_swordman+1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ2;
 		LQ1b:
-			getitem 3027,1;
-			getitem 3028,1;
+			set nov_3_merchant,nov_3_merchant+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ2;
 		LQ1c:
-			getitem 3031,1;
-			getitem 3029,1;
+			set nov_3_archer,nov_3_archer+1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ2;
 	LQ2:
 		mes "[Helper]";
@@ -1141,13 +1171,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "Check first whether it's neccessary.",LQ2a,"Check the cash first.",LQ2b,"Regret after shopping.",LQ2c;
 		
 		LQ2a:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ3;
 		LQ2b:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ3;
 		LQ2c:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ3;
 	LQ3:
 		mes "[Helper]";
@@ -1156,13 +1186,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I enjoy it.",LQ3a,"I do if I have to.",LQ3b,"I hate it.",LQ3c;
 		
 		LQ3a:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ4;
 		LQ3b:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ4;
 		LQ3c:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ4;
 	LQ4:
 		mes "[Helper]";
@@ -1171,10 +1201,10 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I prefer to deal alone.",LQ4a,"I prefer to deal together.",LQ4b;
 		
 		LQ4a:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ5;
 		LQ4b:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ5;
 	LQ5:
 		mes "[Helper]";
@@ -1183,13 +1213,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "Anything I can help, I will do my best.",LQ5a,"Simply I would help.",LQ5b,"Just ignore.",LQ5c;
 		
 		LQ5a:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ6;
 		LQ5b:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ6;
 		LQ5c:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ6;
 	LQ6:
 		mes "[Helper]";
@@ -1198,13 +1228,13 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "President.",LQ6a,"Vise-President",LQ6b,"Congressman is ok.",LQ6c,"I don't want to be a politican.",LQ6d;
 		
 		LQ6a:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ7;
 		LQ6b:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ7;
 		LQ6c:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ7;
 		LQ6d:
 			goto LQ7;
@@ -1215,16 +1245,16 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "'Look so sharp!'",LQ7a,"'Who the hell is the owner of this?'",LQ7b,"'Could be dead harm to people. Should be careful!'",LQ7c,"'Nice Brand~!'",LQ7d;
 		
 		LQ7a:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ8;
 		LQ7b:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ8;
 		LQ7c:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ8;
 		LQ7d:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ8;
 	LQ8:
 		mes "[Helper]";
@@ -1233,16 +1263,16 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I hush up with a joke.",LQ8a,"I change subject.",LQ8b,"I try to excuse.",LQ8c,"I appoligize even though it's not my fault.",LQ8d;
 		
 		LQ8a:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ9;
 		LQ8b:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ9;
 		LQ8c:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ9;
 		LQ8d:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ9;
 	LQ9:
 		mes "[Helper]";
@@ -1260,17 +1290,17 @@ new_1-4.gat,20,109,4	script	Helper	48,{
 		menu "I would do anything for that person.",LQ9a,"I try to bring around not to buy it.",LQ9b;
 		
 		LQ9a:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQFin;
 		LQ9b:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQFin;
 	LQFin:
 		mes "[Helper]";
 		mes "Now you finished 2nd test! Good job!!";
 		mes "You can go to the result room now.";
 		next;
-		random @TEMP,4;
+		set @TEMP,rand(4);
 		if(@TEMP !=0) goto LQFin0;
 		warp "new_1-4.gat",54,136;
 		close;
@@ -1296,18 +1326,85 @@ new_1-4.gat,60,149,4	script	Helper	55,{
 	mes "[Helper]";
 	mes "Ok, here is the result of your own.";
 	next;
+		if (nov_get_item01 < 10) goto L_START_0;
+			set nov_2nd_cos,0;
+			goto L_START_1;
+	L_START_0:
+			set nov_2nd_cos,10;
+			set nov_2nd_cos,nov_2nd_cos - nov_get_item01;
+	L_START_1:
+		set @job_number,1;
+		set @job_with_c,0;
+		set @job_number_chk,0;
+		set @job_with,nov_3_swordman;
+	L_LOOP:
+		if (@job_number == 6) goto L_START_2;
+			if (@job_number != 1) goto L_ROOT_1;
+				set @job_with_c,nov_3_archer;
+				goto L_LOOP_1;
+		L_ROOT_1:
+			if (@job_number != 2) goto L_ROOT_2;
+				set @job_with_c,nov_3_thief;
+				goto L_LOOP_1;
+		L_ROOT_2:
+			if (@job_number != 3) goto L_ROOT_3;
+				set @job_with_c,nov_3_magician;
+				goto L_LOOP_1;
+		L_ROOT_3:
+			if (@job_number != 4) goto L_ROOT_4;
+				set @job_with_c,nov_3_acolyte;
+				goto L_LOOP_1;
+		L_ROOT_4:
+				set @job_with_c,nov_3_merchant;
+		L_LOOP_1:
+			if (@job_with >= @job_with_c) goto L_LOOP_2;
+				set @job_number_chk,@job_number;
+				if (@job_number != 1) goto L_ROOT_5;
+					set @job_with,nov_3_archer;
+					goto L_LOOP_2;
+		L_ROOT_5:
+				if (@job_number != 2) goto L_ROOT_6;
+					set @job_with,nov_3_thief;
+					goto L_LOOP_2;
+		L_ROOT_6:
+				if (@job_number != 3) goto L_ROOT_7;
+					set @job_with,nov_3_magician;
+					goto L_LOOP_2;
+		L_ROOT_7:
+				if (@job_number != 4) goto L_ROOT_8;
+					set @job_with,nov_3_acolyte;
+					goto L_LOOP_2;
+		L_ROOT_8:
+					set @job_with,nov_3_merchant;
+		L_LOOP_2:
+			set @job_number,@job_number+1;
+			goto L_LOOP;
+
+	L_START_2:
+		mes "[Helper]";
+		if (nov_1st_cos != 0) goto L_SCORE_1;
+			mes "1st course: 0 / 6 Points.";
+			goto L_SCORE_2;
+	L_SCORE_1:
+		mes "1st course: " + nov_1st_cos + " / 6 Points.";
+	L_SCORE_2:
+		if (nov_2nd_cos != 0) goto L_SCORE_3;
+			mes "2nd course: 0 / 0 Points";
+			goto L_SCORE_4;
+	L_SCORE_3:			
+		mes "2nd course: " + nov_2nd_cos + " / 10 Points.";
+	L_SCORE_4:
+		mes "And the result of personally test is.....";
+		next;
 	mes "[Helper]";
-	mes "1st course: $  Points / 6 Points.";
-	mes "2nd course: $ Points / 10 Points.";
-	mes "And the result of personally test is.....";
-	next;
-	mes "[Helper]";
-	if((countitem(3026)>=5) | (countitem(3026)<=10)) goto JobSwordman;
-	if((countitem(3031)>=5) | (countitem(3031)<=10)) goto JobArcher;
-	if((countitem(3030)>=5) | (countitem(3030)<=10)) goto JobThief;
-	if((countitem(3029)>=5) | (countitem(3029)<=10)) goto JobMagican;
-	if((countitem(3028)>=5) | (countitem(3028)<=10)) goto JobAcolyte;
-	if((countitem(3027)>=5) | (countitem(3027)<=10)) goto JobMerchant;
+
+
+	if (@job_number_chk==0) goto JobSwordman;
+	if (@job_number_chk==1) goto JobArcher;
+	if (@job_number_chk==2) goto JobThief;
+	if (@job_number_chk==3) goto JobMagican;
+	if (@job_number_chk==4) goto JobAcolyte;
+	if (@job_number_chk==5) goto JobMerchant;
 	
 	JobSwordman:
 		mes "'You have simple-minded and always talk straight.And you have an unshaken faith so that you want to rule the world.Also you always stand by the weak.'";
@@ -1339,7 +1436,7 @@ new_1-4.gat,60,149,4	script	Helper	55,{
 		mes "'So we suggest you ^696969Merchant^000000.'";
 		goto SelJob;
 
-	SelJob:
+SelJob:
 	next;
 	mes "[Helper]";
 	mes ".... Report says like this. It is not my intention, I don't mean to nice to you!! To me you are just a novice!!";
@@ -1348,35 +1445,36 @@ new_1-4.gat,60,149,4	script	Helper	55,{
 	mes "[Helper]";
 	mes "Here are the subsides from the Training Ground. Even if they are not worthless to veteran players, not to you.";
 	next;
-	if(countitem(3023)==0) goto nov12coscE0;
+	if(nov_get_item03==0) goto nov12coscE0;
 	
 	nov12coscE0:
-		if(countitem(3024+3025)<=8) goto nov1stcosPnov2ndcosL8;
-		if(countitem(3024+3025)<=15) goto nov1stcosPnov2ndcosL15;
-		if(countitem(3024+3025)==16) goto nov1stcosPnov2ndcosE16;
-		set Zeny,0-500;
+		set l0,nov_1st_cos+nov_2nd_cos;
+		if (l0<=8) goto nov1stcosPnov2ndcosL8;
+		if (l0<=15) goto nov1stcosPnov2ndcosL15;
+		if (l0==16) goto nov1stcosPnov2ndcosE16;
+		set Zeny,Zeny-500;
 		getitem 507,10;
 		getitem 519,1;
-		getitem 3023,1;
+		set nov_1_2_cos_c,nov_1_2_cos_c+1;
 		goto BeL0;
 		
 		nov1stcosPnov2ndcosL8:
-			set Zeny,0+500;
+			set Zeny,Zeny+500;
 			getitem 507,10;
 			getitem 519,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			goto BeL0;
 		nov1stcosPnov2ndcosL15:
-			set Zeny,0+100;
+			set Zeny,Zeny+100;
 			getitem 507,1;
 			getitem 519,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			goto BeL0;
 		nov1stcosPnov2ndcosE16:
-			set Zeny,0+300;
+			set Zeny,Zeny+300;
 			getitem 507,3;
 			getitem 519,1;
-			getitem 3023,1;
+			set nov_1_2_cos_c,nov_1_2_cos_c+1;
 			goto BeL0;
 
 	BeL0:
@@ -1421,9 +1519,9 @@ new_1-4.gat,60,149,4	script	Helper	55,{
 			L02:
 				mes "[Helper]";
 				mes "I expect you the best.";
-				savepoint "morroc.gat",160,94;
+				savepoint "morocc.gat",160,94;
 				next;
-				warp "morroc.gat",154,50;
+				warp "morocc.gat",154,50;
 				close;
 			L03:
 				mes "[Helper]";
@@ -1471,43 +1569,43 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Individual",LQ0a,"Public",LQ0b;
 	
 		LQ0a:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ1;
 		LQ0b:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ1;
 	LQ1:
 		menu "Chances",LQ1a,"Permanence",LQ1b;
 
 		LQ1a:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ2;
 		LQ1b:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ2;
 	LQ2:
 		menu "Consumer",LQ2a,"Distributor",LQ2b;
 
 		LQ2a:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ3;
 		LQ2b:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ3;
 	LQ3:
 		menu "Swiftness",LQ3a,"Prudence",LQ3b;
 
 		LQ3a:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ4;
 		LQ3b:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ4;
 	LQ4:
 		menu "Theory",LQ4a,"Experience",LQ4b;
 
 		LQ4a:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ5;
 		LQ4b:
 			goto LQ5;
@@ -1515,10 +1613,10 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Reality",LQ5a,"Ideal",LQ5b;
 
 		LQ5a:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ00;
 		LQ5b:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ00;
 	LQ00:
 		mes "[Helper]";
@@ -1530,10 +1628,10 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Yes",LQ00a,"No",LQ00b;
 
 		LQ00a:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ01;
 		LQ00b:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ01;
 	LQ01:
 		mes "[Helper]";
@@ -1542,10 +1640,10 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Yes",LQ01a,"No",LQ01b;
 
 		LQ01a:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ02;
 		LQ01b:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ02;
 	LQ02:
 		mes "[Helper]";
@@ -1554,10 +1652,10 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Yes",LQ02a,"No",LQ02b;
 
 		LQ02a:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ03;
 		LQ02b:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ03;
 	LQ03:
 		mes "[Helper]";
@@ -1566,10 +1664,10 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Yes",LQ03a,"No",LQ03b;
 
 		LQ03a:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ04;
 		LQ03b:
-			getitem 3031,1;
+			set nov_3_archer,nov_3_archer+1;
 			goto LQ04;
 	LQ04:
 		mes "[Helper]";
@@ -1578,10 +1676,10 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Yes",LQ04a,"No",LQ04b;
 
 		LQ04a:
-			getitem 3030,1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQ05;
 		LQ04b:
-			getitem 3027,1;
+			set nov_3_merchant,nov_3_merchant+1;
 			goto LQ05;
 	LQ05:
 		mes "[Helper]";
@@ -1590,10 +1688,10 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Yes",LQ05a,"No",LQ05b;
 
 		LQ05a:
-			getitem 3028,1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQ06;
 		LQ05b:
-			getitem 3026,1;
+			set nov_3_swordman,nov_3_swordman+1;
 			goto LQ06;
 	LQ06:
 		mes "[Helper]";
@@ -1604,7 +1702,7 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		LQ06a:
 			goto LQ07;
 		LQ06b:
-			getitem 3029,1;
+			set nov_3_magician,nov_3_magician+1;
 			goto LQ07;
 	LQ07:
 		mes "[Helper]";
@@ -1613,14 +1711,14 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		menu "Yes",LQ07a,"No",LQ07b;
 
 		LQ07a:
-			getitem 3027,1;
-			getitem 3029,1;
-			getitem 3030,1;
+			set nov_3_merchant,nov_3_merchant+1;
+			set nov_3_magician,nov_3_magician+1;
+			set nov_3_thief,nov_3_thief+1;
 			goto LQFin;
 		LQ07b:
-			getitem 3026,1;
-			getitem 3031,1;
-			getitem 3028,1;
+			set nov_3_swordman,nov_3_swordman+1;
+			set nov_3_archer,nov_3_archer+1;
+			set nov_3_acolyte,nov_3_acolyte+1;
 			goto LQFin;
 	LQFin:
 		mes "[Helper]";
@@ -1630,4 +1728,3 @@ new_1-4.gat,100,69,4	script	Helper	67,{
 		warp "new_1-4.gat",20,94;
 		close;
 }
-

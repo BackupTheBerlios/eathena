@@ -51,14 +51,14 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 					getitem l1,l2;
 					goto GotMsg;
 			L00b:
-				input;
+				input @input;
 				mes "[Grampa Pharmacist]";
-				if(Script_flag_num <= 0) goto inpCan;
-				if(((countitem(507) < 2 * Script_flag_num) || (countitem(713) < Script_flag_num)) || (Zeny < 3 * Script_flag_num)) goto NeedOther;
-				delitem 507,Script_flag_num * 2;
-				delitem 713,Script_flag_num;
-				set Zeny,zeny - 3 * Script_flag_num;
-				getitem 501,Script_flag_num;
+				if(@input <= 0) goto inpCan;
+				if(((countitem(507) < 2 * @input) || (countitem(713) < @input)) || (Zeny < 3 * @input)) goto NeedOther;
+				delitem 507,@input * 2;
+				delitem 713,@input;
+				set Zeny,zeny - 3 * @input;
+				getitem 501,@input;
 				goto GotMsg;
 
 			L00c:
@@ -91,15 +91,15 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 					getitem l2,l3;
 					goto GotMsg;
 			L01b:
-				input;
+				input @input;
 				mes "[Grampa Pharmacist]";
-				if(Script_flag_num <= 0) goto inpCan;
-				if(((countitem(507) < Script_flag_num) || (countitem(508) < Script_flag_num) || (countitem(713) < Script_flag_num)) || (Zeny<5*Script_flag_num)) goto NeedOther;
-				delitem 507,Script_flag_num;
-				delitem 508,Script_flag_num;
-				delitem 713,Script_flag_num;
-				set Zeny,zeny - 5 * Script_flag_num;
-				getitem 502,Script_flag_num;
+				if(@input <= 0) goto inpCan;
+				if(((countitem(507) < @input) || (countitem(508) < @input) || (countitem(713) < @input)) || (Zeny<5*@input)) goto NeedOther;
+				delitem 507,@input;
+				delitem 508,@input;
+				delitem 713,@input;
+				set Zeny,zeny - 5 * @input;
+				getitem 502,@input;
 				goto GotMsg;
 			L01c:
 				goto MakeMenu;
@@ -129,15 +129,15 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 					getitem l1,l2;
 					goto GotMsg;
 			L02b:
-				input;
+				input @input;
 				mes "[Grampa Pharmacist]";
-				if(Script_flag_num <= 0) goto inpCan;
-				if(((countitem(508) < 2 * Script_flag_num) || (countitem(713) < Script_flag_num)) || (Zeny < 10 * Script_flag_num)) goto NeedOther;
-				delitem 508,Script_flag_num;
-				delitem 508,Script_flag_num;
-				delitem 713,Script_flag_num;
-				set Zeny,zeny - 10 * Script_flag_num;
-				getitem 503,Script_flag_num;
+				if(@input <= 0) goto inpCan;
+				if(((countitem(508) < 2 * @input) || (countitem(713) < @input)) || (Zeny < 10 * @input)) goto NeedOther;
+				delitem 508,@input;
+				delitem 508,@input;
+				delitem 713,@input;
+				set Zeny,zeny - 10 * @input;
+				getitem 503,@input;
 				goto GotMsg;
 			L02c:
 				goto MakeMenu;
@@ -167,15 +167,15 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 					getitem l1,l2;
 					goto GotMsg;
 			L03b:
-				input;
+				input @input;
 				mes "[Grampa Pharmacist]";
-				if(Script_flag_num <= 0) goto inpCon;
-				if(((countitem(509) < 2 * Script_flag_num) || (countitem(713) < Script_flag_num)) || (Zeny < 20 * Script_flag_num)) goto NeedOther;
-				delitem 509,Script_flag_num;
-				delitem 509,Script_flag_num;
-				delitem 713,Script_flag_num;
-				set Zeny,zeny - 20 * Script_flag_num;
-				getitem 504,Script_flag_num;
+				if(@input <= 0) goto inpCon;
+				if(((countitem(509) < 2 * @input) || (countitem(713) < @input)) || (Zeny < 20 * @input)) goto NeedOther;
+				delitem 509,@input;
+				delitem 509,@input;
+				delitem 713,@input;
+				set Zeny,zeny - 20 * @input;
+				getitem 504,@input;
 				goto GotMsg;
 			L03c:
 				goto MakeMenu;
@@ -205,15 +205,15 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 					getitem l1,l2;
 					goto GotMsg;
 			L04b:
-				input;
+				input @input;
 				mes "[Grampa Pharmacist]";
-				if(Script_flag_num <= 0) goto inpCan;
-				if(((countitem(510) < 2 * Script_flag_num) || (countitem(713) < Script_flag_num)) || (Zeny < 30 * Script_flag_num)) goto NeedOther;
-				delitem 510,Script_flag_num;
-				delitem 510,Script_flag_num;
-				delitem 713,Script_flag_num;
-				set Zeny,zeny - 30 * Script_flag_num;
-				getitem 505,Script_flag_num;
+				if(@input <= 0) goto inpCan;
+				if(((countitem(510) < 2 * @input) || (countitem(713) < @input)) || (Zeny < 30 * @input)) goto NeedOther;
+				delitem 510,@input;
+				delitem 510,@input;
+				delitem 713,@input;
+				set Zeny,zeny - 30 * @input;
+				getitem 505,@input;
 				goto GotMsg;
 			L04c:
 				goto MakeMenu;
@@ -243,15 +243,15 @@ alberta_in.gat,16,28,4	script	Grampa Pharmacist	61,{
 					getitem l1,l2;
 					goto GotMsg;
 			L05b:
-				input;
+				input @input;
 				mes "[Grampa Pharmacist]";
-				if(Script_flag_num <= 0) goto inpCan;
-				if(((countitem(511) < 2 * Script_flag_num) || (countitem(713) < Script_flag_num)) || (Zeny < 3 * Script_flag_num)) goto NeedOther;
-				delitem 511,Script_flag_num;
-				delitem 511,Script_flag_num;
-				delitem 713,Script_flag_num;
-				set Zeny,zeny - 3 * Script_flag_num;
-				getitem 506,Script_flag_num;
+				if(@input <= 0) goto inpCan;
+				if(((countitem(511) < 2 * @input) || (countitem(713) < @input)) || (Zeny < 3 * @input)) goto NeedOther;
+				delitem 511,@input;
+				delitem 511,@input;
+				delitem 713,@input;
+				set Zeny,zeny - 3 * @input;
+				getitem 506,@input;
 				goto GotMsg;
 			L05c:
 				goto MakeMenu;
@@ -350,9 +350,8 @@ alberta.gat,53,39,8	script	Merchant	100,{
 }
 
 alberta.gat,58,80,8	script	Merchant	99,{
-	set @TEMP,0;
+	set @TEMP,rand(2);
 	mes "[Merchant]";
-	random @TEMP,2;
 	if(@TEMP == 1) goto Rmsg1;
 	if(@TEMP == 0) goto Rmsg0;
 
@@ -372,9 +371,8 @@ alberta.gat,58,80,8	script	Merchant	99,{
 }
 
 alberta.gat,62,156,2	script	Phina	102,{
-	set @TEMP,3;
+	set @TEMP,rand(3);
 	mes "[Phina]";
-	random @TEMP,3;
 	if(@TEMP == 2) goto Rmsg2;
 	if(@TEMP == 1) goto Rmsg1;
 	if(@TEMP == 0) goto Rmsg0;
@@ -595,13 +593,13 @@ alberta.gat,190,173,4	script	Phelix	85,{
 				next;
 
 				inpAgaRed:
-					input;
+					input @input;
 					mes "[Phelix]";
-					if(Script_flag_num <= 0) goto inpCan1;
-					if(Script_flag_num > 100) goto inpErrRed;
-					if(countitem(909) < Script_flag_num * 10) goto NotEnoJel4Red;
-					delitem 909,Script_flag_num * 10;
-					getitem 501,Script_flag_num;
+					if(@input <= 0) goto inpCan1;
+					if(@input > 100) goto inpErrRed;
+					if(countitem(909) < @input * 10) goto NotEnoJel4Red;
+					delitem 909,@input * 10;
+					getitem 501,@input;
 					goto GotMsgJel4Red;
 
 					inpCan1:
@@ -662,13 +660,13 @@ alberta.gat,190,173,4	script	Phelix	85,{
 				next;
 
 				inpAgaSwP:
-					input;
+					input @input;
 					mes "[Phelix]";
-					if(Script_flag_num <= 0) goto inpCan2;
-					if(Script_flag_num > 100) goto inpErrSwP;
-					if(countitem(909) < Script_flag_num * 3) goto NotEnoJel4SwP;
-					delitem 909,Script_flag_num * 3;
-					getitem 516,Script_flag_num;
+					if(@input <= 0) goto inpCan2;
+					if(@input > 100) goto inpErrSwP;
+					if(countitem(909) < @input * 3) goto NotEnoJel4SwP;
+					delitem 909,@input * 3;
+					getitem 516,@input;
 					goto GotMsgJel4SwP;
 
 					inpCan2:

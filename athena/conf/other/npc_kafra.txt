@@ -91,9 +91,9 @@ gef_fild10.gat,73,340,4	script	Kafra	115,{
 izlu2dun.gat,106,58,8	script	Kafra	115,{
 	set @TEMP,0;
 	cutin "kafra_03",2;
-	if(countitem(3017) != 4) goto Kafra;
-	if((countitem(3005)==8) | (countitem(3005)==7)) goto JobMerQE8oE7;
-	if((countitem(3005)==6) | (countitem(3005)==5)) goto JobMerQE6oE5;
+	if(frst_job_quest != 4) goto Kafra;
+	if(job_merchant_q==8) | (job_merchant_q==7)) goto JobMerQE8oE7;
+	if(job_merchant_q==6) | (job_merchant_q==5)) goto JobMerQE6oE5;
 
 	JobMerQE8oE7:
 		if(countitem(Delivery_Message) != 0) goto JobMerQE8oE7Cont;
@@ -119,8 +119,8 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
        			next;
        			mes "[Kafra]";
        			mes "Let me check its Serial numbers, I have to give the receipt to you anyhow.";
-			if(countitem(3032)==7) goto JobMerQ2E7;
-			if(countitem(3032)==8) goto JobMerQ2E8;
+			if(nov_1_2_cos_c==7) goto JobMerQ2E7;
+			if(nov_1_2_cos_c==8) goto JobMerQ2E8;
 			next;
 			mes "[Kafra]";
 			mes "......? Excuse me! I think you gave me the wrong one.";
@@ -147,7 +147,7 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 					goto JobMerQ2Cont;
 
 		JobMerQ2Cont:
-		if(countitem(3005)==6) goto JobMerQE6;
+		if(job_merchant_q==6) goto JobMerQE6;
 		getitem 3005,2;
 		goto JobMerQ2Cont1;
 
@@ -165,7 +165,7 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 
 			M1:
 				delitem 1072,1;
-     	       			set 3027,11;
+     	       			set nov_3_merchant,11;
      			       	mes "[Kapra's]";
      			       	mes "Oh,My good Lord! Mr. Mansoo wrote me a Letter? Thank you, Thank you~";
      			       	mes "I though he would send one one of thesedays, but I've never expected it would be so soon like this time~";
@@ -176,7 +176,7 @@ izlu2dun.gat,106,58,8	script	Kafra	115,{
 			mes "[Kafra]";
 			mes "I really appreciate you for what you've done so far. This is my Small Gift for you to lay my heart.";
 			mes "I hope you will help me next time.";
-			random @TEMP,2;
+			set @TEMP,rand(2);
 			goto R0;
 
 			R0:
@@ -462,7 +462,7 @@ prt_fild01.gat,198,47,8	script	Kafra	112,{
 		menu "Special Reserve Check",L4a,"Cancel",L40End;
 
 		L4a:
-			mes "+CharName+'s special reserve is +SpecialReserve+.";
+			mes strcharinfo(0) + "'s special reserve is +SpecialReserve+.";
 			next;
 			mes "[Kafra]";
 			mes "You can exchange special reserve for goods at the head office of Kafra.";
@@ -563,7 +563,7 @@ prt_fild05.gat,290,224,1	script	Kafra	114,{
 		menu "Special Reserve Check",L4a,"Cancel",L40End;
 
 		L4a:
-			mes "+ CharName +'s special reserve is + SpecialReserve +.";
+			mes strcharinfo(0) + "'s special reserve is + SpecialReserve +.";
 			next;
 			mes "[Kafra]";
 			mes "You can exchange special reserve for goods at the head office of Kafra.";
@@ -994,7 +994,7 @@ aldeba_in.gat,24,245,4	script	 Kafra Service	115,{
 
 aldeba_in.gat,79,161,6	script	Kafra	115,{
 	mes "[Kafra]";
-	mes "Welcome, my dearest + CharName +.";
+	mes "Welcome, my dearest " + strcharinfo(0) + ".";
 	mes "Take goods as many as you've got speacial reserve from Kafra Service~";
 	next;
 	mes "[Kafra]";
@@ -1040,7 +1040,7 @@ aldeba_in.gat,79,161,6	script	Kafra	115,{
 		mes "What number do you prefer for this random lottery machine?";
 		mes "You can choose one number till 5";
 		next;
-		input;
+		input @input;
 		mes "[Kafra]";
 		mes "'Dddrrrrr... Dddrrr'";
 		next;

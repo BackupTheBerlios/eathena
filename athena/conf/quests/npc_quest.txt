@@ -1,4 +1,4 @@
-// $Id: npc_quest.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
+// $Id: npc_quest.txt,v 1.2 2004/01/09 20:24:22 rovert Exp $
 //-------------------- 'Balmung & Lord Kaho's Horns' Quest --------------------
 
 prontera.gat,158,356,4	script	Royal Messenger	105,{
@@ -69,14 +69,14 @@ NoGold:
 	mes "Sorry you dont have enought gold";
 	close;
 Lget:
-	set Zeny,0-100000;
+	set Zeny,Zeny-100000;
 	mes "[Royal Messenger]";
 	mes "I see you already have all the items you need.";
 	mes "nice work.";
 	getitem 1161,1;
 	close;
 Lget1:
-	set Zeny,0-100000;
+	set Zeny,Zeny-100000;
 	mes "[Royal Messenger]";
 	mes "I see you already have all the items you need.";
 	mes "nice work.";

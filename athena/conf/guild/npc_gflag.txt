@@ -1,9 +1,4 @@
-//----------------------------------------------------------------------------------------
-// *Npc_gflag* - From Weiss, translated by *AppleGirl*
-// eWeiss Project 2003 - http://revolve.emuxhaven.net/weiss/
-//----------------------------------------------------------------------------------------
-
-
+//Payon City for Athena by AppleGirl
 //Guild Wars arent working
 prontera.gat,156,192,4	script	Flag	722,{
 	mes "       [ Kingdom of Prontera ]";

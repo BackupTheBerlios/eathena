@@ -1,4 +1,4 @@
-//Prontera City, edited a bit for Athena by AjS15822
+//Prontera City for Athena by Script&DB Team 
 prontera.gat,54,240,5	script	Tono	97,{
 	mes "[Tono]";
 	mes "Did you know? The larva of Creamy is Fabre.";
@@ -282,8 +282,8 @@ prt_church.gat,103,76,2	script	Garnet	67,{
 }	
 
 prt_in.gat,47,173,2	script	Morrison	97,{
-	if(countitem(3021) > 10) goto LeaveMe;
-	if(countitem(3021)==10) goto GetCandy;
+	if(morison_meat > 10) goto LeaveMe;
+	if(morison_meat==10) goto GetCandy;
 	mes "[Little Morrison]";
 	mes "Wahhhhh!!! Wahh... No I won't";
 	mes "I won't... eat Stupid gumballhead";
@@ -305,7 +305,7 @@ prt_in.gat,47,173,2	script	Morrison	97,{
 		
 		Give:
 			delitem 517,1;
-			getitem 3021,1;
+			set morison_meat,1;
 			mes "[Little Morrison]";
 			mes "Whoah~!!! It's real Meat, Meat!";
 			mes "Wahhh It makes my mouth water.";
@@ -348,8 +348,8 @@ prt_in.gat,47,173,2	script	Morrison	97,{
 }
 
 prt_in.gat,49,172,2	script	Marianne	53,{
-	if(countitem(3022)==1) goto FruitLiquid;
-	if(countitem(3021)==1) goto DontFeedSon;
+	if(mother_marienu==1) goto FruitLiquid;
+	if(morison_meat==1) goto DontFeedSon;
 	mes "[Housewife Marianne]";
 	mes "Morrison!! Please eat some fruit will ya? Fruit~!";
 	mes "*Sob*~!! Like father like son...";
@@ -368,7 +368,7 @@ prt_in.gat,49,172,2	script	Marianne	53,{
 		close;
 	
 	DontFeedSon:
-		getitem 3022,1;
+		set mother_marienu,1;
 		mes "[Housewife Marianne]";
 		mes "Oh my god!!... Oh my god...";
 		mes "Look what you've done!! Don't feed up my son strange things!";
@@ -380,7 +380,7 @@ prt_in.gat,49,172,2	script	Marianne	53,{
 		mes "This kid doesn't want to eatanything except Meat...";
 		mes "What if I could make Fruits into Liquid... for example... Squashed one... Would my kid like it?";
 		next;
-		if(countitem(3022)==1) goto Recall;
+		if(morison_meat==1) goto Recall;
 		close;
 		
 		Recall:
@@ -599,7 +599,7 @@ prt_in.gat,244,135,5	script	Inn Maid	53,{
 }
 
 prt_in.gat,88,105,2	script	Recruiter	105,{
-	if ($culvert == 1) goto L0a;
+	if (sewer_prt == 1) goto L0a;
 	mes "[Recruiter]";
 	mes "Let me inform the Notice from the Capital Defense Headquarter of Rune-Midgard Kingdom";
 	mes "We decided to recruit the punitive force throughthis incident.";
@@ -607,12 +607,11 @@ prt_in.gat,88,105,2	script	Recruiter	105,{
 	menu "Volunteer.",L0,"Incident...?",L1,"Quit",LEnd;
 	
 	L0:
-		set $culvert,1;
 		mes "[Recruiter]";
 		mes "Your Registration confirmed. We will try to maintain peace and order in Rune-Midgard Kingdom. And I appreciate you speaking for Capital Defense Headquarter.";
 		mes "These are subsidies. 3 Red Potions, 1 Milk.";
 		mes "And 1 Orange Potion for Emergency.";
-		getitem 3014,1;
+		set sewer_prt,1;
 		getitem 501,3;
 		getitem 519,1;
 		getitem 502,1;
@@ -654,7 +653,7 @@ prt_in.gat,88,105,2	script	Recruiter	105,{
 }
 
 prt_fild05.gat,270,212,5	script	Culvert Gaurdian	105,{
-	if ($culvert == 1) goto L0;
+	if (sewer_prt == 1) goto L0;
 	mes "[Culvert Guardian]";
 	mes "Sorry, Only Volunteers for the Culvert Campaign can go inside.";
 	mes "You can check this issue in the ^000077Culvert Registrar's Office^000000. It is located at the North-West, direction of 11 O'clock.";

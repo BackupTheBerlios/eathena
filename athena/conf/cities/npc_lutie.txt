@@ -1,5 +1,4 @@
-// $Id: npc_lutie.txt,v 1.1 2004/01/09 17:07:22 rovert Exp $
-//<--------------- NPCs LUITE [Update: Aug. 13, 2003] --------------->\\
+//Comodo City for Athena by RoVeRT
 aldebaran.gat,168,168,4	script	Link Santa	718,{
 	mes "[Shutown]";
 	mes "Ho Ho Ho~";
@@ -58,9 +57,9 @@ aldebaran.gat,168,168,4	script	Link Santa	718,{
 }
 
 xmas_in.gat,27,103,4	script	Lenient Aunt	701,{
-	if(countitem(3056)==5) goto Xmas5;
-	if(countitem(3056)==6) goto Xmas6;
-	if(countitem(3056)==7) goto Xmas7;
+	if(xmas_npc==5) goto Xmas5;
+	if(xmas_npc==6) goto Xmas6;
+	if(xmas_npc==7) goto Xmas7;
 	mes "[Thachentze]";
 	mes "Merry Christmas~";
 	mes "Ho! Ho! Ho!";
@@ -126,7 +125,7 @@ xmas_in.gat,27,103,4	script	Lenient Aunt	701,{
 		mes "He will give you my salt -";
 		mes "Now dear. Hurry up.";
 		mes "Return Quickly -";
-		getitem 3056,1;
+		set xmas_npc,1;
 		close;
 	Xmas6:
 		mes "[Thachentze]";
@@ -150,7 +149,7 @@ xmas_in.gat,27,103,4	script	Lenient Aunt	701,{
 		mes "Let's see Let's see - - - - -";
 		mes "Thank you my dear,Thank you -";
 		next;
-		getitem 3056,1;
+		set xmas_npc,1;
 		mes "-Handed ^3355FF' The roughest salt in the world'^000000 to her-";
 		next;
 		mes "[Thachentze]";
@@ -210,7 +209,7 @@ xmas_in.gat,100,96,4	script	Father Christmas	718,{
 }
 
 xmas_in.gat,165,174,4	script	Christmas Girl	711,{
-	if(countitem(3056)==1) goto Xmas1;
+	if(xmas_npc==1) goto Xmas1;
 	mes "[Duffle]";
 	mes "Merry Christmas!";
 	mes "Welcome to Lutie!";
@@ -249,7 +248,7 @@ xmas_in.gat,165,174,4	script	Christmas Girl	711,{
 	next;
 	mes "[Duffle]";
 	mes "I suggest you to talk to other towners...";
-	if(countitem(3056)==0) goto Xmas0;
+	if(xmas_npc==0) goto Xmas0;
 	close;
 
 	Xmas0:
@@ -287,12 +286,12 @@ xmas_in.gat,165,174,4	script	Christmas Girl	711,{
 		mes "at least once.";
 		mes ". . . . .";
 		mes "Well then - Merry Christmas !!";
-		getitem 3056,1;
+		set xmas_npc,1;
 		close;
 }
 
 xmas.gat,117,304,4	script	Christmas Guy	712,{
-	if((countitem(3056)==3) | (countitem(3056)==4)) goto Xmas34;
+	if((xmas_npc==3) | (xmas_npc=4)) goto Xmas34;
 	mes "[Poze]";
 	mes "Merry Christmas!";
 	mes "This is Blessed Christmas Town for every visitors!";
@@ -339,7 +338,7 @@ xmas.gat,117,304,4	script	Christmas Guy	712,{
 		mes "[Poze]";
 		mes "Well . For the details,";
 		mes "I recomand you to listen what ^3355FF' Uncle Hairy Cantata '^000000 says.";
-		getitem 3056,1;
+		set xmas_npc,1;
 		close;
 }
 
@@ -352,17 +351,17 @@ xmas.gat,134,112,4	script	Snowman	710,{
 	menu "^0000FFSnowysnow?^000000",L0,"Info about the christmas dungeon",L1,"Quit conversation",LEnd;
 	
 	L0:
-		if(countitem(3056)<2) goto XmasLess2;
-		if(countitem(3056)==2) goto Xmas2;
-		if(countitem(3056)==3) goto Xmas3;
-		if(countitem(3056)==4) goto Xmas4;
-		if(countitem(3056)==5) goto Xmas5;
-		if(countitem(3056)==6) goto Xmas6;
-		if(countitem(3056)==7) goto Xmas7;
-		if(countitem(3056)==8) goto Xmas8;
-		if(countitem(3056)==9) goto Xmas9;
-		if(countitem(3056)==10) goto Xmas10;
-		if(countitem(3056)==11) goto Xmas11;
+		if(xmas_npc<2) goto XmasLess2;
+		if(xmas_npc==2) goto Xmas2;
+		if(xmas_npc==3) goto Xmas3;
+		if(xmas_npc==4) goto Xmas4;
+		if(xmas_npc==5) goto Xmas5;
+		if(xmas_npc==6) goto Xmas6;
+		if(xmas_npc==7) goto Xmas7;
+		if(xmas_npc==8) goto Xmas8;
+		if(xmas_npc==9) goto Xmas9;
+		if(xmas_npc==10) goto Xmas10;
+		if(xmas_npc==11) goto Xmas11;
 
 		Xmas2:
 			mes "[Snowysnow]";
@@ -390,7 +389,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 			next;
 			mes "^3355FF- Snowysnow falls into deep thoughts -^000000";
 			mes "^3355FF- He is looking ' Poze ''s name card -^000000";
-			getitem 3056,1;
+			set xmas_npc,1;
 			close;
 		Xmas3:
 			mes "[Snowysnow]";
@@ -434,7 +433,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 			mes "Yeah yeah . I've kept it for sure.";
 			mes "There you go . It is very salt she wants.";
 			next;
-			getitem 3056,1;
+			set xmas_npc,1;
 			mes "^3355FF' Got the roughest salt in the world'^000000.";
 			next;
 			mes "[Snowysnow]";
@@ -486,7 +485,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 //			choose snownow
 
 //			case 1
-//				getitem 3056,1;
+//				set xmas_npc,1;
 //				getitem Candy,5;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -497,7 +496,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 				mes "Merry Christmas!!";
 				close;
 //			case 2
-//				getitem 3056,1;
+//				set xmas_npc,1;
 //				getitem Candy,10;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -508,7 +507,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 				mes "Merry Christmas!!";
 				close;
 //			case 3
-//				getitem 3056,1;
+//				set xmas_npc,1;
 //				getitem Candy_Striper,5;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -519,7 +518,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 				mes "Merry Christmas!!";
 				close;
 //			case 4
-//				getitem 3056,11;
+//				set xmas_npc,11;
 //				getitem Candy_Striper,10;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -530,7 +529,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 				mes "Merry Christmas!!";
 				close;
 //			case 5
-//				getitem 3056,1;
+//				set xmas_npc,1;
 //				getitem Piece_of_Cake,1;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -541,7 +540,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 				mes "Merry Christmas!!";
 				close;
 //			case 6
-//				getitem 3056,1;
+//				set xmas_npc,1;
 //				getitem Piece_of_Cake,2;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -552,7 +551,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 				mes "Merry Christmas!!";
 				close;
 //			case 7
-//				getitem 3056,11;
+//				set xmas_npc,11;
 //				getitem Well_baked_Cookie,5;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -563,7 +562,7 @@ xmas.gat,134,112,4	script	Snowman	710,{
 				mes "Merry Christmas!!";
 				close;
 //			case 8
-//				getitem 3056,11;
+//				set xmas_npc,11;
 //				getitem Well_baked_Cookie,10;
 				mes "[Snowysnow]";
 				mes "Wow -Congratulations!!";
@@ -656,7 +655,7 @@ xmas.gat,146,136,4	script	Christmas Clown	715,{
 		mes "Merry Christmas";
 		close;
 	L1:
-		if(countitem(3056)==8) goto Xmas8;
+		if(xmas_npc==8) goto Xmas8;
 		mes "[Hashokii]";
 		mes "Ah... - ^4040FF' Snowysnow '^000000?";
 		mes "Of course I know him. If there is anyone who doesn't know Snowysnow, you can say that person is totally stranger in here.";
@@ -707,7 +706,7 @@ xmas.gat,146,136,4	script	Christmas Clown	715,{
 			mes "They might tell you some story we've never got the chance to hear.";
 			mes "Ok then - Good Luck!";
 			mes "Bye bye -";
-			getitem 3056,9;
+			set xmas_npc,9;
 			close;
 	LEnd:
 		mes "[Hashokii]";
@@ -719,7 +718,7 @@ xmas.gat,146,136,4	script	Christmas Clown	715,{
 }
 
 xmas.gat,176,236,4	script	Uncle Hairy	712,{
-	if(countitem(3056)==4) goto Xmas4;
+	if(xmas_npc==4) goto Xmas4;
 	mes "[Cantata]";
 	mes "Meeeerrrrrrryyyy Christmas !";
 	mes "Welcome to the Christmas Town,young man!!";
@@ -853,12 +852,12 @@ xmas.gat,176,236,4	script	Uncle Hairy	712,{
 			mes "If you have a wonder,";
 			mes "you'd better to go visit her -";
 			mes "Alrighty,Merry Christmas !!";
-			getitem 3056,5;
+			set xmas_npc,5;
 			close;
 }
 
 xmas.gat,206,168,4	script	Little Boy	706,{
-	if(countitem(3056)==9) goto Xmas9;
+	if(xmas_npc==9) goto Xmas9;
 	mes "[Charu Charu]";
 	mes "Merry Merry Christmas!";
 	mes "Heheheheheh";
@@ -903,8 +902,8 @@ xmas.gat,206,168,4	script	Little Boy	706,{
 }
 
 xmas.gat,208,168,4	script	Little Girl	703,{
-	if(countitem(3056)==10) goto Xmas10;
-	if(countitem(3056)==9) goto Xmas9a;
+	if(xmas_npc==10) goto Xmas10;
+	if(xmas_npc==9) goto Xmas9a;
 	mes "[Marcell]";
 	mes "Merry Christmas";
 	mes "Ouch.. It's freezing out here... ";
@@ -973,7 +972,7 @@ xmas.gat,208,168,4	script	Little Girl	703,{
 		mes "and you will be able to get somre present from him.";
 		mes "I wish you luck -";
 		mes "Merry Christmas !!";
-		getitem 3056,1;
+		set xmas_npc,1;
 		close;
 	Xmas10:
 		mes "[Marcell]";

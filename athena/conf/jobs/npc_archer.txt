@@ -9,7 +9,7 @@ payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 	M0:
 		if(Class==3) goto JobArc;
 		if((Class !=3) & (Class !=0)) goto NotAny;
-		if(@test_AR==0) goto M0BeArc;
+		if(job_archer_q==0) goto M0BeArc;
 		goto ContM0BeArc;
 		
 		JobArc:
@@ -38,7 +38,7 @@ payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 				menu "Yes, Sure.",M000,"No,not yet.",M00End;
 
 				M000:
-					set @test_AR,1;
+					set job_archer_q,1;
 					mes "[Archer Guildsman]";
 					mes "Let me check.";
 					next;     									
@@ -54,7 +54,7 @@ payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 				close;
 		ContM0BeArc:
 			mes "[Archer Guildsman]";
-			mes "Are you ... $CharName ?";
+			mes "Are you ... " + strcharinfo(0) + "?";
 			next;
 			if(JobLevel < 10) goto NotLvl;
 			mes "[Archer Guildsman]";

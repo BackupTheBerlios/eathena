@@ -1,7 +1,4 @@
-﻿// Warp point
-// Beta + Beta2 + EP1.5
-// Require - >Athena-d1.9 (not d1.9)
-//alberta
+﻿//alberta
 alberta.gat,15,234,0	warp	alb001	2,5,pay_fild03.gat,388,63
 alberta.gat,117,38,0	warp	alb01	2,2,alberta_in.gat,180,30
 alberta_in.gat,180,34,0	warp	alb01-1	2,2,alberta.gat,117,42
@@ -1670,4 +1667,855 @@ xmas.gat,143,313,0	warp	xmas14	3,3,xmas_dun01.gat,205,15
 xmas_dun01.gat,205,13,0	warp	xmas14-1	3,3,xmas.gat,143,311
 xmas_dun01.gat,128,131,0	warp	xmas15	3,3,xmas_dun02.gat,129,133
 xmas_dun02.gat,129,129,0	warp	xmas15-1	3,3,xmas_dun01.gat,128,129
+
+// warp point
+// EP2.0 : comodo
+
+comodo.gat,25,214,0	warp	cmd001	1,1,beach_dun.gat,266,67
+comodo.gat,176,358,0	warp	cmd002	1,1,beach_dun2.gat,154,25
+comodo.gat,332,175,0	warp	cmd003	1,1,beach_dun3.gat,23,260
+
+comodo.gat,140,90,0	warp	cmd01	1,1,cmd_in02.gat,74,25
+cmd_in02.gat,74,21,0	warp	cmd01-1	1,1,comodo.gat,140,86
+comodo.gat,126,98,0	warp	cmd02	1,1,cmd_in02.gat,144,97
+cmd_in02.gat,139,97,0	warp	cmd02-1	1,1,comodo.gat,122,98
+comodo.gat,153,97,0	warp	cmd03	1,1,cmd_in02.gat,212,97
+cmd_in02.gat,216,97,0	warp	cmd03-1	1,1,comodo.gat,157,97
+comodo.gat,140,111,0	warp	cmd04	1,1,cmd_in02.gat,178,132
+cmd_in02.gat,178,136,0	warp	cmd04-1	1,1,comodo.gat,140,115
+comodo.gat,130,195,0	warp	cmd05	1,1,cmd_in02.gat,143,173
+cmd_in02.gat,139,169,0	warp	cmd05-1	1,1,comodo.gat,127,191
+comodo.gat,265,74,0	warp	cmd06	1,1,cmd_in01.gat,123,180
+cmd_in01.gat,123,186,0	warp	cmd06-1	1,1,comodo.gat,265,79
+comodo.gat,92,128,0	warp	cmd07	1,1,cmd_in01.gat,85,174
+cmd_in01.gat,90,174,0	warp	cmd07-1	1,1,comodo.gat,97,128
+comodo.gat,236,298,0	warp	cmd08	1,1,cmd_in01.gat,179,81
+cmd_in01.gat,183,81,0	warp	cmd08-1	1,1,comodo.gat,239,296
+comodo.gat,115,291,0	warp	cmd09	1,1,cmd_in02.gat,67,132
+cmd_in02.gat,69,129,0	warp	cmd09-1	4,4,comodo.gat,115,288
+comodo.gat,271,271,0	warp	cmd10	1,1,cmd_in01.gat,113,125
+cmd_in01.gat,109,125,0	warp	cmd10-1	1,1,comodo.gat,269,273
+comodo.gat,145,328,0	warp	cmd11	1,1,cmd_in01.gat,120,71
+cmd_in01.gat,120,67,0	warp	cmd11-1	1,1,comodo.gat,145,324
+cmd_in02.gat,90,37,0	warp	cmd14	1,1,cmd_in02.gat,191,77
+cmd_in02.gat,187,78,0	warp	cmd14-2	1,1,cmd_in02.gat,84,37
+cmd_in02.gat,58,74,0	warp	cmd15	1,1,cmd_in02.gat,166,116
+cmd_in02.gat,168,113,0	warp	cmd15-1	1,1,cmd_in02.gat,63,73
+cmd_in02.gat,208,206,0	warp	cmd16	1,1,cmd_in02.gat,97,211
+cmd_in02.gat,98,216,0	warp	cmd16-1	1,1,cmd_in02.gat,207,210
+comodo.gat,192,294,0	warp	cmd17	1,1,cmd_in01.gat,177,123
+cmd_in01.gat,183,123,0	warp	cmd17-1	1,1,comodo.gat,195,294
+
+// comodo field
+cmd_fild01.gat,26,318,0	warp	cmdf001	1,1,beach_dun3.gat,281,56
+cmd_fild01.gat,222,24,0	warp	cmdf01	1,1,cmd_fild02.gat,222,372
+cmd_fild02.gat,222,376,0	warp	cmdf01-1	1,1,cmd_fild01.gat,222,30
+cmd_fild01.gat,362,73,0	warp	cmdf02	1,1,cmd_fild03.gat,27,68
+cmd_fild03.gat,23,68,0	warp	cmdf02-1	1,1,cmd_fild01.gat,359,76
+cmd_fild01.gat,362,263,0	warp	cmdf03	1,1,cmd_fild03.gat,27,269
+cmd_fild03.gat,23,269,0	warp	cmdf03-1	1,1,cmd_fild01.gat,359,260
+cmd_fild02.gat,358,95,0	warp	cmdf04	1,1,cmd_fild04.gat,35,94
+cmd_fild04.gat,31,92,0	warp	cmdf04-1	1,1,cmd_fild02.gat,351,92
+cmd_fild02.gat,382,269,0	warp	cmdf05	1,1,cmd_fild04.gat,25,275
+cmd_fild04.gat,21,275,0	warp	cmdf05-1	1,1,cmd_fild02.gat,378,264
+cmd_fild03.gat,181,17,0	warp	cmdf06	1,1,cmd_fild04.gat,181,367
+cmd_fild04.gat,180,372,0	warp	cmdf06-1	1,1,cmd_fild03.gat,183,23
+cmd_fild03.gat,384,165,0	warp	cmdf07	1,1,cmd_fild05.gat,26,161
+cmd_fild05.gat,21,163,0	warp	cmdf07-1	1,1,cmd_fild03.gat,377,167
+cmd_fild04.gat,376,287,0	warp	cmdf08	1,1,cmd_fild06.gat,26,288
+cmd_fild06.gat,21,285,0	warp	cmdf08-1	1,1,cmd_fild04.gat,371,288
+cmd_fild05.gat,148,19,0	warp	cmdf09	1,1,cmd_fild06.gat,150,374
+cmd_fild06.gat,150,380,0	warp	cmdf09-1	1,1,cmd_fild05.gat,146,27
+cmd_fild06.gat,151,27,0	warp	cmfd10	1,1,cmd_fild07.gat,147,370
+cmd_fild07.gat,149,379,0	warp	cmdf10-1	10,1,cmd_fild06.gat,147,36
+cmd_fild06.gat,368,96,0	warp	cmdf11	1,1,cmd_fild08.gat,25,102
+cmd_fild08.gat,15,102,0	warp	cmdf11-1	1,1,cmd_fild06.gat,361,96
+cmd_fild06.gat,372,359,0	warp	cmdf12	1,1,cmd_fild08.gat,31,359
+cmd_fild08.gat,25,355,0	warp	cmdf12-1	1,1,cmd_fild06.gat,369,359
+cmd_fild06.gat,379,174,0	warp	cmdf13	1,1,cmd_fild08.gat,28,166
+cmd_fild08.gat,25,170,0	warp	cmdf13-1	1,1,cmd_fild06.gat,374,167
+cmd_fild07.gat,389,186,0	warp	cmdf14-1	1,3,cmd_fild09.gat,18,170
+cmd_fild09.gat,12,170,0	warp	cmdf14-2	1,4,cmd_fild07.gat,382,184
+//cmd_fild09.gat,14,120,0	warp	cmdf14-3	3,3,cmd_fild07.gat,386,96
+cmd_fild08.gat,76,31,0	warp	cmdf15	2,1,cmd_fild09.gat,76,375
+cmd_fild09.gat,75,382,0	warp	cmdf15-1	2,1,cmd_fild08.gat,75,42
+cmd_fild08.gat,309,48,0	warp	cmdf16	2,1,cmd_fild09.gat,307,374
+cmd_fild09.gat,309,381,0	warp	cmdf16-1	2,1,cmd_fild08.gat,309,60
+
+// beach dungeon
+beach_dun.gat,276,67,0	warp	cmd004	1,1,comodo.gat,31,215
+beach_dun2.gat,154,13,0	warp	cmd005	2,1,comodo.gat,176,353
+beach_dun3.gat,286,57,0	warp	cmd006	1,1,cmd_fild01.gat,30,317
+beach_dun3.gat,17,265,0	warp	cmd007	1,1,comodo.gat,328,175
+//beach_dun.gat,89,28,0	warp	cmd00a	3,3,beach_dun2.gat,15,182
+//beach_dun2.gat,13,182,0	warp	cmd00b	3,3,beach_dun.gat,89,30
+
+// other point
+cmd_fild08.gat,354,324,0	warp	cmd008	1,1,moc_fild12.gat,26,305
+cmd_fild09.gat,369,164,0	warp	cmd009	2,2,moc_fild18.gat,55,170
+moc_fild18.gat,51,170,0	warp	cmd010	1,3,cmd_fild09.gat,363,164
+//moc_fild12.gat,35,303,0	warp	cmd011	3,3,cmd_fild08.gat,331,319
+//cmd011
+
+// geffen field (AddPoint)
+gef_fild07.gat,40,19,0	warp	geff13	1,1,gef_fild13.gat,41,369
+gef_fild13.gat,41,373,0	warp	geff13-1	1,1,gef_fild07.gat,40,23
+gef_fild08.gat,215,18,0	warp	geff14	1,1,gef_fild12.gat,221,369
+gef_fild12.gat,221,374,0	warp	geff14-1	1,1,gef_fild08.gat,215,25
+gef_fild12.gat,368,180,0	warp	geff15	1,1,gef_fild13.gat,29,202
+gef_fild13.gat,25,202,0	warp	geff15-1	1,1,gef_fild12.gat,364,180
+gef_fild12.gat,372,50,0	warp	geff16	1,1,gef_fild13.gat,29,59
+gef_fild13.gat,26,59,0	warp	geff16-1	1,1,gef_fild12.gat,370,50
+gef_fild13.gat,200,25,0	warp	geff17	1,1,gef_fild14.gat,180,357
+gef_fild14.gat,180,360,0	warp	geff17-1	1,1,gef_fild13.gat,200,29
+gef_fild13.gat,380,56,0	warp	geff18	1,1,gef_fild09.gat,27,56
+gef_fild09.gat,23,56,0	warp	geff18-1	1,1,gef_fild13.gat,376,56
+gef_fild14.gat,371,219,0	warp	geff19	1,1,gef_fild10.gat,31,219
+gef_fild10.gat,27,219,0	warp	geff19-1	1,1,gef_fild14.gat,367,219
+
+// EP 2.5 : turtle island & Guild war
+
+// turtle island & dungeon
+// NPC
+tur_dun01.gat,165,29,0	warp	ttl001	1,1,alberta.gat,241,115
+alberta.gat,247,122,0	warp	ttl001-1	1,1,tur_dun01.gat,157,39
+tur_dun01.gat,154,241,0	warp	ttl01	1,1,tur_dun02.gat,148,264
+tur_dun02.gat,148,268,0	warp	ttl01-1	1,1,tur_dun01.gat,154,237
+tur_dun02.gat,167,19,0	warp	ttl02	1,1,tur_dun03.gat,132,189
+tur_dun03.gat,132,193,0	warp	ttl02-1	1,1,tur_dun02.gat,167,23
+tur_dun03.gat,217,71,0	warp	ttl03	1,1,tur_dun04.gat,100,192
+tur_dun04.gat,100,196,0	warp	ttl03-1	1,1,tur_dun03.gat,215,75
+tur_dun05.gat,89,69,0	warp	ttl05	1,1,tur_dun02.gat,148,264
+tur_dun05.gat,9,45,0	warp	ttl06	1,1,tur_dun01.gat,154,237
+//tur_dun06.gat,0,0,0	warp	ttl	0,0,hoge.gat,0,0
+
+// guild war 2nd
+//
+// payon guild
+payon.gat,17,151,0	warp	payg001	1,1,pay_gld.gat,370,149
+pay_gld.gat,374,149,0	warp	payg001-1	1,1,payon.gat,21,151
+moc_fild02.gat,378,272,0	warp	payg002	1,1,pay_gld.gat,20,276
+pay_gld.gat,16,276,0	warp	payg002-1	1,1,moc_fild02.gat,374,272
+
+pay_gld.gat,121,238,0	warp	payg01	1,1,payg_cas01.gat,214,48
+payg_cas01.gat,214,44,0	warp	payg01-1	1,1,pay_gld.gat,121,233
+pay_gld.gat,291,116,0	warp	payg02	1,1,payg_cas02.gat,272,57
+payg_cas02.gat,276,61,0	warp	payg02-1	1,1,pay_gld.gat,295,116
+pay_gld.gat,321,293,0	warp	payg03	1,1,payg_cas03.gat,226,26
+payg_cas03.gat,226,22,0	warp	payg03-1	1,1,pay_gld.gat,317,293
+pay_gld.gat,140,156,0	warp	payg04	1,1,payg_cas04.gat,252,271
+payg_cas04.gat,252,275,0	warp	payg04-1	1,1,pay_gld.gat,140,160
+pay_gld.gat,204,270,0	warp	payg05	1,1,payg_cas05.gat,62,227
+payg_cas05.gat,62,223,0	warp	payg05-1	1,1,pay_gld.gat,198,264
+
+payg_cas01.gat,201,126,0	warp	payg101	1,1,payg_cas01.gat,102,21
+payg_cas01.gat,102,17,0	warp	payg101-1	1,1,payg_cas01.gat,201,121
+payg_cas01.gat,222,130,0	warp	payg102	1,1,payg_cas01.gat,130,43
+payg_cas01.gat,134,43,0	warp	payg102-1	1,1,payg_cas01.gat,226,130
+payg_cas01.gat,218,112,0	warp	payg103	1,1,payg_cas01.gat,230,94
+payg_cas01.gat,230,98,0	warp	payg103-1	1,1,payg_cas01.gat,222,112
+payg_cas01.gat,213,76,0	warp	payg104	1,1,payg_cas01.gat,201,118
+payg_cas01.gat,201,114,0	warp	payg104-1	1,1,payg_cas01.gat,213,72
+payg_cas01.gat,84,15,0	warp	payg105	1,1,payg_cas01.gat,15,115
+payg_cas01.gat,11,115,0	warp	payg105-1	1,1,payg_cas01.gat,81,15
+payg_cas01.gat,53,111,0	warp	payg106	1,1,payg_cas01.gat,115,147
+payg_cas01.gat,115,151,0	warp	payg106-1	1,1,payg_cas01.gat,53,115
+
+payg_cas02.gat,232,72,0	warp	payg201	1,1,payg_cas02.gat,28,289
+payg_cas02.gat,28,293,0	warp	payg201-1	1,1,payg_cas02.gat,229,72
+payg_cas02.gat,236,59,0	warp	payg201-2	1,1,payg_cas02.gat,229,72
+payg_cas02.gat,222,26,0	warp	payg202	1,1,payg_cas02.gat,80,240
+payg_cas02.gat,84,240,0	warp	payg202-1	1,1,payg_cas02.gat,224,30
+payg_cas02.gat,215,31,0	warp	payg203	1,1,payg_cas02.gat,65,288
+payg_cas02.gat,65,292,0	warp	payg203-1	1,1,payg_cas02.gat,215,35
+payg_cas02.gat,47,223,0	warp	payg204	1,1,payg_cas02.gat,280,287
+payg_cas02.gat,280,291,0	warp	payg204-1	1,1,payg_cas02.gat,47,227
+payg_cas02.gat,254,239,0	warp	payg205	1,1,payg_cas02.gat,13,38
+payg_cas02.gat,13,42,0	warp	payg205-1	1,1,payg_cas02.gat,254,243
+
+payg_cas03.gat,255,76,0	warp	payg301	1,1,payg_cas03.gat,24,19
+payg_cas03.gat,20,19,0	warp	payg301-1	1,1,payg_cas03.gat,255,72
+payg_cas03.gat,269,79,0	warp	payg302	1,1,payg_cas03.gat,53,19
+payg_cas03.gat,57,19,0	warp	payg302-1	1,1,payg_cas03.gat,269,75
+payg_cas03.gat,255,64,0	warp	payg303	1,1,payg_cas03.gat,245,37
+payg_cas03.gat,245,41,0	warp	payg303-1	1,1,payg_cas03.gat,255,68
+payg_cas03.gat,262,71,0	warp	payg304	1,1,payg_cas03.gat,39,9
+payg_cas03.gat,39,5,0	warp	payg304-1	1,1,payg_cas03.gat,263,66
+payg_cas03.gat,272,68,0	warp	payg305	1,1,payg_cas03.gat,261,38
+payg_cas03.gat,261,34,0	warp	payg305-1	1,1,payg_cas03.gat,270,66
+payg_cas03.gat,39,84,0	warp	payg306	1,1,payg_cas03.gat,29,249
+payg_cas03.gat,29,245,0	warp	payg306-1	1,1,payg_cas03.gat,39,80
+payg_cas03.gat,29,269,0	warp	payg307	1,1,payg_cas03.gat,269,287
+payg_cas03.gat,269,290,0	warp	payg307-1	1,1,payg_cas03.gat,29,273
+
+payg_cas04.gat,260,212,0	warp	payg401	1,1,payg_cas04.gat,70,240
+payg_cas04.gat,74,240,0	warp	payg401-1	1,1,payg_cas04.gat,256,212
+payg_cas04.gat,232,189,0	warp	payg402	1,1,payg_cas04.gat,74,261
+payg_cas04.gat,78,261,0	warp	payg402-1	1,1,payg_cas04.gat,236,189
+payg_cas04.gat,229,208,0	warp	payg403	1,1,payg_cas04.gat,70,282
+payg_cas04.gat,74,282,0	warp	payg403-1	1,1,payg_cas04.gat,225,208
+payg_cas04.gat,7,261,0	warp	payg404	1,1,payg_cas04.gat,55,30
+payg_cas04.gat,59,30,0	warp	payg404-1	1,1,payg_cas04.gat,11,261
+payg_cas04.gat,28,31,0	warp	payg405	1,1,payg_cas04.gat,251,42
+payg_cas04.gat,254,45,0	warp	payg405-1	1,1,payg_cas04.gat,24,31
+
+payg_cas05.gat,23,283,0	warp	payg501	1,1,payg_cas05.gat,237,282
+payg_cas05.gat,237,286,0	warp	payg501-1	1,1,payg_cas05.gat,19,282
+payg_cas05.gat,56,255,0	warp	payg502	1,1,payg_cas05.gat,223,256
+payg_cas05.gat,219,256,0	warp	payg502-1	1,1,payg_cas05.gat,52,255
+payg_cas05.gat,39,264,0	warp	payg503	1,1,payg_cas05.gat,237,231
+payg_cas05.gat,237,227,0	warp	payg503-1	1,1,payg_cas05.gat,40,260
+payg_cas05.gat,283,256,0	warp	payg504	1,1,payg_cas05.gat,286,43
+payg_cas05.gat,290,43,0	warp	payg504-1	1,1,payg_cas05.gat,287,256
+payg_cas05.gat,242,41,0	warp	payg505	1,1,payg_cas05.gat,18,18
+payg_cas05.gat,14,14,0	warp	payg505-1	1,1,payg_cas05.gat,246,41
+
+// aldebaran guild
+aldebaran.gat,35,140,0	warp	aldg001	1,1,alde_gld.gat,280,160
+alde_gld.gat,284,160,0	warp	aldg002	1,1,aldebaran.gat,39,140
+
+alde_gld.gat,48,79,0	warp	aldg01	1,1,aldeg_cas01.gat,34,248
+aldeg_cas01.gat,34,252,0	warp	aldg01-1	1,1,alde_gld.gat,48,83
+alde_gld.gat,95,253,0	warp	aldg02	1,1,aldeg_cas02.gat,88,163
+aldeg_cas02.gat,88,159,0	warp	aldg02-1	1,1,alde_gld.gat,95,249
+alde_gld.gat,142,81,0	warp	aldg03	1,1,aldeg_cas03.gat,114,286
+aldeg_cas03.gat,114,290,0	warp	aldg03-1	1,1,alde_gld.gat,142,85
+alde_gld.gat,243,242,0	warp	aldg04	1,1,aldeg_cas04.gat,149,17
+aldeg_cas04.gat,145,17,0	warp	aldg04-1	1,1,alde_gld.gat,239,242
+alde_gld.gat,259,90,0	warp	aldg05	1,1,aldeg_cas05.gat,216,103
+aldeg_cas05.gat,216,107,0	warp	aldg05-1	1,1,alde_gld.gat,264,90
+
+aldeg_cas01.gat,50,222,0	warp	aldg101	1,1,aldeg_cas01.gat,104,108
+aldeg_cas01.gat,104,112,0	warp	aldg101-1	1,1,aldeg_cas01.gat,45,224
+aldeg_cas01.gat,66,191,0	warp	aldg102	1,1,aldeg_cas01.gat,122,61
+aldeg_cas01.gat,126,61,0	warp	aldg102-1	1,1,aldeg_cas01.gat,62,191
+aldeg_cas01.gat,54,27,0	warp	aldg102-2	1,1,aldeg_cas01.gat,62,191
+aldeg_cas01.gat,26,188,0	warp	aldg103	1,1,aldeg_cas01.gat,50,70
+aldeg_cas01.gat,46,70,0	warp	aldg103-1	1,1,aldeg_cas01.gat,24,188
+aldeg_cas01.gat,70,112,0	warp	aldg104	1,1,aldeg_cas01.gat,42,225
+aldeg_cas01.gat,39,222,0	warp	aldg104-1	1,1,aldeg_cas01.gat,70,108
+aldeg_cas01.gat,89,23,0	warp	aldg105	1,1,aldeg_cas01.gat,207,132
+aldeg_cas01.gat,207,128,0	warp	aldg105-1	1,1,aldeg_cas01.gat,89,27
+aldeg_cas01.gat,206,188,0	warp	aldg106	1,1,aldeg_cas01.gat,216,50
+aldeg_cas01.gat,216,54,0	warp	aldg106-1	1,1,aldeg_cas01.gat,206,184
+aldeg_cas01.gat,232,186,0	warp	aldg107	1,1,aldeg_cas01.gat,42,197
+aldeg_cas01.gat,46,197,0	warp	aldg107-1	1,1,aldeg_cas01.gat,232,182
+aldeg_cas01.gat,171,175,0	warp	aldg108	1,1,aldeg_cas01.gat,35,197
+aldeg_cas01.gat,31,197,0	warp	aldg108-1	1,1,aldeg_cas01.gat,175,175
+
+aldeg_cas02.gat,84,208,0	warp	aldg201	1,1,aldeg_cas02.gat,105,84
+aldeg_cas02.gat,105,88,0	warp	aldg201-1	1,1,aldeg_cas02.gat,79,208
+aldeg_cas02.gat,45,39,0	warp	aldg201-2	1,1,aldeg_cas02.gat,79,208
+aldeg_cas02.gat,50,185,0	warp	aldg202	1,1,aldeg_cas02.gat,192,192
+aldeg_cas02.gat,192,196,0	warp	aldg202-1	1,1,aldeg_cas02.gat,50,180
+aldeg_cas02.gat,33,174,0	warp	aldg203	1,1,aldeg_cas02.gat,126,61
+aldeg_cas02.gat,130,61,0	warp	aldg203-1	1,1,aldeg_cas02.gat,33,179
+aldeg_cas02.gat,22,194,0	warp	aldg204	1,1,aldeg_cas02.gat,88,13
+aldeg_cas02.gat,88,9,0	warp	aldg204-1	1,1,aldeg_cas02.gat,22,190
+aldeg_cas02.gat,121,88,0	warp	aldg205	1,1,aldeg_cas02.gat,177,135
+aldeg_cas02.gat,177,131,0	warp	aldg205-1	1,1,aldeg_cas02.gat,121,84
+aldeg_cas02.gat,206,196,0	warp	aldg206	1,1,aldeg_cas02.gat,197,13
+aldeg_cas02.gat,197,9,0	warp	aldg206-1	1,1,aldeg_cas02.gat,206,192
+
+aldeg_cas03.gat,92,217,0	warp	aldg301	1,1,aldeg_cas03.gat,127,90
+aldeg_cas03.gat,130,90,0	warp	aldg301-1	1,1,aldeg_cas03.gat,96,215
+aldeg_cas03.gat,87,247,0	warp	aldg302	1,1,aldeg_cas03.gat,54,90
+aldeg_cas03.gat,51,90,0	warp	aldg302-1	1,1,aldeg_cas03.gat,87,251
+aldeg_cas03.gat,93,124,0	warp	aldg302-2	1,1,aldeg_cas03.gat,87,251
+aldeg_cas03.gat,44,222,0	warp	aldg303	1,1,aldeg_cas03.gat,213,182
+aldeg_cas03.gat,214,186,0	warp	aldg303-1	1,1,aldeg_cas03.gat,49,222
+aldeg_cas03.gat,91,57,0	warp	aldg304	1,1,aldeg_cas03.gat,60,236
+aldeg_cas03.gat,60,241,0	warp	aldg304-1	1,1,aldeg_cas03.gat,91,61
+aldeg_cas03.gat,79,130,0	warp	aldg305	1,1,aldeg_cas03.gat,201,149
+aldeg_cas03.gat,201,145,0	warp	aldg305-1	1,1,aldeg_cas03.gat,79,126
+aldeg_cas03.gat,199,190,0	warp	aldg306	1,1,aldeg_cas03.gat,195,51
+aldeg_cas03.gat,195,54,0	warp	aldg306-1	1,1,aldeg_cas03.gat,199,186
+
+aldeg_cas04.gat,197,40,0	warp	aldg401	1,1,aldeg_cas04.gat,26,88
+aldeg_cas04.gat,22,88,0	warp	aldg401-1	1,1,aldeg_cas04.gat,192,41
+aldeg_cas04.gat,175,54,0	warp	aldg402	1,1,aldeg_cas04.gat,74,88
+aldeg_cas04.gat,50,132,0	warp	aldg402-1	1,1,aldeg_cas04.gat,74,88
+aldeg_cas04.gat,78,88,0	warp	aldg402-2	1,1,aldeg_cas04.gat,174,58
+aldeg_cas04.gat,185,87,0	warp	aldg403	1,1,aldeg_cas04.gat,111,210
+aldeg_cas04.gat,108,210,0	warp	aldg403-1	1,1,aldeg_cas04.gat,186,92
+aldeg_cas04.gat,171,100,0	warp	aldg404	1,1,aldeg_cas04.gat,152,210
+aldeg_cas04.gat,156,210,0	warp	aldg404-1	1,1,aldeg_cas04.gat,169,97
+aldeg_cas04.gat,196,86,0	warp	aldg405	1,1,aldeg_cas04.gat,49,57
+aldeg_cas04.gat,49,53,0	warp	aldg405-1	1,1,aldeg_cas04.gat,196,82
+aldeg_cas04.gat,21,123,0	warp	aldg406	1,1,aldeg_cas04.gat,125,168
+aldeg_cas04.gat,121,168,0	warp	aldg406-1	1,1,aldeg_cas04.gat,25,123
+aldeg_cas04.gat,132,209,0	warp	aldg407	1,1,aldeg_cas04.gat,14,196
+aldeg_cas04.gat,17,196,0	warp	aldg407-1	1,1,aldeg_cas04.gat,132,228
+aldeg_cas04.gat,132,231,4	script	aldg408r	45,1,1,{
+	set l0,rand(4);
+	if(l0==0) goto w1;
+	if(l0==1) goto w2;
+	if(l0==2) goto w3;
+	if(l0==3) goto w4;
+w1:	warp "aldeg_cas04.gat",170,100; end;
+w2:	warp "aldeg_cas04.gat",186,88; end;
+w3:	warp "aldeg_cas04.gat",129,212; end;
+w4:	warp "aldeg_cas04.gat",132,209; end;
+}
+
+
+
+aldeg_cas05.gat,194,71,0	warp	aldg501	1,1,aldeg_cas05.gat,129,194
+aldeg_cas05.gat,125,194,0	warp	aldg501-1	1,1,aldeg_cas05.gat,199,70
+aldeg_cas05.gat,164,86,0	warp	aldg502	1,1,aldeg_cas05.gat,66,189
+aldeg_cas05.gat,70,189,0	warp	aldg502-1	1,1,aldeg_cas05.gat,166,81
+aldeg_cas05.gat,150,67,0	warp	aldg503	1,1,aldeg_cas05.gat,9,187
+aldeg_cas05.gat,5,187,0	warp	aldg503-1	1,1,aldeg_cas05.gat,151,62
+aldeg_cas05.gat,165,232,0	warp	aldg504	1,1,aldeg_cas05.gat,193,49
+aldeg_cas05.gat,188,49,0	warp	aldg504-1	1,1,aldeg_cas05.gat,165,288
+aldeg_cas05.gat,195,42,0	warp	aldg505	1,1,aldeg_cas05.gat,19,227
+aldeg_cas05.gat,15,227,0	warp	aldg505-1	1,1,aldeg_cas05.gat,195,46
+aldeg_cas05.gat,13,175,0	warp	aldg506	1,1,aldeg_cas05.gat,162,194
+aldeg_cas05.gat,166,194,0	warp	aldg506-1	1,1,aldeg_cas05.gat,13,179
+aldeg_cas05.gat,156,231,0	warp	aldg507	1,1,aldeg_cas05.gat,18,88
+aldeg_cas05.gat,14,88,0	warp	aldg507-1	1,1,aldeg_cas05.gat,156,227
+
+
+// geffen guild
+gef_fild13.gat,150,54,0	warp	gefg01	1,1,gefg_cas01.gat,34,140
+gefg_cas01.gat,34,136,0	warp	gefg01-1	1,1,gef_fild13.gat,150,50
+gef_fild13.gat,210,75,0	warp	gefg02	1,1,gefg_cas01.gat,95,178
+gefg_cas01.gat,99,178,0	warp	gefg02-1	1,1,gef_fild13.gat,214,75
+gef_fild13.gat,308,244,0	warp	gefg03	1,1,gefg_cas02.gat,70,143
+gefg_cas02.gat,70,147,0	warp	gefg03-1	1,1,gef_fild13.gat,308,240
+gef_fild13.gat,77,284,0	warp	gefg04	1,1,gefg_cas03.gat,60,286
+gefg_cas03.gat,68,290,0	warp	gefg04-1	1,1,gef_fild13.gat,74,287
+gef_fild13.gat,112,269,0	warp	gefg05	1,1,gefg_cas03.gat,100,280
+gefg_cas03.gat,103,283,0	warp	gefg05-1	1,1,gef_fild13.gat,117,273
+gef_fild13.gat,139,240,0	warp	gefg06	1,1,gefg_cas03.gat,125,250
+gefg_cas03.gat,130,250,0	warp	gefg06-1	1,1,gef_fild13.gat,143,240
+gef_fild13.gat,83,185,0	warp	gefg07	1,1,gefg_cas03.gat,89,159
+gefg_cas03.gat,93,159,0	warp	gefg07-1	1,1,gef_fild13.gat,83,181
+gef_fild13.gat,196,281,0	warp	gefg08	1,1,gefg_cas04.gat,24,149
+gefg_cas04.gat,24,145,0	warp	gefg08-1	1,1,gef_fild13.gat,193,278
+gef_fild13.gat,256,57,0	warp	gefg09	1,1,gefg_cas05.gat,11,134
+gef_fild13.gat,305,83,0	warp	gefg09-1	1,1,gefg_cas05.gat,99,200
+gefg_cas05.gat,7,134,0	warp	gefg10	1,1,gef_fild13.gat,252,57
+gefg_cas05.gat,99,204,0	warp	gefg10-1	1,1,gef_fild13.gat,305,87
+
+gefg_cas01.gat,39,196,0	warp	gefg101	1,1,gefg_cas01.gat,62,13
+gefg_cas01.gat,62,9,0	warp	gefg101-1	1,1,gefg_cas01.gat,39,192
+gefg_cas01.gat,58,185,0	warp	gefg102	1,1,gefg_cas01.gat,90,47
+gefg_cas01.gat,90,51,0	warp	gefg102-1	1,1,gefg_cas01.gat,54,185
+gefg_cas01.gat,59,170,0	warp	gefg103	1,1,gefg_cas01.gat,205,34
+gefg_cas01.gat,209,34,0	warp	gefg103-1	1,1,gefg_cas01.gat,56,170
+gefg_cas01.gat,31,185,0	warp	gefg104	1,1,gefg_cas01.gat,33,47
+gefg_cas01.gat,33,51,0	warp	gefg104-1	1,1,gefg_cas01.gat,35,185
+gefg_cas01.gat,34,167,0	warp	gefg105	1,1,gefg_cas01.gat,174,34
+gefg_cas01.gat,170,34,0	warp	gefg105-1	1,1,gefg_cas01.gat,30,167
+gefg_cas01.gat,54,84,0	warp	gefg106	1,1,gefg_cas01.gat,174,14
+gefg_cas01.gat,170,14,0	warp	gefg106-1	1,1,gefg_cas01.gat,50,84
+gefg_cas01.gat,181,52,0	warp	gefg107	1,1,gefg_cas01.gat,198,160
+gefg_cas01.gat,202,160,0	warp	gefg107-1	1,1,gefg_cas01.gat,185,52
+
+gefg_cas02.gat,35,173,0	warp	gefg201	1,1,gefg_cas02.gat,76,42
+gefg_cas02.gat,80,42,0	warp	gefg201-1	1,1,gefg_cas02.gat,39,173
+gefg_cas02.gat,46,175,0	warp	gefg202	1,1,gefg_cas02.gat,34,64
+gefg_cas02.gat,34,68,0	warp	gefg202-1	1,1,gefg_cas02.gat,50,175
+gefg_cas02.gat,22,160,0	warp	gefg203	1,1,gefg_cas02.gat,34,17
+gefg_cas02.gat,34,13,0	warp	gefg203-1	1,1,gefg_cas02.gat,22,156
+gefg_cas02.gat,48,159,0	warp	gefg204	1,1,gefg_cas02.gat,184,41
+gefg_cas02.gat,184,36,0	warp	gefg204-1	1,1,gefg_cas02.gat,48,155
+gefg_cas02.gat,34,152,0	warp	gefg205	1,1,gefg_cas02.gat,153,18
+gefg_cas02.gat,148,18,0	warp	gefg205-1	1,1,gefg_cas02.gat,35,150
+gefg_cas02.gat,57,136,0	warp	gefg206	1,1,gefg_cas02.gat,180,18
+gefg_cas02.gat,185,18,0	warp	gefg206-1	1,1,gefg_cas02.gat,53,136
+gefg_cas02.gat,25,13,0	warp	gefg207	1,1,gefg_cas02.gat,170,11
+gefg_cas02.gat,174,11,0	warp	gefg207-1	1,1,gefg_cas02.gat,21,13
+gefg_cas02.gat,150,36,0	warp	gefg208	1,1,gefg_cas02.gat,152,186
+gefg_cas02.gat,152,190,0	warp	gefg208-1	1,1,gefg_cas02.gat,150,41
+
+gefg_cas03.gat,66,223,0	warp	gefg301	1,1,gefg_cas03.gat,96,53
+gefg_cas03.gat,92,53,0	warp	gefg301-1	1,1,gefg_cas03.gat,62,223
+gefg_cas03.gat,34,286,0	warp	gefg302	1,1,gefg_cas03.gat,131,92
+gefg_cas03.gat,135,92,0	warp	gefg302-1	1,1,gefg_cas03.gat,34,282
+gefg_cas03.gat,47,271,0	warp	gefg303	1,1,gefg_cas03.gat,38,255
+gefg_cas03.gat,38,259,0	warp	gefg303-1	1,1,gefg_cas03.gat,43,271
+gefg_cas03.gat,63,255,0	warp	gefg304	1,1,gefg_cas03.gat,156,92
+gefg_cas03.gat,152,92,0	warp	gefg304-1	1,1,gefg_cas03.gat,59,255
+gefg_cas03.gat,50,248,0	warp	gefg305	1,1,gefg_cas03.gat,54,229
+gefg_cas03.gat,58,232,0	warp	gefg305-1	1,1,gefg_cas03.gat,62,213
+gefg_cas03.gat,38,243,0	warp	gefg306	1,1,gefg_cas03.gat,29,219
+gefg_cas03.gat,17,206,0	warp	gefg306-1	1,1,gefg_cas03.gat,29,219
+gefg_cas03.gat,27,215,0	warp	gefg306-2	1,1,gefg_cas03.gat,17,202
+gefg_cas03.gat,106,217,0	warp	gefg307	1,1,gefg_cas03.gat,131,15
+gefg_cas03.gat,135,15,0	warp	gefg307-1	1,1,gefg_cas03.gat,110,217
+gefg_cas03.gat,115,210,0	warp	gefg308	1,1,gefg_cas03.gat,92,215
+gefg_cas03.gat,90,218,0	warp	gefg308-1	1,1,gefg_cas03.gat,111,210
+gefg_cas03.gat,42,175,0	warp	gefg309	1,1,gefg_cas03.gat,266,43
+gefg_cas03.gat,266,47,0	warp	gefg309-1	1,1,gefg_cas03.gat,45,175
+gefg_cas03.gat,70,182,0	warp	gefg310	1,1,gefg_cas03.gat,39,191
+gefg_cas03.gat,43,191,0	warp	gefg310-1	1,1,gefg_cas03.gat,70,185
+gefg_cas03.gat,93,209,0	warp	gefg311	1,1,gefg_cas03.gat,92,250
+gefg_cas03.gat,88,248,0	warp	gefg311-1	1,1,gefg_cas03.gat,76,242
+gefg_cas03.gat,65,215,0	warp	gefg312	1,1,gefg_cas03.gat,233,74
+gefg_cas03.gat,237,74,0	warp	gefg312-1	1,1,gefg_cas03.gat,62,213
+gefg_cas03.gat,95,251,0	warp	gefg313	1,1,gefg_cas03.gat,91,209
+gefg_cas03.gat,79,244,0	warp	gefg313-1	1,1,gefg_cas03.gat,91,250
+gefg_cas03.gat,154,16,0	warp	gefg314	1,1,gefg_cas03.gat,252,11
+gefg_cas03.gat,256,11,0	warp	gefg314-1	1,1,gefg_cas03.gat,159,16
+gefg_cas03.gat,212,46,0	warp	gefg315	1,1,gefg_cas03.gat,225,158
+gefg_cas03.gat,225,154,0	warp	gefg315-1	1,1,gefg_cas03.gat,212,42
+
+gefg_cas04.gat,34,211,0	warp	gefg401	1,1,gefg_cas04.gat,18,78
+gefg_cas04.gat,18,82,0	warp	gefg401-1	1,1,gefg_cas04.gat,34,215
+gefg_cas04.gat,57,224,0	warp	gefg402	1,1,gefg_cas04.gat,18,13
+gefg_cas04.gat,18,9,0	warp	gefg402-1	1,1,gefg_cas04.gat,57,220
+gefg_cas04.gat,53,196,0	warp	gefg403	1,1,gefg_cas04.gat,170,36
+gefg_cas04.gat,174,36,0	warp	gefg403-1	1,1,gefg_cas04.gat,53,192
+gefg_cas04.gat,27,180,0	warp	gefg404	1,1,gefg_cas04.gat,142,59
+gefg_cas04.gat,142,55,0	warp	gefg404-1	1,1,gefg_cas04.gat,32,180
+gefg_cas04.gat,42,81,0	warp	gefg405	1,1,gefg_cas04.gat,42,13
+gefg_cas04.gat,42,9,0	warp	gefg405-1	1,1,gefg_cas04.gat,42,77
+gefg_cas04.gat,52,25,0	warp	gefg406	1,1,gefg_cas04.gat,142,37
+gefg_cas04.gat,142,33,0	warp	gefg406-1	1,1,gefg_cas04.gat,52,21
+gefg_cas04.gat,178,57,0	warp	gefg407	1,1,gefg_cas04.gat,143,166
+gefg_cas04.gat,140,168,0	warp	gefg407-1	1,1,gefg_cas04.gat,178,61
+
+gefg_cas05.gat,50,165,0	warp	gefg501	1,1,gefg_cas05.gat,178,68
+gefg_cas05.gat,178,72,0	warp	gefg501-1	1,1,gefg_cas05.gat,46,165
+gefg_cas05.gat,87,165,0	warp	gefg502	1,1,gefg_cas05.gat,84,62
+gefg_cas05.gat,88,62,0	warp	gefg502-1	1,1,gefg_cas05.gat,83,165
+gefg_cas05.gat,44,143,0	warp	gefg503	1,1,gefg_cas05.gat,70,155
+gefg_cas05.gat,68,150,0	warp	gefg503-1	1,1,gefg_cas05.gat,44,147
+gefg_cas05.gat,83,152,0	warp	gefg504	1,1,gefg_cas05.gat,66,72
+gefg_cas05.gat,66,76,0	warp	gefg504-1	1,1,gefg_cas05.gat,80,155
+gefg_cas05.gat,74,138,0	warp	gefg505	1,1,gefg_cas05.gat,47,62
+gefg_cas05.gat,43,62,0	warp	gefg505-1	1,1,gefg_cas05.gat,78,138
+gefg_cas05.gat,37,16,0	warp	gefg506	1,1,gefg_cas05.gat,153,44
+gefg_cas05.gat,149,44,0	warp	gefg506-1	1,1,gefg_cas05.gat,37,20
+gefg_cas05.gat,93,16,0	warp	gefg507	1,1,gefg_cas05.gat,202,44
+gefg_cas05.gat,206,44,0	warp	gefg507-1	1,1,gefg_cas05.gat,93,20
+gefg_cas05.gat,190,20,0	warp	gefg508	1,1,gefg_cas05.gat,194,151
+gefg_cas05.gat,194,147,0	warp	gefg508-1	1,1,gefg_cas05.gat,190,16
+
+// prontera guild
+prt_gld.gat,159,298,0	warp	prtg001	1,1,prt_fild01.gat,199,30
+prt_gld.gat,159,25,0	warp	prtg002	6,2,prt_castle.gat,102,178
+prt_gld.gat,129,65,0	warp	prtg01	1,1,prtg_cas01.gat,99,32
+prtg_cas01.gat,103,32,0	warp	prtg01-1	1,1,prt_gld.gat,134,65
+prtg_cas02.gat,43,233,0	warp	prtg02	1,1,prt_gld.gat,240,128
+prt_gld.gat,240,124,0	warp	prtg02-1	1,1,prtg_cas02.gat,43,229
+prtg_cas03.gat,168,8,0	warp	prtg03	1,1,prt_gld.gat,153,137
+prt_gld.gat,153,141,0	warp	prtg03-1	1,1,prtg_cas03.gat,168,12
+prtg_cas04.gat,86,9,0	warp	prtg04	1,1,prt_gld.gat,111,240
+prt_gld.gat,107,240,0	warp	prtg04-1	1,1,prtg_cas04.gat,86,13
+prtg_cas05.gat,17,231,0	warp	prtg05	1,1,prt_gld.gat,208,240
+prt_gld.gat,212,240,0	warp	prtg05-1	1,1,prtg_cas05.gat,17,235
+
+prtg_cas01.gat,57,19,0	warp	prtg101	1,1,prtg_cas01.gat,80,49
+prtg_cas01.gat,84,49,0	warp	prtg101-1	1,1,prtg_cas01.gat,61,19
+prtg_cas01.gat,41,34,0	warp	prtg102	1,1,prtg_cas01.gat,40,47
+prtg_cas01.gat,37,47,0	warp	prtg102-1	1,1,prtg_cas01.gat,45,34
+prtg_cas01.gat,37,54,0	warp	prtg103	1,1,prtg_cas01.gat,192,119
+prtg_cas01.gat,196,119,0	warp	prtg103-1	1,1,prtg_cas01.gat,40,54
+prtg_cas01.gat,71,54,0	warp	prtg104	1,1,prtg_cas01.gat,192,65
+prtg_cas01.gat,196,65,0	warp	prtg104-1	1,1,prtg_cas01.gat,75,54
+prtg_cas01.gat,51,70,0	warp	prtg105	1,1,prtg_cas01.gat,202,92
+prtg_cas01.gat,206,92,0	warp	prtg105-1	1,1,prtg_cas01.gat,55,70
+prtg_cas01.gat,147,120,0	warp	prtg106	1,1,prtg_cas01.gat,75,187
+prtg_cas01.gat,75,183,0	warp	prtg106-1	1,1,prtg_cas01.gat,147,116
+prtg_cas01.gat,109,163,0	warp	prtg107	1,1,prtg_cas01.gat,202,183
+prtg_cas01.gat,206,183,0	warp	prtg107-1	1,1,prtg_cas01.gat,113,163
+prtg_cas01.gat,62,34,0	warp	prtg108	1,1,prtg_cas01.gat,192,119
+prtg_cas01.gat,84,19,0	warp	prtg109	1,1,prtg_cas01.gat,192,65
+
+prtg_cas02.gat,88,215,0	warp	prtg201	1,1,prtg_cas02.gat,206,41
+prtg_cas02.gat,210,41,0	warp	prtg201-1	1,1,prtg_cas02.gat,84,215
+prtg_cas02.gat,53,202,0	warp	prtg202	1,1,prtg_cas02.gat,165,41
+prtg_cas02.gat,161,41,0	warp	prtg202-1	1,1,prtg_cas02.gat,57,202
+prtg_cas02.gat,64,164,0	warp	prtg203	1,1,prtg_cas02.gat,98,25
+prtg_cas02.gat,98,21,0	warp	prtg203-1	1,1,prtg_cas02.gat,64,168
+prtg_cas02.gat,35,183,0	warp	prtg204	1,1,prtg_cas02.gat,71,82
+prtg_cas02.gat,71,86,0	warp	prtg204-1	1,1,prtg_cas02.gat,35,187
+prtg_cas02.gat,45,21,0	warp	prtg205	1,1,prtg_cas02.gat,203,25
+prtg_cas02.gat,203,21,0	warp	prtg205-1	1,1,prtg_cas02.gat,45,25
+prtg_cas02.gat,184,44,0	warp	prtg206	1,1,prtg_cas02.gat,157,140
+prtg_cas02.gat,157,135,0	warp	prtg206-1	1,1,prtg_cas02.gat,184,40
+
+prtg_cas03.gat,178,85,0	warp	prtg301	1,1,prtg_cas03.gat,82,73
+prtg_cas03.gat,86,73,0	warp	prtg301-1	1,1,prtg_cas03.gat,178,81
+prtg_cas03.gat,191,55,0	warp	prtg302	1,1,prtg_cas03.gat,190,233
+prtg_cas03.gat,194,233,0	warp	prtg302-1	1,1,prtg_cas03.gat,191,59
+prtg_cas03.gat,172,44,0	warp	prtg303	1,1,prtg_cas03.gat,10,78
+prtg_cas03.gat,6,78,0	warp	prtg303-1	1,1,prtg_cas03.gat,176,44
+prtg_cas03.gat,165,59,0	warp	prtg304	1,1,prtg_cas03.gat,45,47
+prtg_cas03.gat,45,43,0	warp	prtg304-1	1,1,prtg_cas03.gat,165,54
+prtg_cas03.gat,45,120,0	warp	prtg305	1,1,prtg_cas03.gat,164,177
+prtg_cas03.gat,164,173,0	warp	prtg305-1	1,1,prtg_cas03.gat,45,117
+prtg_cas03.gat,169,235,0	warp	prtg306	1,1,prtg_cas03.gat,11,200
+prtg_cas03.gat,7,200,0	warp	prtg306-1	1,1,prtg_cas03.gat,169,231
+
+prtg_cas04.gat,48,48,0	warp	prtg401	1,1,prtg_cas04.gat,10,233
+prtg_cas04.gat,10,229,0	warp	prtg401-1	1,1,prtg_cas04.gat,48,44
+prtg_cas04.gat,63,30,0	warp	prtg402	1,1,prtg_cas04.gat,34,229
+prtg_cas04.gat,34,225,0	warp	prtg402-1	1,1,prtg_cas04.gat,63,26
+prtg_cas04.gat,32,28,0	warp	prtg403	1,1,prtg_cas04.gat,11,254
+prtg_cas04.gat,7,254,0	warp	prtg403-1	1,1,prtg_cas04.gat,32,32
+prtg_cas04.gat,42,13,0	warp	prtg404	1,1,prtg_cas04.gat,56,254
+prtg_cas04.gat,60,254,0	warp	prtg404-1	1,1,prtg_cas04.gat,42,17
+prtg_cas04.gat,54,25,0	warp	prtg405	1,1,prtg_cas04.gat,56,233
+prtg_cas04.gat,56,229,0	warp	prtg405-1	1,1,prtg_cas04.gat,54,29
+prtg_cas04.gat,34,290,0	warp	prtg406	1,1,prtg_cas04.gat,238,261 
+prtg_cas04.gat,238,257,0	warp	prtg406-1	1,1,prtg_cas04.gat,34,286
+prtg_cas04.gat,247,258,0	warp	prtg407	1,1,prtg_cas04.gat,255,14
+prtg_cas04.gat,251,14,0	warp	prtg407-1	1,1,prtg_cas04.gat,247,254
+
+prtg_cas05.gat,38,250,0	warp	prtg501	1,1,prtg_cas05.gat,244,7
+prtg_cas05.gat,244,3,0	warp	prtg501-1	1,1,prtg_cas05.gat,35,247
+prtg_cas05.gat,76,242,0	warp	prtg502	1,1,prtg_cas05.gat,288,13
+prtg_cas05.gat,292,13,0	warp	prtg502-1	1,1,prtg_cas05.gat,76,246
+prtg_cas05.gat,66,225,0	warp	prtg503	1,1,prtg_cas05.gat,260,92
+prtg_cas05.gat,260,96,0	warp	prtg503-1	1,1,prtg_cas05.gat,66,229
+prtg_cas05.gat,53,246,0	warp	prtg504	1,1,prtg_cas05.gat,199,13
+prtg_cas05.gat,195,13,0	warp	prtg504-1	1,1,prtg_cas05.gat,55,248
+prtg_cas05.gat,228,96,0	warp	prtg505	1,1,prtg_cas05.gat,26,7
+prtg_cas05.gat,26,3,0	warp	prtg505-1	1,1,prtg_cas05.gat,228,92
+prtg_cas05.gat,58,7,0	warp	prtg506	1,1,prtg_cas05.gat,253,290
+prtg_cas05.gat,253,294,0	warp	prtg506-1	1,1,prtg_cas05.gat,58,11
+
+gld_dun01.gat,119,14,0	warp	gldd_001	1,1,pay_gld.gat,53,141
+gld_dun02.gat,180,112,0	warp	gldd_002	1,1,alde_gld.gat,242,121
+gld_dun02.gat,20,160,0	warp	gldd_003	1,1,alde_gld.gat,229,185
+gld_dun03.gat,42,30,0	warp	gldd_004	1,1,prt_gld.gat,63,66
+gld_dun03.gat,238,274,0	warp	gldd_005	1,1,prt_gld.gat,252,247
+gld_dun04.gat,37,230,0	warp	gldd_006	1,1,gef_fild13.gat,42,331
+gld_dun04.gat,110,20,0	warp	gldd_007	1,1,gef_fild13.gat,373,62
+
+// other
+//guild_room.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs1.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs1.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs1.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs1.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs2.gat,50,88,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs2.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs2.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs2.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs3.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs3.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs3.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs3.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs4.gat,7,50,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs4.gat,50,7,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs4.gat,92,50,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs4.gat,50,92,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs5.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs5.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs5.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+//guild_vs5.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+
+// job
+//job_wiz.gat,0,0,0	warp	jwiz	3,3,job_wiz.gat,0,0
+job_wiz.gat,99,160,0	warp	jwiz01	3,3,job_wiz.gat,0,0
+job_wiz.gat,128,169,0	warp	jwiz02	3,3,job_wiz.gat,0,0
+job_wiz.gat,114,154,0	warp	jwiz03	3,3,job_wiz.gat,0,0
+job_wiz.gat,60,165,0	warp	jwiz04	3,3,job_wiz.gat,0,0
+job_wiz.gat,48,177,0	warp	jwiz05	3,3,job_wiz.gat,0,0
+job_wiz.gat,115,82,0	warp	jwiz06	3,3,job_wiz.gat,0,0
+job_wiz.gat,100,97,0	warp	jwiz07	3,3,job_wiz.gat,0,0
+job_wiz.gat,116,97,0	warp	jwiz08	3,3,job_wiz.gat,0,0
+job_wiz.gat,116,113,0	warp	jwiz09	3,3,job_wiz.gat,0,0
+job_wiz.gat,131,98,0	warp	jwiz10	3,3,job_wiz.gat,0,0
+
+//job_prist.gat,0,0,0	warp	warp4	0,0,hoge.gat,0,0
+job_prist.gat,97,104,0	warp	jpri	0,0,job_prist.gat,0,0
+job_prist.gat,24,109,0	warp	jpri	4,3,job_prist.gat,168,17
+
+job_knt.gat,165,151,0	warp	jknt01	3,3,job_knt.gat,0,0
+job_knt.gat,122,151,0	warp	jknt02	3,3,job_knt.gat,0,0
+job_knt.gat,65,145,0	warp	jknt03	3,3,job_knt.gat,0,0
+job_knt.gat,22,145,0	warp	jknt04	3,3,job_knt.gat,0,0
+
+//job_hunte.gat,0,0,0	warp	jhun	3,3,hoge.gat,0,0
+job_hunte.gat,89,139,0	warp	jhun	3,3,job_hunte.gat,0,0
+job_hunte.gat,89,68,0	warp	jhun	3,3,job_hunte.gat,0,0
+
+mag_dun01.gat,126,66,0	warp	ttl01	1,1,yuno_fild03.gat,34,139
+mag_dun01.gat,242,241,0	warp	ttl01	1,1,mag_dun02.gat,47,30
+mag_dun02.gat,47,28,0	warp	ttl01	1,1,mag_dun01.gat,242,239
+//monk_test.gat
+yuno.gat,158,15,0	warp	ttl01	1,1,yuno_fild04.gat,231,209
+yuno_fild01.gat,70,378,0	warp	ttl01	1,1,yuno_fild02.gat,70,25
+yuno_fild01.gat,286,368,0	warp	ttl01	1,1,yuno_fild02.gat,294,26
+yuno_fild01.gat,208,17,0	warp	ttl01	1,1,aldebaran.gat,140,242
+aldebaran.gat,140,244,0	warp	ttl01	1,1,yuno_fild01.gat,208,19
+yuno_fild02.gat,18,337,0	warp	ttl01	1,1,yuno_fild03.gat,381,331
+yuno_fild02.gat,70,23,0	warp	ttl01	1,1,yuno_fild01.gat,70,376
+yuno_fild02.gat,294,24,0	warp	ttl01	1,1,yuno_fild01.gat,286,366
+yuno_fild03.gat,383,331,0	warp	ttl01	1,1,yuno_fild02.gat,20,337
+yuno_fild03.gat,20,155,0	warp	ttl01	1,1,yuno_fild04.gat,373,150
+yuno_fild03.gat,32,139,0	warp	ttl01	1,1,mag_dun01.gat,126,68
+yuno_fild03.gat,19,79,0	warp	ttl01	1,1,yuno_fild04.gat,373,84
+yuno_fild04.gat,231,211,0	warp	ttl01	1,1,yuno.gat,158,17
+yuno_fild04.gat,375,150,0	warp	ttl01	1,1,yuno_fild03.gat,22,155
+yuno_fild04.gat,375,84,0	warp	ttl01	1,1,yuno_fild03.gat,21,79
+yuno.gat,117,135,0	warp	warpy1001	1,1,yuno_in01.gat,116,37
+yuno_in01.gat,116,40,0	warp	warpy1002	1,1,yuno.gat,120,138
+yuno.gat,48,105,0	warp	warpy1003	1,1,yuno_in01.gat,37,176
+yuno_in01.gat,40,176,0	warp	warpy1004	1,1,yuno.gat,51,105
+yuno_in01.gat,32,182,0	warp	warpy1005	1,1,yuno_in01.gat,86,164
+yuno_in01.gat,82,164,0	warp	warpy1006	1,1,yuno_in01.gat,28,182
+yuno.gat,48,151,0	warp	warpy1007	1,1,yuno_in01.gat,30,100
+yuno_in01.gat,34,100,0	warp	warpy1008	1,1,yuno.gat,51,151
+yuno.gat,93,180,0	warp	warpy1009	1,1,yuno_in04.gat,33,127
+yuno_in04.gat,33,130,0	warp	warpy1010	1,1,yuno.gat,95,184
+yuno.gat,196,138,0	warp	warpy1011	1,1,yuno_in01.gat,32,33
+yuno_in01.gat,32,36,0	warp	warpy1012	1,1,yuno.gat,193,142
+yuno.gat,264,87,0	warp	warpy1013	1,1,yuno_in01.gat,168,101
+yuno_in01.gat,168,104,0	warp	warpy1014	1,1,yuno.gat,264,90
+yuno.gat,342,203,0	warp	warpy1015	1,1,yuno_in04.gat,32,58
+yuno_in04.gat,28,58,0	warp	warpy1016	1,1,yuno.gat,338,203
+yuno_in04.gat,52,58,0	warp	warpy1017	1,1,yuno_in04.gat,97,58
+yuno_in04.gat,95,58,0	warp	warpy1018	1,1,yuno_in04.gat,50,58
+yuno_in04.gat,103,64,0	warp	warpy1019	1,1,yuno_in04.gat,103,95
+yuno_in04.gat,103,93,0	warp	warpy1020	1,1,yuno_in04.gat,103,62
+yuno_in04.gat,115,64,0	warp	warpy1021	1,1,yuno_in04.gat,115,95
+yuno_in04.gat,115,93,0	warp	warpy1022	1,1,yuno_in04.gat,115,62
+yuno_in04.gat,115,51,0	warp	warpy1023	1,1,yuno_in04.gat,115,20
+yuno_in04.gat,115,22,0	warp	warpy1024	1,1,yuno_in04.gat,115,53
+yuno_in04.gat,103,51,0	warp	warpy1025	1,1,yuno_in04.gat,103,20
+yuno_in04.gat,103,22,0	warp	warpy1026	1,1,yuno_in04.gat,103,53
+yuno_in04.gat,122,57,0	warp	warpy1027	1,1,yuno_in04.gat,164,110
+yuno_in04.gat,161,110,0	warp	warpy1028	1,1,yuno_in04.gat,120,57
+yuno.gat,323,284,0	warp	warpy1029	1,1,yuno_in03.gat,167,22
+yuno_in03.gat,167,19,0	warp	warpy1030	1,1,yuno.gat,323,280
+yuno_in03.gat,167,72,0	warp	warpy1031	1,1,yuno_in03.gat,179,113
+yuno_in03.gat,179,109,0	warp	warpy1032	1,1,yuno_in03.gat,167,69
+yuno_in03.gat,186,119,0	warp	warpy1033	1,1,yuno_in03.gat,163,174
+yuno_in03.gat,161,170,0	warp	warpy1034	1,1,yuno_in03.gat,183,119
+yuno_in03.gat,186,131,0	warp	warpy1035	1,1,yuno_in03.gat,163,187
+yuno_in03.gat,161,187,0	warp	warpy1036	1,1,yuno_in03.gat,183,131
+yuno_in03.gat,172,118,0	warp	warpy1037	1,1,yuno_in03.gat,120,178
+yuno_in03.gat,124,178,0	warp	warpy1038	1,1,yuno_in03.gat,176,118
+yuno_in03.gat,111,192,0	warp	warpy1039	1,1,yuno_in03.gat,162,132
+yuno_in03.gat,162,129,0	warp	warpy1040	1,1,yuno_in03.gat,111,189
+yuno_in03.gat,153,134,0	warp	warpy1041	1,1,yuno_in03.gat,62,186
+yuno_in03.gat,66,186,0	warp	warpy1042	1,1,yuno_in03.gat,155,134
+yuno.gat,278,293,0	warp	warpy1043	1,1,yuno_in03.gat,25,15
+yuno_in03.gat,25,11,0	warp	warpy1044	1,1,yuno.gat,278,290
+yuno_in03.gat,219,50,0	warp	warpy1045	1,1,yuno_in03.gat,32,92
+yuno_in03.gat,32,89,0	warp	warpy1046	1,1,yuno_in03.gat,25,53
+yuno.gat,284,366,0	warp	warpy1047	1,1,yuno_in03.gat,224,23
+yuno_in03.gat,224,19,0	warp	warpy1048	1,1,yuno.gat,284,363
+yuno_in03.gat,219,50,0	warp	warpy1049	1,1,yuno_in03.gat,104,118
+yuno_in03.gat,104,115,0	warp	warpy1050	1,1,yuno_in03.gat,219,47
+yuno_in03.gat,244,52,0	warp	warpy1051	1,1,yuno_in03.gat,235,94
+yuno_in03.gat,235,91,0	warp	warpy1052	1,1,yuno_in03.gat,244,49
+yuno_in03.gat,231,58,0	warp	warpy1053	1,1,yuno_in03.gat,239,144
+yuno_in03.gat,239,141,0	warp	warpy1054	1,1,yuno_in03.gat,231,59
+yuno_in03.gat,223,167,0	warp	warpy1055	1,1,yuno_in03.gat,96,59
+yuno_in03.gat,96,58,0	warp	warpy1056	1,1,yuno_in03.gat,223,170
+yuno.gat,87,321,0	warp	warpy1057	1,1,yuno_in02.gat,168,61
+yuno_in02.gat,172,61,0	warp	warpy1058	1,1,yuno.gat,90,321
+yuno_in02.gat,82,14,0	warp	warpy1059	1,1,yuno_in05.gat,192,194
+yuno_in05.gat,196,194,0	warp	warpy1060	1,1,yuno_in02.gat,85,14
+yuno_in05.gat,153,142,0	warp	warpy1061	1,1,yuno_in05.gat,145,83
+yuno_in05.gat,148,83,0	warp	warpy1062	1,1,yuno_in05.gat,156,142
+yuno_in05.gat,137,71,0	warp	warpy1063	1,1,yuno_in05.gat,15,185
+yuno_in05.gat,16,188,0	warp	warpy1064	1,1,yuno_in05.gat,137,74
+yuno_in05.gat,181,91,0	warp	warpy1065	1,1,yuno_in05.gat,177,49
+yuno_in05.gat,177,52,0	warp	warpy1066	1,1,yuno_in05.gat,181,94
+yuno_in05.gat,177,9,0	warp	warpy1067	1,1,yuno_in05.gat,177,49
+yuno_in05.gat,165,103,0	warp	warpy1068	1,1,yuno_in05.gat,145,83
+yuno_in05.gat,125,83,0	warp	warpy1069	1,1,yuno_in05.gat,193,102
+yuno_in05.gat,197,102,0	warp	warpy1076	1,1,yuno_in05.gat,168,103
+yuno_in05.gat,181,116,0	warp	warpy1070	1,1,yuno_in05.gat,177,12
+yuno_in05.gat,47,185,0	warp	warpy1071	1,1,yuno_in05.gat,181,94
+yuno_in05.gat,31,167,0	warp	warpy1072	1,1,yuno_in05.gat,50,85
+yuno_in05.gat,50,87,0	warp	warpy1073	1,1,yuno_in02.gat,85,14
+yuno_in01.gat,88,36,0	warp	warpy1074	1,1,yuno_in01.gat,173,34
+yuno_in01.gat,176,34,0	warp	warpy1075	1,1,yuno_in01.gat,91,36
+
+//-----------------------------------------------------------------------------------------------------------------------\\
+//						Umbala Warps by Darkchild
+//-----------------------------------------------------------------------------------------------------------------------\\ 
+	
+//Witch House 
+umbala.gat,220,190,0	warp	warp9050	1,1,um_in.gat,32,70 
+um_in.gat,28,70,0	warp	warp9051	1,1,umbala.gat,217,187 
+
+//Weapons 
+umbala.gat,124,158,0	warp	warp9052	1,1,um_in.gat,155,114 
+um_in.gat,155,111,0	warp	warp9053	1,1,umbala.gat,126,152 
+
+//Fan Shack 
+umbala.gat,139,130,0	warp	warp9054	1,1,um_in.gat,99,114 
+um_in.gat,99,110,0	warp	warp9055	1,1,umbala.gat,136,127 
+
+//Lower Double Shack 
+umbala.gat,94,187,0	warp	warp9056	1,1,um_in.gat,142,42 
+um_in.gat,141,39,0	warp	warp9057	1,1,umbala.gat,95,183 
+
+//Upper Double Shack 
+umbala.gat,99,201,0	warp	warp9058	1,1,um_in.gat,163,70 
+um_in.gat,166,70,0	warp	warp9059	1,1,umbala.gat,102,204 
+
+//Small Shack 
+umbala.gat,155,249,0	warp	warp9060	1,1,um_in.gat,99,67 
+um_in.gat,99,63,0	warp	warp9061	1,1,umbala.gat,160,247 
+
+//Large Shack 
+umbala.gat,68,254,0	warp	warp9062	1,1,um_in.gat,38,112 
+um_in.gat,38,110,0	warp	warp9063	1,1,umbala.gat,66,248
+
+//Umbala Field links-------------------------------------------------------------- 
+cmd_fild01.gat,179,370,0	warp	warp8013	1,1,um_fild03.gat,239,27 
+um_fild03.gat,239,25,0	warp	warp8014	1,1,cmd_fild01.gat,179,368 
+cmd_fild01.gat,78,367,0	warp	warp8015	1,1,um_fild03.gat,117,51 
+um_fild03.gat,119,50,0	warp	warp8016	1,1,cmd_fild03.gat,78,365 
+um_fild03.gat,31,150,0	warp	warp8017	1,1,um_fild02.gat,372,329 
+um_fild02.gat,374,329,0	warp	warp8018	1,1,um_fild03.gat,33,150 
+um_fild03.gat,18,335,0	warp	warp8019	1,1,um_fild02.gat,372,148 
+um_fild02.gat,374,148,0	warp	warp8020	1,1,um_fild03.gat,20,335 
+um_fild02.gat,21,272,0	warp	warp8021	1,1,um_fild01.gat,368,275 
+um_fild01.gat,370,272,0	warp	warp8022	1,1,um_fild02.gat,23,273 
+um_fild01.gat,39,280,0	warp	warp8023	1,1,beach_dun2.gat,257,244 
+beach_dun2.gat,258,244,0	warp	warp8024	1,1,um_fild01.gat,41,280 
+um_fild02.gat,191,374,0	warp	warp8025	1,1,um_fild04.gat,179,13 
+um_fild04.gat,179,11,0	warp	warp8026	1,1,um_fild02.gat,191,372 
+um_fild04.gat,215,340,0	warp	warp8027	1,1,umbala.gat,130,80 
+umbala.gat,129,78,0	warp	warp8028	1,1,um_fild04.gat,215,338 
+
+//Dungeon Warps------------------------------------------------------------------ 
+umbala.gat,106,286,0	warp	warp8029	1,1,um_dun01.gat,42,28 
+um_dun01.gat,42,26,0	warp	warp8030	1,1,umbala.gat,108,285 
+um_dun01.gat,149,198,0	warp	warp8031	1,1,um_dun02.gat,48,30 
+um_dun02.gat,51,26,0	warp	warp8032	1,1,um_dun01.gat,153,201 
+
+//Dungeon 2 warps----------------------------------------------------------------
+um_dun02.gat,222,259,0	warp	warp9013	1,1,um_dun02.gat,234,255 
+um_dun02.gat,231,255,0	warp	warp9014	1,1,um_dun02.gat,219,260 
+um_dun02.gat,216,84,0	warp	warp9015	1,1,um_dun02.gat,214,74 
+um_dun02.gat,216,77,0	warp	warp9016	1,1,um_dun02.gat,217,88 
+um_dun02.gat,113,208,0	warp	warp9017	1,1,um_dun02.gat,100,208 
+um_dun02.gat,103,208,0	warp	warp9019	1,1,um_dun02.gat,116,208 
+um_dun02.gat,33,249,0	warp	warp9020	1,1,um_dun02.gat,23,242 
+um_dun02.gat,25,244,0	warp	warp9021	1,1,um_dun02.gat,35,251 
+um_dun02.gat,60,88,0	warp	warp9022	1,1,um_dun02.gat,66,77 
+um_dun02.gat,63,80,0	warp	warp9023	1,1,um_dun02.gat,59,92 
+um_dun02.gat,169,38,0	warp	warp9024	1,1,um_dun02.gat,180,38 
+um_dun02.gat,177,38,0	warp	warp9025	1,1,um_dun02.gat,166,38
+
+// Field --> gonryun
+gon_fild01.gat,191,266,0	warp	gon_fild01	1,1,gonryun.gat,160,31
+gonryun.gat,160,24,0	warp	gonryun	1,1,gon_fild01.gat,191,261
+
+// Town --> Inside
+// Bar|Restraunt
+gonryun.gat,216,114,0	warp	gonryun	1,1,gon_in.gat,152,23
+gon_in.gat,148,23,0	warp	gon_in	1,1,gonryun.gat,212,114
+gon_in.gat,185,34,0	warp	warp8016	1,1,gon_in.gat,181,85
+gon_in.gat,185,13,0	warp	warp8017	1,1,gon_in.gat,181,106
+// Upstairs
+gon_in.gat,179,85,0	warp	warp8018	1,1,gon_in.gat,183,34
+gon_in.gat,179,106,0	warp	warp8019	1,1,gon_in.gat,183,13
+
+
+//House 1 --------------------------------------------------------------------------------
+gonryun.gat,108,131,0	warp	warp8020	1,1,gon_in.gat,42,23
+gon_in.gat,47,23,0	warp	warp8021	1,1,gonryun.gat,112,131
+//Uptairs
+gon_in.gat,43,34,0	warp	gon_in	1,1,gon_in.gat,28,97
+gon_in.gat,24,97,0	warp	gon_in	1,1,gon_in.gat,38,34
+//----------------------------------------------------------------------------------------
+//House 2 --------------------------------------------------------------------------------
+gonryun.gat,122,162,0	warp	warp8024	1,1,gon_in.gat,95,25
+gon_in.gat,95,27,0	warp	warp8025	1,1,gonryun.gat,124,162
+//----------------------------------------------------------------------------------------
+//House 3 --------------------------------------------------------------------------------
+gonryun.gat,221,148,0	warp	warp8026	1,1,gon_in.gat,111,99
+gon_in.gat,109,99,0	warp	warp8027	1,1,gonryun.gat,219,148
+//----------------------------------------------------------------------------------------
+//Tool Shop-----------------------------------------------------------------------------
+gonryun.gat,102,153,0	warp	warp8028	1,1,gon_in.gat,72,69
+gon_in.gat,72,67,0	warp	warp8029	1,1,gonryun.gat,105,153
+
+gonryun.gat,211,176,0	warp	gonryun	1,1,gon_in.gat,42,23
+
+// Town --> Dungeon 1
+gonryun.gat,159,202,0	warp	gonryun	1,1,gon_dun01.gat,155,45
+gon_dun01.gat,151,41,0	warp	gon_dun01	1,1,gonryun.gat,159,199
+
+// Dungeon 1 --> Dungeon 2
+gon_dun01.gat,165,274,0	warp	gon_dun01	1,1,gon_dun02.gat,251,264
+gon_dun02.gat,251,269,0	warp	gon_dun02	1,1,gon_dun01.gat,166,270
+
+// Dungeon 2 --> Dungeon 2
+gon_dun02.gat,200,180,0	warp	gon_dun02	1,1,gon_dun02.gat,192,169
+gon_dun02.gat,194,172,0	warp	gon_dun02	1,1,gon_dun02.gat,200,183
+gon_dun02.gat,160,173,0	warp	gon_dun02	1,1,gon_dun02.gat,167,183
+gon_dun02.gat,164,180,0	warp	gon_dun02	1,1,gon_dun02.gat,157,169
+gon_dun02.gat,172,197,0	warp	gon_dun02	1,1,gon_dun02.gat,172,228
+gon_dun02.gat,172,224,0	warp	gon_dun02	1,1,gon_dun02.gat,172,193
+gon_dun02.gat,151,271,0	warp	gon_dun02	1,1,gon_dun02.gat,221,134
+gon_dun02.gat,221,139,0	warp	gon_dun02	1,1,gon_dun02.gat,151,267
+gon_dun02.gat,251,60,0	warp	gon_dun02	1,1,gon_dun02.gat,250,49
+gon_dun02.gat,245,49,0	warp	gon_dun02	1,1,gon_dun02.gat,251,64
+gon_dun02.gat,195,19,0	warp	gon_dun02	1,1,gon_dun02.gat,51,244
+gon_dun02.gat,51,248,0	warp	gon_dun02	1,1,gon_dun02.gat,199,19
+gon_dun02.gat,50,154,0	warp	gon_dun02	1,1,gon_dun02.gat,48,134
+gon_dun02.gat,48,138,0	warp	gon_dun02	1,1,gon_dun02.gat,50,159
+
+// Dungeon 2 --> Dungeon 3
+gon_dun02.gat,23,113,0	warp	gon_dun02	1,1,gon_dun03.gat,68,11
+gon_dun03.gat,68,7,0	warp	gon_dun03	1,1,gon_dun02.gat,28,113
+
+//AMATSU
+amatsu.gat,95,148,0	warp	warp1990	1,1,ama_in01.gat,88,97
+ama_in01.gat,88,94,0	warp	warp2008	1,1,amatsu.gat,99,148
+amatsu.gat,133,148,0	warp	warp1989	1,1,ama_in01.gat,88,22
+ama_in01.gat,86,23,0	warp	warp2009	1,1,amatsu.gat,130,148
+amatsu.gat,40,110,0	warp	warp1995	1,1,ama_in01.gat,28,176
+ama_in01.gat,31,176,0	warp	warp2010	1,1,amatsu.gat,42,110
+amatsu.gat,217,149,0	warp	warp1987	1,1,ama_in01.gat,174,122
+ama_in01.gat,174,120,0	warp	warp2011	1,1,amatsu.gat,217,146
+amatsu.gat,52,148,0	warp	warp1994	1,1,ama_in01.gat,174,172
+ama_in01.gat,174,170,0	warp	warp2012	1,1,amatsu.gat,52,144
+amatsu.gat,96,118,0	warp	warp1962	1,1,ama_in01.gat,31,23
+ama_in01.gat,32,24,0	warp	warp1963	1,1,amatsu.gat,98,117
+amatsu.gat,168,180,0	warp	warp1964	1,1,ama_in01.gat,34,99
+ama_in01.gat,34,97,0	warp	warp1965	1,1,amatsu.gat,168,178
+amatsu.gat,249,160,0	warp	warp1966	1,1,ama_in01.gat,79,178
+ama_in01.gat,77,177,0	warp	warp1967	1,1,amatsu.gat,246,160
+amatsu.gat,216,116,0	warp	warp1968	1,1,ama_in01.gat,162,25
+ama_in01.gat,157,25,0	warp	warp1969	1,1,amatsu.gat,213,116
+ama_in01.gat,161,34,0	warp	warp1970	1,1,ama_in01.gat,166,77
+ama_in01.gat,166,73,0	warp	warp1971	1,1,ama_in01.gat,162,32
+amatsu.gat,85,235,0	warp	warp1972	1,1,ama_in02.gat,224,45
+ama_in02.gat,227,45,0	warp	warp1973	1,1,amatsu.gat,88,235
+ama_in02.gat,195,44,0	warp	warp1973	1,1,ama_in02.gat,65,40
+ama_in02.gat,65,38,0	warp	warp1974	1,1,ama_in02.gat,195,41
+ama_in02.gat,56,44,0	warp	warp1975	1,1,ama_in02.gat,59,144
+ama_in02.gat,59,142,0	warp	warp1976	1,1,ama_in02.gat,56,41
+ama_in02.gat,59,159,0	warp	warp1977	1,1,ama_in02.gat,215,152
+ama_in02.gat,215,150,0	warp	warp1978	1,1,ama_in02.gat,59,156
+ama_in02.gat,222,161,0	warp	warp1979	1,1,ama_in02.gat,130,163
+ama_in02.gat,127,163,0	warp	warp1980	1,1,ama_in02.gat,220,161
+amatsu.gat,247,290,0	warp	warp1960	1,1,ama_fild01.gat,73,32
+ama_fild01.gat,75,29,0	warp	warp1961	1,1,amatsu.gat,247,287
+//amatsu field warps
+ama_fild.gat,174,132,0	warp	warp1996	1,1,prontera.gat,163,186
+ama_fild.gat,193,302,0	warp	warp1997	1,1,prontera.gat,163,186
+ama_fild.gat,154,301,0	warp	warp1998	1,1,prontera.gat,163,186
+ama_fild.gat,330,141,0	warp	warp1999	1,1,prontera.gat,163,186
+//amatsu dungeon warps
+ama_fild01.gat,174,332,0	warp	warp8003	1,1,ama_test.gat,50,19
+ama_test.gat,50,16,0	warp	warp8003	1,1,ama_fild01.gat,174,330
+ama_test.gat,50,44,0	warp	warp8004	1,1,ama_test.gat,50,82
+ama_test.gat,50,79,0	warp	warp8005	1,1,ama_test.gat,50,41
+ama_test.gat,50,90,0	warp	warp8006	1,1,ama_dun01.gat,228,9
+ama_dun01.gat,228,6,0	warp	warp8007	1,1,ama_test.gat,50,87
+ama_dun01.gat,234,143,0	warp	warp8008	1,1,ama_dun02.gat,31,41
+ama_dun02.gat,29,41,0	warp	warp8009	1,1,ama_dun01.gat,231,143
+ama_dun02.gat,196,124,0	warp	warp8010	1,1,ama_dun03.gat,119,14
+ama_dun03.gat,119,9,0	warp	warp8011	1,1,ama_dun02.gat,196,121
+
+
+
 

@@ -1,6 +1,4 @@
-// $Id: npc_priest.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
-//<--------------- Priest Job Quest [Update: Sep. 02, 2003] --------------->\\
-//EDITED BY KOOK SWU 09/10/2003
+//Priest NPC for Athena by RoVeRT
 
 prt_church.gat,16,41,4	script	Cleric	60,{
 	mes "[Cleric]";

@@ -1,6 +1,4 @@
-// $Id: npc_knight.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
-//<--------------- Knight Job Quest [Update: Jul. 20, 2003] --------------->\\
-//EDITED BY KOOK SWU 09/10/2003
+//Knight Quest for Athena by RoVeRT
 
 prt_in.gat,88,101,4	script	Knight	56,{
 	mes "[Prontera Knight]";

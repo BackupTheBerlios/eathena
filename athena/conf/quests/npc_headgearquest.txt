@@ -1,4 +1,4 @@
-// $Id: npc_headgearquest.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
+// $Id: npc_headgearquest.txt,v 1.2 2004/01/09 20:24:22 rovert Exp $
 // Item 'Pretend Murdered' quest
 payon_in01.gat,103,111,4	script	Granny	103,{
 	if(countitem(1049)<3) goto LNoHat;
@@ -72,7 +72,7 @@ geffen_in.gat,144,166,4	script	Blacksmith	63,{
 			mes "[Blacksmith]";
 			mes "I like you,Dude ! Alright,I do it right away !!";
 			delitem 999,50;
-			set Zeny,0-2000;
+			set Zeny,Zeny-2000;
 			getitem 2292,1;
 			mes "[Blacksmith]";
 			mes "You are the best guy I've ever met!";
@@ -124,7 +124,7 @@ payon_in01.gat,103,79,4	script	Mistic Lady	76,{
 		delitem 724,1;
 		delitem 949,200;
 		delitem 5001,1;
-		set Zeny,0-5000;
+		set Zeny,Zeny-5000;
 		mes "I will give you this ready-made one.";
 		getitem 2283,1;
 		mes ". . . . .";
@@ -206,7 +206,7 @@ morocc_in.gat,142,100,4	script	William	89,{
 
 		delitem 1019,50;
 		delitem 983,1;
-		set Zeny,0-91100;
+		set Zeny,Zeny-91100;
 		mes "[William]";
 		mes "Here you are ! This is the one and only Ornament for you, ^3355FF'Stop Post '^000000!";
 		mes "Thank you for coming by!";
@@ -244,7 +244,7 @@ aldeba_in.gat,152,166,4	script	Trader	86,{
 			if ((countitem(2275)==0) | (countitem(998)< 50) | (Zeny< 3500)) goto CantMake;
 			delitem 2285,1;
 			delitem 998,50;
-			set Zeny,0-3500;
+			set Zeny,Zeny-3500;
 			mes "[Trader]";
 			mes "Hmm! Have.. Any Medical License?! Alright. I've heard about an well-known unlicensed physician `Cuwaki'.. I hope you won't get caught...";
 			mes "Yeah... It's your business whatever. Take this.";
@@ -254,7 +254,7 @@ aldeba_in.gat,152,166,4	script	Trader	86,{
 			if ((countitem(2247)==0) | (countitem(916)<300) | (Zeny<500)) goto CantMake;
 			delitem 2247,1;
 			delitem 916,300;
-			set Zeny,0-500;
+			set Zeny,Zeny-500;
 			mes "[Trader]";
 			mes "Umhahaha. You have good sense, Dude.";
 			mes "I know you got a hard time to collect these stuffs, but this one is worth to deserve. Take it.";
@@ -264,7 +264,7 @@ aldeba_in.gat,152,166,4	script	Trader	86,{
 			if ((countitem(998)<20) | (countitem(707)==0) | (Zeny<5000)) goto CantMake;
 			delitem 998,20;
 			delitem 707,1;
-			set Zeny,0-5000;
+			set Zeny,Zeny-5000;
 			mes "[Trader]";
 			mes "This is pretty nice one.";
 			mes "Well little bit Scary though.. I think it has an Magnetic Attraction. What about your idea?";
@@ -274,7 +274,7 @@ aldeba_in.gat,152,166,4	script	Trader	86,{
 		L3:
 			if ((countitem(1019)<120) | (Zeny<10000)) goto CantMake;
 			delitem 1019,120;
-			set Zeny,0-10000;
+			set Zeny,Zeny-10000;
 			mes "[Trader]";
 			mes "If you have a chance to visit the Uplander Village, Payon, Please go meet the Sakkat Craftsman.";
 			mes "He've never sold Sakkat to other Dealers but to me. Because only me, can recognise its quality. Due its rarity, Sakkat becomes a very Unique and Exceptional product.";
@@ -664,7 +664,7 @@ morocc_in.gat,76,163,4	script	Alchemist	64,{
 		next;
 		delitem 2243,1;
 		delitem 999,100;
-		set Zeny,0-50000;
+		set Zeny,Zeny-50000;
 		mes "[Marius]";
 		mes "Here it is ! The Binoculars !";
 		getitem 2296,1;

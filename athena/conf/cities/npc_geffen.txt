@@ -1,4 +1,4 @@
-//Geffen City, modified for Athena by AjS15822
+//Geffen City for Athena by AjS15822
 geffen_in.gat,110,172,2	script	Christopher	63,{
 	mes "[Christopher Guillenrow]";
 	mes "Welcome to Christopher's Workshop.";
@@ -61,16 +61,16 @@ geffen_in.gat,110,172,2	script	Christopher	63,{
 			mes "It's a tool qequisite for Metal refining!!";
 			mes "So, how many do you wish to buy? If you want to quit, please note the number as '0'.";
 			next;
-			input;
-			if(Script_flag_num !=0) goto inputMF;
+			input @input;
+			if(@input !=0) goto inputMF;
 			goto DealCanc;
 			
 			inputMF:
-				if(GetMaxWeight < (GetWeight + (Script_flag_num * 20))) goto inputOW;
-				if(Zeny < 150 * Script_flag_num) goto NoZeny;
+				if(GetMaxWeight < (GetWeight + (@input * 20))) goto inputOW;
+				if(Zeny < 150 * @input) goto NoZeny;
 				mes "[Christopher Guillenrow]";
-				set Zeny,zeny-150 * Script_flag_num;
-				getitem 612,Script_flag_num;
+				set Zeny,zeny-150 * @input;
+				getitem 612,@input;
 				goto ThankYou;
 		IronHam:
 			if(Zeny<1000) goto NoZeny;
@@ -105,29 +105,29 @@ geffen_in.gat,110,172,2	script	Christopher	63,{
 			mes "[Christopher Guillenrow]";
 			mes "So, how many do you wish to buy? If you want to quit, please note the number as '0'.";
 			next;
-			input;
-			if(Script_flag_num !=0) goto inputPP;
+			input @input;
+			if(@input !=0) goto inputPP;
 			goto DealCanc;
 
 			inputPP:
-				if(Zeny < 200 * Script_flag_num) goto NoZeny;
+				if(Zeny < 200 * @input) goto NoZeny;
 				mes "[Christopher Guillenrow]";
-				set Zeny,zeny-200 * Script_flag_num;
-				getitem 1010,Script_flag_num;
+				set Zeny,zeny-200 * @input;
+				getitem 1010,@input;
 				goto ThankYou;
 		PurMEmveretarcon:
 			mes "[Christopher Guillenrow]";
 			mes "So, how many do you wish to buy? If you want to quit, please note the number as '0'.";
 			next;
-			input;
-			if(Script_flag_num !=0) goto inputPP;
+			input @input;
+			if(@input !=0) goto inputPP;
 			goto DealCanc;
 
 			inputPE:
-				if(Zeny < 1000 * Script_flag_num) goto NoZeny;
+				if(Zeny < 1000 * @input) goto NoZeny;
 				mes "[Christopher Guillenrow]";
-				set Zeny,zeny-1000 * Script_flag_num;
-				getitem 1011,Script_flag_num;
+				set Zeny,zeny-1000 * @input;
+				getitem 1011,@input;
 				goto ThankYou;
 		PurMCancel:
 			mes "[Christopher Guillenrow]";

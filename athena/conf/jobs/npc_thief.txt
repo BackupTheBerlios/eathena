@@ -1,15 +1,23 @@
-// $Id: npc_thief.txt,v 1.1 2004/01/09 17:07:50 rovert Exp $
-//<--------------- Thief Job Quest [Update: Jul. 31, 2003] --------------->\\
-//EDITED BY KOOK SWU 09/10/2003
+//Thief Quest for Athena by BeerNuts
+
+// Monster Spawns
+
+job_thief1.gat,0,0,0,0	monster	Orange Mushroom	1182,180,0,0,0
+job_thief1.gat,0,0,0,0	monster	Fabre	1184,50,0,0,0
+job_thief1.gat,0,0,0,0	monster	Chonchon	1183,50,0,0,0
+job_thief1.gat,0,0,0,0	monster	Spore	1014,30,0,0,0
+
+
+// Quest NPCs
 
 moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 	set @TEMP,0;
-	set S_FLAG,0;
+	set @s_flag,0;
 	if(Class==6) goto L00;
 	if((Class !=0) & (Class !=6)) goto L01;
-	if(@Test_TH==3) goto L02;
-	if(@Test_TH==2) goto L03;
-	if(@Test_TH==1) goto L04;
+	if(job_thief_q==3) goto L02;
+	if(job_thief_q==2) goto L03;
+	if(job_thief_q==1) goto L04;
 	mes "[Bogus Man]";
 	mes "Hey!! Novice!";
 	mes "Want to live in Bed of Roses? Want to be Stronger and more Powerful!?";
@@ -26,35 +34,35 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 		mes "Why don't you go outside this town and make yourself stronger?";
 		close;
 	L01:
-		if(S_FLAG==0) goto L01a;
-		if(S_FLAG==1) goto L01b;
-		if(S_FLAG==2) goto L01c;
-		if(S_FLAG==3) goto L01d;
-		if(S_FLAG==4) goto L01e;
+		if(@s_flag==0) goto L01a;
+		if(@s_flag==1) goto L01b;
+		if(@s_flag==2) goto L01c;
+		if(@s_flag==3) goto L01d;
+		if(@s_flag==4) goto L01e;
 
 		L01a:
 			mes "[Bogus Man]";
 			mes "Howdy~ Howdy. What a Wonderful day today,isn't it?";
 			mes "I feel like I am going to go on a Picnic with fellas of mine to the Pyramids Field today.";
 			close;
-			set S_FLAG,S_FLAG+1;
+			set @s_flag,@s_flag+1;
 		L01b:
 			mes "[Bogus Man]";
 			mes "'Lalalala,Home sweet Home.'";
 			mes "I like this Saying. Home Sweet Home....";
 			close;
-			set S_FLAG,S_FLAG+2;
+			set @s_flag,@s_flag+2;
 		L01c:
 			mes "[Bogus Man]";
 			mes "............... ";
 			close;
-			set S_FLAG,S_FLAG+3;
+			set @s_flag,@s_flag+3;
 		L01d:
 			mes "[Bogus Man]";
 			mes "Oh~ Boy!! I~ am~N.O.T~ a ~S.T.R.A.N.G.E~M.A.N.";
 			mes "D.O.N.O.T. L.O.O.K. A.T. M.E. Like that.";
 			close;
-			set S_FLAG,S_FLAG+4;
+			set @s_flag,@s_flag+4;
 		L01e:
 			mes "[Bogus Man]";
 			mes "....Hey, Dude. I have nothing to say with you, Mind your own business.";
@@ -87,11 +95,11 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 	L03:
 		mes "[Thief Guide]";
    		mes "You..... I can feel you.... You come to take a test,don't you?";
-		mes "Name? $CharName ... eh.... on the List!";
+		mes "Name? " + strcharinfo(0) + " ... eh.... on the List!";
 		mes "Ok! You may go in! But I can't guarantee your safety!! Yahoo!";
 		next;
 		set @TEMP,rand(5);
-		set @Test_TH,@Test_TH+1;
+		set job_thief_q,job_thief_q+1;
 		if(@TEMP != 0) goto warpL03a;
 	  		warp "job_thief1.gat",228,106;
 			close;
@@ -120,10 +128,10 @@ moc_ruins.gat,141,125,3	script	Bogus Man	83,{
 moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 	if(Class==6) goto ImThief;
 	if((Class !=0) & (Class !=6)) goto ImOther;
-	if((@Test_TH==3) & ((countitem(1069)>0) | (countitem(1070)>0))) goto L00;
-	if(@Test_TH==3) goto L01;
-	if(@Test_TH==2) goto L02;
-	if(@Test_TH==0) goto L03;
+	if((job_thief_q==3) & ((countitem(1069)>0) | (countitem(1070)>0))) goto L00;
+	if(job_thief_q==3) goto L01;
+	if(job_thief_q==2) goto L02;
+	if(job_thief_q==0) goto L03;
 
 	L00:
 		mes "[Thief Guide]";
@@ -187,97 +195,42 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 	L03:
 		if(Sex == 0) goto L030;
 		mes "[Thief Guide]";
-		mes "Heheheh... You look like a rich boy, what brought you coming down this Dirty and Stinky Place?";
-		mes "Yo~ You come back. Are you ready for sure this time?";
+		mes "Heheheh... You look like a rich Boy, What are you doing down in this Dirty and Stinky Place?";
+		mes "Don't tell me you what to join the thief guild! Don't make me laugh...";
 		next;
 		goto L031;
 	L030:
 		mes "[Thief Guide]";
-		mes "Heheheh... You look like a rich Girl, what brought you coming down this Dirty and Stinky Place?";
-		mes "Yo~ You come back. Are you ready for sure this time?";
+		mes "Heheheh... You look like a rich Girl, What are you doing down in this Dirty and Stinky Place?";
+		mes "Don't tell me you what to join the thief guild! Don't make me laugh...";
 		next;
 		goto L031;
 	
      		L031:
-     			menu "Yes, I am ready to be a Thief.",L031a,"Well, I don't think so.",L031b;
+     			menu "Yes, I want to be a Thief.",L031a,"Thief? No thanks.",L031b;
      		
      		L031a:
-            			if(@Test_TH==0) goto L031aa;
 					mes "[Thief Guide]";
-					mes "Here we go, Let's Check it out together.";
+					mes "Alright, Let's See Here....";					
 					next;
-            					goto L031a0;
+					goto L0TEST;
+		L0TEST:
+					if(JobLevel < 10) goto L031a0Neg;	
+					else(job_thief_q==0) goto L031a0;
 
-				L031aa:
-					mes "[Thief Guide]";
-					mes "Ho~ Being a thief is not Proud thing to show off like that, Baby. You'd better watch your P's and Q's before being Caught, you know.";
-					mes "'Muhahahaha funny. How about my idea? Make a Placard and write down like this, 'I eager to be a Thief for my entire life. I want to steal other's property.', Not bad, Huh?";
-					next;
-					mes "[Thief Guide]";
-					mes "Have you really wanted to be a Thief, Have you?";
-					next;
-					menu "Yeah, I mean though.",L031aaa,"Not actually.",L031aab,"So what about you, such a Naughty man?",L031aac;
 
-					L031aaa:
-						mes "[Thief Guide]";			
-						mes "Really... ? Wow... you are really weird.";
-						next;
-						goto L031a00;
-					L031aab:
-						mes "[Thief Guide]";	
-						mes "Then what...? Are you seeing someone in the Thief Guild? or Do you just imagine how great it would be if you were a thief..?";
-						next;
-						goto L031a00;
-					L031aac:
-						mes "[Thief Guide]";
-						mes "Err..? Me? You mean Me?";
-						mes "Well... I had no choice at that time...  ...I didn't want to starve.";
-						next;
-						goto L031a00;
-				L031a00:
-					mes "[Thief Guide]";
-					mes "By the way you Must not tell your parents that you want to be a Thief in the Real Life, Okay? If you do,your parents think Ragnarok is too addictive for a child like you..Sigh..";
-					next;
-					mes "[Thief Guide]";
-					mes "So... Will you apply for a Thief or not?";
-					next;
-					menu "Yes, I will.",L031a0a,"My dad doesn't want me to play Thief.",L031a0b;
-
-					L031a0a:
-						mes "[Thief Guide]";
-						mes "Alright, tell me your name. Huh? What did you say?";
-						mes " $CharName. Is it $CharName ...?";
-						set @Test_TH,1;
-						next;
-						mes "[Thief Guide]";
-						mes "Alright, your registration confirmed well.";
-						mes "Ah, We can take a test if you already get some information about it.";
-						mes "Trying wouldn't do any harm! Wanna try now?";
-						next;
-						menu "Yeah. That sounds good.",L031a0aa,"No.I am not ready yet.",L031a0ab;
-
-						L031a0aa:
-							goto L031a0;
-						L031a0ab:
-							mes "[Thief Guide]";
-							mes "Well... Do as you wish~ Come back safely~";
-							close;
-       					L031a0b:
-        						mes "[Thief Guide]";
-        						mes "...... Hmm,he doesn't? Then you'd better not to apply before getting spanked by old man.";
-        						mes "Let me recommand another Job.. What about Acolyte? It's not that bad.. but I am surely can say it's not better than Thief, Heheheh.";
-        						close;
 				L031a0:
-					mes "[Thief Guide]";
-					mes "Your name is.... $CharName. Umm..... Where is it....";
-					mes "Ah. I got it, Here it is. Name $CharName.";
+
+						mes "[Thief Guide]";
+					mes "Your name is..... Umm..... Where is it....";
+					mes "Ah. I got it, Here it is " + strcharinfo(0) + ".";
 					mes "L~ e~ e~t~'s See.";
-					next;
-					if(JobLevel < 10) goto L031a0Neg;
-					mes "[Thief Guide]";
-					mes "Alright.... Refering to your Felony Record from an Inquiry agency, you have a very interesting history. And I think you are capable to Stealing.... Okay.";
-					mes "You, $CharName  pass the personal Interview, hereby!";
-					set @Test_TH,@Test_TH+1;
+						set job_thief_q,1;
+						next;
+						mes "[Thief Guide]";
+					mes "Alright.... Refering to your Felony Record from our Inquiry agency, you have a very interesting history. And I think you are capable to Stealing.... Okay.";
+					mes "You " + strcharinfo(0) + " hereby pass the personal Interview!";
+					set job_thief_q,job_thief_q+1;
 					next;
 					mes "[Thief Guide]";
 					mes "From now on, Shal we examine your ability for becoming a Thief?";
@@ -313,9 +266,8 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 					L031a0Neg:
 						mes "[Thief Guide]";
 						mes "Err I can see how ambitious you are......";
-						mes "But we can't hand a gun to a baby only for that? Come back when you learn whole Basic Skills.";
-						next;
-						goto L031a010;
+						mes "But we can't hand a gun to a baby only for that? Come back when you learn all Basic Skills.";
+						close;
 						
 						L031a010:
 							mes "[Thief Guide]";
@@ -337,11 +289,13 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 							mes "No more Question. Let's Move~";
 							close;
 		L031b:
+			mes "[Thief Guide]";
+			mes "Alright but if you change your mind come back anytime~";
 			close;
 
 	ImThief:
 		mes "[Thief Guide]";
-		mes "Yo~ If you have a probelm, feel free to Speak to me anytime, Alright? I can help you.";
+		mes "Your already a thief..what do you want from me.. go away!";
 		close;
 
 	ImOther:
@@ -359,13 +313,13 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 			if(Sex == 0) goto ImAco0;
 			mes "[Thief Guide]";
 			mes "Hey, Dude.";
-			mes "What brought you here? Go~ Go Home, Baby.";
+			mes "What brought you here? Go~ Home, Baby.";
 			close;
 
 			ImAco0:
 				mes "[Thief Guide]";
 				mes "Hey, Lady.";
-				mes "What brought you here? Go~ Go Home, Baby.";
+				mes "What brought you here? Go~ Home, Baby.";
 				close;
 		ImArcher:
 			mes "[Thief Guide]";
@@ -375,13 +329,13 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 			if(Sex == 0) goto ImArc0;
 			mes "[Thief Guide]";
 			mes "Hey, Dude.";
-			mes "What brought you here? Go~ Go Home, Baby.";
+			mes "What brought you here? Go~ Home, Baby.";
 			close;
 
 			ImArc0:
 				mes "[Thief Guide]";
 				mes "Hey, Lady.";
-				mes "What brought you here? Go~ Go Home, Baby.";
+				mes "What brought you here? Go~ Home, Baby.";
 				close;
 		ImMage:
 			mes "[Thief Guide]";
@@ -391,29 +345,29 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 			if(Sex == 0) goto ImMag0;
 			mes "[Thief Guide]";
 			mes "Hey, Dude.";
-			mes "What brought you here? Go~ Go Home, Baby.";
+			mes "What brought you here? Go~ Home, Baby.";
 			close;
 
 			ImMag0:
 				mes "[Thief Guide]";
 				mes "Hey, Lady.";
-				mes "What brought you here? Go~ Go Home, Baby.";
+				mes "What brought you here? Go~ Home, Baby.";
 				close;
 		ImMerchant:
 			mes "[Thief Guide]";
 			mes "What the heck...?";
-			mes "Eeeeeek~Merchant Scammer here...!!!! I am gonna report you to Gravity!!!";
+			mes "Eeeeeek~Merchant Scammer here...!!!! I am gonna report you to the GM!!!";
 			next;
 			if(Sex == 0) goto ImMer0;
 			mes "[Thief Guide]";
 			mes "Hey, Dude.";
-			mes "What brought you here? Go~ Go Home, Baby.";
+			mes "What brought you here? Go~ Home, Baby.";
 			close;
 
 			ImMer0:
 				mes "[Thief Guide]";
 				mes "Hey, Lady.";
-				mes "What brought you here? Go~ Go Home, Baby.";
+				mes "What brought you here? Go~ Home, Baby.";
 				close;
 		ImSwordman:
 			mes "[Thief Guide]";
@@ -423,22 +377,22 @@ moc_prydb1.gat,39,129,5	script	Thief Guide	69,{
 			if(Sex == 0) goto ImSwo0;
 			mes "[Thief Guide]";
 			mes "Hey, Dude.";
-			mes "What brought you here? Go~ Go Home, Baby.";
+			mes "What brought you here? Go~ Home, Baby.";
 			close;
 
 			ImSwo0:
 				mes "[Thief Guide]";
 				mes "Hey, Lady.";
-				mes "What brought you here? Go~ Go Home, Baby.";
+				mes "What brought you here? Go~ Home, Baby.";
 				close;
 }
 
 moc_prydb1.gat,42,133,2	script	Comrade	118,{
 	if(Class==6) goto L00;
 	if((Class !=0) & (Class !=6)) goto L01;
-	if((@Test_TH==0) || (@Test_TH==1)) goto L0100;
-	if(@Test_TH==2) goto L0101;
-	if(@Test_TH==3) goto L0102;
+	if((job_thief_q==0) || (job_thief_q==1)) goto L0100;
+	if(job_thief_q==2) goto L0101;
+	if(job_thief_q==3) goto L0102;
 
 	L0100:
 		mes "[Thief Guide]";
@@ -503,45 +457,38 @@ moc_prydb1.gat,42,133,2	script	Comrade	118,{
 		next;
 		if(Sex == 0) goto L0102z;
 		mes "[Brad]";
-		mes "'Gentleman, $CharName.'";
+		mes "'Gentleman, " + strcharinfo(0) + ".'";
 		next;
 		goto L01020z;
 		
 		L0102z:
 			mes "[Brad]";
-			mes "'Lady, $CharName.'";
+			mes "'Lady, " + strcharinfo(0) + ".'";
 			next;
 			goto L01020z;
 		
 		L01020z:
-		mes "'You passed the official Thief Test, I shall grant you to join us.'";
+		mes "'You passed the official Thief Test'";
 		set Mushroom1,0;
 		set Mushroom2,0;
 		set thief_item1,0;
 		set thief_item2,0;
 		set Total_Mushroom,0;
+		delitem	1069,99;
+		delitem	1070,99;
 
 		releaseall;
 		JobChange 6;
+		next;
+		mes "[Brad]";
+		mes "It is a small Subsidy for a Newbie like you. But spend it wherever you want.";
+		set Zeny,Zeny+money_thief;
 		next;
 		mes "[Brad]";
 		mes "'Also I Sincerely Congrate you to be a Thief.'";
 		mes "'From now on, Behave yourself as a Theif,our Comrade.'";
 		mes "'If you bring disgrace on our Guild, you will be terminated in no time.'";
 		mes "'By all means, I expect your activities as a Great Thief.Dismiss.'";
-		next;
-		mes "[Brad]";
-		mes "Heeee~Haaaaa~! Welcome to the Guild! My comrade.";
-		mes "I am 'Brad'. I am in charge of the human resouce in guild.";
-		mes "Well you don't know me yet, you will see me ever so often later.";
-		next;
-		mes "[Brad]";
-		mes "It is a small Subsidy for a Newbie like you. Spend it wherever you want.";
-		set Zeny,Zeny+money_thief;
-		next;
-		mes "[Brad]";
-		mes "Alright, Go mind your own business. I mind my own business from now on.";
-		mes "See you, Dude.";
 		set money_thief,0;
 		close;
 
@@ -552,12 +499,11 @@ moc_prydb1.gat,42,133,2	script	Comrade	118,{
 			close;
 	L00:
 		mes "[Brad]";
-		mes "Pee on somewhere and leave soon. We don't have any Special event yet. Come next time when we break the news, Alright?";
+		mes "We don't have any Special event yet. Come next time when we break the news, Alright?";
 		close;
 	L01:
 		mes "[Brad]";
 		mes "Hey~ Hey~ What's up! You don't look like a Thief.";
-		mes "What the heck? Who told the you can pee on my territory~ Go~ before get lynched~";
-		next;
-		goto L00;
+		mes "What the heck? Who told the you can pee on my territory~ Go~ before you get lynched~";
+		close;
 }

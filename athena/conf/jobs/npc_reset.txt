@@ -1,4 +1,4 @@
-//Reset NPC
+//Reset NPC for Athena by Script&DB Team 
 prontera.gat,150,193,4	script	Reset Girl	124,{
 	mes "[Reset Girl]";
 	mes "I am a Reset Girl.";

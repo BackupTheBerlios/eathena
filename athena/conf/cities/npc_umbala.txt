@@ -1,6 +1,4 @@
-//------------------------------------------------------------------------------------------------------------------------\\ 
-//                       Umbala NPC Scripts by Darkchild
-//------------------------------------------------------------------------------------------------------------------------\\ 
+//Payon City for Athena by Script&DB Team 
 um_in.gat,39,125,4	script	Umbala Healer	71,{
 	mes "[Umbala Healer]";
 	mes "Welcome. Do you need healing?";
@@ -71,10 +69,10 @@ BEAST:
    next; 
    mes "[Tree Guardian]"; 
    mes "You may enter the dungeon now!"; 
-   set $umbdun,1;
+   set umbdun,1;
    close; 
 DUN: 
-   if ($umbdun == 1) goto ALLOW;
+   if (umbdun == 1) goto ALLOW;
    mes "[Tree Guardian]"; 
    mes "We do not permit weak people to enter!"; 
    close; 

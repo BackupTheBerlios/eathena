@@ -1,4 +1,4 @@
-
+//Comodo City for Athena by Script&DB Team
 aldebaran.gat,44,53,4	script	Meteurengut	64,{
 	mes "[Meteurengut]";
 	mes "The item that summons forth power through the gate of dimensions?";
@@ -232,7 +232,7 @@ cmd_fild07.gat,94,134,4	script	Sarumane	100,{
 	
 	M0:		
 		if(Zeny < 600) goto NOOZENY1;
-		setzeny Zeny,zeny-600; // fixed for athena by AjS
+		set Zeny Zeny,zeny-600; // fixed for athena by AjS
 		mes "[Sarumane]";
 		mes "Alrite, Alberta it is!";
 		next;
@@ -240,7 +240,7 @@ cmd_fild07.gat,94,134,4	script	Sarumane	100,{
 		close;
 	M1:		
 		if(Zeny < 800) goto NOOZENY2;
-		setzeny Zeny,zeny-800; //fixed for athena by AjS
+		set Zeny Zeny,zeny-800; //fixed for athena by AjS
 		mes "[Sarumane]";
 		mes "Alrite, Izlude it is!";
 		next;
@@ -300,7 +300,7 @@ cmd_fild07.gat,299,83,4	script	Zain	100,{
 	
 	M0:		
 		if(Zeny < 600) goto NOOZENY1;
-		setzeny Zeny,zeny-600; // fixed for athena by AjS
+		set Zeny Zeny,zeny-600; // fixed for athena by AjS
 		mes "[Zain]";
 		mes "Alrite, Alberta it is!";
 		next;
@@ -308,7 +308,7 @@ cmd_fild07.gat,299,83,4	script	Zain	100,{
 		close;
 	M1:		
 		if(Zeny < 800) goto NOOZENY2;
-		setzeny Zeny,zeny-800; //fixed for athena by AjS
+		set Zeny Zeny,zeny-800; //fixed for athena by AjS
 		mes "[Zain]";
 		mes "Alrite, Izlude it is!";
 		next;
@@ -990,7 +990,7 @@ comodo.gat,204,310,4	script	Camping Youth	65,{
 }
 
 comodo.gat,206,310,4	script	Camp Ground Boy	704,{
-	if(countitem(3055) != 0) goto L_START_1;
+	if(comodo_npc != 0) goto L_START_1;
 	mes "[Rochito]";
 	mes "Meat Meat Meat, I Love Meat!";
 	mes "Eat Eat Eat, All I Eat Is Meat!";

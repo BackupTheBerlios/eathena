@@ -1,4 +1,4 @@
-//Morocc City, edited for use in Athena by AjS15822
+//Morocc City for Athena by AjS15822
 in_moc_16.gat,19,157,4	script	Aladin	118,{
 	mes "[Assassin Aladin]";
 	mes "There is nothing special for an Assassin..";

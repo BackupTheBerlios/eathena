@@ -1,5 +1,4 @@
-// $Id: npc_izlude.txt,v 1.1 2004/01/09 17:07:22 rovert Exp $
-//<--------------- NPCs Izlude [Update: Aug. 13, 2003] --------------->\\
+//Izlude City for Athena by RoVeRT
 izlu2dun.gat,108,27,4	script	Sailor	100,{
 	mes "[Sailor]";
 	mes "Wanna return?";
@@ -147,8 +146,7 @@ izlude.gat,56,126,7	script	Cebalis	85,{
 }
 
 izlude.gat,119,121,1	script	Cuskoal	124,{
-	set @TEMP,0;
-	random @TEMP,2;
+	set @TEMP,rand(2);
 	if(@TEMP !=0) goto msg;
 	mes "[Cuskoal]";
 	mes "The Arena is THE place for capable young people from every parts of Rune-Midgard Kingdom to challange and test thier skills.";
@@ -167,8 +165,7 @@ izlude.gat,119,121,1	script	Cuskoal	124,{
 }
 
 izlude.gat,135,78,2	script	Charfri	91,{
-	set @TEMP,0;
-	random @TEMP,2;
+	set @TEMP,rand(2);
 	if(@TEMP !=0) goto msg;
 	mes "[Charfri]";
 	mes "Some people insult our city for just being a satellite city of Prontera,";
@@ -195,8 +192,7 @@ izlude.gat,135,78,2	script	Charfri	91,{
 }
 
 izlude.gat,150,118,3	script	Dega	84,{
-	set @TEMP,0;
-	random @TEMP,3;
+	set @TEMP,rand(3);
 	if(@TEMP !=0) goto msg0;
 		mes "[Dega]";
 		mes "Mt. Mjornir located north of Prontera is surely tough and precipitous to travel around.";
@@ -263,7 +259,7 @@ izlude.gat,150,143,4	script	Kylick	97,{
 }
 
 izlude.gat,182,186,6	script	Edgar	49,{
-	if(countitem(3041)==1) goto L000;
+	if(iz_move_alberta==1) goto L000;
 	mes "[Edgar]";
 	mes "My town, Izlude is connected with Alberta by the harbor at the west.";
 	mes "There is more traffic on between us, so I almost become an Albertian not an Izludian anymore. Huhuhu.";
@@ -296,8 +292,8 @@ izlude.gat,182,186,6	script	Edgar	49,{
 			
 			L01a:
 				if(Zeny < 250) goto NoZeny;
-				getitem 3041,1;
-				set Zeny,0-250;
+				set iz_move_alberta,1;
+				set Zeny,Zeny-250;
 				warp "alberta.gat",195,164;
 			L01b:
 				mes "[Edgar]";
@@ -320,7 +316,7 @@ izlude.gat,182,186,6	script	Edgar	49,{
 			
 		L000a:
 			if(Zeny < 250) goto NoZeny;
-			set Zeny,0-250;
+			set Zeny,Zeny-250;
 			warp "alberta.gat",195,164;
 		L000b:
 			mes "[Edgar]";
@@ -340,11 +336,11 @@ izlude.gat,201,181,2	script	Sailor	100,{
 	menu "Byalan Island -> 150 Zeny.",L0,"Alberta Marina -> 500 Zeny.",L1,"Turtle Island",L2,"Cancel",LEnd;
 	
 	L0:
-		set Zeny,0-150;
+		set Zeny,Zeny-150;
 		warp "izlu2dun.gat",107,50;
 		close;
 	L1:
-		set Zeny,0-500;
+		set Zeny,Zeny-500;
 		warp "alberta.gat",188,169;
 		close;
 	L2:

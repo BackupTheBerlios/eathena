@@ -1,5 +1,4 @@
-// $Id: npc_aldebaran.txt,v 1.1 2004/01/09 17:07:22 rovert Exp $
-//<--------------- NPCs AL DE BARAN [Update: Sep. 26, 2003] --------------->\\
+//Payon City for Athena by RoVeRT
 aldeba_in.gat,152,47,4	script	Giddy Fellow	97,{
 	mes "[Giddy Fellow]";
 	mes "E..E..E..Emergenc----y!!!";

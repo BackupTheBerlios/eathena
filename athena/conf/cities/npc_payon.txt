@@ -1,4 +1,4 @@
-//Modified for use with Athena by AjS15822
+//Payon City for Athena by AjS15822
 pay_arche.gat,77,131,8	script	Archer Joe	59,{
 	mes "[Archer Joe]";
 	mes "Payon! What a wonderful place! Superb Bows! Excellent Archers!";
@@ -241,7 +241,7 @@ payon_in01.gat,136,147,2	script	Chief	120,{
 	close;
 
 	OkLvl:
-		random @TEMP,2;
+		set @TEMP,rand(2);
 		if(@TEMP !=0) goto OkLvlA;
 		mes "[Guard]";
 		mes "Chief is taking a rest. Would you mind if I ask you to come later?";
@@ -391,7 +391,7 @@ payon_in01.gat,164,165,2	script	Monster Scholar	98,{
 }
 
 payon_in01.gat,174,113,2	script	Marx Hansen	86,{
-	if(countitem(3022)==1) goto FJL0;
+	if(mother_marienu==1) goto FJL0;
 	mes "[Merchant Marx Hansen]";
 	mes "Welcome to my shop. What brings you here?";
 	next;
@@ -465,18 +465,18 @@ payon_in01.gat,174,113,2	script	Marx Hansen	86,{
 						getitem l1,l2;
 						goto GotMsg;
 				L00b:
-					input;
-					if(Script_flag_num!=0) goto inpL00b;
+					input @input;
+					if(@input!=0) goto inpL00b;
 					mes "[Merchant Marx Hansen]";
 					mes "Deal canceled.";
 					close;
 
 					inpL00b:
-						if(((countitem(l0)<Script_flag_num) || (countitem(713)<Script_flag_num)) || (Zeny<3*Script_flag_num)) goto noL000;
-						delitem l0,Script_flag_num;
-						delitem 713,Script_flag_num;
-						set Zeny,zeny-3*Script_flag_num;
-						getitem l1,Script_flag_num;
+						if(((countitem(l0)<@input) || (countitem(713)<@input)) || (Zeny<3*@input)) goto noL000;
+						delitem l0,@input;
+						delitem 713,@input;
+						set Zeny,zeny-3*@input;
+						getitem l1,@input;
 						goto GotMsg;
 
 						noL000:
