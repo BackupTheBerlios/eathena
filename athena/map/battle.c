@@ -499,6 +499,8 @@ int battle_get_def(struct block_list *bl)
 				def = 0;
 			if(sc_data[SC_FREEZE].timer != -1 || sc_data[SC_STONE].timer != -1)
 				def >>= 1;
+			if(sc_data[SC_SIGNUMCRUCIS].timer!=-1 && bl->type != BL_PC)
+				def = def*(100-sc_data[SC_SIGNUMCRUCIS].val2)/100;
 		}
 		if(skilltimer != -1) {
 			int def_rate = skill_get_castdef(skillid);
@@ -549,6 +551,8 @@ int battle_get_def2(struct block_list *bl)
 			def2 = (def2*(100 - 6*sc_data[SC_PROVOKE].val1)+50)/100;
 		if(sc_data[SC_POISON].timer!=-1 && bl->type != BL_PC)
 			def2 = def2*75/100;
+		if( sc_data[SC_SIGNUMCRUCIS].timer!=-1 && bl->type != BL_PC)
+			def2 = def2*(100-sc_data[SC_SIGNUMCRUCIS].val2)/100;
 	}
 	if(def2 < 1) def2 = 1;
 	return def2;

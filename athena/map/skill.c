@@ -385,6 +385,13 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 		}
 		break;
 
+	case AL_CRUCIS:		// -- calcs chance of inflicting SIGNUM status (defense down) for demons/undead caught in radius
+		if( (battle_get_race(bl)==6 || battle_get_race(bl)==1) && (rand()%100 < ( skilllv*2 + battle_get_lv(src) + 28 - battle_get_lv(bl)) )){
+			skill_status_change_start(bl,SC_SIGNUMCRUCIS,skilllv,0,skill_get_time2(skillid,skilllv),0);
+			clif_emotion(bl,04);
+		}
+		break;
+
 	case PR_STRECOVERY:		// Added by AppleGirl
 		if( battle_get_race(bl)==1 && battle_get_race(bl)==6 )
 			skill_status_change_start(bl,SC_BLIND,1,0,5000,0);
@@ -1634,6 +1641,17 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 					heal_get_jobexp = 1;
 				pc_gainexp((struct map_session_data *)src,0,heal_get_jobexp);
 			}
+		}
+		break;
+
+	case AL_CRUCIS:		// -- checks area of effect for potential targets as skill is cast
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		{
+			int x=bl->x,y=bl->y;
+			map_foreachinarea(skill_area_sub,
+				bl->m,x-AREA_SIZE,y-AREA_SIZE,x+AREA_SIZE,y+AREA_SIZE,0,
+				src,skillid,skilllv,tick, flag|BCT_ENEMY|1,
+				skill_additional_effect);
 		}
 		break;
 
@@ -5103,6 +5121,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 				skill_status_change_end(bl,SC_LOUD,-1);
 			break;
 		case SC_SIGNUMCRUCIS:		/* シグナムクルシス */
+			val2=val1+14;	// -- amount of def removed by successful SIGNUM check
 			break;
 		case SC_FLAMELAUNCHER:		/* フレームランチャー */
 			skill_encchant_eremental_end(bl,SC_FLAMELAUNCHER);
