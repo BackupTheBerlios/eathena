@@ -1,4 +1,4 @@
-// $Id: itemdb.c,v 1.11 2004/02/16 19:48:53 rovert Exp $
+// $Id: itemdb.c,v 1.12 2004/03/06 06:39:11 moonsoul Exp $
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -372,7 +372,7 @@ static int itemdb_read_classequipdb(void)
 	char line[1024];
 	int ln=0;
 	int nameid,i,j;
-	char *str[32],*p;
+	char *str[4032],*p;
 	struct item_data *id;
 	
 	if( (fp=fopen("db/class_equip_db.txt","r"))==NULL ){

@@ -37,7 +37,7 @@ static int hp_sigma_val[MAX_PC_CLASS][MAX_LEVEL];
 static int sp_coefficient[MAX_PC_CLASS];
 static int aspd_base[MAX_PC_CLASS][20];
 static char job_bonus[MAX_PC_CLASS][MAX_LEVEL];
-static int exp_table[8][MAX_LEVEL];
+static int exp_table[9][MAX_LEVEL];
 static struct {
 	int id;
 	int max;
@@ -5344,10 +5344,10 @@ int pc_readdb(void)
 	}
 	i=0;
 	while(fgets(line,1020,fp)){
-		int bn,b1,b2,b3,jn,j1,j2,j3;
+		int bn,b1,b2,b3,jn,j1,j2,j3,j4;
 		if(line[0]=='/' && line[1]=='/')
 			continue;
-		if(sscanf(line,"%d,%d,%d,%d,%d,%d,%d,%d",&bn,&b1,&b2,&b3,&jn,&j1,&j2,&j3)!=8)
+		if(sscanf(line,"%d,%d,%d,%d,%d,%d,%d,%d",&bn,&b1,&b2,&b3,&jn,&j1,&j2,&j3,&j4)!=9)
 			continue;
 		exp_table[0][i]=bn;
 		exp_table[1][i]=b1;
@@ -5357,6 +5357,8 @@ int pc_readdb(void)
 		exp_table[5][i]=j1;
 		exp_table[6][i]=j2;
 		exp_table[7][i]=j3;
+	// -- moonsoul (making a new field to accommodate job level 70 for some classes)
+		exp_table[8][i]=j4;
 		i++;
 		if(i >= MAX_LEVEL)
 			break;
@@ -5389,6 +5391,9 @@ int pc_readdb(void)
 		for(j=0;j<17;j++)
 			aspd_base[i][j]=atoi(split[j+4]);
 		i++;
+// -- moonsoul (below two lines added to accommodate high numbered new class ids)
+		if(i==24)
+			i=4001;
 		if(i==MAX_PC_CLASS)
 			break;
 	}
@@ -5413,6 +5418,9 @@ int pc_readdb(void)
 			if(p) p++;
 		}
 		i++;
+// -- moonsoul (below two lines added to accommodate high numbered new class ids)
+		if(i==24)
+			i=4001;
 		if(i==MAX_PC_CLASS)
 			break;
 	}
