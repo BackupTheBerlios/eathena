@@ -1,17 +1,18 @@
 cc = gcc
 
 all:
-	#Generate framework
+	#Generate framework...
 	$(cc) -c parse.c
 	$(cc) -c generate.c
+	$(cc) -c htmlstyle.c
 	
-	#Generate "pages"
+	#Generate "pages"...
 	cd pages && $(cc) -c about.c && cd ..
 	cd pages && $(cc) -c sample.c && cd ..
 
-
-	$(cc) -o webserver main.c parse.o generate.o pages/about.o \
-	pages/sample.o
+	#Building the server...
+	$(cc) -o webserver main.c parse.o generate.o htmlstyle.o \
+	pages/about.o pages/sample.o
 	
 
 

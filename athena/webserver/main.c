@@ -111,7 +111,7 @@ int main(void)
 			recv(new_fd, recvin, 500, 0);
 			send(new_fd, header, strlen(header), 0);
 			generate_page(new_fd, get_query(recvin), inet_ntoa(their_addr.sin_addr));
-printf("|%s|\n", recvin); 
+
 			close(new_fd);
 			exit(0);
 		}
