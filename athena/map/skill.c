@@ -327,6 +327,9 @@ int skill_get_unit_id(int id,int flag)
 	case DC_SERVICEFORYOU:	return 0xaf;				/* サービスフォーユー */
 	case RG_GRAFFITI:		return 0xb0;				/* グラフィティ */
 	case 336:	return (flag==0)?0x81:0xb2;
+// -- moonsoul (testing new ground skills)
+	case PA_GOSPEL:		return 0xb3;
+	case HP_BASILICA:		return 0x83;
 	}
 	return 0;
 	/*
@@ -571,6 +574,13 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl,int s
 			pc_heal(dstsd,0,-sp);
 		}
 		break;
+
+// -- moonsoul (stun ability of new champion skill tigerfist)
+//
+	case CH_TIGERFIST:
+		if( rand()%100 < (5 + skilllv*5)*sc_def_vit/100 )
+			skill_status_change_start(bl,SC_STAN,skilllv,0,0,0,skill_get_time2(skillid,skilllv),0);
+		break;
 	}
 
 	if(sd && skillid != MC_CARTREVOLUTION && attack_type&BF_WEAPON){	/* カードによる追加効果 */
@@ -806,12 +816,53 @@ int skill_attack( int attack_type, struct block_list* src, struct block_list *ds
 				delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
 				if(delay < sd->aspd*2) delay = sd->aspd*2;
 				if(battle_config.combo_delay_rate != 100)
+					delay = delay * battle_config.combo_delay_rate /100;	
+//
+// -- moonsoul	(altered to allow extra delay for follow up to new champion combo skills)
+//
+				if( (pc_checkskill(sd, MO_EXTREMITYFIST) > 0 && sd->spiritball >= 4 && sd->sc_data[SC_EXPLOSIONSPIRITS].timer != -1) 
+					|| ((pc_checkskill(sd, CH_TIGERFIST) > 0  && sd->spiritball >= 1))
+					|| ((pc_checkskill(sd, CH_CHAINCRUSH) > 0 && sd->spiritball >= 2)) )
+					delay += 300;
+				else
+					delay = 300;
+				skill_status_change_start(src,SC_COMBO,MO_COMBOFINISH,skilllv,0,0,delay,0);
+			}
+			sd->attackabletime = sd->canmove_tick = tick + delay;
+			clif_combo_delay(src,delay);
+		}
+//
+// -- moonsoul (two new if conditions below to allow extra delay from new champion combos)
+//
+		else if(skillid == CH_TIGERFIST) {
+			int delay = 300;
+			if(damage < battle_get_hp(bl)) {
+				delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
+				if(delay < sd->aspd*2) delay = sd->aspd*2;
+				if(battle_config.combo_delay_rate != 100)
+					delay = delay * battle_config.combo_delay_rate /100;
+				if( (pc_checkskill(sd, MO_EXTREMITYFIST) > 0 && sd->spiritball >= 4 && sd->sc_data[SC_EXPLOSIONSPIRITS].timer != -1) 
+					|| ((pc_checkskill(sd, CH_CHAINCRUSH) > 0 && sd->spiritball >= 2)) )
+					delay += 300;
+				else
+					delay = 300;
+				skill_status_change_start(src,SC_COMBO,CH_TIGERFIST,0,0,0,delay,0);
+			}
+			sd->attackabletime = sd->canmove_tick = tick + delay;
+			clif_combo_delay(src,delay);
+		}
+		else if(skillid == CH_CHAINCRUSH) {
+			int delay = 300;
+			if(damage < battle_get_hp(bl)) {
+				delay = 1000 - 4 * battle_get_agi(src) - 2 *  battle_get_dex(src);
+				if(delay < sd->aspd*2) delay = sd->aspd*2;
+				if(battle_config.combo_delay_rate != 100)
 					delay = delay * battle_config.combo_delay_rate /100;
 				if(pc_checkskill(sd, MO_EXTREMITYFIST) > 0 && sd->spiritball >= 4 && sd->sc_data[SC_EXPLOSIONSPIRITS].timer != -1)
 					delay += 300;
 				else
 					delay = 300;
-				skill_status_change_start(src,SC_COMBO,MO_COMBOFINISH,skilllv,0,0,delay,0);
+				skill_status_change_start(src,SC_COMBO,CH_CHAINCRUSH,0,0,0,delay,0);
 			}
 			sd->attackabletime = sd->canmove_tick = tick + delay;
 			clif_combo_delay(src,delay);
@@ -1434,6 +1485,18 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 	case MO_COMBOFINISH:	/* 猛龍拳 */
 		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
 		break;
+// -- moonsoul (new champion skills below)
+//
+	case CH_PALMSTRIKE:	/* 猛龍拳 */
+		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
+		break;
+	case CH_TIGERFIST:	/* 猛龍拳 */
+		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
+		break;
+	case CH_CHAINCRUSH:	/* 猛龍拳 */
+		skill_attack(BF_WEAPON,src,src,bl,skillid,skilllv,tick,flag);
+		break;
+
 	case MO_EXTREMITYFIST:	/* 阿修羅覇鳳拳 */
 		if(sd) {
 			struct walkpath_data wpd;
@@ -1566,6 +1629,10 @@ int skill_castend_damage_id( struct block_list* src, struct block_list *bl,int s
 		break;
 
 	/* 魔法系スキル */
+// -- moonsoul (testing paladin/high wizard attack skills magiccrasher/pressure/sacrifice)
+	case PA_SACRIFICE:
+	case HW_MAGICCRASHER:
+	case PA_PRESSURE:
 	case MG_SOULSTRIKE:			/* ソウルストライク */
 	case MG_COLDBOLT:			/* コールドボルト */
 	case MG_FIREBOLT:			/* ファイアーボルト */
@@ -1912,6 +1979,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		}
 		break;
 
+	case HP_ASSUMPTIO:	//	High Priest - Assumptio (moonsoul)
 	case AL_INCAGI:			/* 速度増加 */
 	case AL_BLESSING:		/* ブレッシング */
 	case PR_SLOWPOISON:
@@ -1949,6 +2017,10 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 	case AL_RUWACH:			/* ルアフ */
 	case MO_EXPLOSIONSPIRITS:	// 爆裂波動
 	case MO_STEELBODY:		// 金剛
+// -- testing (moonsoul)
+	case LK_AURABLADE:	// Lord Knight - Aura Blade (355)
+	case LK_PARRYING:		// Lord Knight - Parrying (356)
+	case LK_TENSIONRELAX:
 #if 0
 	case SA_VOLCANO:		/* ボルケーノ */
 	case SA_DELUGE:			/* デリュージ */
@@ -1959,6 +2031,19 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		clif_skill_nodamage(src,bl,skillid,skilllv,1);
 		skill_status_change_start(bl,SkillStatusChangeTable[skillid],skilllv,0,0,0,skill_get_time(skillid,skilllv),0 );
 		break;
+
+// -- moonsoul	(testing Lord Knight status-based skills)
+	case LK_BERSERK:
+	case LK_FURY:
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		skill_status_change_start(bl,SkillStatusChangeTable[LK_BERSERK],skilllv,0,0,0,skill_get_time(skillid,skilllv),0 );
+		break;
+	case LK_CONCENTRATION:
+		clif_skill_nodamage(src,bl,skillid,skilllv,1);
+		skill_status_change_start(bl,SkillStatusChangeTable[skillid],skilllv,0,0,0,skill_get_time(skillid,skilllv),0 );
+		skill_status_change_start(bl,SC_ENDURE,skilllv,0,0,0,skill_get_time(skillid,skilllv),0 );
+		break;
+
 	case AC_CONCENTRATION:	/* 集中力向上 */
 		{
 			int range = 1;
@@ -2220,6 +2305,10 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 		break;
 
 	/* 対地スキル */
+
+// -- moonsoul (testing new ground skills for Paladin/High Priest)
+	case PA_GOSPEL:		// - Paladin - Gospel (369)
+	case HP_BASILICA:		// - High Priest - Basilica (362)
 	case BD_LULLABY:			/* 子守唄 */
 	case BD_RICHMANKIM:			/* ニヨルドの宴 */
 	case BD_ETERNALCHAOS:		/* 永遠の混沌 */
@@ -3399,6 +3488,20 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 			val1 = (pc_checkskill((struct map_session_data *)src,DC_DANCINGLESSON)+1)>>1;
 		val2 = battle_get_luk(src)/10;
 		break;
+
+// -- moonsoul (for new paladin and priest area of effect skills)
+	case PA_GOSPEL:
+		limit=skill_get_time(skillid,skilllv);
+		aoe_diameter=7;
+		target=BCT_ALL;
+		count=aoe_diameter*aoe_diameter;	// -- this will not function if changed to ^2 (moonsoul)
+		break;
+	case HP_BASILICA:
+		limit=skill_get_time(skillid,skilllv);
+		aoe_diameter=5;
+		target=BCT_ALL;
+		count=aoe_diameter*aoe_diameter;	// -- this will not function if changed to ^2 (moonsoul)
+		break;
 	};
 
 	group=skill_initunitgroup(src,count,skillid,skilllv,
@@ -3570,6 +3673,8 @@ struct skill_unit_group *skill_unitsetting( struct block_list *src, int skillid,
 			}
 			break;
 
+		case PA_GOSPEL:
+		case HP_BASILICA:
 		case SA_VOLCANO:			/* ?ルケ?ノ */
 		case SA_DELUGE:				/* デリュ?ジ */
 		case SA_VIOLENTGALE:	/* グランドクロス */
@@ -4325,9 +4430,22 @@ int skill_check_condition(struct map_session_data *sd,int type)
 		if(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_CHAINCOMBO)
 			return 0;
 		break;
+// -- moonsoul (allow extremity/asura to be used after new combos now for champion)
+//
 	case MO_EXTREMITYFIST:					// 阿修羅覇鳳拳
-		if(sd->sc_data[SC_COMBO].timer != -1 && sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH)
+		if(sd->sc_data[SC_COMBO].timer != -1 && (sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH || sd->sc_data[SC_COMBO].val1 == CH_TIGERFIST || sd->sc_data[SC_COMBO].val1 == CH_CHAINCRUSH))
 			spiritball--;
+		break;
+
+// -- moonsoul	(skill condition check for new champion combo skills)
+//
+	case CH_TIGERFIST:
+		if(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH)
+			return 0;
+		break;
+	case CH_CHAINCRUSH:
+		if(sd->sc_data[SC_COMBO].timer == -1 || (sd->sc_data[SC_COMBO].val1 != MO_COMBOFINISH && sd->sc_data[SC_COMBO].val1 != CH_TIGERFIST))
+			return 0;
 		break;
 	}
 
@@ -4594,7 +4712,10 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 		if(skill_num == ALL_RESURRECTION && !pc_isdead(target_sd))
 			return 0;
 	}
-	if((skill_num != MO_CHAINCOMBO && skill_num != MO_COMBOFINISH && skill_num != MO_EXTREMITYFIST) ||
+
+// -- moonsoul (altered to allow continuous attacking from new champion combo skills)
+//
+	if((skill_num != MO_CHAINCOMBO && skill_num != MO_COMBOFINISH && skill_num != MO_EXTREMITYFIST && skill_num != CH_TIGERFIST && skill_num != CH_CHAINCRUSH) ||
 		(skill_num == MO_EXTREMITYFIST && sd->state.skill_flag) )
 		pc_stopattack(sd);
 
@@ -4622,8 +4743,20 @@ int skill_use_id( struct map_session_data *sd, int target_id,
 	case MO_COMBOFINISH:		/*猛龍拳*/
 		target_id = sd->attacktarget;
 		break;
+
+// -- moonsoul	(proper targetting for new champion combo skills)
+//
+	case CH_TIGERFIST:
+		target_id = sd->attacktarget;
+		break;
+	case CH_CHAINCRUSH:
+		target_id = sd->attacktarget;
+		break;
+
+// -- moonsoul	(altered to allow proper usage of extremity from new champion combos)
+//
 	case MO_EXTREMITYFIST:	/*阿修羅覇鳳拳*/
-		if(sd->sc_data[SC_COMBO].timer != -1 && sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH) {
+		if(sd->sc_data[SC_COMBO].timer != -1 && (sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH || sd->sc_data[SC_COMBO].val1 == CH_TIGERFIST || sd->sc_data[SC_COMBO].val1 == CH_CHAINCRUSH)) {
 			casttime = 0;
 			target_id = sd->attacktarget;
 		}
@@ -5279,6 +5412,12 @@ int skill_status_change_end( struct block_list* bl , int type,int tid )
 			case SC_SPEEDPOTION2:
 			case SC_DANCING:			/* ダンス/演奏中 */
 			case SC_RIDING:
+// -- moonsoul (5 cases added for status effects from sage/LK skills)
+			case SC_VOLCANO:
+			case SC_DELUGE:
+			case SC_VIOLENTGALE:
+			case SC_CONCENTRATION:
+			case SC_BERSERK:
 				calc_flag = 1;
 				break;
 			case SC_DEVOTION:		/* ディボーション */
@@ -5741,6 +5880,9 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 		case SC_KYRIE:				/* キリエエレイソン */
 			val2 = battle_get_max_hp(bl) * (val1 * 2 + 10) / 100;/* 耐久度 */
 			val3 = (val1 / 2 + 5);	/* 回数 */
+// -- moonsoul (added to undo assumptio status if target has it)
+			if(sc_data[SC_ASSUMPTIO].timer!=-1 )
+				skill_status_change_end(bl,SC_ASSUMPTIO,-1);
 			break;
 		case SC_GLORIA:				/* グロリア */
 			calc_flag = 1;
@@ -5874,7 +6016,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 
 		case SC_VOLCANO:
-//			tick=((struct skill_unit *)val2)->group->limit;
+			calc_flag=1;
 			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_DELUGE,-1);
 			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
@@ -5884,7 +6026,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 //fix
 		case SC_DELUGE:
-//			tick=((struct skill_unit *)val2)->group->limit;
+			calc_flag=1;
 			if( sc_data[SC_LANDPROTECTOR].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_LANDPROTECTOR,-1);
 			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
@@ -5894,7 +6036,7 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 			break;
 //fix
 		case SC_VIOLENTGALE:
-//			tick=((struct skill_unit *)val2)->group->limit;
+			calc_flag=1;
 			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
 				skill_status_change_end(bl,SC_DELUGE,-1);
 			if( sc_data[SC_LANDPROTECTOR].timer!=-1 )	/* EP解除 */
@@ -5905,12 +6047,6 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 //fix
 		case SC_LANDPROTECTOR:
 //			tick=((struct skill_unit *)val2)->group->limit;
-			if( sc_data[SC_DELUGE].timer!=-1 )	/* EP解除 */
-				skill_status_change_end(bl,SC_DELUGE,-1);
-			if( sc_data[SC_VIOLENTGALE].timer!=-1 )	/* EP解除 */
-				skill_status_change_end(bl,SC_VIOLENTGALE,-1);
-			if( sc_data[SC_VOLCANO].timer!=-1 )	/* EP解除 */
-				skill_status_change_end(bl,SC_VOLCANO,-1);
 			break;
 //fix
 		case SC_STRIPWEAPON:				/* Strip Weapon */
@@ -6070,6 +6206,31 @@ int skill_status_change_start(struct block_list *bl,int type,int val1,int val2,i
 		case SC_BARRIER:
 		case SC_HALLUCINATION:
 			break;
+
+// -- moonsoul	(for new upper class related skill status effects)
+//
+		case SC_AURABLADE:
+			val2 = val1*10;
+			break;
+		case SC_PARRYING:
+			val2=val1*3;
+			break;
+		case SC_CONCENTRATION:
+			calc_flag=1;
+			val2=val1*10;
+			val3=val1*5;
+			break;
+		case SC_TENSIONRELAX:
+//			val2 = 10;
+//			val3 = 15;
+			break;
+		case SC_BERSERK:
+			calc_flag=1;
+			break;
+		case SC_ASSUMPTIO:
+			if(sc_data[SC_KYRIE].timer!=-1 )
+				skill_status_change_end(bl,SC_KYRIE,-1);
+			break;	
 
 		default:
 			if(battle_config.error_log)

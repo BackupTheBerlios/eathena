@@ -1156,7 +1156,25 @@ int battle_calc_damage(struct block_list *src,struct block_list *bl,int damage,i
 					((struct mob_data *)bl)->canmove_tick = gettick() + 300;
 			}
 		}
+
+// -- moonsoul (chance to block attacks with new Lord Knight skill parrying)
+//
+		if(sc_data[SC_PARRYING].timer != -1 && damage > 0 && flag&BF_WEAPON) {
+			if(rand()%100 < sc_data[SC_PARRYING].val2) {
+				damage = 0;
+				clif_skill_nodamage(bl,bl,LK_PARRYING,sc_data[SC_PARRYING].val1,1);
+				if(bl->type == BL_PC)
+					((struct map_session_data *)bl)->canmove_tick = gettick() + 300;
+				else if(bl->type == BL_MOB)
+					((struct mob_data *)bl)->canmove_tick = gettick() + 300;
+			}
+		}
 	}
+
+// -- moonsoul (new High Priest skill halves all damage taken)
+//
+	if(sc_data[SC_ASSUMPTIO].timer!=-1 && damage > 0)
+		damage=damage/2;
 
 	if(class == 1288) {
 		if(flag&BF_SKILL)
@@ -1580,6 +1598,18 @@ static struct Damage battle_calc_pet_weapon_attack(
 			case MO_COMBOFINISH:	// 猛龍拳
 				damage = damage*(240+ 60*skill_lv)/100;
 				break;
+// -- moonsoul (for new champion class skills, 3 entries below)
+			case CH_PALMSTRIKE:
+				damage = damage*(50+ 100*skill_lv)/100;
+				break;
+			case CH_TIGERFIST:
+				damage = damage*(100+ 20*skill_lv)/100;
+				break;
+			case CH_CHAINCRUSH:
+				damage = damage*(100+ 20*skill_lv)/100;
+				div_=skill_get_num(skill_num,skill_lv);
+				break;
+
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
 				damage = damage*(100+ 50 * skill_lv)/100;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
@@ -1664,6 +1694,11 @@ static struct Damage battle_calc_pet_weapon_attack(
 
 	if(def1 >= 1000000 && damage > 0)
 		damage = 1;
+
+// -- moonsoul (additional damage from aurablade)
+//
+	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
+			damage+=(sc_data[SC_AURABLADE].val1*10);
 
 	if(skill_num != CR_GRANDCROSS)
 		damage=battle_calc_damage(src,target,damage,div_,skill_num,skill_lv,flag);
@@ -1975,6 +2010,18 @@ static struct Damage battle_calc_mob_weapon_attack(
 			case MO_COMBOFINISH:	// 猛龍拳
 				damage = damage*(240+ 60*skill_lv)/100;
 				break;
+// -- moonsoul (for new champion class skills, 3 entries below)
+			case CH_PALMSTRIKE:
+				damage = damage*(50+ 100*skill_lv)/100;
+				break;
+			case CH_TIGERFIST:
+				damage = damage*(100+ 20*skill_lv)/100;
+				break;
+			case CH_CHAINCRUSH:
+				damage = damage*(100+ 20*skill_lv)/100;
+				div_=skill_get_num(skill_num,skill_lv);
+				break;
+
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
 				damage = damage*(100+ 50 * skill_lv)/100;
 				flag=(flag&~BF_RANGEMASK)|BF_LONG;
@@ -2089,6 +2136,11 @@ static struct Damage battle_calc_mob_weapon_attack(
 
 	if(def1 >= 1000000 && damage > 0)
 		damage = 1;
+
+// -- moonsoul (additional damage from aurablade)
+//
+	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
+			damage+=(sc_data[SC_AURABLADE].val1*10);
 
 	if( tsd && tsd->special_state.no_weapon_damage)
 		damage = 0;
@@ -2655,6 +2707,21 @@ static struct Damage battle_calc_pc_weapon_attack(
 				damage = damage*(240+ 60*skill_lv)/100;
 				damage2 = damage2*(240+ 60*skill_lv)/100;
 				break;
+// -- moonsoul (for new champion class skills, 3 entries below)
+			case CH_PALMSTRIKE:
+				damage = damage*(50+ 100*skill_lv)/100;
+				damage2 = damage2*(50+ 100*skill_lv)/100;
+				break;
+			case CH_TIGERFIST:
+				damage = damage*(100+ 20*skill_lv)/100;
+				damage2 = damage2*(100+ 20*skill_lv)/100;
+				break;
+			case CH_CHAINCRUSH:
+				damage = damage*(100+ 20*skill_lv)/100;
+				damage2 = damage2*(100+ 20*skill_lv)/100;
+				div_=skill_get_num(skill_num,skill_lv);
+				break;
+
 			case BA_MUSICALSTRIKE:	// ミュージカルストライク
 				if(!sd->state.arrow_atk && sd->arrow_atk > 0) {
 					int arr = rand()%(sd->arrow_atk+1);
@@ -2965,6 +3032,11 @@ static struct Damage battle_calc_pc_weapon_attack(
 			damage2 = 1;
 	}
 
+// -- moonsoul (additional damage from aurablade)
+//
+	if(sc_data && sc_data[SC_AURABLADE].timer!=-1 && damage > 0)
+			damage+=(sc_data[SC_AURABLADE].val1*10);
+
 	if( tsd && tsd->special_state.no_weapon_damage && skill_num != CR_GRANDCROSS)
 		damage = damage2 = 0;
 
@@ -3222,6 +3294,17 @@ struct Damage battle_calc_magic_attack(
 
 	damage=battle_attr_fix(damage, ele, battle_get_element(target) );		// 属 性修正
 
+// -- moonsoul (special case "absolute" damage for paladin skill PRESSURE)
+//
+	if(skill_num == PA_PRESSURE)
+		damage=(skill_lv*150)+150;
+
+// -- moonsoul	(testing paladin sacrifice skill damage)
+//	
+	if(skill_num == PA_SACRIFICE){
+		damage=((sd->status.max_hp*(skill_lv+4)/100) * (90+(skill_lv*15))) /100;
+	}
+
 	if(skill_num == CR_GRANDCROSS) {	// グランドクロス
 		struct Damage wd;
 		wd=battle_calc_weapon_attack(bl,target,skill_num,skill_lv,flag);
@@ -3240,6 +3323,8 @@ struct Damage battle_calc_magic_attack(
 		damage=0;	// 黄 金蟲カード（魔法ダメージ０）
 
 	damage=battle_calc_damage(bl,target,damage,div_,skill_num,skill_lv,aflag);	// 最終修正
+
+
 
 	md.damage=damage;
 	md.div_=div_;

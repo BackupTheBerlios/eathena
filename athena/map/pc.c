@@ -1287,7 +1287,17 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		sd->nsshealhp = skill*4 + (sd->status.max_hp*skill/500);
 		sd->nsshealsp = skill*2 + (sd->status.max_sp*skill/500);
 	}
-	if(sd->hprecov_rate != 100) {
+
+// -- moonsoul (for High Priest Meditatio SP recovery and bonus SP, as well as
+//				High Wizard/Professor Soul Drain bonus SP)
+//
+	if((skill=pc_checkskill(sd,HP_MEDITATIO)) > 0){
+		sd->nshealsp += skill*3 + (sd->status.max_sp*skill/500);
+		sd->status.max_sp += (sd->status.max_sp*skill/100);
+	}
+	if((skill=pc_checkskill(sd,HW_SOULDRAIN)) > 0){
+		sd->status.max_sp += (sd->status.max_sp*skill/100);
+	}	if(sd->hprecov_rate != 100) {
 		sd->nhealhp = sd->nhealhp*sd->hprecov_rate/100;
 		if(sd->nhealhp < 1) sd->nhealhp = 1;
 	}
@@ -1307,6 +1317,28 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 	// スキルやステータス異常による残りのパラメータ補正
 	if(sd->sc_count){
 		// ATK/DEF変化形
+
+// -- moonsoul (stat changes from new lord knight skills berserk/fury and concentration)
+//
+		if(sd->sc_data[SC_BERSERK].timer!=-1){
+			sd->status.max_hp = sd->status.max_hp*2;
+			if(sd->status.max_hp < 0 || sd->status.max_hp > battle_config.max_hp)
+				sd->status.max_hp = battle_config.max_hp;
+			sd->watk += 150;
+			sd->def = 0;
+			sd->def2 = 0;
+			sd->mdef = 0;
+			sd->mdef2 = 0;
+			sd->flee = sd->flee/2;
+			aspd_rate-=5;
+		}
+		if(sd->sc_data[SC_CONCENTRATION].timer!=-1){
+			sd->watk = sd->watk*(100+sd->sc_data[SC_CONCENTRATION].val3)/100;
+			sd->hit = sd->hit*(100+sd->sc_data[SC_CONCENTRATION].val2)/100;
+			sd->def = sd->def*(100-sd->sc_data[SC_CONCENTRATION].val2)/100;
+			sd->def2 = sd->def2*(100-sd->sc_data[SC_CONCENTRATION].val2)/100;
+		}
+
 		if(sd->sc_data[SC_VOLCANO].timer!=-1 && sd->def_ele == 3)	// エ?ジェ?ス
 			sd->watk += (sd->sc_data[SC_VOLCANO].val1 * 10);
 		if(sd->sc_data[SC_ANGELUS].timer!=-1)	// エンジェラス
@@ -2477,8 +2509,10 @@ int pc_useitem(struct map_session_data *sd,int n)
 	if(n >=0 && n < MAX_INVENTORY) {
 		nameid = sd->status.inventory[n].nameid;
 		amount = sd->status.inventory[n].amount;
+// -- moonsoul (if conditional below altered to disallow using items if in berserk status)
 		if(sd->status.inventory[n].nameid <= 0 ||
 			sd->status.inventory[n].amount <= 0 ||
+			sd->sc_data[SC_BERSERK].timer!=-1 ||
 			!pc_isUseitem(sd,n) ) {
 			clif_useitemack(sd,n,0,0);
 			return 1;
@@ -4655,6 +4689,14 @@ int pc_equipitem(struct map_session_data *sd,int n,int pos)
 		clif_equipitemack(sd,n,0,0);	// fail
 		return 0;
 	}
+
+// -- moonsoul (if player is berserk then cannot equip)
+//
+	if(sd->sc_data[SC_BERSERK].timer!=-1){
+		clif_equipitemack(sd,n,0,0);	// fail
+		return 0;
+	}
+
 	if(pos==0x88){ // アクセサリ用例外処理
 		int epor=0;
 		if(sd->equip_index[0] >= 0)
@@ -4780,6 +4822,14 @@ int pc_unequipitem(struct map_session_data *sd,int n,int type)
 {
 	if(battle_config.battle_log)
 		printf("unequip %d %x:%x\n",n,pc_equippoint(sd,n),sd->status.inventory[n].equip);
+
+// -- moonsoul	(if player is berserk then cannot unequip)
+//
+	if(sd->sc_data[SC_BERSERK].timer!=-1){
+		clif_unequipitemack(sd,n,0,0);
+		return 0;
+	}
+
 	if(sd->status.inventory[n].equip){
 		int i;
 		for(i=0;i<11;i++) {
@@ -5237,8 +5287,11 @@ static int pc_spirit_heal(struct map_session_data *sd,int level)
 static int pc_natural_heal_sub(struct map_session_data *sd,va_list ap)
 {
 	int skill;
+
+// -- moonsoul (if conditions below altered to disallow natural healing if under berserk status)
+
 	if( (battle_config.natural_heal_weight_rate > 100 || sd->weight*100/sd->max_weight < battle_config.natural_heal_weight_rate) &&
-		!pc_isdead(sd) && !pc_ishiding(sd) && sd->sc_data[SC_POISON].timer == -1) {
+		!pc_isdead(sd) && !pc_ishiding(sd) && sd->sc_data[SC_POISON].timer == -1 && sd->sc_data[SC_BERSERK].timer == -1) {
 		pc_natural_heal_hp(sd);
 		pc_natural_heal_sp(sd);
 	}
@@ -5246,7 +5299,7 @@ static int pc_natural_heal_sub(struct map_session_data *sd,va_list ap)
 		sd->hp_sub = sd->inchealhptick = 0;
 		sd->sp_sub = sd->inchealsptick = 0;
 	}
-	if((skill = pc_checkskill(sd,MO_SPIRITSRECOVERY)) > 0 && !pc_ishiding(sd) && sd->sc_data[SC_POISON].timer == -1)
+	if((skill = pc_checkskill(sd,MO_SPIRITSRECOVERY)) > 0 && !pc_ishiding(sd) && sd->sc_data[SC_POISON].timer == -1 && sd->sc_data[SC_BERSERK].timer == -1)
 		pc_spirit_heal(sd,skill);
 	else
 		sd->inchealspirittick = 0;

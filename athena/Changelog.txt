@@ -1,4 +1,7 @@
 Date	Added
+03/06
+	* modified job_db1.txt and job_db2.txt with values related to advanced classes
+	* modified exp.txt to have an additional field for classes that roof at job level 70
 02/12
 	* added more mob skill conditions (friendstatuseq, mysyatuseq, friendhpltmaxrate) [RoVeRT]
 02/06
