@@ -30,11 +30,12 @@ eAthena Features
 - Monster skills
 - 2-2 Jobs (Alternate 2nd Jobs)
 - SuperNovice (Alternate 1st Job)
+-Advanced Classes (Upper Jobs)
 --------------------------------------------------------------
 > eAthena Incomplete Features - Estimated completion rate
 --------------------------------------------------------------
 - Guild Wars (War of Emperium) - 30%
-- 2-2 Skills (Advanced 2nd Job Skills) - 80%
+- 2-2 Skills (Alternate 2nd Job Skills) - 80%
   * Crusader - %
   * Monk - %
   * Alchemist - %
@@ -42,11 +43,25 @@ eAthena Features
   * Rogue - %
   * Bard - %
   * Dancer - %
+- 2-1-1 Skills (Advanced 1st Job Skills) - 10%
+  * Lord Knight - %
+  * High Priest - %
+  * High Wizard - %
+  * Whitesmith - %
+  * Sniper - %
+  * Assassin Cross - %
+- 2-2-1 Skills (Advanced 2nd Job Skills) - 10%
+  * Paladin - %
+  * Champion - %
+  * Professor - %
+  * Stalker - %
+  * Creator - %
+  * Clown - %
+  * Gypsy - %
 --------------------------------------------------------------
 > eAthena - What we currently do not have
 --------------------------------------------------------------
 - Wedding System
-- Upper 2nd Job System
 --------------------------------------------------------------
 --------------------------------------------------------------
 
