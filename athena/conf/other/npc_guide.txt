@@ -20,7 +20,7 @@ L_START_1:
 		mes "Please choose a Menu first.";
 		mes "Do you want me to leave indications on the Mini-Map?";
 		next;
-		menu Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
+		menu "Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
 			set @COMPASS_CHECK,1;
 	L_MENU_1_ROOT:
 		mes "[Prontera Squad]";
@@ -155,7 +155,7 @@ L_START_1:
 		mes "Please choose a Menu first.";
 		mes "Do you want me to leave indications on the Mini-Map?";
 		next;
-		menu Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
+		menu "Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
 			set @COMPASS_CHECK,1;
 	L_MENU_1_ROOT:
 		mes "[Prontera Squad]";
@@ -291,7 +291,7 @@ L_START_1:
 		mes "Please choose a Menu first.";
 		mes "Do you want me to leave indications on the Mini-Map?";
 		next;
-		menu Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
+		menu "Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
 			set @COMPASS_CHECK,1;
 	L_MENU_1_ROOT:
 		mes "[Prontera Squad]";
@@ -427,7 +427,7 @@ L_START_1:
 		mes "Please choose a Menu first.";
 		mes "Do you want me to leave indications on the Mini-Map?";
 		next;
-		menu Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
+		menu "Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
 			set @COMPASS_CHECK,1;
 	L_MENU_1_ROOT:
 		mes "[Prontera Squad]";
@@ -563,7 +563,7 @@ L_START_1:
 		mes "Please choose a Menu first.";
 		mes "Do you want me to leave indications on the Mini-Map?";
 		next;
-		menu Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
+		menu "Yes, Please.",-,"No, Thanks.",L_MENU_1_ROOT;
 			set @COMPASS_CHECK,1;
 	L_MENU_1_ROOT:
 		mes "[Prontera Squad]";
@@ -967,7 +967,7 @@ L_START_1:
 		mes "Please choose a Menu first.";
 		mes "Do you want me to leave indications on the Mini-Map?";
 		next;
-		menu Yes, Please",-,"No, Thanks",L_MENU_1_ROOT;
+		menu "Yes, Please",-,"No, Thanks",L_MENU_1_ROOT;
 			set @COMPASS_CHECK,1;
 	L_MENU_1_ROOT:
 	L_SUB_1:
@@ -1047,7 +1047,7 @@ L_START_1:
 		mes "Please choose a Menu first.";
 		mes "Do you want me to leave indications on the Mini-Map?";
 		next;
-		menu Yes, Please",-,"No, Thanks",L_MENU_1_ROOT;
+		menu "Yes, Please",-,"No, Thanks",L_MENU_1_ROOT;
 			set @COMPASS_CHECK,1;
 	L_MENU_1_ROOT:
 	L_SUB_1:
