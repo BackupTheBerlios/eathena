@@ -62,12 +62,12 @@ payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 			mes "Ok from now on I will appraise the Value of articles, 'Trunk' needed for producing a 'Bow'.";
 			next;
 
-				set Trunk1,countitem(1066);
-				set Trunk2,countitem(1067);
-				set Trunk3,countitem(1068);
-				set Trunk4,countitem(1019);
+				set @Trunk1,countitem(1066);
+				set @Trunk2,countitem(1067);
+				set @Trunk3,countitem(1068);
+				set @Trunk4,countitem(1019);
 
-			if ((Trunk1==0)&(Trunk2==0)&(Trunk3==0)&(Trunk4==0)) goto NoTrunk;
+			if ((@Trunk1==0)&(@Trunk2==0)&(@Trunk3==0)&(@Trunk4==0)) goto NoTrunk;
 			goto TotalTrank;	
 			
 			NoTrunk:	
@@ -76,42 +76,42 @@ payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 				close;
 				
 			TotalTrank:	
-				set archer_item1,Trunk1*5;
-				set archer_item2,Trunk2*3;
-				set archer_item3,Trunk3*2;
-				set archer_item4,Trunk4;
-				set Total_Trunk,archer_item1+archer_item2+archer_item3+archer_item4;
+				set @archer_item1,@Trunk1*5;
+				set @archer_item2,@Trunk2*3;
+				set @archer_item3,@Trunk3*2;
+				set @archer_item4,@Trunk4;
+				set @Total_Trunk,@archer_item1+@archer_item2+@archer_item3+@archer_item4;
 	
 				mes "[Archer Guildsman]";
-				mes  "  Grade S :  "+Trunk1+"  ea/ Grades :  "+archer_item1;
-				mes  "  Grade A :  "+Trunk2+"  ea/ Grades :  "+archer_item2;
-				mes  "  Grade B :  "+Trunk3+"  ea/ Grades :  "+archer_item3;
-				mes  "  Grade C :  "+Trunk4+"  ea/ Grades :  "+archer_item4;
+				mes  "  Grade S :  "+@Trunk1+"  ea/ Grades :  "+@archer_item1;
+				mes  "  Grade A :  "+@Trunk2+"  ea/ Grades :  "+@archer_item2;
+				mes  "  Grade B :  "+@Trunk3+"  ea/ Grades :  "+@archer_item3;
+				mes  "  Grade C :  "+@Trunk4+"  ea/ Grades :  "+@archer_item4;
 				mes " ";
 						
-				if (Total_Trunk > 40) goto HightTrunk;
-				if (Total_Trunk > 30) goto MediamTrunk;
-				if (Total_Trunk >= 25) goto NormalTrunk;
-				mes  "  Total Grades :  ^FF0000"+Total_Trunk+"^000000 / 40";
+				if (@Total_Trunk > 40) goto HightTrunk;
+				if (@Total_Trunk > 30) goto MediamTrunk;
+				if (@Total_Trunk >= 25) goto NormalTrunk;
+				mes  "  Total Grades :  ^FF0000"+@Total_Trunk+"^000000 / 40";
 				next;
 				mes "[Archer Guildsman]";
 				mes "Below 25 !? You have to gain at least 25! Try Harder!!";
 				close;
 				
 				 HightTrunk:
-					mes  "  Total Grades :  ^0000FF"+Total_Trunk+"^000000 / 40";
+					mes  "  Total Grades :  ^0000FF"+@Total_Trunk+"^000000 / 40";
 					next;
 					mes "[Archer Guildsman]";
 					mes "Wow!! 40 Above!Excellent! Congraulations!";
 					goto MakArc;
 				MediamTrunk:
-					mes  "  Total Grades :  ^0000FF"+Total_Trunk+"^000000 / 40";
+					mes  "  Total Grades :  ^0000FF"+T@otal_Trunk+"^000000 / 40";
 					next;
 					mes "[Archer Guildsman]";
 					mes "30 Above! Excellent! Congraulations!";
 					goto MakArc;
 				NormalTrunk:
-					mes  "  Total Grades :  ^0000FF"+Total_Trunk+"^000000 / 40";
+					mes  "  Total Grades :  ^0000FF"+@Total_Trunk+"^000000 / 40";
 					next;	
 					mes "[Archer Guildsman]";
 					mes "Sigh~ You barely passed. Anyway well-done.";
@@ -131,15 +131,15 @@ payon_in02.gat,64,71,4	script	Archer Guildsman	85,{
 		delitem 1067;
 		delitem 1068;
 		delitem 1019;
-		set Trunk1,0;
-		set Trunk2,0;
-		set Trunk3,0;
-		set Trunk4,0;
-		set archer_item1,0;
-		set archer_item2,0;
-		set archer_item3,0;
-		set archer_item4,0;
-		set Total_Trunk,0;
+		set @Trunk1,0;
+		set @Trunk2,0;
+		set @Trunk3,0;
+		set @Trunk4,0;
+		set @archer_item1,0;
+		set @archer_item2,0;
+		set @archer_item3,0;
+		set @archer_item4,0;
+		set @Total_Trunk,0;
 
 		next;
 		mes "[Archer Guildsman]";
