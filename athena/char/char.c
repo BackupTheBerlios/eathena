@@ -1,4 +1,4 @@
-// $Id: char.c,v 1.7 2004/02/03 23:57:16 sara-chan Exp $
+// $Id: char.c,v 1.8 2004/02/05 03:15:14 rovert Exp $
 // original : char2.c 2003/03/14 11:58:35 Rev.1.5
 
 #include <sys/types.h>
@@ -71,6 +71,7 @@ int autosave_interval=DEFAULT_AUTOSAVE_INTERVAL;
 
 // 初期位置（confファイルから再設定可能）
 struct point start_point={"new_1-1.gat",53,111};
+int start_zeny=500;
 
 int mmo_char_tostr(char *str,struct mmo_charstatus *p)
 {
@@ -1434,6 +1435,10 @@ int char_config_read(const char *cfgName)
 			memcpy(start_point.map,map,16);
 			start_point.x=x;
 			start_point.y=y;
+		} else if(strcmpi(w1,"start_zeny")==0){
+			start_zeny=atoi(w2);
+		} else if(strcmpi(w1,"party_share")==0){
+			party_share_range=atoi(w2);
 		}
 	}
 	fclose(fp);
