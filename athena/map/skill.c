@@ -1642,7 +1642,7 @@ int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,int
 			int per=0;
 			struct map_session_data *tsd=(struct map_session_data*)bl;
 
-			if( (map[bl->m].flag.pvp) && tsd->pvp_point<=0 )
+			if( (map[bl->m].flag.pvp) && tsd->pvp_point<0 )
 				break;			/* PVPで復活不可能状態 */
 
 			if(pc_isdead(tsd)){	/* 死亡判定 */
@@ -3709,10 +3709,11 @@ int skill_check_condition(struct map_session_data *sd,int type)
 		return 0;
 	}
 
-	if(sd->skillitem==sd->skillid && type&1) {	/* アイテムの場合無条件成功 */
+	if(sd->skillitem == sd->skillid) {	/* アイテムの場合無条件成功 */
+		if(type&1)
 		sd->skillitem = sd->skillitemlv = -1;
+		return 1;
 	}
-	else{
 		if(sd->sc_data[SC_DIVINA].timer != -1 || sd->sc_data[SC_ROKISWEIL].timer != -1 || sd->sc_data[SC_STEELBODY].timer != -1) {
 			clif_skill_fail(sd,sd->skillid,0,0);
 				return 0;
@@ -3758,14 +3759,12 @@ int skill_check_condition(struct map_session_data *sd,int type)
 				if(sd->sc_data[SkillStatusChangeTable[skill]].timer!=-1)
 					return 1;			/* 解除する場合はSP消費しない */
 				break;
-
 			case MO_CALLSPIRITS:
 				if(sd->spiritball >= lv) {
 					clif_skill_fail(sd,skill,0,0);
 					return 0;
 				}
 				break;
-
 			case MO_FINGEROFFENSIVE:				//指弾
 				if (sd->spiritball > 0 && sd->spiritball < spiritball) {
 					spiritball = sd->spiritball;
@@ -3773,22 +3772,18 @@ int skill_check_condition(struct map_session_data *sd,int type)
 				}
 				else sd->spiritball_old = lv;	
 				break;
-
 			case MO_CHAINCOMBO:						//連打掌
 				if(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_TRIPLEATTACK)
 					return 0;
 				break;
-
 			case MO_COMBOFINISH:					//猛龍拳
 				if(sd->sc_data[SC_COMBO].timer == -1 || sd->sc_data[SC_COMBO].val1 != MO_CHAINCOMBO)
 					return 0;
 				break;
-
 			case MO_EXTREMITYFIST:					// 阿修羅覇鳳拳
 				if(sd->sc_data[SC_COMBO].timer != -1 && sd->sc_data[SC_COMBO].val1 == MO_COMBOFINISH)
 					spiritball--;
 				break;
-
 		}
 
 		if( hp>0 && sd->status.hp < hp) {				/* HPチェック */
@@ -3906,7 +3901,8 @@ int skill_check_condition(struct map_session_data *sd,int type)
 			}
 		}
 
-		if(!(type&1)) return 1;
+	if(!(type&1))
+		return 1;
 
 		if(sp > 0) {					// SP消費
 			sd->status.sp-=sp;
@@ -3925,7 +3921,6 @@ int skill_check_condition(struct map_session_data *sd,int type)
 			if(index[i] >= 0)
 				pc_delitem(sd,index[i],amount[i],0);		// アイテム消費
 		}
-	}
 	return 1;
 }
 
