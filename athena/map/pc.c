@@ -1331,8 +1331,10 @@ int pc_calcstatus(struct map_session_data* sd,int first)
 		clif_updatestatus(sd,SP_SPEED);
 	if(b_weight != sd->weight)
 		clif_updatestatus(sd,SP_WEIGHT);
-	if(b_max_weight != sd->max_weight)
+	if(b_max_weight != sd->max_weight) {
 		clif_updatestatus(sd,SP_MAXWEIGHT);
+		pc_checkweighticon(sd);
+	}
 	for(i=0;i<6;i++)
 		if(b_paramb[i] + b_parame[i] != sd->paramb[i] + sd->parame[i])
 			clif_updatestatus(sd,SP_STR+i);

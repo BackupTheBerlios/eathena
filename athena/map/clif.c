@@ -1,4 +1,4 @@
-// $Id: clif.c,v 1.4 2004/01/11 18:27:25 rovert Exp $
+// $Id: clif.c,v 1.5 2004/01/13 14:46:47 rovert Exp $
 
 #define DUMP_UNKNOWN_PACKET	1
 
@@ -1440,7 +1440,6 @@ int clif_updatestatus(struct map_session_data *sd,int type)
 		WFIFOL(fd,4)=sd->weight;
 		break;
 	case SP_MAXWEIGHT:
-		pc_checkweighticon(sd);
 		WFIFOL(fd,4)=sd->max_weight;
 		break;
 	case SP_SPEED:
